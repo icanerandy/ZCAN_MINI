@@ -23,3 +23,6 @@ include ($$PWD/Model/Model.pri)
 
 INCLUDEPATH += $$PWD/Ui
 include ($$PWD/Ui/Ui.pri)
+
+INCLUDEPATH += $$PWD/DeviceManager
+include ($$PWD/DeviceManager/DeviceManager.pri)
