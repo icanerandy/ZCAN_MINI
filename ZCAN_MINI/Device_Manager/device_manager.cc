@@ -43,6 +43,11 @@ DeviceManager::DeviceManager(QObject *parent) : QObject(parent),
     support_get_send_mode_ = false;
 }
 
+int DeviceManager::device_type_index()
+{
+    return device_type_index_;
+}
+
 void DeviceManager::ChangeDeviceType(int index)
 {
     device_type_index_ = index;

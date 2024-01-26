@@ -107,6 +107,9 @@ private:
     const DeviceManager &operator = (const DeviceManager &deviceManager) = delete;   // 禁止外部赋值构造
 
 public:
+    int device_type_index();
+
+public:
     void ChangeDeviceType(int index);
     void ChangeDeviceIndex(int index);
     bool OpenDevice();

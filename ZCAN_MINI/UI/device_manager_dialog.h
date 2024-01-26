@@ -8,6 +8,7 @@
 #include <QHBoxLayout>
 #include <QStringList>
 #include <QTreeWidget>
+#include <QMessageBox>
 #include "device_manager.h"
 
 namespace Ui {
@@ -26,7 +27,7 @@ private:
     void InitDialog();
     void InitTypeComboBox();
     void InitIndexComboBox(QObject *obj, int start, int end, int current);
-    void AddLayout();
+    void EnableCtrl(bool enabled);
 
 private slots:
     void slot_ComboDeviceType_currentIndexChanged(int index);

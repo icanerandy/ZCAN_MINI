@@ -33,12 +33,7 @@ void DeviceManagerDialog::InitDialog()
     InitIndexComboBox(ui->combo_device_index, 0, 32, 0);
 
     // 隐藏组件
-    ui->lab_channel->setVisible(false);
-    ui->combo_channel_index->setVisible(false);
-    ui->btn_start_device->setVisible(false);
-    ui->btn_stop_device->setVisible(false);
-    ui->btn_close_device->setVisible(false);
-    ui->btn_device_info->setVisible(false);
+    EnableCtrl(false);
 }
 
 void DeviceManagerDialog::InitTypeComboBox()
@@ -67,6 +62,21 @@ void DeviceManagerDialog::InitIndexComboBox(QObject *obj, int start, int end, in
     combo->setCurrentIndex(current);
 }
 
+void DeviceManagerDialog::EnableCtrl(bool enabled)
+{
+    ui->combo_device_type->setEnabled(!enabled);
+    ui->combo_device_index->setEnabled(!enabled);
+    ui->btn_open_device->setEnabled(!enabled);
+    ui->lab_channel->setVisible(enabled);
+    ui->combo_channel_index->setVisible(enabled);
+    ui->btn_start_device->setVisible(enabled);
+    ui->btn_stop_device->setEnabled(enabled);
+    ui->btn_stop_device->setVisible(enabled);
+    ui->btn_stop_device->setEnabled(!enabled);
+    ui->btn_close_device->setVisible(enabled);
+    ui->btn_device_info->setVisible(enabled);
+}
+
 void DeviceManagerDialog::slot_ComboDeviceType_currentIndexChanged(int index)
 {
     DeviceManager *device_manager = DeviceManager::GetInstance();
@@ -85,14 +95,14 @@ void DeviceManagerDialog::slot_BtnOpenDevice_clicked()
     bool ret = device_manager->OpenDevice();
     if (ret)
     {
-        ui->lab_channel->setVisible(true);
-        ui->combo_channel_index->setVisible(true);
-        ui->btn_start_device->setVisible(true);
-        ui->btn_stop_device->setVisible(true);
-        ui->btn_close_device->setVisible(true);
-        ui->btn_device_info->setVisible(true);
+        EnableCtrl(true);
+        int device_type_index = device_manager->device_type_index();
+        InitIndexComboBox(ui->combo_channel_index, 0, kDeviceType[device_type_index].channel_count, 0);/* 根据设备类型设置相关通道数 */
         qDebug("打开设备成功");
     }
     else
+    {
+        QMessageBox::warning(this, "warning", "打开设备失败！");
         qDebug("打开设备失败");
+    }
 }
