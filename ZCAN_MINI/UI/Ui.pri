@@ -1,8 +1,8 @@
 FORMS += \
-    $$PWD/mainwindow.ui
+    $$PWD/main_window.ui
 
 HEADERS += \
-    $$PWD/mainwindow.h
+    $$PWD/main_window.h
 
 SOURCES += \
-    $$PWD/mainwindow.cpp
+    $$PWD/main_window.cc
