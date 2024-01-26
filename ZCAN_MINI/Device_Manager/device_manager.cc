@@ -4,7 +4,7 @@
  * @brief DeviceManager::getInstance    局部静态的方式实现单例类
  * @return
  */
-DeviceManager *DeviceManager::getInstance()
+DeviceManager *DeviceManager::GetInstance()
 {
     static DeviceManager deviceManager;
     return &deviceManager;

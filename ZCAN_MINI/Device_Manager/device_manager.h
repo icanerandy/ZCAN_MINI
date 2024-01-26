@@ -1,5 +1,5 @@
-#ifndef DEVICEMANAGER_H
-#define DEVICEMANAGER_H
+#ifndef DEVICE_MANAGER_H
+#define DEVICE_MANAGER_H
 
 #include <QObject>
 #include "zlgcan.h"
@@ -98,12 +98,12 @@ signals:
 public slots:
 
 public:
-    static DeviceManager *getInstance();    // 获取单例对象
+    static DeviceManager *GetInstance();    // 获取单例对象
 
 private:
     explicit DeviceManager(QObject *parent = nullptr);  // 禁止外部构造
-    //~DeviceManager();   // 禁止外部析构
-    DeviceManager(const DeviceManager &deviceManager) = delete;  // 禁止外部拷贝构造
+    //explicit ~DeviceManager();   // 禁止外部析构
+    explicit DeviceManager(const DeviceManager &deviceManager) = delete;  // 禁止外部拷贝构造
     const DeviceManager &operator = (const DeviceManager &deviceManager) = delete;   // 禁止外部赋值构造
 
 private:
@@ -158,4 +158,4 @@ private:
     // IProperty *property_;/* 属性 */
 };
 
-#endif // DEVICEMANAGER_H
+#endif // DEVICE_MANAGER_H

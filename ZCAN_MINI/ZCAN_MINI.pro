@@ -18,6 +18,9 @@ SOURCES += main.cpp
 INCLUDEPATH += $$PWD/zlgcan_x86
 include ($$PWD/zlgcan_x86/zlgcan_x86.pri)
 
+INCLUDEPATH += $$PWD/App_Event
+include ($$PWD/App_Event/App_Event.pri)
+
 INCLUDEPATH += $$PWD/Model
 include ($$PWD/Model/Model.pri)
 
