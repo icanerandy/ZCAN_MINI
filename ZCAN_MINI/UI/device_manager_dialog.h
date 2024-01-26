@@ -26,6 +26,7 @@ private:
     void InitDialog();
     void InitTypeComboBox();
     void InitIndexComboBox(QObject *obj, int start, int end, int current);
+    void AddLayout();
 
 private slots:
     void slot_ComboDeviceType_currentIndexChanged(int index);
@@ -33,18 +34,12 @@ private slots:
     void slot_BtnOpenDevice_clicked();
 
 private:
-    QWidget *centralWidget;
-    QGridLayout *gLayout;
-    QHBoxLayout *hLayout;
-    QSpacerItem *hSpacer;
-    QSpacerItem *hSpacer_2;
-    QSpacerItem *vSpacer;
+    QComboBox *combo_channel_index;
+    QPushButton *btn_start_device;
+    QPushButton *btn_stop_device;
+    QPushButton *btn_close_device;
+    QPushButton *btn_device_info;
 
-    QLabel *lab_device_type_;
-    QComboBox *combo_device_type_;
-    QLabel *lab_device_index_;
-    QComboBox *combo_device_index_;
-    QPushButton *btn_open_device;
 
     // 目录树相关
     // QTreeWidget *treeWidget;

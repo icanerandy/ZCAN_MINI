@@ -9,17 +9,17 @@ DeviceManagerDialog::DeviceManagerDialog(QWidget *parent) :
 
     InitDialog();
 
-    connect(combo_device_type_,
+    connect(ui->combo_device_type,
             static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
             this,
             &DeviceManagerDialog::slot_ComboDeviceType_currentIndexChanged);
 
-    connect(combo_device_index_,
+    connect(ui->combo_device_index,
             static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
             this,
             &DeviceManagerDialog::slot_ComboDeviceIndex_currentIndexChanged);
 
-    connect(btn_open_device, &QPushButton::clicked, this, &slot_BtnOpenDevice_clicked);
+    connect(ui->btn_open_device, &QPushButton::clicked, this, &slot_BtnOpenDevice_clicked);
 }
 
 DeviceManagerDialog::~DeviceManagerDialog()
@@ -29,68 +29,16 @@ DeviceManagerDialog::~DeviceManagerDialog()
 
 void DeviceManagerDialog::InitDialog()
 {
-    centralWidget = new QWidget(this);
-    gLayout = new QGridLayout(centralWidget);
-    gLayout->setSpacing(6);
-    gLayout->setContentsMargins(11, 11, 11, 11);
-
-    hLayout = new QHBoxLayout();
-    hLayout->setSpacing(6);
-
-    lab_device_type_ = new QLabel(QStringLiteral("类型"), centralWidget);
-    hLayout->addWidget(lab_device_type_);
-
-    combo_device_type_ = new QComboBox(centralWidget);
-    hLayout->addWidget(combo_device_type_);
-
-    hSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-    hLayout->addItem(hSpacer);
-
-    lab_device_index_ = new QLabel(QStringLiteral("索引"), centralWidget);
-    hLayout->addWidget(lab_device_index_);
-
-    combo_device_index_ = new QComboBox(centralWidget);
-    hLayout->addWidget(combo_device_index_);
-
-    hSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-    hLayout->addItem(hSpacer_2);
-
-    btn_open_device = new QPushButton(QStringLiteral("打开设备"), centralWidget);
-    hLayout->addWidget(btn_open_device);
-
-    gLayout->addLayout(hLayout, 0, 0, 1, 1);
-
-    vSpacer = new QSpacerItem(20, 50, QSizePolicy::Minimum, QSizePolicy::Expanding);
-    gLayout->addItem(vSpacer, 1, 0, 1, 1);
-
     InitTypeComboBox();
-    InitIndexComboBox(combo_device_index_, 0, 32, 0);
+    InitIndexComboBox(ui->combo_device_index, 0, 32, 0);
 
-
-
-//    treeWidget = new QTreeWidget(centralWidget);
-//    treeWidget->header()->setVisible(false);
-//    treeWidget->setStyleSheet("QTreeWidget {"
-//                              "background-color: transparent;"
-//                              "border: none;"
-//                              "}"
-//                              "QTreeWidget::item {"
-//                              "background-color: transparent;"
-//                              "}");
-//    treeWidget->setColumnCount(5);
-//    QTreeWidgetItem *parent = new QTreeWidgetItem(treeWidget);
-//    parent->setText(0, QStringLiteral("设备"));
-//    treeWidget->setItemWidget(parent, 1, new QPushButton(("启动")));
-//    treeWidget->setItemWidget(parent, 2, new QPushButton("停止"));
-//    treeWidget->setItemWidget(parent, 3, new QPushButton("关闭设备"));
-//    treeWidget->setItemWidget(parent, 4, new QPushButton("设备信息"));
-
-//    QTreeWidgetItem *child = new QTreeWidgetItem(parent);
-//    child->setText(0, QStringLiteral("通道"));
-//    treeWidget->setItemWidget(child, 1, new QPushButton("启动"));
-//    treeWidget->setItemWidget(child, 2, new QPushButton("停止"));
-
-//    gLayout->addWidget(treeWidget);
+    // 隐藏组件
+    ui->lab_channel->setVisible(false);
+    ui->combo_channel_index->setVisible(false);
+    ui->btn_start_device->setVisible(false);
+    ui->btn_stop_device->setVisible(false);
+    ui->btn_close_device->setVisible(false);
+    ui->btn_device_info->setVisible(false);
 }
 
 void DeviceManagerDialog::InitTypeComboBox()
@@ -104,7 +52,7 @@ void DeviceManagerDialog::InitTypeComboBox()
                 << "ZCAN_CLOUD" << "ZCAN_CANFDWIFI_TCP" << "ZCAN_CANFDWIFI_UDP"
                 << "ZCAN_CANFDNET_TCP" << "ZCAN_CANFDNET_UDP" << "ZCAN_CANFDNET_400U_TCP"
                 << "ZCAN_CANFDNET_400U_UDP";
-    combo_device_type_->addItems(string_list);
+    ui->combo_device_type->addItems(string_list);
 }
 
 void DeviceManagerDialog::InitIndexComboBox(QObject *obj, int start, int end, int current)
@@ -136,7 +84,15 @@ void DeviceManagerDialog::slot_BtnOpenDevice_clicked()
     DeviceManager *device_manager = DeviceManager::GetInstance();
     bool ret = device_manager->OpenDevice();
     if (ret)
+    {
+        ui->lab_channel->setVisible(true);
+        ui->combo_channel_index->setVisible(true);
+        ui->btn_start_device->setVisible(true);
+        ui->btn_stop_device->setVisible(true);
+        ui->btn_close_device->setVisible(true);
+        ui->btn_device_info->setVisible(true);
         qDebug("打开设备成功");
+    }
     else
         qDebug("打开设备失败");
 }
