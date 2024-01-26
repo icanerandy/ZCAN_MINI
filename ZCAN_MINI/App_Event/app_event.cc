@@ -8,5 +8,4 @@ AppEvent *AppEvent::GetInstance()
 
 AppEvent::AppEvent(QObject *parent) : QObject(parent)
 {
-
 }

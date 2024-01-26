@@ -106,6 +106,17 @@ private:
     explicit DeviceManager(const DeviceManager &deviceManager) = delete;  // 禁止外部拷贝构造
     const DeviceManager &operator = (const DeviceManager &deviceManager) = delete;   // 禁止外部赋值构造
 
+public:
+    void ChangeDeviceType(int index);
+    void ChangeDeviceIndex(int index);
+    bool OpenDevice();
+
+private:
+    bool IsNetCAN( uint type );
+    bool IsNetCANFD( uint type );
+    bool IsNetTCP( uint type );
+    bool IsNetUDP( uint type );
+
 private:
     int device_type_index_;/* 设备 */
     int device_index_;/* 设备索引 */

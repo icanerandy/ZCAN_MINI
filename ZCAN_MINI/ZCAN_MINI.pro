@@ -13,7 +13,8 @@ TEMPLATE = app
 
 DEFINES += QT_DEPRECATED_WARNINGS
 
-SOURCES += main.cpp
+SOURCES += \
+    main.cc
 
 INCLUDEPATH += $$PWD/zlgcan_x86
 include ($$PWD/zlgcan_x86/zlgcan_x86.pri)

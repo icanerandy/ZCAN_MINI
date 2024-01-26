@@ -2,6 +2,7 @@
 #define APP_EVENT_H
 
 #include <QObject>
+#include "main_window.h"
 
 class AppEvent : public QObject
 {
@@ -9,6 +10,8 @@ class AppEvent : public QObject
 
 public:
     static AppEvent *GetInstance();
+
+private:
 
 private:
     explicit AppEvent(QObject *parent = nullptr);
