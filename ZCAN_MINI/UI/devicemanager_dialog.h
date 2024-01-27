@@ -9,8 +9,8 @@
 #include <QStringList>
 #include <QTreeWidget>
 #include <QMessageBox>
-#include "device_manager.h"
-#include "init_can_dialog.h"
+#include "devicemanager.h"
+#include "initcan_dialog.h"
 
 namespace Ui {
 class DeviceManagerDialog;
@@ -38,6 +38,7 @@ private slots:
     void slot_btnStartDevice_clicked();
     void slot_btnStopDevice_clicked();
     void slot_btnCloseDevice_clicked();
+    void slot_btnDeviceInfo_clicked();
 
 private:
     Ui::DeviceManagerDialog *ui;

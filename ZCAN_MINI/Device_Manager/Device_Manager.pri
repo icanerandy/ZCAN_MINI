@@ -1,5 +1,5 @@
 HEADERS += \
-    $$PWD/device_manager.h
+    $$PWD/devicemanager.h
 
 SOURCES += \
-    $$PWD/device_manager.cc
+    $$PWD/devicemanager.cc

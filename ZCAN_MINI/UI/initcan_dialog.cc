@@ -1,4 +1,4 @@
-#include "init_can_dialog.h"
+#include "initcan_dialog.h"
 #include "ui_init_can_dialog.h"
 
 InitCanDialog::InitCanDialog(QWidget *parent) :
@@ -149,5 +149,17 @@ void InitCanDialog::on_btnOk_clicked()
     RecMsgThread *rec_msg_thread = RecMsgThread::GetInstance();
     rec_msg_thread->start();
     rec_msg_thread->beginThread();
+
+
+    /* 关联数据模型的信号与槽 */
+    // 一定要避免多次连接
+    CanFrameTableModel *canFrameTableModel = CanFrameTableModel::GetInstance();
+    connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(ZCAN_Receive_Data *, uint)>(&RecMsgThread::newMsg),
+            canFrameTableModel, static_cast<void (CanFrameTableModel::*)(ZCAN_Receive_Data *, uint)>(&CanFrameTableModel::newMsg),
+            Qt::UniqueConnection);
+    connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(ZCAN_ReceiveFD_Data *, uint)>(&RecMsgThread::newMsg),
+            canFrameTableModel, static_cast<void (CanFrameTableModel::*)(ZCAN_ReceiveFD_Data *, uint)>(&CanFrameTableModel::newMsg),
+            Qt::UniqueConnection);
+
     this->hide();
 }

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QThread>
 #include "zlgcan.h"
+#include "canframe_tablemodel.h"
 
 class RecMsgThread : public QThread
 {

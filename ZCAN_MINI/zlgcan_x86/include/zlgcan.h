@@ -316,6 +316,7 @@ typedef struct tagZCAN_Receive_Data {
     can_frame frame;
     UINT64    timestamp;  // us
 } ZCAN_Receive_Data;
+Q_DECLARE_METATYPE(ZCAN_Receive_Data);
 
 typedef struct tagZCAN_TransmitFD_Data {
     canfd_frame frame;
@@ -326,6 +327,7 @@ typedef struct tagZCAN_ReceiveFD_Data {
     canfd_frame frame;
     UINT64      timestamp;  // us
 } ZCAN_ReceiveFD_Data;
+Q_DECLARE_METATYPE(ZCAN_ReceiveFD_Data);
 
 typedef struct tagZCAN_AUTO_TRANSMIT_OBJ {
     USHORT             enable;

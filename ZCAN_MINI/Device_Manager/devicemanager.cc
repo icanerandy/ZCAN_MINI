@@ -1,4 +1,4 @@
-#include "device_manager.h"
+#include "devicemanager.h"
 
 /**
  * @brief DeviceManager::getInstance    局部静态的方式实现单例类
@@ -80,36 +80,36 @@ int DeviceManager::set_resistance_enable(int index)
 void DeviceManager::ChangeDeviceType(int index)
 {
     device_type_index_ = index;
-    // InitIndexComboBox(ui->comboChannelIndex, 0, kDeviceType[device_type_index_].channel_count, 0);/* 根据设备类型设置相关通道数 */
-    uint type = kDeviceType[device_type_index_].device_type;/* 获取设备类型 */
 
-    const bool cloudDevice = type==ZCAN_CLOUD;
-    const bool netcanfd = IsNetCANFD(type);
-    const bool netcan = IsNetCAN(type);
-    const bool netDevice = (netcan || netcanfd);
-    const bool tcpDevice = IsNetTCP(type);
-    const bool usbcanfd = type==ZCAN_USBCANFD_100U ||
-        type==ZCAN_USBCANFD_200U || type==ZCAN_USBCANFD_MINI;
-    const bool pciecanfd = type==ZCAN_PCIE_CANFD_100U ||
-        type==ZCAN_PCIE_CANFD_200U || type==ZCAN_PCIE_CANFD_400U|| type==ZCAN_PCIE_CANFD_400U_EX;
+//    uint type = kDeviceType[device_type_index_].device_type;/* 获取设备类型 */
 
-    const bool canfdDevice = usbcanfd || pciecanfd || netcanfd;
-    const bool accFilter = pciecanfd || type==ZCAN_USBCAN1 || type==ZCAN_USBCAN2;
+//    const bool cloudDevice = type==ZCAN_CLOUD;
+//    const bool netcanfd = IsNetCANFD(type);
+//    const bool netcan = IsNetCAN(type);
+//    const bool netDevice = (netcan || netcanfd);
+//    const bool tcpDevice = IsNetTCP(type);
+//    const bool usbcanfd = type==ZCAN_USBCANFD_100U ||
+//        type==ZCAN_USBCANFD_200U || type==ZCAN_USBCANFD_MINI;
+//    const bool pciecanfd = type==ZCAN_PCIE_CANFD_100U ||
+//        type==ZCAN_PCIE_CANFD_200U || type==ZCAN_PCIE_CANFD_400U|| type==ZCAN_PCIE_CANFD_400U_EX;
+
+//    const bool canfdDevice = usbcanfd || pciecanfd || netcanfd;
+//    const bool accFilter = pciecanfd || type==ZCAN_USBCAN1 || type==ZCAN_USBCAN2;
 
     //队列发送支持
-    support_delay_send_ = usbcanfd || pciecanfd || netcanfd;
-    support_delay_send_mode_ = usbcanfd || pciecanfd;
-    support_get_send_mode_ = usbcanfd || pciecanfd;
-    //SetCtrlStateDelaySend(support_delay_send_, support_delay_send_mode_, support_get_send_mode_);
-    //ui->chkFrmDelayFlag->setChecked(Qt::Unchecked);
+//    support_delay_send_ = usbcanfd || pciecanfd || netcanfd;
+//    support_delay_send_mode_ = usbcanfd || pciecanfd;
+//    support_get_send_mode_ = usbcanfd || pciecanfd;
+//    SetCtrlStateDelaySend(support_delay_send_, support_delay_send_mode_, support_get_send_mode_);
+//    ui->chkFrmDelayFlag->setChecked(Qt::Unchecked);
 
     //定时发送支持
-    const bool support_autosend_canfd = canfdDevice;    // CANFD 设备
-    const bool support_autosend_can = canfdDevice ;     // CANFD 设备和其他CAN设备
-    const bool support_autosend_index = (support_autosend_can && !pciecanfd);   // PCIECANFD 不支持使用索引控制定时，PCIECANFD添加一条即立即发送
-    const bool support_stop_single_autosend = usbcanfd;
-    const bool support_get_autosend_list = netcanfd;
-    //SetAutoSendCtrlState(support_autosend_can, support_autosend_canfd, support_autosend_index, support_stop_single_autosend, support_get_autosend_list);
+//    const bool support_autosend_canfd = canfdDevice;    // CANFD 设备
+//    const bool support_autosend_can = canfdDevice ;     // CANFD 设备和其他CAN设备
+//    const bool support_autosend_index = (support_autosend_can && !pciecanfd);   // PCIECANFD 不支持使用索引控制定时，PCIECANFD添加一条即立即发送
+//    const bool support_stop_single_autosend = usbcanfd;
+//    const bool support_get_autosend_list = netcanfd;
+//    SetAutoSendCtrlState(support_autosend_can, support_autosend_canfd, support_autosend_index, support_stop_single_autosend, support_get_autosend_list);
 
 //    if (usbcanfd)
 //    {
@@ -144,7 +144,7 @@ void DeviceManager::ChangeDeviceType(int index)
 //    ui->comboDbit->setEnabled(canfdDevice && !netDevice && !cloudDevice);
 //    ui->comboFilterMode->setEnabled(accFilter && !cloudDevice && !netDevice);
 //    ui->editAccCode->setEnabled(accFilter && !cloudDevice && !netDevice);
-    //    ui->editAccMask->setEnabled(accFilter && !cloudDevice && !netDevice);
+//    ui->editAccMask->setEnabled(accFilter && !cloudDevice && !netDevice);
 }
 
 void DeviceManager::ChangeDeviceIndex(int index)
@@ -301,6 +301,15 @@ bool DeviceManager::CloseDevice()
     device_opened_ = false;
     qDebug("关闭设备成功!");
     return true;
+}
+
+ZCAN_DEVICE_INFO *DeviceManager::GetDeviceInfo()
+{
+    ZCAN_DEVICE_INFO *info = new ZCAN_DEVICE_INFO();
+
+    ZCAN_GetDeviceInf(device_handle_, info);
+
+    return info;
 }
 
 bool DeviceManager::IsNetCAN( uint type )

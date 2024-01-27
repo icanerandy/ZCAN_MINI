@@ -1,5 +1,5 @@
 HEADERS += \
-    $$PWD/rec_msg_thread.h
+    $$PWD/recmsg_thread.h
 
 SOURCES += \
-    $$PWD/rec_msg_thread.cc
+    $$PWD/recmsg_thread.cc

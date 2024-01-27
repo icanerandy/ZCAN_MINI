@@ -2,8 +2,8 @@
 #define INIT_CAN_DIALOG_H
 
 #include <QDialog>
-#include "device_manager.h"
-#include "rec_msg_thread.h"
+#include "devicemanager.h"
+#include "recmsg_thread.h"
 
 namespace Ui {
 class InitCanDialog;

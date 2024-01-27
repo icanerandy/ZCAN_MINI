@@ -3,11 +3,11 @@
 
 #include <QMainWindow>
 #include <QAction>
-#include <device_manager_dialog.h>
+#include <devicemanager_dialog.h>
 #include "zlgcan.h"
-#include "app_event.h"
-#include "device_manager.h"
-#include <rec_msg_thread.h>
+#include "devicemanager.h"
+#include <recmsg_thread.h>
+#include "canview_dockwidget.h"
 
 namespace Ui {
 class MainWindow;
@@ -25,14 +25,16 @@ private:
     void BindSignals();
 
 private slots:
-    void slot_ActDeviceManage_triggered(bool checked);
+    void slot_actDeviceManage_triggered(bool checked);
+    void slot_actCreateCanView_triggered(bool checked);
 
 private:
     Ui::MainWindow *ui;
     DeviceManagerDialog *device_manager_dialog;
 
 
-    QAction *act_device_manage;
+    QAction *actDeviceManage;
+    QAction *actCreateCanView;
 
 private:
     RecMsgThread *rec_msg_thread;

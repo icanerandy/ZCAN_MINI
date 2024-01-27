@@ -1,4 +1,4 @@
-#include "device_manager_dialog.h"
+#include "devicemanager_dialog.h"
 #include "ui_device_manager_dialog.h"
 
 DeviceManagerDialog::DeviceManagerDialog(QWidget *parent) :
@@ -72,6 +72,8 @@ void DeviceManagerDialog::BindSlots()
     connect(ui->btnStopDevice, &QPushButton::clicked, this, &slot_btnStopDevice_clicked);
 
     connect(ui->btnCloseDevice, &QPushButton::clicked, this, &slot_btnCloseDevice_clicked);
+
+    connect(ui->btnDeviceInfo, &QPushButton::clicked, this, &slot_btnDeviceInfo_clicked);
 }
 
 void DeviceManagerDialog::EnableCtrl(bool enabled)
@@ -160,4 +162,44 @@ void DeviceManagerDialog::slot_btnCloseDevice_clicked()
 
     /* 设置相应按键使能 */
     EnableCtrl(false);
+}
+
+void DeviceManagerDialog::slot_btnDeviceInfo_clicked()
+{
+    DeviceManager *device_manager = DeviceManager::GetInstance();
+    ZCAN_DEVICE_INFO *info = device_manager->GetDeviceInfo();
+
+    QString hw_version = info->hw_Version==0?"000":QString::number(info->hw_Version, 16);
+    hw_version.insert(1, '.');
+    QString fw_version = info->fw_Version==0?"000":QString::number(info->fw_Version, 16);
+    fw_version.insert(1, '.');
+    QString dr_version = info->dr_Version==0?"000":QString::number(info->dr_Version, 16);
+    dr_version.insert(1, '.');
+    QString in_version = info->in_Version==0?"000":QString::number(info->in_Version, 16);
+    in_version.insert(1, '.');
+
+    QString strInfo;
+    strInfo.append("硬件版本:V" + hw_version + "\n");
+    strInfo.append("固件版本:V" + fw_version + "\n");
+    strInfo.append("驱动版本:V" + dr_version + "\n");
+    strInfo.append("动态库版本:V" + in_version + "\n");
+    strInfo.append("CAN路数:" + QString::number(info->can_Num, 10) + "\n");
+    strInfo.append("序列号:" + QString::fromUtf8(reinterpret_cast<const char*>(info->str_Serial_Num), 20) + "\n");
+    strInfo.append("硬件类型:" + QString::fromUtf8(reinterpret_cast<const char*>(info->str_hw_Type)) + "\n");
+
+    QMessageBox msgBox;
+    msgBox.setIcon(QMessageBox::Information);
+    msgBox.setWindowTitle("设备信息");
+    msgBox.setText(strInfo);
+
+    // 自定义布局
+    QGridLayout* layout = qobject_cast<QGridLayout*>(msgBox.layout());
+    if (layout) {
+        layout->setColumnStretch(1, 2);  // 增加文本列的拉伸系数
+        layout->setRowStretch(5, 10);    // 增加图标行的拉伸系数
+    }
+
+    msgBox.exec();
+
+    delete info;
 }

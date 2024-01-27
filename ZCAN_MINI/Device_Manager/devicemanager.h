@@ -127,6 +127,7 @@ public:
     bool StartCan();
     bool StopCan();
     bool CloseDevice();
+    ZCAN_DEVICE_INFO *GetDeviceInfo();
 
 private:
     bool IsNetCAN( uint type );

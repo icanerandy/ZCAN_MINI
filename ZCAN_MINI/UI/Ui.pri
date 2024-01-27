@@ -1,14 +1,17 @@
 FORMS += \
     $$PWD/main_window.ui \
-    $$PWD/device_manager_dialog.ui \
-    $$PWD/init_can_dialog.ui
+    $$PWD/canview_dockwidget.ui \
+    $$PWD/devicemanager_dialog.ui \
+    $$PWD/initcan_dialog.ui
 
 HEADERS += \
     $$PWD/main_window.h \
-    $$PWD/device_manager_dialog.h \
-    $$PWD/init_can_dialog.h
+    $$PWD/canview_dockwidget.h \
+    $$PWD/devicemanager_dialog.h \
+    $$PWD/initcan_dialog.h
 
 SOURCES += \
     $$PWD/main_window.cc \
-    $$PWD/device_manager_dialog.cc \
-    $$PWD/init_can_dialog.cc
+    $$PWD/canview_dockwidget.cc \
+    $$PWD/devicemanager_dialog.cc \
+    $$PWD/initcan_dialog.cc

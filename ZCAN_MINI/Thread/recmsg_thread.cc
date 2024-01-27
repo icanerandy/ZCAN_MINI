@@ -1,4 +1,4 @@
-#include "rec_msg_thread.h"
+#include "recmsg_thread.h"
 
 RecMsgThread::RecMsgThread()
 {
