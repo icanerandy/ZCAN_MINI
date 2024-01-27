@@ -3,23 +3,26 @@
 
 DeviceManagerDialog::DeviceManagerDialog(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::DeviceManagerDialog)
+    ui(new Ui::DeviceManagerDialog),
+    initCanDialog(nullptr)
 {
     ui->setupUi(this);
 
     InitDialog();
 
-    connect(ui->combo_device_type,
+    connect(ui->comboDeviceType,
             static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
             this,
             &DeviceManagerDialog::slot_ComboDeviceType_currentIndexChanged);
 
-    connect(ui->combo_device_index,
+    connect(ui->comboDeviceIndex,
             static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
             this,
             &DeviceManagerDialog::slot_ComboDeviceIndex_currentIndexChanged);
 
-    connect(ui->btn_open_device, &QPushButton::clicked, this, &slot_BtnOpenDevice_clicked);
+    connect(ui->btnOpenDevice, &QPushButton::clicked, this, &slot_BtnOpenDevice_clicked);
+
+    connect(ui->btnStartDevice, &QPushButton::clicked, this, &slot_BtnStartDevice_clicked);
 }
 
 DeviceManagerDialog::~DeviceManagerDialog()
@@ -30,7 +33,7 @@ DeviceManagerDialog::~DeviceManagerDialog()
 void DeviceManagerDialog::InitDialog()
 {
     InitTypeComboBox();
-    InitIndexComboBox(ui->combo_device_index, 0, 32, 0);
+    InitIndexComboBox(ui->comboDeviceIndex, 0, 32, 0);
 
     // 隐藏组件
     EnableCtrl(false);
@@ -47,7 +50,7 @@ void DeviceManagerDialog::InitTypeComboBox()
                 << "ZCAN_CLOUD" << "ZCAN_CANFDWIFI_TCP" << "ZCAN_CANFDWIFI_UDP"
                 << "ZCAN_CANFDNET_TCP" << "ZCAN_CANFDNET_UDP" << "ZCAN_CANFDNET_400U_TCP"
                 << "ZCAN_CANFDNET_400U_UDP";
-    ui->combo_device_type->addItems(string_list);
+    ui->comboDeviceType->addItems(string_list);
 }
 
 void DeviceManagerDialog::InitIndexComboBox(QObject *obj, int start, int end, int current)
@@ -64,17 +67,17 @@ void DeviceManagerDialog::InitIndexComboBox(QObject *obj, int start, int end, in
 
 void DeviceManagerDialog::EnableCtrl(bool enabled)
 {
-    ui->combo_device_type->setEnabled(!enabled);
-    ui->combo_device_index->setEnabled(!enabled);
-    ui->btn_open_device->setEnabled(!enabled);
-    ui->lab_channel->setVisible(enabled);
-    ui->combo_channel_index->setVisible(enabled);
-    ui->btn_start_device->setVisible(enabled);
-    ui->btn_stop_device->setEnabled(enabled);
-    ui->btn_stop_device->setVisible(enabled);
-    ui->btn_stop_device->setEnabled(!enabled);
-    ui->btn_close_device->setVisible(enabled);
-    ui->btn_device_info->setVisible(enabled);
+    ui->comboDeviceType->setEnabled(!enabled);
+    ui->comboDeviceIndex->setEnabled(!enabled);
+    ui->btnOpenDevice->setEnabled(!enabled);
+    ui->labChannel->setVisible(enabled);
+    ui->comboChannelIndex->setVisible(enabled);
+    ui->btnStartDevice->setVisible(enabled);
+    ui->btnStopDevice->setEnabled(enabled);
+    ui->btnStopDevice->setVisible(enabled);
+    ui->btnStopDevice->setEnabled(!enabled);
+    ui->btnCloseDevice->setVisible(enabled);
+    ui->btnDeviceInfo->setVisible(enabled);
 }
 
 void DeviceManagerDialog::slot_ComboDeviceType_currentIndexChanged(int index)
@@ -97,12 +100,18 @@ void DeviceManagerDialog::slot_BtnOpenDevice_clicked()
     {
         EnableCtrl(true);
         int device_type_index = device_manager->device_type_index();
-        InitIndexComboBox(ui->combo_channel_index, 0, kDeviceType[device_type_index].channel_count, 0);/* 根据设备类型设置相关通道数 */
-        qDebug("打开设备成功");
+        InitIndexComboBox(ui->comboChannelIndex, 0, kDeviceType[device_type_index].channel_count, 0);/* 根据设备类型设置相关通道数 */
     }
     else
     {
         QMessageBox::warning(this, "warning", "打开设备失败！");
-        qDebug("打开设备失败");
     }
+}
+
+void DeviceManagerDialog::slot_BtnStartDevice_clicked()
+{
+    // 一次创建，多次调用，对话框关闭时只是隐藏
+    if (!initCanDialog)
+        initCanDialog = new InitCanDialog(this);
+    initCanDialog->exec();  // 以模态方式显示对话框
 }

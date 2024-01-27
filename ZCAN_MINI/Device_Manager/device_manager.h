@@ -127,7 +127,6 @@ private:
 
     int work_mode_index_;/* 工作模式 */
     bool resistance_enable_;/* 终端电阻使能 */
-    int baud_index_;/* 波特率 */
 
     int abit_baud_index_;/* 仲裁域波特率 */
     int dbit_baud_index_;/* 数据域波特率 */

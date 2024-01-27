@@ -14,8 +14,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->menubar->addAction(act_device_manage);
 
-
-
     BindSignals();
 }
 

@@ -24,7 +24,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="combo_device_type"/>
+      <widget class="QComboBox" name="comboDeviceType"/>
      </item>
      <item>
       <spacer name="horizontalSpacer_2">
@@ -47,7 +47,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="combo_device_index"/>
+      <widget class="QComboBox" name="comboDeviceIndex"/>
      </item>
      <item>
       <spacer name="horizontalSpacer_4">
@@ -80,7 +80,7 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="btn_open_device">
+      <widget class="QPushButton" name="btnOpenDevice">
        <property name="text">
         <string>打开设备</string>
        </property>
@@ -100,14 +100,14 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLabel" name="lab_channel">
+      <widget class="QLabel" name="labChannel">
        <property name="text">
         <string>通道</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="combo_channel_index"/>
+      <widget class="QComboBox" name="comboChannelIndex"/>
      </item>
      <item>
       <spacer name="horizontalSpacer_5">
@@ -131,28 +131,28 @@
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
-       <widget class="QPushButton" name="btn_start_device">
+       <widget class="QPushButton" name="btnStartDevice">
         <property name="text">
          <string>启动</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QPushButton" name="btn_stop_device">
+       <widget class="QPushButton" name="btnStopDevice">
         <property name="text">
          <string>停止</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QPushButton" name="btn_close_device">
+       <widget class="QPushButton" name="btnCloseDevice">
         <property name="text">
          <string>关闭</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QPushButton" name="btn_device_info">
+       <widget class="QPushButton" name="btnDeviceInfo">
         <property name="text">
          <string>设备信息</string>
         </property>

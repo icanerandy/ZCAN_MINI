@@ -10,6 +10,7 @@
 #include <QTreeWidget>
 #include <QMessageBox>
 #include "device_manager.h"
+#include "init_can_dialog.h"
 
 namespace Ui {
 class DeviceManagerDialog;
@@ -33,19 +34,11 @@ private slots:
     void slot_ComboDeviceType_currentIndexChanged(int index);
     void slot_ComboDeviceIndex_currentIndexChanged(int index);
     void slot_BtnOpenDevice_clicked();
+    void slot_BtnStartDevice_clicked();
 
-private:
-    QComboBox *combo_channel_index;
-    QPushButton *btn_start_device;
-    QPushButton *btn_stop_device;
-    QPushButton *btn_close_device;
-    QPushButton *btn_device_info;
-
-
-    // 目录树相关
-    // QTreeWidget *treeWidget;
 private:
     Ui::DeviceManagerDialog *ui;
+    InitCanDialog *initCanDialog;
 };
 
 #endif // DEVICE_MANAGER_DIALOG_H
