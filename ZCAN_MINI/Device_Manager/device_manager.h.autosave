@@ -124,6 +124,7 @@ public:
     void ChangeDeviceIndex(int index);
     bool OpenDevice();
     bool InitCan();
+    bool StartCan();
 
 private:
     bool IsNetCAN( uint type );

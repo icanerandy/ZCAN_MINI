@@ -2,6 +2,7 @@
 #define INIT_CAN_DIALOG_H
 
 #include <QDialog>
+#include "device_manager.h"
 
 namespace Ui {
 class InitCanDialog;
@@ -17,7 +18,18 @@ public:
 
 private:
     void InitDialog();
+    void BindSlots();
 
+private slots:
+    void slot_comboProtocol_currentIndexChanged(int index);
+    void slot_comboCanfdStandard_currentIndexChanged(int index);
+    void slot_comboCanfdSpeedUp_currentIndexChanged(int index);
+    void slot_comboAbit_currentIndexChanged(int index);
+    void slot_comboDbit_currentIndexChanged(int index);
+    void slot_comboWorkMode_currentIndexChanged(int index);
+    void slot_comboResistance_currentIndexChanged(int index);
+
+    void on_btnOk_clicked();
 
 private:
     Ui::InitCanDialog *ui;

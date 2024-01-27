@@ -8,6 +8,8 @@ InitCanDialog::InitCanDialog(QWidget *parent) :
     ui->setupUi(this);
 
     InitDialog();
+
+    BindSlots();
 }
 
 InitCanDialog::~InitCanDialog()
@@ -49,4 +51,96 @@ void InitCanDialog::InitDialog()
     strList << "禁能" << "使能";
     ui->comboResistance->addItems(strList);
     ui->comboResistance->setCurrentIndex(1);
+}
+
+void InitCanDialog::BindSlots()
+{
+    connect(ui->comboProtocol,
+            static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+            this,
+            &InitCanDialog::slot_comboProtocol_currentIndexChanged);
+
+    connect(ui->comboCanfdStandard,
+            static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+            this,
+            &InitCanDialog::slot_comboCanfdStandard_currentIndexChanged);
+
+    connect(ui->comboCanfdSpeedUp,
+            static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+            this,
+            &InitCanDialog::slot_comboCanfdSpeedUp_currentIndexChanged);
+
+    connect(ui->comboAbit,
+            static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+            this,
+            &InitCanDialog::slot_comboAbit_currentIndexChanged);
+
+    connect(ui->comboDbit,
+            static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+            this,
+            &InitCanDialog::slot_comboDbit_currentIndexChanged);\
+
+    connect(ui->comboWorkMode,
+            static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+            this,
+            &InitCanDialog::slot_comboWorkMode_currentIndexChanged);
+
+    connect(ui->comboResistance,
+            static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+            this,
+            &InitCanDialog::slot_comboResistance_currentIndexChanged);
+}
+
+void InitCanDialog::slot_comboProtocol_currentIndexChanged(int index)
+{
+    DeviceManager *device_manager = DeviceManager::GetInstance();
+    device_manager->set_protocol_index(index);
+}
+
+void InitCanDialog::slot_comboCanfdStandard_currentIndexChanged(int index)
+{
+
+}
+
+void InitCanDialog::slot_comboCanfdSpeedUp_currentIndexChanged(int index)
+{
+    DeviceManager *device_manager = DeviceManager::GetInstance();
+    device_manager->set_canfd_exp_index(index);
+}
+
+void InitCanDialog::slot_comboAbit_currentIndexChanged(int index)
+{
+    DeviceManager *device_manager = DeviceManager::GetInstance();
+    device_manager->set_abit_baud_index(index);
+}
+
+void InitCanDialog::slot_comboDbit_currentIndexChanged(int index)
+{
+    DeviceManager *device_manager = DeviceManager::GetInstance();
+    device_manager->set_dbit_baud_index(index);
+}
+
+void InitCanDialog::slot_comboWorkMode_currentIndexChanged(int index)
+{
+    DeviceManager *device_manager = DeviceManager::GetInstance();
+    device_manager->set_work_mode_index(index);
+}
+
+void InitCanDialog::slot_comboResistance_currentIndexChanged(int index)
+{
+    DeviceManager *device_manager = DeviceManager::GetInstance();
+    device_manager->set_resistance_enable(index);
+}
+
+void InitCanDialog::on_btnOk_clicked()
+{
+    DeviceManager *device_manager = DeviceManager::GetInstance();
+    bool ret = device_manager->InitCan();
+    if (ret)
+    {
+        qDebug("初始化CAN通道成功");
+        this->hide();
+    }
+    else
+        qDebug("初始化CAN通道失败");
 }

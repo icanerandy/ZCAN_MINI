@@ -47,6 +47,36 @@ int DeviceManager::device_type_index()
     return device_type_index_;
 }
 
+int DeviceManager::set_abit_baud_index(int index)
+{
+    abit_baud_index_ = index;
+}
+
+int DeviceManager::set_dbit_baud_index(int index)
+{
+    dbit_baud_index_ = index;
+}
+
+int DeviceManager::set_protocol_index(int index)
+{
+    protocol_index_ = index;
+}
+
+int DeviceManager::set_canfd_exp_index(int index)
+{
+    canfd_exp_index_ = index;
+}
+
+int DeviceManager::set_work_mode_index(int index)
+{
+    work_mode_index_ = index;
+}
+
+int DeviceManager::set_resistance_enable(int index)
+{
+    resistance_enable_ = index;
+}
+
 void DeviceManager::ChangeDeviceType(int index)
 {
     device_type_index_ = index;
@@ -134,6 +164,126 @@ bool DeviceManager::OpenDevice()
     return true;
 }
 
+bool DeviceManager::InitCan()
+{
+    if (!device_opened_)
+    {
+        /* 后续提供额外信息函数 */
+        qDebug("设备还没有打开");
+        return false;
+    }
+
+    ZCAN_CHANNEL_INIT_CONFIG config;
+    memset(&config, 0, sizeof(config));
+    uint type = kDeviceType[device_type_index_].device_type;
+
+    const bool usbcanfd = type==ZCAN_USBCANFD_100U ||
+        type==ZCAN_USBCANFD_200U || type==ZCAN_USBCANFD_MINI;
+    const bool pciecanfd = type==ZCAN_PCIE_CANFD_100U ||
+        type == ZCAN_PCIE_CANFD_200U || type == ZCAN_PCIE_CANFD_400U_EX;
+    const bool canfdDevice = usbcanfd || pciecanfd;
+
+    // 本地设备设置，云设备和网络设备设置请参考例程
+    //设置非 canfd设备 波特率
+    if (!canfdDevice && !SetBaudrate())
+    {
+        /* 后续提供额外信息函数 */
+        qDebug("设置波特率失败!");
+        return false;
+    }
+
+    if (usbcanfd)
+    {
+        char path[50] = {0};
+        char value[100] = {0};
+        snprintf(path, sizeof(path), "%d/canfd_standard", channel_index_);
+        snprintf(value, sizeof(value), "%d", 0);
+        int ret = ZCAN_SetValue(device_handle_, path, value);
+        qDebug("%d", ret);
+    }
+    if (usbcanfd)
+    {
+        /* 设置波特率 */
+        if (!SetCanfdBaudrate())
+        {
+            qDebug("设置波特率失败!");
+            return false;
+        }
+        config.can_type = TYPE_CANFD;
+        config.canfd.mode = work_mode_index_;
+        config.canfd.filter = filter_mode_;
+        bool ok;
+        config.canfd.acc_code = acc_mask_.toUInt(&ok, 16);
+        config.canfd.acc_mask = acc_mask_.toUInt(&ok, 16);
+    }
+    else if (pciecanfd)
+    {
+        char path[50] = { 0 };
+        char value[100] = { 0 };
+        if (!SetCanfdBaudrate())
+        {
+            qDebug("设置波特率失败!");
+            return false;
+        }
+
+        if (type == ZCAN_PCIE_CANFD_400U_EX )
+        {
+            snprintf(path, sizeof(path), "0/set_device_recv_merge");
+            snprintf(value, sizeof(value), "0");
+            ZCAN_SetValue(device_handle_, path, value);
+        }
+
+        config.can_type = TYPE_CANFD;
+        config.canfd.mode = work_mode_index_;
+        config.canfd.filter = filter_mode_;
+        bool ok;
+        config.canfd.acc_code = acc_mask_.toUInt(&ok, 16);
+        config.canfd.acc_mask = acc_mask_.toUInt(&ok, 16);
+    }
+    else
+    {
+        config.can_type = TYPE_CAN;
+        config.can.mode = work_mode_index_;
+        config.can.filter = filter_mode_;
+        bool ok;
+        config.canfd.acc_code = acc_mask_.toUInt(&ok, 16);
+        config.canfd.acc_mask = acc_mask_.toUInt(&ok, 16);
+    }
+
+    /* 初始化 CAN */
+    channel_handle_ = ZCAN_InitCAN(device_handle_, channel_index_, &config);
+    if (INVALID_CHANNEL_HANDLE == channel_handle_)
+    {
+        qDebug("初始化CAN失败!");
+        return false;
+    }
+    if (usbcanfd)
+    {
+        if (resistance_enable_ && !SetResistanceEnable())
+        {
+            qDebug("设置终端电阻失败!");
+            return false;
+        }
+    }
+    return true;
+}
+
+bool DeviceManager::StartCan()
+{
+//    if (ZCAN_StartCAN(channel_handle_) != STATUS_OK)
+//    {
+//        qDebug("启动CAN失败!");
+//        return;
+//    }
+//    ui->btnStartCAN->setEnabled(false);
+//    start_ = true;
+//    /* 启动线程 */
+//    emit deviceInfo(channel_handle_);
+//    threadRecMsg.start();
+//    threadRecMsg.beginThread();
+//    qDebug("启动CAN成功!");
+}
+
 bool DeviceManager::IsNetCAN( uint type )
 {
     return (type==ZCAN_CANETUDP || type==ZCAN_CANETTCP || type==ZCAN_WIFICAN_TCP || type==ZCAN_WIFICAN_UDP ||
@@ -157,4 +307,38 @@ bool DeviceManager::IsNetUDP( uint type )
 {
     return (type==ZCAN_CANETUDP || type==ZCAN_WIFICAN_UDP ||
             type==ZCAN_CANFDNET_UDP || type==ZCAN_CANFDNET_400U_UDP ||type==ZCAN_CANFDWIFI_UDP);
+}
+
+bool DeviceManager::SetBaudrate()
+{
+    char path[50] = {0};
+    snprintf(path, sizeof(path), "%d/baud_rate", channel_index_);
+    char value[10] = {0};
+    snprintf(value, sizeof(value), "%d", kBaudrate[abit_baud_index_]);
+
+    return 1 == ZCAN_SetValue(device_handle_, path, value);
+}
+
+bool DeviceManager::SetCanfdBaudrate()
+{
+    char path[50] = { 0 };
+    snprintf(path, sizeof(path), "%d/canfd_abit_baud_rate", channel_index_);
+    char value[10] = { 0 };
+    snprintf(value, sizeof(value), "%d", kAbitTimingUSB[abit_baud_index_]);
+    int ret_a = ZCAN_SetValue(device_handle_, path, value);
+    qDebug("%d", ret_a);
+
+    snprintf(path, sizeof(path), "%d/canfd_dbit_baud_rate", channel_index_);
+    snprintf(value, sizeof(value), "%d", kDbitTimingUSB[dbit_baud_index_]);
+    int ret_d = ZCAN_SetValue(device_handle_, path, value);
+    return 1 == (ret_a&&ret_d);
+}
+
+bool DeviceManager::SetResistanceEnable()
+{
+    char path[50] = {0};
+    snprintf(path, sizeof(path), "%d/initenal_resistance", channel_index_);
+    char value[10] = {0};
+    snprintf(value, sizeof(value),"%d", resistance_enable_);
+    return 1 == ZCAN_SetValue(device_handle_, path, value);
 }
