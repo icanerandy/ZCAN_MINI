@@ -157,10 +157,11 @@ bool DeviceManager::OpenDevice()
     device_handle_ = ZCAN_OpenDevice(kDeviceType[device_type_index_].device_type, device_index_, 0);/* 打开设备 */
     if (INVALID_DEVICE_HANDLE == device_handle_)
     {
+        qDebug("打开设备失败!");
         return false;
     }
     device_opened_ = true;
-    // EnableCtrl(true);
+    qDebug("打开设备成功!");
     return true;
 }
 
@@ -198,8 +199,7 @@ bool DeviceManager::InitCan()
         char value[100] = {0};
         snprintf(path, sizeof(path), "%d/canfd_standard", channel_index_);
         snprintf(value, sizeof(value), "%d", 0);
-        int ret = ZCAN_SetValue(device_handle_, path, value);
-        qDebug("%d", ret);
+        ZCAN_SetValue(device_handle_, path, value);
     }
     if (usbcanfd)
     {
@@ -254,7 +254,7 @@ bool DeviceManager::InitCan()
     channel_handle_ = ZCAN_InitCAN(device_handle_, channel_index_, &config);
     if (INVALID_CHANNEL_HANDLE == channel_handle_)
     {
-        qDebug("初始化CAN失败!");
+        qDebug("初始化CAN通道失败!");
         return false;
     }
     if (usbcanfd)
@@ -265,23 +265,42 @@ bool DeviceManager::InitCan()
             return false;
         }
     }
+    qDebug("初始化CAN通道成功!");
     return true;
 }
 
 bool DeviceManager::StartCan()
 {
-//    if (ZCAN_StartCAN(channel_handle_) != STATUS_OK)
-//    {
-//        qDebug("启动CAN失败!");
-//        return;
-//    }
-//    ui->btnStartCAN->setEnabled(false);
-//    start_ = true;
-//    /* 启动线程 */
-//    emit deviceInfo(channel_handle_);
-//    threadRecMsg.start();
-//    threadRecMsg.beginThread();
-//    qDebug("启动CAN成功!");
+    if (ZCAN_StartCAN(channel_handle_) != STATUS_OK)
+    {
+        qDebug("启动CAN通道失败!");
+        return false;
+    }
+    start_ = true;
+    qDebug("启动CAN通道成功!");
+    return true;
+}
+
+bool DeviceManager::StopCan()
+{
+    if (ZCAN_ResetCAN(channel_handle_) != STATUS_OK)
+    {
+        qDebug("复位失败!");
+        return false;
+    }
+    start_ = false;
+    qDebug("复位成功!");
+    return true;
+}
+
+bool DeviceManager::CloseDevice()
+{
+    ZCAN_ResetCAN(channel_handle_);
+    ZCAN_CloseDevice(device_handle_);
+    start_ = false;
+    device_opened_ = false;
+    qDebug("关闭设备成功!");
+    return true;
 }
 
 bool DeviceManager::IsNetCAN( uint type )
@@ -326,7 +345,6 @@ bool DeviceManager::SetCanfdBaudrate()
     char value[10] = { 0 };
     snprintf(value, sizeof(value), "%d", kAbitTimingUSB[abit_baud_index_]);
     int ret_a = ZCAN_SetValue(device_handle_, path, value);
-    qDebug("%d", ret_a);
 
     snprintf(path, sizeof(path), "%d/canfd_dbit_baud_rate", channel_index_);
     snprintf(value, sizeof(value), "%d", kDbitTimingUSB[dbit_baud_index_]);

@@ -30,3 +30,6 @@ include ($$PWD/Ui/Ui.pri)
 
 INCLUDEPATH += $$PWD/Device_Manager
 include ($$PWD/Device_Manager/Device_Manager.pri)
+
+INCLUDEPATH += $$PWD/Thread
+include ($$PWD/Thread/Thread.pri)

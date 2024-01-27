@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "device_manager.h"
+#include "rec_msg_thread.h"
 
 namespace Ui {
 class InitCanDialog;

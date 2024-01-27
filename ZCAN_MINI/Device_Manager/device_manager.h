@@ -124,6 +124,9 @@ public:
     void ChangeDeviceIndex(int index);
     bool OpenDevice();
     bool InitCan();
+    bool StartCan();
+    bool StopCan();
+    bool CloseDevice();
 
 private:
     bool IsNetCAN( uint type );
@@ -179,8 +182,6 @@ private:
     bool device_opened_;/* 设备是否已经打开 */
 
     bool start_;/* CAN是否已经启动 */
-
-    // QReceiveMessageThread threadRecMsg;/* 消息接收线程 */
 
     // IProperty *property_;/* 属性 */
 };

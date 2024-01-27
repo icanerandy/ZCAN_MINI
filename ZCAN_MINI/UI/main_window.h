@@ -7,6 +7,7 @@
 #include "zlgcan.h"
 #include "app_event.h"
 #include "device_manager.h"
+#include <rec_msg_thread.h>
 
 namespace Ui {
 class MainWindow;
@@ -32,6 +33,9 @@ private:
 
 
     QAction *act_device_manage;
+
+private:
+    RecMsgThread *rec_msg_thread;
 };
 
 #endif // MAIN_WINDOW_H

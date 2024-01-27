@@ -10,19 +10,7 @@ DeviceManagerDialog::DeviceManagerDialog(QWidget *parent) :
 
     InitDialog();
 
-    connect(ui->comboDeviceType,
-            static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-            this,
-            &DeviceManagerDialog::slot_ComboDeviceType_currentIndexChanged);
-
-    connect(ui->comboDeviceIndex,
-            static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-            this,
-            &DeviceManagerDialog::slot_ComboDeviceIndex_currentIndexChanged);
-
-    connect(ui->btnOpenDevice, &QPushButton::clicked, this, &slot_BtnOpenDevice_clicked);
-
-    connect(ui->btnStartDevice, &QPushButton::clicked, this, &slot_BtnStartDevice_clicked);
+    BindSlots();
 }
 
 DeviceManagerDialog::~DeviceManagerDialog()
@@ -65,6 +53,27 @@ void DeviceManagerDialog::InitIndexComboBox(QObject *obj, int start, int end, in
     combo->setCurrentIndex(current);
 }
 
+void DeviceManagerDialog::BindSlots()
+{
+    connect(ui->comboDeviceType,
+            static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+            this,
+            &DeviceManagerDialog::slot_comboDeviceType_currentIndexChanged);
+
+    connect(ui->comboDeviceIndex,
+            static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+            this,
+            &DeviceManagerDialog::slot_comboDeviceIndex_currentIndexChanged);
+
+    connect(ui->btnOpenDevice, &QPushButton::clicked, this, &slot_btnOpenDevice_clicked);
+
+    connect(ui->btnStartDevice, &QPushButton::clicked, this, &slot_btnStartDevice_clicked);
+
+    connect(ui->btnStopDevice, &QPushButton::clicked, this, &slot_btnStopDevice_clicked);
+
+    connect(ui->btnCloseDevice, &QPushButton::clicked, this, &slot_btnCloseDevice_clicked);
+}
+
 void DeviceManagerDialog::EnableCtrl(bool enabled)
 {
     ui->comboDeviceType->setEnabled(!enabled);
@@ -80,19 +89,19 @@ void DeviceManagerDialog::EnableCtrl(bool enabled)
     ui->btnDeviceInfo->setVisible(enabled);
 }
 
-void DeviceManagerDialog::slot_ComboDeviceType_currentIndexChanged(int index)
+void DeviceManagerDialog::slot_comboDeviceType_currentIndexChanged(int index)
 {
     DeviceManager *device_manager = DeviceManager::GetInstance();
     device_manager->ChangeDeviceType(index);
 }
 
-void DeviceManagerDialog::slot_ComboDeviceIndex_currentIndexChanged(int index)
+void DeviceManagerDialog::slot_comboDeviceIndex_currentIndexChanged(int index)
 {
     DeviceManager *device_manager = DeviceManager::GetInstance();
     device_manager->ChangeDeviceIndex(index);
 }
 
-void DeviceManagerDialog::slot_BtnOpenDevice_clicked()
+void DeviceManagerDialog::slot_btnOpenDevice_clicked()
 {
     DeviceManager *device_manager = DeviceManager::GetInstance();
     bool ret = device_manager->OpenDevice();
@@ -108,10 +117,47 @@ void DeviceManagerDialog::slot_BtnOpenDevice_clicked()
     }
 }
 
-void DeviceManagerDialog::slot_BtnStartDevice_clicked()
+void DeviceManagerDialog::slot_btnStartDevice_clicked()
 {
     // 一次创建，多次调用，对话框关闭时只是隐藏
     if (!initCanDialog)
         initCanDialog = new InitCanDialog(this);
     initCanDialog->exec();  // 以模态方式显示对话框
+
+    /* 子对话框隐藏后设置相应按键使能 */
+    ui->btnStartDevice->setEnabled(false);
+    ui->btnStopDevice->setEnabled(true);
+}
+
+void DeviceManagerDialog::slot_btnStopDevice_clicked()
+{
+    RecMsgThread *rec_msg_thread = RecMsgThread::GetInstance();
+    if (rec_msg_thread->isRunning())
+    {
+        rec_msg_thread->stopThread();
+        rec_msg_thread->wait();
+    }
+
+    DeviceManager *device_manager = DeviceManager::GetInstance();
+    device_manager->StopCan();
+
+    /* 设置相应按键使能 */
+    ui->btnStartDevice->setEnabled(true);
+    ui->btnStopDevice->setEnabled(false);
+}
+
+void DeviceManagerDialog::slot_btnCloseDevice_clicked()
+{
+    RecMsgThread *rec_msg_thread = RecMsgThread::GetInstance();
+    if (rec_msg_thread->isRunning())
+    {
+        rec_msg_thread->stopThread();
+        rec_msg_thread->wait();
+    }
+
+    DeviceManager *device_manager = DeviceManager::GetInstance();
+    device_manager->CloseDevice();
+
+    /* 设置相应按键使能 */
+    EnableCtrl(false);
 }

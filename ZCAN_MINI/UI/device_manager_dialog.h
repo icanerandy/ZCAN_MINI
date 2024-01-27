@@ -28,13 +28,16 @@ private:
     void InitDialog();
     void InitTypeComboBox();
     void InitIndexComboBox(QObject *obj, int start, int end, int current);
+    void BindSlots();
     void EnableCtrl(bool enabled);
 
 private slots:
-    void slot_ComboDeviceType_currentIndexChanged(int index);
-    void slot_ComboDeviceIndex_currentIndexChanged(int index);
-    void slot_BtnOpenDevice_clicked();
-    void slot_BtnStartDevice_clicked();
+    void slot_comboDeviceType_currentIndexChanged(int index);
+    void slot_comboDeviceIndex_currentIndexChanged(int index);
+    void slot_btnOpenDevice_clicked();
+    void slot_btnStartDevice_clicked();
+    void slot_btnStopDevice_clicked();
+    void slot_btnCloseDevice_clicked();
 
 private:
     Ui::DeviceManagerDialog *ui;

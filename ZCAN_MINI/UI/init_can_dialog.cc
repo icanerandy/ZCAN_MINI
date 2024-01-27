@@ -136,11 +136,18 @@ void InitCanDialog::on_btnOk_clicked()
 {
     DeviceManager *device_manager = DeviceManager::GetInstance();
     bool ret = device_manager->InitCan();
-    if (ret)
+    if (!ret)
     {
-        qDebug("初始化CAN通道成功");
-        this->hide();
+        return;
     }
-    else
-        qDebug("初始化CAN通道失败");
+
+    ret = device_manager->StartCan();
+    if (!ret)
+        return;
+
+    /* 启动消息接收线程 */
+    RecMsgThread *rec_msg_thread = RecMsgThread::GetInstance();
+    rec_msg_thread->start();
+    rec_msg_thread->beginThread();
+    this->hide();
 }
