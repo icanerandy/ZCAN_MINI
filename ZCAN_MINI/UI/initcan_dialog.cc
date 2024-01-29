@@ -95,6 +95,11 @@ void InitCanDialog::slot_comboProtocol_currentIndexChanged(int index)
 {
     DeviceManager *device_manager = DeviceManager::GetInstance();
     device_manager->set_protocol_index(index);
+
+    if (index == 0) // CAN设备
+        ui->comboDbit->setEnabled(false);
+    else
+        ui->comboDbit->setEnabled(true);
 }
 
 void InitCanDialog::slot_comboCanfdStandard_currentIndexChanged(int index)

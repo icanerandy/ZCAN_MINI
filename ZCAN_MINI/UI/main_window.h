@@ -31,6 +31,7 @@ private slots:
 private:
     Ui::MainWindow *ui;
     DeviceManagerDialog *device_manager_dialog;
+    QList<QDockWidget *> dockwidgets;
 
 
     QAction *actDeviceManage;

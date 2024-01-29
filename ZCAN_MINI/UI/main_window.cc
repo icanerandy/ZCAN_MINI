@@ -21,6 +21,11 @@ MainWindow::MainWindow(QWidget *parent) :
     createView->addAction(actCreateCanView);
 
     BindSignals();
+
+    CanViewDockWidget *canview_dockwidget = new CanViewDockWidget(this);
+    this->addDockWidget(Qt::TopDockWidgetArea, canview_dockwidget);
+    this->dockwidgets.append(canview_dockwidget);
+    setCentralWidget(canview_dockwidget);
 }
 
 MainWindow::~MainWindow()
@@ -36,6 +41,7 @@ void MainWindow::BindSignals()
 
 void MainWindow::slot_actDeviceManage_triggered(bool checked)
 {
+    Q_UNUSED(checked);
     // 一次创建，多次调用，对话框关闭时只是隐藏
     if (!device_manager_dialog)
         device_manager_dialog = new DeviceManagerDialog(this);
@@ -44,6 +50,6 @@ void MainWindow::slot_actDeviceManage_triggered(bool checked)
 
 void MainWindow::slot_actCreateCanView_triggered(bool checked)
 {
-    CanViewDockWidget *canViewDockWidget = new CanViewDockWidget();
-    this->addDockWidget(static_cast<Qt::DockWidgetArea>(1), canViewDockWidget);
+    Q_UNUSED(checked);
+
 }

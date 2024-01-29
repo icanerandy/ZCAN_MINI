@@ -108,6 +108,7 @@ private:
 
 public:
     int device_type_index();
+    CHANNEL_HANDLE channel_handle();
 
     int set_abit_baud_index(int index);
     int set_dbit_baud_index(int index);

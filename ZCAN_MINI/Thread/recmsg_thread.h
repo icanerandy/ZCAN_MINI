@@ -5,6 +5,7 @@
 #include <QThread>
 #include "zlgcan.h"
 #include "canframe_tablemodel.h"
+#include "devicemanager.h"
 
 class RecMsgThread : public QThread
 {

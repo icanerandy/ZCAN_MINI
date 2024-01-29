@@ -47,6 +47,11 @@ int DeviceManager::device_type_index()
     return device_type_index_;
 }
 
+CHANNEL_HANDLE DeviceManager::channel_handle()
+{
+    return channel_handle_;
+}
+
 int DeviceManager::set_abit_baud_index(int index)
 {
     abit_baud_index_ = index;

@@ -71,7 +71,7 @@ void DeviceManagerDialog::BindSlots()
 
     connect(ui->btnStopDevice, &QPushButton::clicked, this, &slot_btnStopDevice_clicked);
 
-    connect(ui->btnCloseDevice, &QPushButton::clicked, this, &slot_btnCloseDevice_clicked);
+    connect(ui->btnStopDevice, &QPushButton::clicked, this, &slot_btnCloseDevice_clicked);
 
     connect(ui->btnDeviceInfo, &QPushButton::clicked, this, &slot_btnDeviceInfo_clicked);
 }
@@ -87,7 +87,7 @@ void DeviceManagerDialog::EnableCtrl(bool enabled)
     ui->btnStopDevice->setEnabled(enabled);
     ui->btnStopDevice->setVisible(enabled);
     ui->btnStopDevice->setEnabled(!enabled);
-    ui->btnCloseDevice->setVisible(enabled);
+    ui->btnStopDevice->setVisible(enabled);
     ui->btnDeviceInfo->setVisible(enabled);
 }
 
