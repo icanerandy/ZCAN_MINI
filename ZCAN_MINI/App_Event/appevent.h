@@ -12,12 +12,19 @@ public:
     static AppEvent *GetInstance();
 
 private:
-
-private:
     explicit AppEvent(QObject *parent = nullptr);
     // explicit ~AppEvent();
     explicit AppEvent(const AppEvent &appEvent) = delete;
     const AppEvent &operator = (const AppEvent &appEvent) = delete;
+
+/* 接收到信号就通过槽函数响应 */
+public slots:
+    void slot_newMsg(ZCAN_Receive_Data *can_data, uint len);
+    void slot_newMsg(ZCAN_ReceiveFD_Data *can_data, uint len);
+/* 槽函数通过发送新的信号做中转 */
+signals:
+    void newMsg(ZCAN_Receive_Data *can_data, uint len);
+    void slot_newMsg(ZCAN_ReceiveFD_Data *can_data, uint len);
 };
 
 #endif // APP_EVENT_H

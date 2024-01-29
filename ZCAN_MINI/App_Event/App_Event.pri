@@ -1,5 +1,5 @@
 HEADERS += \
-    $$PWD/app_event.h
+    $$PWD/appevent.h
 
 SOURCES += \
-    $$PWD/app_event.cc
+    $$PWD/appevent.cc

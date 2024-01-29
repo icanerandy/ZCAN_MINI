@@ -35,6 +35,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::BindSignals()
 {
+    // 内部信号内部处理即可
     connect(actDeviceManage, &QAction::triggered, this, &MainWindow::slot_actDeviceManage_triggered);
     connect(actCreateCanView, &QAction::triggered, this, &MainWindow::slot_actCreateCanView_triggered);
 }

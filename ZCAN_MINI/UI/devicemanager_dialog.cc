@@ -55,6 +55,7 @@ void DeviceManagerDialog::InitIndexComboBox(QObject *obj, int start, int end, in
 
 void DeviceManagerDialog::BindSlots()
 {
+    // 内部信号自身做处理
     connect(ui->comboDeviceType,
             static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
             this,
@@ -71,7 +72,7 @@ void DeviceManagerDialog::BindSlots()
 
     connect(ui->btnStopDevice, &QPushButton::clicked, this, &slot_btnStopDevice_clicked);
 
-    connect(ui->btnStopDevice, &QPushButton::clicked, this, &slot_btnCloseDevice_clicked);
+    connect(ui->btnCloseDevice, &QPushButton::clicked, this, &slot_btnCloseDevice_clicked);
 
     connect(ui->btnDeviceInfo, &QPushButton::clicked, this, &slot_btnDeviceInfo_clicked);
 }
@@ -83,12 +84,14 @@ void DeviceManagerDialog::EnableCtrl(bool enabled)
     ui->btnOpenDevice->setEnabled(!enabled);
     ui->labChannel->setVisible(enabled);
     ui->comboChannelIndex->setVisible(enabled);
+
     ui->btnStartDevice->setVisible(enabled);
-    ui->btnStopDevice->setEnabled(enabled);
     ui->btnStopDevice->setVisible(enabled);
-    ui->btnStopDevice->setEnabled(!enabled);
-    ui->btnStopDevice->setVisible(enabled);
+    ui->btnCloseDevice->setVisible(enabled);
     ui->btnDeviceInfo->setVisible(enabled);
+
+    ui->btnStopDevice->setEnabled(!enabled);
+    ui->btnCloseDevice->setEnabled(enabled);
 }
 
 void DeviceManagerDialog::slot_comboDeviceType_currentIndexChanged(int index)
@@ -127,8 +130,12 @@ void DeviceManagerDialog::slot_btnStartDevice_clicked()
     initCanDialog->exec();  // 以模态方式显示对话框
 
     /* 子对话框隐藏后设置相应按键使能 */
-    ui->btnStartDevice->setEnabled(false);
-    ui->btnStopDevice->setEnabled(true);
+    DeviceManager *device_manager = DeviceManager::GetInstance();
+    if (device_manager->start())
+    {
+        ui->btnStartDevice->setEnabled(false);
+        ui->btnStopDevice->setEnabled(true);
+    }
 }
 
 void DeviceManagerDialog::slot_btnStopDevice_clicked()

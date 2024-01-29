@@ -40,9 +40,13 @@ public:
 public:
     void ClearData();
 
+signals:
+    void rowsInserted();
+
 public slots:
     void newMsg(ZCAN_Receive_Data *can_data, uint len);
     void newMsg(ZCAN_ReceiveFD_Data *canfd_data, uint len);
+    void slot_visibleCol(QList<int> visible_columns);
 
 private:
     QStringList header_list;

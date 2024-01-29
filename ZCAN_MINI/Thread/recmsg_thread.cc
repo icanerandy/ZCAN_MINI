@@ -2,6 +2,12 @@
 
 RecMsgThread::RecMsgThread()
 {
+    // 线程接收到新的消息后，数据模型进行相应的更新
+    CanFrameTableModel *canFrameTableModel = CanFrameTableModel::GetInstance();
+    connect(this, static_cast<void (RecMsgThread::*)(ZCAN_Receive_Data *, uint)>(&RecMsgThread::newMsg),
+            canFrameTableModel, static_cast<void (CanFrameTableModel::*)(ZCAN_Receive_Data *, uint)>(&CanFrameTableModel::newMsg));
+    connect(this, static_cast<void (RecMsgThread::*)(ZCAN_ReceiveFD_Data *, uint)>(&RecMsgThread::newMsg),
+            canFrameTableModel, static_cast<void (CanFrameTableModel::*)(ZCAN_ReceiveFD_Data *, uint)>(&CanFrameTableModel::newMsg));
 }
 
 RecMsgThread *RecMsgThread::GetInstance()

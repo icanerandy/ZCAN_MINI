@@ -150,6 +150,7 @@ void CanFrameTableModel::newMsg(ZCAN_Receive_Data *can_data, uint len)
 
         beginInsertRows(QModelIndex(), can_frame_list.size(), can_frame_list.size());
         can_frame_list.append(QVariant::fromValue(can));
+        //emit dataChanged(QModelIndex(), QModelIndex());
         endInsertRows();
     }
 }
@@ -167,6 +168,14 @@ void CanFrameTableModel::newMsg(ZCAN_ReceiveFD_Data *canfd_data, uint len)
 
         beginInsertRows(QModelIndex(), can_frame_list.size(), can_frame_list.size());
         can_frame_list.append(QVariant::fromValue(canfd));
+        //emit dataChanged(QModelIndex(), QModelIndex());
         endInsertRows();
     }
+}
+
+void CanFrameTableModel::slot_visibleCol(QList<int> visible_columns)
+{
+    beginResetModel();
+    this->visible_columns = visible_columns;
+    endResetModel();
 }

@@ -55,6 +55,7 @@ void InitCanDialog::InitDialog()
 
 void InitCanDialog::BindSlots()
 {
+    // 内部信号自身做处理
     connect(ui->comboProtocol,
             static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
             this,
@@ -150,21 +151,13 @@ void InitCanDialog::on_btnOk_clicked()
     if (!ret)
         return;
 
+    /* 获取/初始化数据模型的单例 */
+    CanFrameTableModel *can_frame_tablemodel = CanFrameTableModel::GetInstance();
+
     /* 启动消息接收线程 */
     RecMsgThread *rec_msg_thread = RecMsgThread::GetInstance();
     rec_msg_thread->start();
     rec_msg_thread->beginThread();
-
-
-    /* 关联数据模型的信号与槽 */
-    // 一定要避免多次连接
-    CanFrameTableModel *canFrameTableModel = CanFrameTableModel::GetInstance();
-    connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(ZCAN_Receive_Data *, uint)>(&RecMsgThread::newMsg),
-            canFrameTableModel, static_cast<void (CanFrameTableModel::*)(ZCAN_Receive_Data *, uint)>(&CanFrameTableModel::newMsg),
-            Qt::UniqueConnection);
-    connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(ZCAN_ReceiveFD_Data *, uint)>(&RecMsgThread::newMsg),
-            canFrameTableModel, static_cast<void (CanFrameTableModel::*)(ZCAN_ReceiveFD_Data *, uint)>(&CanFrameTableModel::newMsg),
-            Qt::UniqueConnection);
 
     this->hide();
 }

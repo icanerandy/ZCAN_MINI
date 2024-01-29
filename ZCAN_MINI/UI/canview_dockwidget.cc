@@ -9,9 +9,17 @@ CanViewDockWidget::CanViewDockWidget(QWidget *parent) :
 
     connect(ui->btnClear, &QPushButton::clicked, this, &slot_btnClear_clicked);
     connect(ui->btnPause, &QPushButton::clicked, this, &slot_btnPause_clicked);
+    connect(ui->btnOption, &QPushButton::clicked, this, &slot_btnOption_clicked);
 
     CanFrameTableModel *canframe_tablemodel = CanFrameTableModel::GetInstance();
     this->ui->tableView->setModel(canframe_tablemodel);
+
+    option_dialog = new CanViewOptionDialog(this);
+
+    connect(option_dialog, &CanViewOptionDialog::signal_visibleCol, canframe_tablemodel, &CanFrameTableModel::slot_visibleCol);
+
+//    connect(canframe_tablemodel, &CanFrameTableModel::dataChanged,
+//            this, &CanViewDockWidget::slot_rowsInserted);
 }
 
 CanViewDockWidget::~CanViewDockWidget()
@@ -29,12 +37,20 @@ void CanViewDockWidget::slot_btnPause_clicked()
 {
     if (ui->btnPause->isChecked())
     {
-        RecMsgThread *recmsg_thread = RecMsgThread::GetInstance();
-        recmsg_thread->pauseThread();
+        ui->tableView->setUpdatesEnabled(false);
     }
     else
     {
-        RecMsgThread *recmsg_thread = RecMsgThread::GetInstance();
-        recmsg_thread->beginThread();
+        ui->tableView->setUpdatesEnabled(true);
     }
+}
+
+void CanViewDockWidget::slot_btnOption_clicked()
+{
+    option_dialog->exec();  // 以模态方式显示对话框
+}
+
+void CanViewDockWidget::slot_rowsInserted(const QModelIndex &index, const QModelIndex &index2)
+{
+    ui->tableView->scrollToBottom();
 }
