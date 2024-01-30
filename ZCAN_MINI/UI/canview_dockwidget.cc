@@ -30,7 +30,8 @@ CanViewDockWidget::~CanViewDockWidget()
 void CanViewDockWidget::slot_btnClear_clicked()
 {
     CanFrameTableModel *canframe_tablemodel = CanFrameTableModel::GetInstance();
-    canframe_tablemodel->removeRows(0, canframe_tablemodel->rowCount());
+    if (canframe_tablemodel->rowCount() > 0)
+        canframe_tablemodel->removeRows(0, canframe_tablemodel->rowCount());
 }
 
 void CanViewDockWidget::slot_btnPause_clicked()
@@ -52,5 +53,7 @@ void CanViewDockWidget::slot_btnOption_clicked()
 
 void CanViewDockWidget::slot_rowsInserted(const QModelIndex &index, const QModelIndex &index2)
 {
+    Q_UNUSED(index);
+    Q_UNUSED(index2);
     ui->tableView->scrollToBottom();
 }

@@ -4,7 +4,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    device_manager_dialog(nullptr)
+    deviceManager_dialog(nullptr)
 {
     ui->setupUi(this);
 
@@ -22,10 +22,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
     BindSignals();
 
-    CanViewDockWidget *canview_dockwidget = new CanViewDockWidget(this);
-    this->addDockWidget(Qt::TopDockWidgetArea, canview_dockwidget);
-    this->dockwidgets.append(canview_dockwidget);
-    setCentralWidget(canview_dockwidget);
+    // 移除中间窗口组件
+    QWidget *central_widget = takeCentralWidget();
+    if (central_widget)
+        delete central_widget;
+
+    setDockNestingEnabled(true);
 }
 
 MainWindow::~MainWindow()
@@ -44,13 +46,14 @@ void MainWindow::slot_actDeviceManage_triggered(bool checked)
 {
     Q_UNUSED(checked);
     // 一次创建，多次调用，对话框关闭时只是隐藏
-    if (!device_manager_dialog)
-        device_manager_dialog = new DeviceManagerDialog(this);
-    device_manager_dialog->exec();  // 以模态方式显示对话框
+    if (!deviceManager_dialog)
+        deviceManager_dialog = new DeviceManagerDialog(this);
+    deviceManager_dialog->exec();  // 以模态方式显示对话框
 }
 
 void MainWindow::slot_actCreateCanView_triggered(bool checked)
 {
     Q_UNUSED(checked);
-
+    canview_dockWidget = new CanViewDockWidget(this);
+    this->addDockWidget(Qt::TopDockWidgetArea, canview_dockWidget);
 }
