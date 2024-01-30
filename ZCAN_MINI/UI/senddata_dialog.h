@@ -2,6 +2,7 @@
 #define SENDDATA_DIALOG_H
 
 #include <QDialog>
+#include <QRegExpValidator>
 #include "devicemanager.h"
 
 namespace Ui {
@@ -36,6 +37,7 @@ private:
     int data_length_;
     int send_type_index_;
     int send_count_;
+    int text_length_;
 };
 
 #endif // SENDDATA_DIALOG_H

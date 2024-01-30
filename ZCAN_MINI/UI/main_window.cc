@@ -36,6 +36,9 @@ MainWindow::MainWindow(QWidget *parent) :
         delete central_widget;
 
     setDockNestingEnabled(true);
+
+    canview_dockWidget = new CanViewDockWidget(this);
+    this->addDockWidget(Qt::TopDockWidgetArea, canview_dockWidget);
 }
 
 MainWindow::~MainWindow()
@@ -68,6 +71,7 @@ void MainWindow::slot_actCreateCanView_triggered(bool checked)
         canview_dockWidget = new CanViewDockWidget(this);
         this->addDockWidget(Qt::TopDockWidgetArea, canview_dockWidget);
     }
+    canview_dockWidget->show();
 }
 
 void MainWindow::slot_actSendData_triggered(bool checked)

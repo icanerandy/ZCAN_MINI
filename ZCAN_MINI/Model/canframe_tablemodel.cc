@@ -62,7 +62,7 @@ QVariant CanFrameTableModel::data(const QModelIndex &index, int role) const
                 case kLength: return QString::asprintf("%d", frame.can_dlc); break;
                 case kData: {
                     QString str;
-                    for (int i = 0; i < CAN_MAX_DLEN; ++i) {
+                    for (int i = 0; i < frame.can_dlc; ++i) {
                         str += QString::asprintf("%02X ", can.frame.data[i]);
                         if (i < CAN_MAX_DLEN - 1)
                             str += " "; // 添加空格分隔符
@@ -90,7 +90,7 @@ QVariant CanFrameTableModel::data(const QModelIndex &index, int role) const
                 case kLength: return QString::asprintf("%d", frame.len); break;
                 case kData: {
                     QString str;
-                    for (int i = 0; i < CAN_MAX_DLEN; ++i) {
+                    for (int i = 0; i < frame.len; ++i) {
                         str += QString::asprintf("%02X ", can.frame.data[i]);
                         if (i < CAN_MAX_DLEN - 1)
                             str += " "; // 添加空格分隔符

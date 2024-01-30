@@ -55,6 +55,11 @@ void SendDataDialog::InitDialog()
     ui->spinSendCountOnce->setValue(1);
     ui->spinSendCount->setValue(1);
     ui->spinInterval->setValue(0);
+
+
+    QString reg = "^([0-9A-Fa-f]{2}\\s?){1,"+ QString::number(data_length_, 10) +"}$";
+    QRegularExpression regExp(reg);
+    ui->editData->setValidator(new QRegularExpressionValidator(regExp, this));
 }
 
 void SendDataDialog::BindSignals()
@@ -105,9 +110,39 @@ void SendDataDialog::BindSignals()
         frame_delay_time_ = value;
     });
 
+    connect(ui->editData, static_cast<void (QLineEdit::*)(const QString &)>(&QLineEdit::textChanged), this, [&] (const QString &text) {
+        int size = text.size();
+        if (size > 1 && text.size() > text_length_)
+        {
+            if (text.at(size-1) != ' ' && text.at(size-2) != ' ')
+            {
+                QString str = text;
+                str.append(' ');
+                ui->editData->setText(str);
+                //ui->editData->setCursorPosition(size + 1);  // 更新光标位置
+            }
+        }
+        text_length_ = text.size();
+    });
+
     connect(ui->comboLength, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, [=] (int index) {
         bool ok = false;
         data_length_ = ui->comboLength->currentText().toInt(&ok, 10);
+
+        QStringList str_list = ui->editData->text().split(' ');
+        if (str_list.size() > data_length_)
+        {
+            QString str = "";
+            for (int i = 0; i < data_length_; ++i)
+            {
+                str.append(str_list.at(i));
+                str.append(' ');
+            }
+            ui->editData->setText(str);
+        }
+        QString reg = "^([0-9A-Fa-f]{2}\\s?){1,"+ QString::number(data_length_, 10) +"}$";
+        QRegularExpression regExp(reg);
+        ui->editData->setValidator(new QRegularExpressionValidator(regExp, this));
     });
 
     connect(ui->btnSend, &QPushButton::clicked, this, &slot_btnSend_clicked);
@@ -117,16 +152,27 @@ SendDataDialog::slot_btnSend_clicked()
 {
     DeviceManager *device_manager = DeviceManager::GetInstance();
     id_ = ui->editId->text();
+    device_manager->set_id(id_);
+
+
     datas_ = ui->editData->text();
 
-    device_manager->set_id(id_);
+    device_manager->set_data_length(data_length_);
+
+    QStringList str_list = datas_.split(" ");
+    if (str_list.size() < data_length_)
+    {
+        for (int i = 0; i < data_length_ - str_list.size(); ++i)
+            str_list.append("00");
+    }
+    datas_ = str_list.join(" ");
+
     device_manager->set_data(datas_);
 
     device_manager->set_frame_type_index(frame_type_index_);
     device_manager->set_protocol_index(protocol_index_);
     device_manager->set_send_count_once(send_count_once_);
     device_manager->set_frm_delay_time(frame_delay_time_);
-    device_manager->set_data_length(data_length_);
     device_manager->set_send_type_index(send_type_index_);
     device_manager->set_send_count(send_count_);
 
