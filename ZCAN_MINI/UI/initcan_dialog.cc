@@ -19,10 +19,43 @@ InitCanDialog::~InitCanDialog()
 
 void InitCanDialog::InitDialog()
 {
+    DeviceManager *device_manager = DeviceManager::GetInstance();
+    int device_type_index_ = device_manager->device_type_index();
+    uint type = kDeviceType[device_type_index_].device_type;
+
+    const bool usbcanfd = type==ZCAN_USBCANFD_100U ||
+        type==ZCAN_USBCANFD_200U || type==ZCAN_USBCANFD_MINI;
+    const bool pciecanfd = type==ZCAN_PCIE_CANFD_100U ||
+        type == ZCAN_PCIE_CANFD_200U || type == ZCAN_PCIE_CANFD_400U_EX;
+    const bool canfdDevice = usbcanfd || pciecanfd;
+
     QStringList strList;
-    strList << "CAN" << "CANFD";
-    ui->comboProtocol->addItems(strList);
-    ui->comboProtocol->setCurrentIndex(1);
+
+    if (!canfdDevice)
+    {
+        strList << "CAN";
+        ui->comboProtocol->addItems(strList);
+        ui->comboProtocol->setCurrentIndex(0);
+        ui->comboProtocol->setEnabled(false);
+
+        strList.clear();
+        strList << "禁用";
+        ui->comboDbit->addItems(strList);
+        ui->comboDbit->setCurrentIndex(0);
+        ui->comboDbit->setEnabled(false);
+    }
+    else
+    {
+        strList << "CANFD";
+        ui->comboProtocol->addItems(strList);
+        ui->comboProtocol->setCurrentIndex(0);
+        ui->comboProtocol->setEnabled(false);
+
+        strList.clear();
+        strList << "5Mbps" << "4Mbps" << "2Mbps" << "1Mbps";
+        ui->comboDbit->addItems(strList);
+        ui->comboDbit->setCurrentIndex(2);
+    }
 
     strList.clear();
     strList << "CANFD ISO" << "NON-ISO";
@@ -39,11 +72,6 @@ void InitCanDialog::InitDialog()
     ui->comboAbit->setCurrentIndex(2);
 
     strList.clear();
-    strList << "5Mbps" << "4Mbps" << "2Mbps" << "1Mbps";
-    ui->comboDbit->addItems(strList);
-    ui->comboDbit->setCurrentIndex(2);
-
-    strList.clear();
     strList << "正常模式" << "只听模式";
     ui->comboWorkMode->addItems(strList);
 
@@ -56,20 +84,10 @@ void InitCanDialog::InitDialog()
 void InitCanDialog::BindSlots()
 {
     // 内部信号自身做处理
-    connect(ui->comboProtocol,
-            static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-            this,
-            &InitCanDialog::slot_comboProtocol_currentIndexChanged);
-
     connect(ui->comboCanfdStandard,
             static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
             this,
             &InitCanDialog::slot_comboCanfdStandard_currentIndexChanged);
-
-    connect(ui->comboCanfdSpeedUp,
-            static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-            this,
-            &InitCanDialog::slot_comboCanfdSpeedUp_currentIndexChanged);
 
     connect(ui->comboAbit,
             static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
@@ -92,26 +110,9 @@ void InitCanDialog::BindSlots()
             &InitCanDialog::slot_comboResistance_currentIndexChanged);
 }
 
-void InitCanDialog::slot_comboProtocol_currentIndexChanged(int index)
-{
-    DeviceManager *device_manager = DeviceManager::GetInstance();
-    device_manager->set_protocol_index(index);
-
-    if (index == 0) // CAN设备
-        ui->comboDbit->setEnabled(false);
-    else
-        ui->comboDbit->setEnabled(true);
-}
-
 void InitCanDialog::slot_comboCanfdStandard_currentIndexChanged(int index)
 {
 
-}
-
-void InitCanDialog::slot_comboCanfdSpeedUp_currentIndexChanged(int index)
-{
-    DeviceManager *device_manager = DeviceManager::GetInstance();
-    device_manager->set_canfd_exp_index(index);
 }
 
 void InitCanDialog::slot_comboAbit_currentIndexChanged(int index)
@@ -150,14 +151,6 @@ void InitCanDialog::on_btnOk_clicked()
     ret = device_manager->StartCan();
     if (!ret)
         return;
-
-    /* 获取/初始化数据模型的单例 */
-    CanFrameTableModel *can_frame_tablemodel = CanFrameTableModel::GetInstance();
-
-    /* 启动消息接收线程 */
-    RecMsgThread *rec_msg_thread = RecMsgThread::GetInstance();
-    rec_msg_thread->start();
-    rec_msg_thread->beginThread();
 
     this->hide();
 }

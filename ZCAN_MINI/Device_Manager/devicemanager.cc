@@ -23,13 +23,13 @@ DeviceManager::DeviceManager(QObject *parent) : QObject(parent),
     acc_mask_("FFFFFFFF"),
     id_("00000001"),
     frame_type_index_(0),
-    protocol_index_(1),
-    canfd_exp_index_(1),
-    frm_delay_time(1000),
-    frm_delay_flag(false),
-    datas_("00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63"),
+    protocol_index_(0),
+    frm_delay_time_(1000),
+    frm_delay_flag_(false),
+    datas_("00 01 02 03 04 05 06 07"),
+    data_length_(8),
     send_type_index_(0),
-    send_count_once_(10),
+    send_count_once_(1),
     auto_send_index_(0),
     auto_send_period_(1000)
 {
@@ -57,34 +57,49 @@ bool DeviceManager::start()
     return start_;
 }
 
-int DeviceManager::set_abit_baud_index(int index)
+void DeviceManager::set_abit_baud_index(int index)
 {
     abit_baud_index_ = index;
 }
 
-int DeviceManager::set_dbit_baud_index(int index)
+void DeviceManager::set_dbit_baud_index(int index)
 {
     dbit_baud_index_ = index;
 }
 
-int DeviceManager::set_protocol_index(int index)
+void DeviceManager::set_protocol_index(int index)
 {
     protocol_index_ = index;
 }
 
-int DeviceManager::set_canfd_exp_index(int index)
-{
-    canfd_exp_index_ = index;
-}
-
-int DeviceManager::set_work_mode_index(int index)
+void DeviceManager::set_work_mode_index(int index)
 {
     work_mode_index_ = index;
 }
 
-int DeviceManager::set_resistance_enable(int index)
+void DeviceManager::set_resistance_enable(int index)
 {
     resistance_enable_ = index;
+}
+
+void DeviceManager::set_frame_type_index(int index)
+{
+    frame_type_index_ = index;
+}
+
+void DeviceManager::set_send_count_once(int value)
+{
+    send_count_once_ = value;
+}
+
+void DeviceManager::set_id(QString &id)
+{
+    id_ = id;
+}
+
+void DeviceManager::set_data(QString &data)
+{
+    datas_ = data;
 }
 
 void DeviceManager::ChangeDeviceType(int index)
@@ -120,41 +135,6 @@ void DeviceManager::ChangeDeviceType(int index)
 //    const bool support_stop_single_autosend = usbcanfd;
 //    const bool support_get_autosend_list = netcanfd;
 //    SetAutoSendCtrlState(support_autosend_can, support_autosend_canfd, support_autosend_index, support_stop_single_autosend, support_get_autosend_list);
-
-//    if (usbcanfd)
-//    {
-//        ui->comboAbit->clear();
-//        QStringList strList;
-//        strList << "1Mbps" << "800kbps" << "500kbps" << "250kbps" << "125kbps" << "100kbps" << "50kbps";
-//        ui->comboAbit->addItems(strList);
-
-//        ui->comboDbit->clear();
-//        strList.clear();
-//        strList << "5Mbps" << "4Mbps" << "2Mbps" << "1Mbps";
-//        ui->comboDbit->addItems(strList);
-//    }
-//    else if (pciecanfd)
-//    {
-//        ui->comboAbit->clear();
-//        QStringList strList;
-//        strList << "1Mbps(80%)" << "800kbps(80%)" << "500kbps(80%)" << "250kbps(80%)" << "125kbps(80%)" << "100kbps" << "50kbps";
-//        ui->comboAbit->addItems(strList);
-
-//        ui->comboDbit->clear();
-//        strList.clear();
-//        strList << "5Mbps(80%)" << "4Mbps(80%)" << "2Mbps(80%)" << "1Mbps(80%)";
-//        ui->comboDbit->addItems(strList);
-//    }
-
-//    /* 设置组件使能 */
-//    ui->comboDeviceMode->setEnabled(!cloudDevice && !netDevice);
-//    ui->chkResistance->setEnabled(usbcanfd);
-//    ui->comboBaud->setEnabled(!canfdDevice && !netDevice && !cloudDevice);
-//    ui->comboAbit->setEnabled(canfdDevice && !netDevice && !cloudDevice);
-//    ui->comboDbit->setEnabled(canfdDevice && !netDevice && !cloudDevice);
-//    ui->comboFilterMode->setEnabled(accFilter && !cloudDevice && !netDevice);
-//    ui->editAccCode->setEnabled(accFilter && !cloudDevice && !netDevice);
-//    ui->editAccMask->setEnabled(accFilter && !cloudDevice && !netDevice);
 }
 
 void DeviceManager::ChangeDeviceIndex(int index)
@@ -288,7 +268,76 @@ bool DeviceManager::StartCan()
     }
     start_ = true;
     qDebug("启动CAN通道成功!");
+
+    /* 启动消息接收线程 */
+    RecMsgThread *rec_msg_thread = RecMsgThread::GetInstance();
+    rec_msg_thread->start();
+    rec_msg_thread->beginThread();
+
     return true;
+}
+
+bool DeviceManager::SendMsg()
+{
+    if (datas_.isEmpty())
+    {
+        qDebug("数据为空");
+        return false;
+    }
+
+    if (0 == protocol_index_)//can
+    {
+        ZCAN_Transmit_Data can_data;
+
+        /* 设置CAN帧 */
+        bool ok = false;
+        uint id = id_.toUInt(&ok, 16);
+        frm_delay_flag_ = true;
+        uint frm_delay_time = frm_delay_time_;
+
+        memset(&can_data, 0, sizeof(can_data));
+        can_data.frame.can_id = MAKE_CAN_ID(id, frame_type_index_, 0, 0);
+        split(can_data.frame.data, CAN_MAX_DLEN, datas_, ' ', 16);
+        can_data.frame.can_dlc = data_length_;
+        can_data.transmit_type = send_type_index_;
+        if (frm_delay_flag_)
+        {
+            can_data.frame.__pad |= TX_DELAY_SEND_FLAG;
+            can_data.frame.__res0 = static_cast<uint8_t>(static_cast<uint32_t>(frm_delay_time) & 0xff);
+            can_data.frame.__res1 = static_cast<uint8_t>((static_cast<uint32_t>(frm_delay_time)>>8) & 0xff);
+        }
+
+        SendMsgThread *sendmsg_thread = new SendMsgThread(QVariant::fromValue(can_data), send_count_once_, send_count_, frm_delay_time);
+        sendmsg_thread->start();
+        sendmsg_thread->beginThread();
+    }
+    else//canfd
+    {
+        ZCAN_TransmitFD_Data canfd_data;
+
+        /* 设置CANFD帧 */
+        bool ok = false;
+        uint id = id_.toUInt(&ok, 16);
+        frm_delay_flag_ = true;
+        uint frm_delay_time = frm_delay_time_;
+
+        memset(&canfd_data, 0, sizeof(canfd_data));
+        canfd_data.frame.can_id = MAKE_CAN_ID(id, frame_type_index_, 0, 0);
+        split(canfd_data.frame.data, CANFD_MAX_DLEN, datas_, ' ', 16);
+        canfd_data.frame.len = data_length_;
+        canfd_data.transmit_type = send_type_index_;
+        canfd_data.frame.flags |= (2==protocol_index_) ? CANFD_BRS : 0;
+        if (frm_delay_flag_)
+        {
+            canfd_data.frame.flags |= TX_DELAY_SEND_FLAG;
+            canfd_data.frame.__res0 = static_cast<uint8_t>(static_cast<uint32_t>(frm_delay_time) & 0xff);
+            canfd_data.frame.__res1 = static_cast<uint8_t>((static_cast<uint32_t>(frm_delay_time)>>8) & 0xff);
+        }
+
+        SendMsgThread *sendmsg_thread = new SendMsgThread(QVariant::fromValue(canfd_data), send_count_once_, send_count_, frm_delay_time);
+        sendmsg_thread->start();
+        sendmsg_thread->beginThread();
+    }
 }
 
 bool DeviceManager::StopCan()
@@ -378,4 +427,42 @@ bool DeviceManager::SetResistanceEnable()
     char value[10] = {0};
     snprintf(value, sizeof(value),"%d", resistance_enable_);
     return 1 == ZCAN_SetValue(device_handle_, path, value);
+}
+
+void DeviceManager::set_frm_delay_time(int value)
+{
+    frm_delay_time_ = value;
+}
+
+void DeviceManager::set_data_length(int value)
+{
+    data_length_ = value;
+}
+
+void DeviceManager::set_send_type_index(int index)
+{
+    send_type_index_ = index;
+}
+
+void DeviceManager::set_send_count(int value)
+{
+    send_count_ = value;
+}
+
+//对src根据xx进行拆分, base是进制,10:十进制, 16:16进制
+size_t DeviceManager::split(BYTE *dst, size_t max_len, const QString &src, char xx, int base)
+{
+    if (0 == max_len || nullptr == dst || src.isEmpty()) return 0;
+    QStringList items;
+    items = src.split(xx);
+    int count = items.size();
+    if (count > 0)
+    {
+        count = count > max_len ? max_len : count;
+        for (size_t i = 0; i < count; ++i)
+        {
+            dst[i] = (BYTE)items[i].toUInt(nullptr, base);
+        }
+    }
+    return count;
 }

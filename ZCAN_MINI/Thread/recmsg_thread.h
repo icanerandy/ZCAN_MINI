@@ -24,8 +24,8 @@ protected:
 private:
     explicit RecMsgThread();
 //    ~RecMsgThread() {};
-    explicit RecMsgThread(const RecMsgThread &recMsgThread) = delete;
-    const RecMsgThread &operator = (const RecMsgThread &recMsgThread) = delete;
+    explicit RecMsgThread(const RecMsgThread &recmsg_thread) = delete;
+    const RecMsgThread &operator = (const RecMsgThread &recmsg_thread) = delete;
 
 public:
     static RecMsgThread *GetInstance();

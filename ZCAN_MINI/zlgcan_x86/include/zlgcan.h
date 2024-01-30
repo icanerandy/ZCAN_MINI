@@ -311,6 +311,7 @@ typedef struct tagZCAN_Transmit_Data {
     can_frame frame;
     UINT      transmit_type;
 } ZCAN_Transmit_Data;
+Q_DECLARE_METATYPE(ZCAN_Transmit_Data);
 
 typedef struct tagZCAN_Receive_Data {
     can_frame frame;
@@ -322,6 +323,7 @@ typedef struct tagZCAN_TransmitFD_Data {
     canfd_frame frame;
     UINT        transmit_type;
 } ZCAN_TransmitFD_Data;
+Q_DECLARE_METATYPE(ZCAN_TransmitFD_Data);
 
 typedef struct tagZCAN_ReceiveFD_Data {
     canfd_frame frame;

@@ -4,7 +4,9 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    deviceManager_dialog(nullptr)
+    devicemanager_dialog(nullptr),
+    canview_dockWidget(nullptr),
+    senddata_dialog(nullptr)
 {
     ui->setupUi(this);
 
@@ -19,6 +21,12 @@ MainWindow::MainWindow(QWidget *parent) :
 
     actCreateCanView = new QAction(icon, QStringLiteral("新建CAN视图"), this);
     createView->addAction(actCreateCanView);
+
+    QMenu *sendData = new QMenu(QStringLiteral("发送数据"), this);
+    ui->menubar->addMenu(sendData);
+
+    actSendData = new QAction(icon, QStringLiteral("普通发送"), this);
+    sendData->addAction(actSendData);
 
     BindSignals();
 
@@ -40,20 +48,33 @@ void MainWindow::BindSignals()
     // 内部信号内部处理即可
     connect(actDeviceManage, &QAction::triggered, this, &MainWindow::slot_actDeviceManage_triggered);
     connect(actCreateCanView, &QAction::triggered, this, &MainWindow::slot_actCreateCanView_triggered);
+    connect(actSendData, &QAction::triggered, this, &MainWindow::slot_actSendData_triggered);
 }
 
 void MainWindow::slot_actDeviceManage_triggered(bool checked)
 {
     Q_UNUSED(checked);
     // 一次创建，多次调用，对话框关闭时只是隐藏
-    if (!deviceManager_dialog)
-        deviceManager_dialog = new DeviceManagerDialog(this);
-    deviceManager_dialog->exec();  // 以模态方式显示对话框
+    if (!devicemanager_dialog)
+        devicemanager_dialog = new DeviceManagerDialog(this);
+    devicemanager_dialog->exec();  // 以模态方式显示对话框
 }
 
 void MainWindow::slot_actCreateCanView_triggered(bool checked)
 {
     Q_UNUSED(checked);
-    canview_dockWidget = new CanViewDockWidget(this);
-    this->addDockWidget(Qt::TopDockWidgetArea, canview_dockWidget);
+    if (!canview_dockWidget)
+    {
+        canview_dockWidget = new CanViewDockWidget(this);
+        this->addDockWidget(Qt::TopDockWidgetArea, canview_dockWidget);
+    }
+}
+
+void MainWindow::slot_actSendData_triggered(bool checked)
+{
+    Q_UNUSED(checked);
+    // 一次创建，多次调用，对话框关闭时只是隐藏
+    if (!senddata_dialog)
+        senddata_dialog = new SendDataDialog(this);
+    senddata_dialog->exec();  // 以模态方式显示对话框
 }

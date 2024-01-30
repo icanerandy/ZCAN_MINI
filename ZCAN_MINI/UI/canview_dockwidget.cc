@@ -3,7 +3,8 @@
 
 CanViewDockWidget::CanViewDockWidget(QWidget *parent) :
     QDockWidget(parent),
-    ui(new Ui::CanViewDockWidget)
+    ui(new Ui::CanViewDockWidget),
+    option_dialog(nullptr)
 {
     ui->setupUi(this);
 
@@ -14,11 +15,7 @@ CanViewDockWidget::CanViewDockWidget(QWidget *parent) :
     CanFrameTableModel *canframe_tablemodel = CanFrameTableModel::GetInstance();
     this->ui->tableView->setModel(canframe_tablemodel);
 
-    option_dialog = new CanViewOptionDialog(this);
-
-    connect(option_dialog, &CanViewOptionDialog::signal_visibleCol, canframe_tablemodel, &CanFrameTableModel::slot_visibleCol);
-
-//    connect(canframe_tablemodel, &CanFrameTableModel::dataChanged,
+    //    connect(canframe_tablemodel, &CanFrameTableModel::dataChanged,
 //            this, &CanViewDockWidget::slot_rowsInserted);
 }
 
@@ -48,6 +45,12 @@ void CanViewDockWidget::slot_btnPause_clicked()
 
 void CanViewDockWidget::slot_btnOption_clicked()
 {
+    if (!option_dialog)
+    {
+        option_dialog = new CanViewOptionDialog(this);
+        CanFrameTableModel *canframe_tablemodel = CanFrameTableModel::GetInstance();
+        connect(option_dialog, &CanViewOptionDialog::signal_visibleCol, canframe_tablemodel, &CanFrameTableModel::slot_visibleCol);
+    }
     option_dialog->exec();  // 以模态方式显示对话框
 }
 

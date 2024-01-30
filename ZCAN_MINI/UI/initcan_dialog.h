@@ -22,9 +22,7 @@ private:
     void BindSlots();
 
 private slots:
-    void slot_comboProtocol_currentIndexChanged(int index);
     void slot_comboCanfdStandard_currentIndexChanged(int index);
-    void slot_comboCanfdSpeedUp_currentIndexChanged(int index);
     void slot_comboAbit_currentIndexChanged(int index);
     void slot_comboDbit_currentIndexChanged(int index);
     void slot_comboWorkMode_currentIndexChanged(int index);

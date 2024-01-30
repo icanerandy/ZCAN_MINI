@@ -12,8 +12,8 @@ RecMsgThread::RecMsgThread()
 
 RecMsgThread *RecMsgThread::GetInstance()
 {
-    static RecMsgThread recMsgThread;
-    return &recMsgThread;
+    static RecMsgThread recmsg_thread;
+    return &recmsg_thread;
 }
 
 void RecMsgThread::beginThread()

@@ -8,6 +8,7 @@
 #include "devicemanager.h"
 #include <recmsg_thread.h>
 #include "canview_dockwidget.h"
+#include "senddata_dialog.h"
 
 namespace Ui {
 class MainWindow;
@@ -27,18 +28,21 @@ private:
 private slots:
     void slot_actDeviceManage_triggered(bool checked);
     void slot_actCreateCanView_triggered(bool checked);
+    void slot_actSendData_triggered(bool checked);
 
 private:
     Ui::MainWindow *ui;
-    DeviceManagerDialog *deviceManager_dialog;
+    DeviceManagerDialog *devicemanager_dialog;
     CanViewDockWidget *canview_dockWidget;
+    SendDataDialog *senddata_dialog;
 
 
     QAction *actDeviceManage;
     QAction *actCreateCanView;
+    QAction *actSendData;
 
 private:
-    RecMsgThread *rec_msg_thread;
+    RecMsgThread *recmsg_thread;
 };
 
 #endif // MAIN_WINDOW_H

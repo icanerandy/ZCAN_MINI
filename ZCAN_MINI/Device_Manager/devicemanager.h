@@ -2,7 +2,10 @@
 #define DEVICE_MANAGER_H
 
 #include <QObject>
+#include <vector>
 #include "zlgcan.h"
+#include "recmsg_thread.h"
+#include "sendmsg_thread.h"
 
 #define TMP_BUFFER_LEN      1000
 
@@ -111,15 +114,26 @@ public:
     CHANNEL_HANDLE channel_handle();
     bool start();
 
-    int set_abit_baud_index(int index);
-    int set_dbit_baud_index(int index);
+    void set_abit_baud_index(int index);
+    void set_dbit_baud_index(int index);
 
-    int set_protocol_index(int index);
+    void set_protocol_index(int index);
 
-    int set_canfd_exp_index(int index);
+    void set_canfd_exp_index(int index);
 
-    int set_work_mode_index(int index);
-    int set_resistance_enable(int index);
+    void set_work_mode_index(int index);
+    void set_resistance_enable(int index);
+
+    void set_frame_type_index(int index);
+    void set_send_count_once(int value);
+    void set_id(QString &id);
+    void set_data(QString &data);
+    void set_frm_delay_time(int value);
+    void set_data_length(int value);
+    void set_send_type_index(int index);
+    void set_send_count(int value);
+
+    size_t split(BYTE* dst, size_t max_len, const QString& src, char xx, int base);
 
 public:
     void ChangeDeviceType(int index);
@@ -127,6 +141,7 @@ public:
     bool OpenDevice();
     bool InitCan();
     bool StartCan();
+    bool SendMsg();
     bool StopCan();
     bool CloseDevice();
     ZCAN_DEVICE_INFO *GetDeviceInfo();
@@ -158,14 +173,15 @@ private:
     QString id_;/* 报文id */
     int frame_type_index_;/* 帧类型 */
     int protocol_index_;/* 协议 */
-    int canfd_exp_index_;/* CANFD加速 */
-    int frm_delay_time;/* 延时 */
-    bool frm_delay_flag;/* 队列帧延时标记 */
+    int frm_delay_time_;/* 延时 */
+    bool frm_delay_flag_;/* 队列帧延时标记 */
 
     QString datas_;/* 要发送的数据 */
 
+    int data_length_;/* dlc */
     int send_type_index_;/* 发送方式 */
     int send_count_once_;/* 一次发送帧数量 */
+    int send_count_;/* 一共发送多少次 */
 
     /* 队列发送相关数据定义 */
     bool support_delay_send_;/* 设备是否支持队列发送 */

@@ -57,7 +57,7 @@ QVariant CanFrameTableModel::data(const QModelIndex &index, int role) const
                 case kId: return QString::asprintf("%08X", GET_ID(frame.can_id)); break;
                 case kFrameType: return QString(IS_EFF(frame.can_id)?"扩展帧" : "标准帧"); break;
                 case kFormat: return QString(IS_RTR(frame.can_id)?"远程帧" : "数据帧"); break;
-                case kCanType: return QString("CAN类型"); break;
+                case kCanType: return QString("CAN"); break;
                 case kDirection: return QString("RX"); break;
                 case kLength: return QString::asprintf("%d", frame.can_dlc); break;
                 case kData: {
@@ -85,7 +85,7 @@ QVariant CanFrameTableModel::data(const QModelIndex &index, int role) const
                 case kId: return QString::asprintf("%08X", GET_ID(frame.can_id)); break;
                 case kFrameType: return QString(IS_EFF(frame.can_id)?"扩展帧" : "标准帧"); break;
                 case kFormat: return QString(IS_RTR(frame.can_id)?"远程帧" : "数据帧"); break;
-                case kCanType: return QString("CAN类型"); break;
+                case kCanType: return QString(CANFD_BRS==frame.flags?"CANFD加速":"CANFD"); break;
                 case kDirection: return QString("RX"); break;
                 case kLength: return QString::asprintf("%d", frame.len); break;
                 case kData: {
