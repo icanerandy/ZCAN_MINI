@@ -6,6 +6,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     devicemanager_dialog(nullptr),
     canview_dockWidget(nullptr),
+    dbcview_dockWidget(nullptr),
     senddata_dialog(nullptr)
 {
     ui->setupUi(this);
@@ -16,11 +17,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
     ui->menubar->addAction(actDeviceManage);
 
-    QMenu *createView = new QMenu(QStringLiteral("新建视图"));
+    QMenu *createView = new QMenu(QStringLiteral("打开视图"));
     ui->menubar->addMenu(createView);
 
-    actCreateCanView = new QAction(icon, QStringLiteral("新建CAN视图"), this);
+    actCreateCanView = new QAction(icon, QStringLiteral("CAN视图"), this);
     createView->addAction(actCreateCanView);
+
+    actCreateDBCView = new QAction(icon, QStringLiteral("DBC视图"), this);
+    createView->addAction(actCreateDBCView);
 
     QMenu *sendData = new QMenu(QStringLiteral("发送数据"), this);
     ui->menubar->addMenu(sendData);
@@ -51,6 +55,7 @@ void MainWindow::BindSignals()
     // 内部信号内部处理即可
     connect(actDeviceManage, &QAction::triggered, this, &MainWindow::slot_actDeviceManage_triggered);
     connect(actCreateCanView, &QAction::triggered, this, &MainWindow::slot_actCreateCanView_triggered);
+    connect(actCreateDBCView, &QAction::triggered, this, &MainWindow::slot_actCreateDBCView_triggered);
     connect(actSendData, &QAction::triggered, this, &MainWindow::slot_actSendData_triggered);
 }
 
@@ -72,6 +77,17 @@ void MainWindow::slot_actCreateCanView_triggered(bool checked)
         this->addDockWidget(Qt::TopDockWidgetArea, canview_dockWidget);
     }
     canview_dockWidget->show();
+}
+
+void MainWindow::slot_actCreateDBCView_triggered(bool checked)
+{
+    Q_UNUSED(checked);
+    if (!dbcview_dockWidget)
+    {
+        dbcview_dockWidget = new DBCViewDockWidget(this);
+        this->addDockWidget(Qt::TopDockWidgetArea, dbcview_dockWidget);
+    }
+    dbcview_dockWidget->show();
 }
 
 void MainWindow::slot_actSendData_triggered(bool checked)

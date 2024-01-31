@@ -1,5 +1,5 @@
 #include "initcan_dialog.h"
-#include "ui_init_can_dialog.h"
+#include "ui_initcan_dialog.h"
 
 InitCanDialog::InitCanDialog(QWidget *parent) :
     QDialog(parent),

@@ -4,7 +4,9 @@ FORMS += \
     $$PWD/devicemanager_dialog.ui \
     $$PWD/initcan_dialog.ui \
     $$PWD/canviewoption_dialog.ui \
-    $$PWD/senddata_dialog.ui
+    $$PWD/senddata_dialog.ui \
+    $$PWD/dbcview_dockwidget.ui \
+    $$PWD/plot_dockwidget.ui
 
 HEADERS += \
     $$PWD/main_window.h \
@@ -12,7 +14,9 @@ HEADERS += \
     $$PWD/devicemanager_dialog.h \
     $$PWD/initcan_dialog.h \
     $$PWD/canviewoption_dialog.h \
-    $$PWD/senddata_dialog.h
+    $$PWD/senddata_dialog.h \
+    $$PWD/dbcview_dockwidget.h \
+    $$PWD/plot_dockwidget.h
 
 SOURCES += \
     $$PWD/main_window.cc \
@@ -20,4 +24,6 @@ SOURCES += \
     $$PWD/devicemanager_dialog.cc \
     $$PWD/initcan_dialog.cc \
     $$PWD/canviewoption_dialog.cc \
-    $$PWD/senddata_dialog.cc
+    $$PWD/senddata_dialog.cc \
+    $$PWD/dbcview_dockwidget.cc \
+    $$PWD/plot_dockwidget.cc

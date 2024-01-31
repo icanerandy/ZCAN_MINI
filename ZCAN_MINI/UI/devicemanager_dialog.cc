@@ -1,5 +1,5 @@
 #include "devicemanager_dialog.h"
-#include "ui_device_manager_dialog.h"
+#include "ui_devicemanager_dialog.h"
 
 DeviceManagerDialog::DeviceManagerDialog(QWidget *parent) :
     QDialog(parent),

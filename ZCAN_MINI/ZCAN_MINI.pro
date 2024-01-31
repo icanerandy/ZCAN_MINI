@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui printsupport
 
 CONFIG += console
 
@@ -17,6 +17,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     main.cc
+
+INCLUDEPATH += $$PWD/Can_Parser
+include ($$PWD/Can_Parser/Can_Parser.pri)
 
 INCLUDEPATH += $$PWD/zlgcan_x86
 include ($$PWD/zlgcan_x86/zlgcan_x86.pri)
@@ -32,3 +35,4 @@ include ($$PWD/Device_Manager/Device_Manager.pri)
 
 INCLUDEPATH += $$PWD/Thread
 include ($$PWD/Thread/Thread.pri)
+
