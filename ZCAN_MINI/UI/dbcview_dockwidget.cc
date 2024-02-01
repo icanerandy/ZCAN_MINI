@@ -5,15 +5,20 @@ DBCViewDockWidget::DBCViewDockWidget(QWidget *parent) :
     QDockWidget(parent),
     ui(new Ui::DBCViewDockWidget),
     message_model(nullptr),
-    signal_model(nullptr)
+    signal_model(nullptr),
+    item_selection_model(nullptr)
 {
     ui->setupUi(this);
 
     message_model = new QStandardItemModel();
     signal_model = new QStandardItemModel();
+    item_selection_model = new QItemSelectionModel(message_model);
 
-    ui->msgView->setModel(message_model);
     ui->sigView->setModel(signal_model);
+    ui->msgView->setModel(message_model);
+    ui->msgView->setSelectionModel(item_selection_model);
+    ui->msgView->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->msgView->setSelectionBehavior(QAbstractItemView::SelectItems);
 
 
     //设置选中时为整行选中
@@ -80,6 +85,9 @@ void DBCViewDockWidget::slot_btnReadDBC_clicked()
 
 void DBCViewDockWidget::slot_message_model_clicked(const QModelIndex &index)
 {
+    signal_model->clear();
+    disconnect(signal_model, &QStandardItemModel::itemChanged, this, &DBCViewDockWidget::slot_signal_model_itemChanged);
+
     uint row = index.row();
     QStandardItem *item = message_model->item(row);
     QString msg_name = item->text();
@@ -89,35 +97,77 @@ void DBCViewDockWidget::slot_message_model_clicked(const QModelIndex &index)
     size_t i = 0;
     for(const auto& sig : msg) {
         item = new QStandardItem(QString::fromStdString(sig.second.name()));
+        item->setCheckable(true);
+        item->setCheckState(Qt::Unchecked);
+        item->setEditable(false);
         signal_model->setItem(i, 0, item);
 
         item = new QStandardItem(QString::number(sig.second.length(), 16));
+        item->setEditable(false);
         signal_model->setItem(i, 1, item);
 
         item = new QStandardItem(QString::number(sig.second.start_bit(), 10));
+        item->setEditable(false);
         signal_model->setItem(i, 2, item);
 
         item = new QStandardItem(QString::number(sig.second.scale(), 'f', 2));
+        item->setEditable(false);
         signal_model->setItem(i, 3, item);
 
         item = new QStandardItem(QString::number(sig.second.offset(), 'f', 2));
+        item->setEditable(false);
         signal_model->setItem(i, 4, item);
 
         item = new QStandardItem(QString(sig.second.signedness()==CppCAN::CANSignal::Signed?"Signed":"Unsigned"));
+        item->setEditable(false);
         signal_model->setItem(i, 5, item);
 
         item = new QStandardItem(QString(sig.second.endianness()==CppCAN::CANSignal::BigEndian?"BigEndian":"LittleEndian"));
+        item->setEditable(false);
         signal_model->setItem(i, 6, item);
 
         item = new QStandardItem(QString::number(sig.second.range().min, 10));
+        item->setEditable(false);
         signal_model->setItem(i, 7, item);
 
         item = new QStandardItem(QString::number(sig.second.range().max, 10));
+        item->setEditable(false);
         signal_model->setItem(i, 8, item);
 
         item = new QStandardItem(QString::fromStdString(sig.second.comment()));
+        item->setEditable(false);
         signal_model->setItem(i, 9, item);
 
         i++;
+    }
+
+    connect(signal_model, &QStandardItemModel::itemChanged, this, &DBCViewDockWidget::slot_signal_model_itemChanged);
+}
+
+void DBCViewDockWidget::slot_signal_model_itemChanged(QStandardItem *item)
+{
+    if (Qt::Checked == item->checkState())
+    {
+        QString sig_name = item->text();
+        QModelIndex index = item_selection_model->selectedIndexes().at(0);
+        QStandardItem *item = message_model->itemFromIndex(index);
+        QString msg_name = item->text();
+        CppCAN::CANFrame &msg = db.at(msg_name.toStdString());
+        const unsigned long long msg_id = msg.can_id();
+
+        const CppCAN::CANSignal& signal = msg.at(sig_name.toStdString());
+        emit sig_checkStateChanged(Qt::Checked, msg_id, signal);
+    }
+    else
+    {
+        QString sig_name = item->text();
+        QModelIndex index = item_selection_model->selectedIndexes().at(0);
+        QStandardItem *item = message_model->itemFromIndex(index);
+        QString msg_name = item->text();
+        CppCAN::CANFrame &msg = db.at(msg_name.toStdString());
+        const unsigned long long msg_id = msg.can_id();
+
+        const CppCAN::CANSignal& signal = msg.at(sig_name.toStdString());
+        emit sig_checkStateChanged(Qt::Unchecked, msg_id, signal);
     }
 }

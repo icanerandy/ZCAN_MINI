@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent) :
     devicemanager_dialog(nullptr),
     canview_dockWidget(nullptr),
     dbcview_dockWidget(nullptr),
+    plotview_dockWidget(nullptr),
     senddata_dialog(nullptr)
 {
     ui->setupUi(this);
@@ -25,6 +26,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     actCreateDBCView = new QAction(icon, QStringLiteral("DBC视图"), this);
     createView->addAction(actCreateDBCView);
+
+    actCreatePlotView = new QAction(icon, QStringLiteral("Plot视图"), this);
+    createView->addAction(actCreatePlotView);
 
     QMenu *sendData = new QMenu(QStringLiteral("发送数据"), this);
     ui->menubar->addMenu(sendData);
@@ -56,6 +60,7 @@ void MainWindow::BindSignals()
     connect(actDeviceManage, &QAction::triggered, this, &MainWindow::slot_actDeviceManage_triggered);
     connect(actCreateCanView, &QAction::triggered, this, &MainWindow::slot_actCreateCanView_triggered);
     connect(actCreateDBCView, &QAction::triggered, this, &MainWindow::slot_actCreateDBCView_triggered);
+    connect(actCreatePlotView, &QAction::triggered, this, &MainWindow::slot_actCreatePlotView_triggered);
     connect(actSendData, &QAction::triggered, this, &MainWindow::slot_actSendData_triggered);
 }
 
@@ -88,6 +93,17 @@ void MainWindow::slot_actCreateDBCView_triggered(bool checked)
         this->addDockWidget(Qt::TopDockWidgetArea, dbcview_dockWidget);
     }
     dbcview_dockWidget->show();
+}
+
+void MainWindow::slot_actCreatePlotView_triggered(bool checked)
+{
+    Q_UNUSED(checked);
+    if (!plotview_dockWidget)
+    {
+        plotview_dockWidget = new PlotViewDockWidget(this);
+        this->addDockWidget(Qt::TopDockWidgetArea, plotview_dockWidget);
+    }
+    plotview_dockWidget->show();
 }
 
 void MainWindow::slot_actSendData_triggered(bool checked)

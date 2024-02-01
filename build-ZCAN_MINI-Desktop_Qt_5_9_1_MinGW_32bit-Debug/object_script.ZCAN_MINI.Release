@@ -8,9 +8,11 @@ INPUT(
 ./release\canviewoption_dialog.o
 ./release\senddata_dialog.o
 ./release\dbcview_dockwidget.o
+./release\plotview_dockwidget.o
 ./release\devicemanager.o
 ./release\recmsg_thread.o
 ./release\sendmsg_thread.o
+./release\qcustomplot.o
 ./release\moc_canframe_tablemodel.o
 ./release\moc_main_window.o
 ./release\moc_canview_dockwidget.o
@@ -19,7 +21,9 @@ INPUT(
 ./release\moc_canviewoption_dialog.o
 ./release\moc_senddata_dialog.o
 ./release\moc_dbcview_dockwidget.o
+./release\moc_plotview_dockwidget.o
 ./release\moc_devicemanager.o
 ./release\moc_recmsg_thread.o
 ./release\moc_sendmsg_thread.o
+./release\moc_qcustomplot.o
 );

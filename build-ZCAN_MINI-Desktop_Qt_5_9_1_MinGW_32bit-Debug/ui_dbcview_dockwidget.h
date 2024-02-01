@@ -46,7 +46,7 @@ public:
     {
         if (DBCViewDockWidget->objectName().isEmpty())
             DBCViewDockWidget->setObjectName(QStringLiteral("DBCViewDockWidget"));
-        DBCViewDockWidget->resize(698, 491);
+        DBCViewDockWidget->resize(884, 613);
         dockWidgetContents = new QWidget();
         dockWidgetContents->setObjectName(QStringLiteral("dockWidgetContents"));
         gridLayout_3 = new QGridLayout(dockWidgetContents);

@@ -369,7 +369,7 @@ public:
   const CANFrame& at(const std::string& frame_name) const;
   
   /**
-   * @brief Get the frame with the given frame id
+   * @brief Get the frame with the given frame name
    */
   CANFrame& at(const std::string& frame_name);
 

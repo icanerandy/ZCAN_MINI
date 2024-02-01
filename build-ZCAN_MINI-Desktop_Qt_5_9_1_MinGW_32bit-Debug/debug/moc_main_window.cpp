@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    QByteArrayData data[7];
-    char stringdata0[142];
+    QByteArrayData data[8];
+    char stringdata0[175];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -37,12 +37,14 @@ QT_MOC_LITERAL(2, 42, 0), // ""
 QT_MOC_LITERAL(3, 43, 7), // "checked"
 QT_MOC_LITERAL(4, 51, 31), // "slot_actCreateCanView_triggered"
 QT_MOC_LITERAL(5, 83, 31), // "slot_actCreateDBCView_triggered"
-QT_MOC_LITERAL(6, 115, 26) // "slot_actSendData_triggered"
+QT_MOC_LITERAL(6, 115, 32), // "slot_actCreatePlotView_triggered"
+QT_MOC_LITERAL(7, 148, 26) // "slot_actSendData_triggered"
 
     },
     "MainWindow\0slot_actDeviceManage_triggered\0"
     "\0checked\0slot_actCreateCanView_triggered\0"
     "slot_actCreateDBCView_triggered\0"
+    "slot_actCreatePlotView_triggered\0"
     "slot_actSendData_triggered"
 };
 #undef QT_MOC_LITERAL
@@ -53,7 +55,7 @@ static const uint qt_meta_data_MainWindow[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       4,   14, // methods
+       5,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -61,12 +63,14 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    1,   34,    2, 0x08 /* Private */,
-       4,    1,   37,    2, 0x08 /* Private */,
-       5,    1,   40,    2, 0x08 /* Private */,
-       6,    1,   43,    2, 0x08 /* Private */,
+       1,    1,   39,    2, 0x08 /* Private */,
+       4,    1,   42,    2, 0x08 /* Private */,
+       5,    1,   45,    2, 0x08 /* Private */,
+       6,    1,   48,    2, 0x08 /* Private */,
+       7,    1,   51,    2, 0x08 /* Private */,
 
  // slots: parameters
+    QMetaType::Void, QMetaType::Bool,    3,
     QMetaType::Void, QMetaType::Bool,    3,
     QMetaType::Void, QMetaType::Bool,    3,
     QMetaType::Void, QMetaType::Bool,    3,
@@ -84,7 +88,8 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 0: _t->slot_actDeviceManage_triggered((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 1: _t->slot_actCreateCanView_triggered((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 2: _t->slot_actCreateDBCView_triggered((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 3: _t->slot_actSendData_triggered((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 3: _t->slot_actCreatePlotView_triggered((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 4: _t->slot_actSendData_triggered((*reinterpret_cast< bool(*)>(_a[1]))); break;
         default: ;
         }
     }
@@ -115,13 +120,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 4)
+        if (_id < 5)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 4;
+        _id -= 5;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 4)
+        if (_id < 5)
             *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 4;
+        _id -= 5;
     }
     return _id;
 }

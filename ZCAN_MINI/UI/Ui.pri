@@ -16,7 +16,7 @@ HEADERS += \
     $$PWD/canviewoption_dialog.h \
     $$PWD/senddata_dialog.h \
     $$PWD/dbcview_dockwidget.h \
-    $$PWD/plot_dockwidget.h
+    $$PWD/plotview_dockwidget.h
 
 SOURCES += \
     $$PWD/main_window.cc \
@@ -26,4 +26,4 @@ SOURCES += \
     $$PWD/canviewoption_dialog.cc \
     $$PWD/senddata_dialog.cc \
     $$PWD/dbcview_dockwidget.cc \
-    $$PWD/plot_dockwidget.cc
+    $$PWD/plotview_dockwidget.cc

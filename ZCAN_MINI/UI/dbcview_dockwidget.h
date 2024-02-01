@@ -5,6 +5,7 @@
 #include <QDockWidget>
 #include <QStandardItemModel>
 #include <QStandardItem>
+#include <QItemSelectionModel>
 #include <QFileDialog>
 #include "CANDatabase.h"
 
@@ -23,6 +24,10 @@ public:
 private slots:
     void slot_btnReadDBC_clicked();
     void slot_message_model_clicked(const QModelIndex &index);
+    void slot_signal_model_itemChanged(QStandardItem *item);
+
+signals:
+    void sig_checkStateChanged(Qt::CheckState state, const unsigned long long msg_id, CppCAN::CANSignal signal);
 
 private:
     Ui::DBCViewDockWidget *ui;
@@ -31,6 +36,8 @@ private:
 
     QStandardItemModel *message_model;
     QStandardItemModel *signal_model;
+
+    QItemSelectionModel *item_selection_model;
 };
 
 #endif // DBCPARSER_DOCKWIDGET_H

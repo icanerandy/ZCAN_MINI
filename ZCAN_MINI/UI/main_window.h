@@ -9,6 +9,7 @@
 #include <recmsg_thread.h>
 #include "canview_dockwidget.h"
 #include "dbcview_dockwidget.h"
+#include "plotview_dockwidget.h"
 #include "senddata_dialog.h"
 
 namespace Ui {
@@ -30,6 +31,7 @@ private slots:
     void slot_actDeviceManage_triggered(bool checked);
     void slot_actCreateCanView_triggered(bool checked);
     void slot_actCreateDBCView_triggered(bool checked);
+    void slot_actCreatePlotView_triggered(bool checked);
     void slot_actSendData_triggered(bool checked);
 
 private:
@@ -37,12 +39,14 @@ private:
     DeviceManagerDialog *devicemanager_dialog;
     CanViewDockWidget *canview_dockWidget;
     DBCViewDockWidget *dbcview_dockWidget;
+    PlotViewDockWidget *plotview_dockWidget;
     SendDataDialog *senddata_dialog;
 
 
     QAction *actDeviceManage;
     QAction *actCreateCanView;
     QAction *actCreateDBCView;
+    QAction *actCreatePlotView;
     QAction *actSendData;
 
 private:

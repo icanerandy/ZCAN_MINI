@@ -36,3 +36,5 @@ include ($$PWD/Device_Manager/Device_Manager.pri)
 INCLUDEPATH += $$PWD/Thread
 include ($$PWD/Thread/Thread.pri)
 
+INCLUDEPATH += $$PWD/QCustomPlot
+include ($$PWD/QCustomPlot/qcustomplot.pri)
