@@ -30,6 +30,7 @@ DeviceManager::DeviceManager(QObject *parent) : QObject(parent),
     data_length_(8),
     send_type_index_(0),
     send_count_once_(1),
+    send_enable_(false),
     auto_send_index_(0),
     auto_send_period_(1000)
 {
@@ -55,6 +56,11 @@ CHANNEL_HANDLE DeviceManager::channel_handle()
 bool DeviceManager::start()
 {
     return start_;
+}
+
+bool DeviceManager::send_enable()
+{
+    return send_enable_;
 }
 
 void DeviceManager::set_abit_baud_index(int index)
@@ -287,7 +293,13 @@ bool DeviceManager::SendMsg()
 
     if (0 == protocol_index_)//can
     {
-        ZCAN_Transmit_Data can_data;
+//        ZCAN_AUTO_TRANSMIT_OBJ autoObj;
+//        memset(&autoObj, 0, sizeof(autoObj));
+//        autoObj.enable = send_enable_;
+//        autoObj.interval = auto_send_period_;
+//        autoObj.index = auto_send_index_;
+
+        ZCAN_Transmit_Data can_data/* = autoObj.obj*/;
 
         /* 设置CAN帧 */
         bool ok = false;
@@ -307,13 +319,39 @@ bool DeviceManager::SendMsg()
             can_data.frame.__res1 = static_cast<uint8_t>((static_cast<uint32_t>(frm_delay_time)>>8) & 0xff);
         }
 
+//        char path[50] = {0};
+//        snprintf(path, sizeof("%d/auto_send"), "%d/auto_send", channel_index_);
+//        int nRet = ZCAN_SetValue(device_handle_, path, (const char*)&autoObj);
+
+//        if (send_enable())
+//        {
+//            char path[50] = {0};
+//            char value[50] = {0};
+//            snprintf(path, sizeof("%d/apply_auto_send"), "%d/apply_auto_send", channel_index_);
+//            int nRet = ZCAN_SetValue(device_handle_, path, "0");
+//        }
+//        else
+//        {
+//            char path[50] = {0};
+//            char value[50] = {0};
+//            snprintf(path, sizeof("%d/clear_auto_send"), "%d/apply_auto_send", channel_index_);
+//            int nRet = ZCAN_SetValue(device_handle_, path, "0");
+//        }
+
+//        ZCAN_Transmit(channel_handle_, &can_data, 1);
         SendMsgThread *sendmsg_thread = new SendMsgThread(QVariant::fromValue(can_data), send_count_once_, send_count_, frm_delay_time);
         sendmsg_thread->start();
         sendmsg_thread->beginThread();
     }
     else//canfd
     {
-        ZCAN_TransmitFD_Data canfd_data;
+//        ZCANFD_AUTO_TRANSMIT_OBJ autoObj;
+//        memset(&autoObj, 0, sizeof(autoObj));
+//        autoObj.enable = send_enable_;
+//        autoObj.interval = auto_send_period_;
+//        autoObj.index = auto_send_index_;
+
+        ZCAN_TransmitFD_Data canfd_data/* = autoObj.obj*/;
 
         /* 设置CANFD帧 */
         bool ok = false;
@@ -333,6 +371,25 @@ bool DeviceManager::SendMsg()
             canfd_data.frame.__res0 = static_cast<uint8_t>(static_cast<uint32_t>(frm_delay_time) & 0xff);
             canfd_data.frame.__res1 = static_cast<uint8_t>((static_cast<uint32_t>(frm_delay_time)>>8) & 0xff);
         }
+
+//        char path[50] = {0};
+//        snprintf(path, sizeof("%d/auto_send_canfd"), "%d/auto_send_canfd", channel_index_);
+//        int nRet = ZCAN_SetValue(device_handle_, path, (const char*)&autoObj);
+
+//        if (send_enable())
+//        {
+//            char path[50] = {0};
+//            char value[50] = {0};
+//            snprintf(path, sizeof("%d/apply_auto_send"), "%d/apply_auto_send", channel_index_);
+//            int nRet = ZCAN_SetValue(device_handle_, path, "0");
+//        }
+//        else
+//        {
+//            char path[50] = {0};
+//            char value[50] = {0};
+//            snprintf(path, sizeof("%d/clear_auto_send"), "%d/apply_auto_send", channel_index_);
+//            int nRet = ZCAN_SetValue(device_handle_, path, "0");
+//        }
 
         SendMsgThread *sendmsg_thread = new SendMsgThread(QVariant::fromValue(canfd_data), send_count_once_, send_count_, frm_delay_time);
         sendmsg_thread->start();
@@ -447,6 +504,11 @@ void DeviceManager::set_send_type_index(int index)
 void DeviceManager::set_send_count(int value)
 {
     send_count_ = value;
+}
+
+void DeviceManager::set_send_enable(bool enable)
+{
+    send_enable_ = enable;
 }
 
 //对src根据xx进行拆分, base是进制,10:十进制, 16:16进制

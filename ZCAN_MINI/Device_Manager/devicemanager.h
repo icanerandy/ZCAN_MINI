@@ -113,6 +113,7 @@ public:
     int device_type_index();
     CHANNEL_HANDLE channel_handle();
     bool start();
+    bool send_enable();
 
     void set_abit_baud_index(int index);
     void set_dbit_baud_index(int index);
@@ -132,6 +133,7 @@ public:
     void set_data_length(int value);
     void set_send_type_index(int index);
     void set_send_count(int value);
+    void set_send_enable(bool enable);
 
     size_t split(BYTE* dst, size_t max_len, const QString& src, char xx, int base);
 
@@ -189,6 +191,7 @@ private:
     bool support_get_send_mode_;/* 设备是否支持查询当前模式 */
 
     /* 定时发送相关数据定义 */
+    bool send_enable_;/* 启动/暂停发送 */
     int auto_send_index_;/* 定时发送索引 */
     int auto_send_period_;/* 定时间隔 */
 

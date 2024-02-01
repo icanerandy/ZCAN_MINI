@@ -102,6 +102,13 @@ void MainWindow::slot_actCreatePlotView_triggered(bool checked)
     {
         plotview_dockWidget = new PlotViewDockWidget(this);
         this->addDockWidget(Qt::TopDockWidgetArea, plotview_dockWidget);
+        if (!dbcview_dockWidget)
+        {
+            dbcview_dockWidget = new DBCViewDockWidget(this);
+            this->addDockWidget(Qt::TopDockWidgetArea, dbcview_dockWidget);
+        }
+
+        connect(dbcview_dockWidget, &DBCViewDockWidget::sig_checkState_Changed, plotview_dockWidget, &PlotViewDockWidget::slot_checkState_Changed);
     }
     plotview_dockWidget->show();
 }

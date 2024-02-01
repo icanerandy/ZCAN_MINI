@@ -51,8 +51,13 @@ QVariant CanFrameTableModel::data(const QModelIndex &index, int role) const
             switch (visible_column)
             {
                 case kTimeStamp: {
-                    QDateTime dateTime = QDateTime::fromMSecsSinceEpoch(can.timestamp);
-                    return dateTime.toString("yyyy-MM-dd HH:mm:ss.zzz");
+                    QDateTime currentTime = QDateTime::currentDateTime();
+                    QString formattedTime = currentTime.toString("[hh:mm:ss.zzz] ");
+                    return formattedTime;
+
+//                    double timestamp = can.timestamp / 1000.0;
+
+//                    return QString::number(timestamp, 'f', 3);
                 } break;
                 case kId: return QString::asprintf("%08X", GET_ID(frame.can_id)); break;
                 case kFrameType: return QString(IS_EFF(frame.can_id)?"扩展帧" : "标准帧"); break;

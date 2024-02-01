@@ -179,7 +179,7 @@
 				</meta>
 			</clear_auto_send>
 			<apply_auto_send flag="0x0048">
-				<value>1</value>
+				<value>0</value>
 				<meta>
 					<visible>false</visible>
 					<type>string</type>

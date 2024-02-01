@@ -176,5 +176,15 @@ SendDataDialog::slot_btnSend_clicked()
     device_manager->set_send_type_index(send_type_index_);
     device_manager->set_send_count(send_count_);
 
+    if (true == device_manager->send_enable())
+    {
+        device_manager->set_send_enable(false);
+        ui->btnSend->setText(QStringLiteral("开始发送"));
+    }
+    else
+    {
+        device_manager->set_send_enable(true);
+        ui->btnSend->setText(QStringLiteral("停止发送"));
+    }
     device_manager->SendMsg();
 }

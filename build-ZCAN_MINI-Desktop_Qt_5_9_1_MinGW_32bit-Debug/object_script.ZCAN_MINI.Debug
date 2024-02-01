@@ -12,6 +12,7 @@ INPUT(
 ./debug\devicemanager.o
 ./debug\recmsg_thread.o
 ./debug\sendmsg_thread.o
+./debug\plotgraph_thread.o
 ./debug\qcustomplot.o
 ./debug\moc_canframe_tablemodel.o
 ./debug\moc_main_window.o
@@ -25,5 +26,6 @@ INPUT(
 ./debug\moc_devicemanager.o
 ./debug\moc_recmsg_thread.o
 ./debug\moc_sendmsg_thread.o
+./debug\moc_plotgraph_thread.o
 ./debug\moc_qcustomplot.o
 );
