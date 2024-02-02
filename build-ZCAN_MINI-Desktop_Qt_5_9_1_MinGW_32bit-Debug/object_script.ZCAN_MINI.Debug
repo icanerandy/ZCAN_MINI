@@ -14,6 +14,7 @@ INPUT(
 ./debug\sendmsg_thread.o
 ./debug\plotgraph_thread.o
 ./debug\qcustomplot.o
+./debug\datatracer.o
 ./debug\moc_canframe_tablemodel.o
 ./debug\moc_main_window.o
 ./debug\moc_canview_dockwidget.o
@@ -28,4 +29,5 @@ INPUT(
 ./debug\moc_sendmsg_thread.o
 ./debug\moc_plotgraph_thread.o
 ./debug\moc_qcustomplot.o
+./debug\moc_datatracer.o
 );

@@ -1,5 +1,7 @@
 HEADERS += \
-    $$PWD/qcustomplot.h
+    $$PWD/qcustomplot.h \
+    $$PWD/datatracer.h
 
 SOURCES += \
-    $$PWD/qcustomplot.cc
+    $$PWD/qcustomplot.cc \
+    $$PWD/datatracer.cc

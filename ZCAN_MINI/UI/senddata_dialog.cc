@@ -8,7 +8,7 @@ SendDataDialog::SendDataDialog(QWidget *parent) :
     id_(0x01),
     send_count_once_(1),
     frame_type_index_(0),
-    frame_delay_time_(1000),
+    frame_delay_time_(0),
     protocol_index_(0),
     data_length_(8),
     send_type_index_(0),
