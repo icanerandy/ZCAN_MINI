@@ -21,7 +21,7 @@ protected:
     void run() Q_DECL_OVERRIDE; // 线程任务
 
 public:
-    explicit SendMsgThread(const QVariant &can_data, int send_count_once, int send_count, uint interval);
+    explicit SendMsgThread(const QVariant &can_data, int send_count_once, int send_count);
 //    ~SendMsgThread() {};
     explicit SendMsgThread(const SendMsgThread &sendmsg_thread) = delete;
     const SendMsgThread &operator = (const SendMsgThread &sendmsg_thread) = delete;
@@ -39,7 +39,6 @@ private:
 //    ZCAN_TransmitFD_Data canfd_data_;
     int send_count_once_;
     int send_count_;
-    uint interval_;
 
 signals:
     void signal_SendError();

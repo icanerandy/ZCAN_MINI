@@ -32,7 +32,7 @@ struct qt_meta_stringdata_DBCViewDockWidget_t {
 static const qt_meta_stringdata_DBCViewDockWidget_t qt_meta_stringdata_DBCViewDockWidget = {
     {
 QT_MOC_LITERAL(0, 0, 17), // "DBCViewDockWidget"
-QT_MOC_LITERAL(1, 18, 22), // "sig_checkState_Changed"
+QT_MOC_LITERAL(1, 18, 22), // "sig_checkState_changed"
 QT_MOC_LITERAL(2, 41, 0), // ""
 QT_MOC_LITERAL(3, 42, 14), // "Qt::CheckState"
 QT_MOC_LITERAL(4, 57, 5), // "state"
@@ -47,7 +47,7 @@ QT_MOC_LITERAL(12, 182, 14), // "QStandardItem*"
 QT_MOC_LITERAL(13, 197, 4) // "item"
 
     },
-    "DBCViewDockWidget\0sig_checkState_Changed\0"
+    "DBCViewDockWidget\0sig_checkState_changed\0"
     "\0Qt::CheckState\0state\0msg_id\0"
     "CppCAN::CANSignal\0signal\0"
     "slot_btnReadDBC_clicked\0"
@@ -95,7 +95,7 @@ void DBCViewDockWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, in
         DBCViewDockWidget *_t = static_cast<DBCViewDockWidget *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->sig_checkState_Changed((*reinterpret_cast< Qt::CheckState(*)>(_a[1])),(*reinterpret_cast< const unsigned long long(*)>(_a[2])),(*reinterpret_cast< const CppCAN::CANSignal(*)>(_a[3]))); break;
+        case 0: _t->sig_checkState_changed((*reinterpret_cast< Qt::CheckState(*)>(_a[1])),(*reinterpret_cast< const unsigned long long(*)>(_a[2])),(*reinterpret_cast< const CppCAN::CANSignal(*)>(_a[3]))); break;
         case 1: _t->slot_btnReadDBC_clicked(); break;
         case 2: _t->slot_message_model_clicked((*reinterpret_cast< const QModelIndex(*)>(_a[1]))); break;
         case 3: _t->slot_signal_model_itemChanged((*reinterpret_cast< QStandardItem*(*)>(_a[1]))); break;
@@ -106,7 +106,7 @@ void DBCViewDockWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, in
         void **func = reinterpret_cast<void **>(_a[1]);
         {
             typedef void (DBCViewDockWidget::*_t)(Qt::CheckState , const unsigned long long , const CppCAN::CANSignal & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&DBCViewDockWidget::sig_checkState_Changed)) {
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&DBCViewDockWidget::sig_checkState_changed)) {
                 *result = 0;
                 return;
             }
@@ -151,7 +151,7 @@ int DBCViewDockWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 }
 
 // SIGNAL 0
-void DBCViewDockWidget::sig_checkState_Changed(Qt::CheckState _t1, const unsigned long long _t2, const CppCAN::CANSignal & _t3)
+void DBCViewDockWidget::sig_checkState_changed(Qt::CheckState _t1, const unsigned long long _t2, const CppCAN::CANSignal & _t3)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);

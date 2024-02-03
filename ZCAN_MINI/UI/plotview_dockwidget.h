@@ -23,7 +23,7 @@ public:
     ~PlotViewDockWidget();
 
 public slots:
-    void slot_checkState_Changed(Qt::CheckState state, const unsigned long long msg_id, const CppCAN::CANSignal &signal);
+    void slot_checkState_changed(Qt::CheckState state, const unsigned long long msg_id, const CppCAN::CANSignal &signal);
 
 private slots:
     void CustomPlotMousePress(QMouseEvent* event);

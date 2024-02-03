@@ -150,9 +150,9 @@ void SendDataDialog::BindSignals()
 
 SendDataDialog::slot_btnSend_clicked()
 {
-    DeviceManager *device_manager = DeviceManager::GetInstance();
+    DeviceManager *device_manager = DeviceManager::getInstance();
     id_ = ui->editId->text();
-    device_manager->set_id(id_);
+    device_manager->set_id(id_.toUInt(nullptr, 16));
 
 
     datas_ = ui->editData->text();
@@ -169,22 +169,22 @@ SendDataDialog::slot_btnSend_clicked()
 
     device_manager->set_data(datas_);
 
-    device_manager->set_frame_type_index(frame_type_index_);
-    device_manager->set_protocol_index(protocol_index_);
+    device_manager->set_frame_type_index(static_cast<DeviceManager::FrameType>(frame_type_index_));
+    device_manager->set_protocol_index(static_cast<DeviceManager::ProtocolType>(protocol_index_));
     device_manager->set_send_count_once(send_count_once_);
     device_manager->set_frm_delay_time(frame_delay_time_);
-    device_manager->set_send_type_index(send_type_index_);
+    device_manager->set_send_type_index(static_cast<DeviceManager::SendType>(send_type_index_));
     device_manager->set_send_count(send_count_);
 
-    if (true == device_manager->send_enable())
+    if (DeviceManager::Enable::Enabled == device_manager->send_enable())
     {
-        device_manager->set_send_enable(false);
+        device_manager->set_send_enable(DeviceManager::Enable::Unenabled);
         ui->btnSend->setText(QStringLiteral("开始发送"));
     }
     else
     {
-        device_manager->set_send_enable(true);
+        device_manager->set_send_enable(DeviceManager::Enable::Enabled);
         ui->btnSend->setText(QStringLiteral("停止发送"));
     }
-    device_manager->SendMsg();
+    device_manager->sendMsg();
 }

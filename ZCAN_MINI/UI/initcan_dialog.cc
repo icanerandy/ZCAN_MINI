@@ -19,9 +19,9 @@ InitCanDialog::~InitCanDialog()
 
 void InitCanDialog::InitDialog()
 {
-    DeviceManager *device_manager = DeviceManager::GetInstance();
-    int device_type_index_ = device_manager->device_type_index();
-    uint type = kDeviceType[device_type_index_].device_type;
+    DeviceManager *device_manager = DeviceManager::getInstance();
+    DeviceManager::DeviceType device_type_index_ = device_manager->device_type_index();
+    uint type = DeviceManager::kDeviceType[static_cast<uint>(device_type_index_)].device_type;
 
     const bool usbcanfd = type==ZCAN_USBCANFD_100U ||
         type==ZCAN_USBCANFD_200U || type==ZCAN_USBCANFD_MINI;
@@ -97,7 +97,7 @@ void InitCanDialog::BindSlots()
     connect(ui->comboDbit,
             static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
             this,
-            &InitCanDialog::slot_comboDbit_currentIndexChanged);\
+            &InitCanDialog::slot_comboDbit_currentIndexChanged);
 
     connect(ui->comboWorkMode,
             static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
@@ -112,43 +112,44 @@ void InitCanDialog::BindSlots()
 
 void InitCanDialog::slot_comboCanfdStandard_currentIndexChanged(int index)
 {
-
+    DeviceManager *device_manager = DeviceManager::getInstance();
+    device_manager->set_canfd_standard_type(static_cast<DeviceManager::StandardType>(index));
 }
 
 void InitCanDialog::slot_comboAbit_currentIndexChanged(int index)
 {
-    DeviceManager *device_manager = DeviceManager::GetInstance();
+    DeviceManager *device_manager = DeviceManager::getInstance();
     device_manager->set_abit_baud_index(index);
 }
 
 void InitCanDialog::slot_comboDbit_currentIndexChanged(int index)
 {
-    DeviceManager *device_manager = DeviceManager::GetInstance();
+    DeviceManager *device_manager = DeviceManager::getInstance();
     device_manager->set_dbit_baud_index(index);
 }
 
 void InitCanDialog::slot_comboWorkMode_currentIndexChanged(int index)
 {
-    DeviceManager *device_manager = DeviceManager::GetInstance();
-    device_manager->set_work_mode_index(index);
+    DeviceManager *device_manager = DeviceManager::getInstance();
+    device_manager->set_work_mode_index(static_cast<DeviceManager::WorkMode>(index));
 }
 
 void InitCanDialog::slot_comboResistance_currentIndexChanged(int index)
 {
-    DeviceManager *device_manager = DeviceManager::GetInstance();
-    device_manager->set_resistance_enable(index);
+    DeviceManager *device_manager = DeviceManager::getInstance();
+    device_manager->set_resistance_enable(static_cast<DeviceManager::Enable>(index));
 }
 
 void InitCanDialog::on_btnOk_clicked()
 {
-    DeviceManager *device_manager = DeviceManager::GetInstance();
-    bool ret = device_manager->InitCan();
+    DeviceManager *device_manager = DeviceManager::getInstance();
+    bool ret = device_manager->initCan();
     if (!ret)
     {
         return;
     }
 
-    ret = device_manager->StartCan();
+    ret = device_manager->startCan();
     if (!ret)
         return;
 

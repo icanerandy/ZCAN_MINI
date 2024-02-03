@@ -6,7 +6,7 @@ PlotGraphThread::PlotGraphThread(QCustomPlot *plot, uint plot_index, const unsig
       msg_id_(msg_id),
       signal_(signal)
 {
-    RecMsgThread *rec_msg_thread = RecMsgThread::GetInstance();
+    RecMsgThread *rec_msg_thread = RecMsgThread::getInstance();
     connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(ZCAN_Receive_Data *, uint)>(&RecMsgThread::newMsg),
             this, static_cast<void (PlotGraphThread::*)(ZCAN_Receive_Data *, uint)>(&PlotGraphThread::slot_newMsg));
     connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(ZCAN_ReceiveFD_Data *, uint)>(&RecMsgThread::newMsg),
@@ -17,7 +17,7 @@ void PlotGraphThread::beginThread()
 {
     m_pause = false;
 
-    RecMsgThread *rec_msg_thread = RecMsgThread::GetInstance();
+    RecMsgThread *rec_msg_thread = RecMsgThread::getInstance();
     connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(ZCAN_Receive_Data *, uint)>(&RecMsgThread::newMsg),
             this, static_cast<void (PlotGraphThread::*)(ZCAN_Receive_Data *, uint)>(&PlotGraphThread::slot_newMsg));
     connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(ZCAN_ReceiveFD_Data *, uint)>(&RecMsgThread::newMsg),
@@ -28,7 +28,7 @@ void PlotGraphThread::pauseThread()
 {
     m_pause = true;
 
-    RecMsgThread *rec_msg_thread = RecMsgThread::GetInstance();
+    RecMsgThread *rec_msg_thread = RecMsgThread::getInstance();
     disconnect(rec_msg_thread, static_cast<void (RecMsgThread::*)(ZCAN_Receive_Data *, uint)>(&RecMsgThread::newMsg),
             this, static_cast<void (PlotGraphThread::*)(ZCAN_Receive_Data *, uint)>(&PlotGraphThread::slot_newMsg));
     disconnect(rec_msg_thread, static_cast<void (RecMsgThread::*)(ZCAN_ReceiveFD_Data *, uint)>(&RecMsgThread::newMsg),

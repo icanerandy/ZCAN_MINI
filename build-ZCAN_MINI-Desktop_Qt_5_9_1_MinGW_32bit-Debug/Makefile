@@ -221,7 +221,6 @@ Makefile: ../ZCAN_MINI/ZCAN_MINI.pro ../../../../Software/Qt/Qt5.9.1/5.9.1/mingw
 		../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/resolve_config.prf \
 		../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/exclusive_builds_post.prf \
 		../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/default_post.prf \
-		../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/win32/console.prf \
 		../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/qml_debug.prf \
 		../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/precompile_header.prf \
 		../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/warn_on.prf \
@@ -232,11 +231,13 @@ Makefile: ../ZCAN_MINI/ZCAN_MINI.pro ../../../../Software/Qt/Qt5.9.1/5.9.1/mingw
 		../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/uic.prf \
 		../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/qmake_use.prf \
 		../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/file_copies.prf \
+		../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/win32/windows.prf \
 		../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/testcase_targets.prf \
 		../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/exceptions.prf \
 		../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/yacc.prf \
 		../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/lex.prf \
 		../ZCAN_MINI/ZCAN_MINI.pro \
+		../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/lib/qtmaind.prl \
 		../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/lib/Qt5PrintSupport.prl \
 		../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/lib/Qt5Widgets.prl \
 		../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/lib/Qt5Gui.prl \
@@ -402,7 +403,6 @@ Makefile: ../ZCAN_MINI/ZCAN_MINI.pro ../../../../Software/Qt/Qt5.9.1/5.9.1/mingw
 ../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/resolve_config.prf:
 ../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/exclusive_builds_post.prf:
 ../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/default_post.prf:
-../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/win32/console.prf:
 ../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/qml_debug.prf:
 ../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/precompile_header.prf:
 ../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/warn_on.prf:
@@ -413,11 +413,13 @@ Makefile: ../ZCAN_MINI/ZCAN_MINI.pro ../../../../Software/Qt/Qt5.9.1/5.9.1/mingw
 ../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/uic.prf:
 ../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/qmake_use.prf:
 ../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/file_copies.prf:
+../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/win32/windows.prf:
 ../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/testcase_targets.prf:
 ../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/exceptions.prf:
 ../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/yacc.prf:
 ../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/lex.prf:
 ../ZCAN_MINI/ZCAN_MINI.pro:
+../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/lib/qtmaind.prl:
 ../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/lib/Qt5PrintSupport.prl:
 ../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/lib/Qt5Widgets.prl:
 ../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/lib/Qt5Gui.prl:

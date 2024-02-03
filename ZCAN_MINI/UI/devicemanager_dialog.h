@@ -16,6 +16,12 @@ namespace Ui {
 class DeviceManagerDialog;
 }
 
+/**
+ * @brief The DeviceManagerDialog class
+ * 这是设备管理对话框，他应该完成设备的打开、配置和关闭等一系列功能
+ * - initCanDlg 配置CAN通道对话框
+ * 所有指针都应该是指针常量，并在初始化列表中完成初始化
+ */
 class DeviceManagerDialog : public QDialog
 {
     Q_OBJECT
@@ -25,24 +31,17 @@ public:
     ~DeviceManagerDialog();
 
 private:
-    void InitDialog();
-    void InitTypeComboBox();
-    void InitIndexComboBox(QObject *obj, int start, int end, int current);
-    void BindSlots();
-    void EnableCtrl(bool enabled);
+    void initTypeCBox();
+    void initIndexCBox(QObject *obj, int start, int end, int current);
+    void bindSignals();
+    void enableCtrl(bool enabled);
 
 private slots:
-    void slot_comboDeviceType_currentIndexChanged(int index);
-    void slot_comboDeviceIndex_currentIndexChanged(int index);
-    void slot_btnOpenDevice_clicked();
-    void slot_btnStartDevice_clicked();
-    void slot_btnStopDevice_clicked();
-    void slot_btnCloseDevice_clicked();
     void slot_btnDeviceInfo_clicked();
 
 private:
-    Ui::DeviceManagerDialog *ui;
-    InitCanDialog *initCanDialog;
+    Ui::DeviceManagerDialog * const ui;
+    InitCanDialog * const initCanDlg;
 };
 
 #endif // DEVICE_MANAGER_DIALOG_H

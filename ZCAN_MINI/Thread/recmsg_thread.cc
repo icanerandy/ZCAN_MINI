@@ -10,7 +10,7 @@ RecMsgThread::RecMsgThread()
             canFrameTableModel, static_cast<void (CanFrameTableModel::*)(ZCAN_ReceiveFD_Data *, uint)>(&CanFrameTableModel::newMsg));
 }
 
-RecMsgThread *RecMsgThread::GetInstance()
+RecMsgThread * RecMsgThread::getInstance()
 {
     static RecMsgThread recmsg_thread;
     return &recmsg_thread;
@@ -34,7 +34,7 @@ void RecMsgThread::stopThread()
 void RecMsgThread::run()
 {
     // 线程任务
-    channel_handle_ = DeviceManager::GetInstance()->channel_handle();
+    channel_handle_ = DeviceManager::getInstance()->channel_handle();
     m_stop = false;
 
     ZCAN_Receive_Data can_data[100];

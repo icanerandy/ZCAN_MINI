@@ -25,7 +25,7 @@ PlotViewDockWidget::~PlotViewDockWidget()
     delete ui;
 }
 
-void PlotViewDockWidget::slot_checkState_Changed(Qt::CheckState state, const unsigned long long msg_id, const CppCAN::CANSignal &signal)
+void PlotViewDockWidget::slot_checkState_changed(Qt::CheckState state, const unsigned long long msg_id, const CppCAN::CANSignal &signal)
 {
     QCustomPlot *plot = ui->plot;
     if (Qt::Checked == state)

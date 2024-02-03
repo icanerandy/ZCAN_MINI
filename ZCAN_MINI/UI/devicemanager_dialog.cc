@@ -4,13 +4,25 @@
 DeviceManagerDialog::DeviceManagerDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DeviceManagerDialog),
-    initCanDialog(nullptr)
+    initCanDlg(new InitCanDialog(this))
 {
     ui->setupUi(this);
 
-    InitDialog();
+    enableCtrl(false);
 
-    BindSlots();
+    // 初始化对话框
+    QStringList string_list;
+    string_list << QStringLiteral("ZCAN_USBCAN1") << QStringLiteral("ZCAN_USBCAN2") << QStringLiteral("ZCAN_PCI9820I") << QStringLiteral("ZCAN_USBCAN_E_U")
+                << QStringLiteral("ZCAN_USBCAN_2E_U") << QStringLiteral("ZCAN_USBCAN_4E_U") << QStringLiteral("ZCAN_PCIE_CANFD_100U")
+                << QStringLiteral("ZCAN_PCIE_CANFD_200U") << QStringLiteral("ZCAN_PCIE_CANFD_400U_EX") << QStringLiteral("ZCAN_USBCANFD_200U")
+                << QStringLiteral("ZCAN_USBCANFD_100U") << QStringLiteral("ZCAN_USBCANFD_MINI") << QStringLiteral("ZCAN_CANETTCP")
+                << QStringLiteral("ZCAN_CANETUDP") << QStringLiteral("ZCAN_WIFICAN_TCP") << QStringLiteral("ZCAN_WIFICAN_UDP")
+                << QStringLiteral("ZCAN_CLOUD") << QStringLiteral("ZCAN_CANFDWIFI_TCP") << QStringLiteral("ZCAN_CANFDWIFI_UDP")
+                << QStringLiteral("ZCAN_CANFDNET_TCP") << QStringLiteral("ZCAN_CANFDNET_UDP") << QStringLiteral("ZCAN_CANFDNET_400U_TCP")
+                << QStringLiteral("ZCAN_CANFDNET_400U_UDP");
+    ui->comboDeviceType->addItems(string_list);
+
+    bindSignals();
 }
 
 DeviceManagerDialog::~DeviceManagerDialog()
@@ -18,66 +30,63 @@ DeviceManagerDialog::~DeviceManagerDialog()
     delete ui;
 }
 
-void DeviceManagerDialog::InitDialog()
+void DeviceManagerDialog::bindSignals()
 {
-    InitTypeComboBox();
-    InitIndexComboBox(ui->comboDeviceIndex, 0, 32, 0);
-
-    // 隐藏组件
-    EnableCtrl(false);
-}
-
-void DeviceManagerDialog::InitTypeComboBox()
-{
-    QStringList string_list;
-    string_list << "ZCAN_USBCAN1" << "ZCAN_USBCAN2" << "ZCAN_PCI9820I" << "ZCAN_USBCAN_E_U"
-                << "ZCAN_USBCAN_2E_U" << "ZCAN_USBCAN_4E_U" << "ZCAN_PCIE_CANFD_100U"
-                << "ZCAN_PCIE_CANFD_200U" << "ZCAN_PCIE_CANFD_400U_EX" << "ZCAN_USBCANFD_200U"
-                << "ZCAN_USBCANFD_100U" << "ZCAN_USBCANFD_MINI" << "ZCAN_CANETTCP"
-                << "ZCAN_CANETUDP" << "ZCAN_WIFICAN_TCP" << "ZCAN_WIFICAN_UDP"
-                << "ZCAN_CLOUD" << "ZCAN_CANFDWIFI_TCP" << "ZCAN_CANFDWIFI_UDP"
-                << "ZCAN_CANFDNET_TCP" << "ZCAN_CANFDNET_UDP" << "ZCAN_CANFDNET_400U_TCP"
-                << "ZCAN_CANFDNET_400U_UDP";
-    ui->comboDeviceType->addItems(string_list);
-}
-
-void DeviceManagerDialog::InitIndexComboBox(QObject *obj, int start, int end, int current)
-{
-    QComboBox *combo = static_cast<QComboBox*>(obj);
-    Q_ASSERT(combo != NULL);
-    combo->clear();
-    for (int i = start; i < end; ++i)
-    {
-        combo->addItem(QString::asprintf("%d", i));
-    }
-    combo->setCurrentIndex(current);
-}
-
-void DeviceManagerDialog::BindSlots()
-{
+    DeviceManager * const device_manager = DeviceManager::getInstance();
     // 内部信号自身做处理
-    connect(ui->comboDeviceType,
-            static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-            this,
-            &DeviceManagerDialog::slot_comboDeviceType_currentIndexChanged);
+    connect(ui->comboDeviceType, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+            this, [=] (int index) { device_manager->slot_deviceType_changed(static_cast<DeviceManager::DeviceType>(index)); });
 
-    connect(ui->comboDeviceIndex,
-            static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-            this,
-            &DeviceManagerDialog::slot_comboDeviceIndex_currentIndexChanged);
+    connect(ui->comboDeviceIndex, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+            this, [=] (int index) { device_manager->changeDeviceIndex(index); });
 
-    connect(ui->btnOpenDevice, &QPushButton::clicked, this, &slot_btnOpenDevice_clicked);
+    connect(ui->btnOpenDevice, &QPushButton::clicked, this, [=] {
+        bool ret = device_manager->openDevice();
+        if (ret)
+        {
+            enableCtrl(true);
+            DeviceManager::DeviceType device_type_index = device_manager->device_type_index();
 
-    connect(ui->btnStartDevice, &QPushButton::clicked, this, &slot_btnStartDevice_clicked);
+            // 根据设备类型设置通道数量
+            QComboBox * const combo = ui->comboChannelIndex;
+            combo->clear();
+            for (uint i = 0; i < DeviceManager::kDeviceType[static_cast<uint>(device_type_index)].channel_count; ++i)
+                combo->addItem(QString::asprintf("%d", i));
+            combo->setCurrentIndex(0);
+        }
+        else
+        {
+            QMessageBox::warning(this, "warning", "打开设备失败！");
+        }
+    });
 
-    connect(ui->btnStopDevice, &QPushButton::clicked, this, &slot_btnStopDevice_clicked);
+    connect(ui->btnStartDevice, &QPushButton::clicked, this, [=] {
+        initCanDlg->exec();
 
-    connect(ui->btnCloseDevice, &QPushButton::clicked, this, &slot_btnCloseDevice_clicked);
+        if (DeviceManager::CanState::Started == device_manager->can_start())
+        {
+            ui->btnStartDevice->setEnabled(false);
+            ui->btnStopDevice->setEnabled(true);
+        }
+    });
+
+    connect(ui->btnStopDevice, &QPushButton::clicked, this, [=] {
+        device_manager->stopCan();
+
+        ui->btnStartDevice->setEnabled(true);
+        ui->btnStopDevice->setEnabled(false);
+    });
+
+    connect(ui->btnCloseDevice, &QPushButton::clicked, this, [=] {
+        device_manager->closeDevice();
+
+        enableCtrl(false);
+    });
 
     connect(ui->btnDeviceInfo, &QPushButton::clicked, this, &slot_btnDeviceInfo_clicked);
 }
 
-void DeviceManagerDialog::EnableCtrl(bool enabled)
+void DeviceManagerDialog::enableCtrl(bool enabled)
 {
     ui->comboDeviceType->setEnabled(!enabled);
     ui->comboDeviceIndex->setEnabled(!enabled);
@@ -94,87 +103,10 @@ void DeviceManagerDialog::EnableCtrl(bool enabled)
     ui->btnCloseDevice->setEnabled(enabled);
 }
 
-void DeviceManagerDialog::slot_comboDeviceType_currentIndexChanged(int index)
-{
-    DeviceManager *device_manager = DeviceManager::GetInstance();
-    device_manager->ChangeDeviceType(index);
-}
-
-void DeviceManagerDialog::slot_comboDeviceIndex_currentIndexChanged(int index)
-{
-    DeviceManager *device_manager = DeviceManager::GetInstance();
-    device_manager->ChangeDeviceIndex(index);
-}
-
-void DeviceManagerDialog::slot_btnOpenDevice_clicked()
-{
-    DeviceManager *device_manager = DeviceManager::GetInstance();
-    bool ret = device_manager->OpenDevice();
-    if (ret)
-    {
-        EnableCtrl(true);
-        int device_type_index = device_manager->device_type_index();
-        InitIndexComboBox(ui->comboChannelIndex, 0, kDeviceType[device_type_index].channel_count, 0);/* 根据设备类型设置相关通道数 */
-    }
-    else
-    {
-        QMessageBox::warning(this, "warning", "打开设备失败！");
-    }
-}
-
-void DeviceManagerDialog::slot_btnStartDevice_clicked()
-{
-    // 一次创建，多次调用，对话框关闭时只是隐藏
-    if (!initCanDialog)
-        initCanDialog = new InitCanDialog(this);
-    initCanDialog->exec();  // 以模态方式显示对话框
-
-    /* 子对话框隐藏后设置相应按键使能 */
-    DeviceManager *device_manager = DeviceManager::GetInstance();
-    if (device_manager->start())
-    {
-        ui->btnStartDevice->setEnabled(false);
-        ui->btnStopDevice->setEnabled(true);
-    }
-}
-
-void DeviceManagerDialog::slot_btnStopDevice_clicked()
-{
-    RecMsgThread *rec_msg_thread = RecMsgThread::GetInstance();
-    if (rec_msg_thread->isRunning())
-    {
-        rec_msg_thread->stopThread();
-        rec_msg_thread->wait();
-    }
-
-    DeviceManager *device_manager = DeviceManager::GetInstance();
-    device_manager->StopCan();
-
-    /* 设置相应按键使能 */
-    ui->btnStartDevice->setEnabled(true);
-    ui->btnStopDevice->setEnabled(false);
-}
-
-void DeviceManagerDialog::slot_btnCloseDevice_clicked()
-{
-    RecMsgThread *rec_msg_thread = RecMsgThread::GetInstance();
-    if (rec_msg_thread->isRunning())
-    {
-        rec_msg_thread->stopThread();
-        rec_msg_thread->wait();
-    }
-
-    DeviceManager *device_manager = DeviceManager::GetInstance();
-    device_manager->CloseDevice();
-
-    /* 设置相应按键使能 */
-    EnableCtrl(false);
-}
-
 void DeviceManagerDialog::slot_btnDeviceInfo_clicked()
 {
-    DeviceManager *device_manager = DeviceManager::GetInstance();
-    ZCAN_DEVICE_INFO *info = device_manager->GetDeviceInfo();
+    DeviceManager *device_manager = DeviceManager::getInstance();
+    ZCAN_DEVICE_INFO *info = device_manager->getDeviceInfo();
 
     QString hw_version = info->hw_Version==0?"000":QString::number(info->hw_Version, 16);
     hw_version.insert(1, '.');

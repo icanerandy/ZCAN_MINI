@@ -9,99 +9,86 @@
 
 #define TMP_BUFFER_LEN      1000
 
-// 设备信息
-typedef struct _DeviceInfo
-{
-    uint device_type;  //设备类型
-    uint channel_count;//设备的通道个数
-} DeviceInfo;
-
-/*
-列表数据需要和对话框中设备列表数据一一对应
-*/
-static const DeviceInfo kDeviceType[] = {
-    {ZCAN_USBCAN1, 1},
-    {ZCAN_USBCAN2, 2},
-    {ZCAN_PCI9820I,2},
-    {ZCAN_USBCAN_E_U, 1},
-    {ZCAN_USBCAN_2E_U, 2},
-    {ZCAN_USBCAN_4E_U, 4},
-    {ZCAN_PCIE_CANFD_100U, 1},
-    {ZCAN_PCIE_CANFD_200U, 2},
-    {ZCAN_PCIE_CANFD_400U_EX, 4 },
-    {ZCAN_USBCANFD_200U, 2},
-    {ZCAN_USBCANFD_100U, 1},
-    {ZCAN_USBCANFD_MINI, 1},
-    {ZCAN_CANETTCP, 1},
-    {ZCAN_CANETUDP, 1},
-    {ZCAN_WIFICAN_TCP, 1},
-    {ZCAN_WIFICAN_UDP, 1},
-    {ZCAN_CLOUD, 1},
-    {ZCAN_CANFDWIFI_TCP, 1},
-    {ZCAN_CANFDWIFI_UDP, 1},
-    {ZCAN_CANFDNET_TCP, 2},
-    {ZCAN_CANFDNET_UDP, 2},
-    {ZCAN_CANFDNET_400U_TCP, 4},
-    {ZCAN_CANFDNET_400U_UDP, 4},
-};
-
-//USBCANFD
-static const uint kAbitTimingUSB[] = {
-    1000000,//1Mbps
-    800000,//800kbps
-    500000,//500kbps
-    250000,//250kbps
-    125000,//125kbps
-    100000,//100kbps
-    50000 //50kbps
-};
-static const uint kDbitTimingUSB[] = {
-    5000000,//5Mbps
-    4000000,//4Mbps
-    2000000,//2Mbps
-    1000000 //1Mbps
-};
-
-//PCIECANFD brp=1
-static const uint kAbitTimingPCIE[] = {
-    1000000, //1M(80%)
-    800000, //800K(80%)
-    500000, //500K(80%)
-    250000, //250K(80%)
-    125000  //125K(80%)
-};
-static const uint kDbitTimingPCIE[] = {
-    8000000, //8Mbps(80%)
-    5000000, //5Mbps(75%)
-    5000000, //5Mbps(87.5%)
-    4000000, //4Mbps(80%)
-    2000000, //2Mbps(80%)
-    1000000  //1Mbps(80%)
-};
-
-static const unsigned kBaudrate[] = {
-    1000000,
-    800000,
-    500000,
-    250000,
-    125000,
-    100000,
-    50000,
-    20000,
-    10000,
-    5000
-};
 
 class DeviceManager : public QObject
 {
     Q_OBJECT
 
-signals:
-
-public slots:
-
 public:
-    static DeviceManager *GetInstance();    // 获取单例对象
+    // 设备信息
+    struct DeviceInfo
+    {
+        uint device_type;  //设备类型
+        uint channel_count;//设备的通道个数
+    };
+
+    static const DeviceInfo kDeviceType[];
+    //USBCANFD
+    static const uint kAbitTimingUSB[];
+    static const uint kDbitTimingUSB[];
+    //PCIECANFD brp=1
+    static const uint kAbitTimingPCIE[];
+    static const uint kDbitTimingPCIE[];
+    static const uint kBaudrate[];
+
+    enum struct DeviceType {
+        zCAN_USBCAN1,
+        zCAN_USBCAN2,
+        zCAN_PCI9820I,
+        zCAN_USBCAN_E_U,
+        zCAN_USBCAN_2E_U,
+        zCAN_USBCAN_4E_U,
+        zCAN_PCIE_CANFD_100U,
+        zCAN_PCIE_CANFD_200U,
+        zCAN_PCIE_CANFD_400U_EX,
+        zCAN_USBCANFD_200U,
+        zCAN_USBCANFD_100U,
+        zCAN_USBCANFD_MINI,
+        zCAN_CANETTCP,
+        zCAN_CANETUDP,
+        zCAN_WIFICAN_TCP,
+        zCAN_WIFICAN_UDP,
+        zCAN_CLOUD,
+        zCAN_CANFDWIFI_TCP,
+        zCAN_CANFDWIFI_UDP,
+        zCAN_CANFDNET_TCP,
+        zCAN_CANFDNET_UDP,
+        zCAN_CANFDNET_400U_TCP,
+        zCAN_CANFDNET_400U_UDP
+    };
+
+    enum struct WorkMode:BYTE {
+        Normal, ListenOnly
+    };
+
+    enum struct Enable {
+        Enabled, Unenabled
+    };
+
+    /* 仅针对CANFD控制器 */
+    enum struct StandardType {
+        Iso, NonIso
+    };
+
+    enum struct FrameType {
+        Can, CanFd
+    };
+
+    enum struct ProtocolType {
+        Can, CanFd, CanFdBrs
+    };
+
+    enum struct SendType {
+        Normal, SingleTransmit, Loopback, SingleLoopback
+    };
+
+    enum struct DeviceState {
+        Opened, Unopened
+    };
+
+    enum struct CanState {
+        Started, Unstarted
+    };
 
 private:
     explicit DeviceManager(QObject *parent = nullptr);  // 禁止外部构造
@@ -110,102 +97,94 @@ private:
     const DeviceManager &operator = (const DeviceManager &deviceManager) = delete;   // 禁止外部赋值构造
 
 public:
-    int device_type_index();
+    static DeviceManager *getInstance();    // 获取单例对象
+    DeviceType device_type_index();
     CHANNEL_HANDLE channel_handle();
-    bool start();
-    bool send_enable();
-
-    void set_abit_baud_index(int index);
-    void set_dbit_baud_index(int index);
-
-    void set_protocol_index(int index);
-
-    void set_canfd_exp_index(int index);
-
-    void set_work_mode_index(int index);
-    void set_resistance_enable(int index);
-
-    void set_frame_type_index(int index);
-    void set_send_count_once(int value);
-    void set_id(QString &id);
+    DeviceManager::CanState can_start();
+    Enable send_enable();
+    StandardType canfd_standard_type();
+    void set_abit_baud_index(uint index);
+    void set_dbit_baud_index(uint index);
+    void set_canfd_standard_type(StandardType type);
+    void set_protocol_index(ProtocolType type);
+    void set_work_mode_index(WorkMode mode);
+    void set_resistance_enable(Enable type);
+    void set_frame_type_index(DeviceManager::FrameType type);
+    void set_send_count_once(uint value);
+    void set_id(uint id);
     void set_data(QString &data);
-    void set_frm_delay_time(int value);
-    void set_data_length(int value);
-    void set_send_type_index(int index);
-    void set_send_count(int value);
-    void set_send_enable(bool enable);
+    void set_frm_delay_time(uint value);
+    void set_data_length(uint value);
+    void set_send_type_index(DeviceManager::SendType type);
+    void set_send_count(uint value);
+    void set_send_enable(DeviceManager::Enable type);
+    size_t split(BYTE* dst, size_t max_len, const QString& src, char xx, uint base);
 
-    size_t split(BYTE* dst, size_t max_len, const QString& src, char xx, int base);
-
-public:
-    void ChangeDeviceType(int index);
-    void ChangeDeviceIndex(int index);
-    bool OpenDevice();
-    bool InitCan();
-    bool StartCan();
-    bool SendMsg();
-    bool StopCan();
-    bool CloseDevice();
-    ZCAN_DEVICE_INFO *GetDeviceInfo();
+    void changeDeviceIndex(uint index);
+    bool openDevice();
+    bool initCan();
+    bool startCan();
+    bool sendMsg();
+    bool stopCan();
+    bool closeDevice();
+    ZCAN_DEVICE_INFO *getDeviceInfo();
 
 private:
-    bool IsNetCAN( uint type );
-    bool IsNetCANFD( uint type );
-    bool IsNetTCP( uint type );
-    bool IsNetUDP( uint type );
-    bool SetBaudrate();
-    bool SetCanfdBaudrate();
-    bool SetResistanceEnable();
+    bool isNetCAN( uint type );
+    bool isNetCANFD( uint type );
+    bool isNetTCP( uint type );
+    bool isNetUDP( uint type );
+    bool setBaudrate();
+    bool setCanfdBaudrate();
+    bool setResistanceEnable();
+
+public slots:
+    void slot_deviceType_changed(DeviceManager::DeviceType type);
 
 private:
-    int device_type_index_;/* 设备 */
-    int device_index_;/* 设备索引 */
-    int channel_index_;/* 通道 */
+    DeviceType device_type_index_;/* 设备 */  // 注意：此处的设备类型仅仅为kDeviceType中的类型索引号
+    uint device_index_;/* 设备索引 */
+    uint channel_index_;/* 通道 */
 
-    int work_mode_index_;/* 工作模式 */
-    bool resistance_enable_;/* 终端电阻使能 */
+    WorkMode work_mode_;/* 工作模式 */
+    Enable resistance_enable_;/* 终端电阻使能 */
 
-    int abit_baud_index_;/* 仲裁域波特率 */
-    int dbit_baud_index_;/* 数据域波特率 */
+    uint abit_baud_index_;/* 仲裁域波特率 */
+    uint dbit_baud_index_;/* 数据域波特率 */
 
-    int filter_mode_;/* 滤波模式 */
-    QString acc_code_;/* 验收码 */
-    QString acc_mask_;/* 屏蔽码 */
+    StandardType canfd_standard_type_;/* CANFD 控制器标准类型， ISO 或非 ISO，通常使用 ISO 标准 */
 
-    QString id_;/* 报文id */
-    int frame_type_index_;/* 帧类型 */
-    int protocol_index_;/* 协议 */
-    int frm_delay_time_;/* 延时 */
-    bool frm_delay_flag_;/* 队列帧延时标记 */
-
+    // 数据发送相关成员变量声明
+    uint id_;/* 报文id */
+    FrameType frame_type_;/* 帧类型 */
+    ProtocolType protocol_type_;/* 协议 */
+    uint dlc_;/* dlc */
     QString datas_;/* 要发送的数据 */
-
-    int data_length_;/* dlc */
-    int send_type_index_;/* 发送方式 */
-    int send_count_once_;/* 一次发送帧数量 */
-    int send_count_;/* 一共发送多少次 */
+    SendType send_type_;/* 发送方式 */
+    uint send_count_once_;/* 一次发送帧数量 */
+    uint send_count_;/* 一共发送多少次 */
 
     /* 队列发送相关数据定义 */
+    uint frm_delay_time_;/* 延时 */
+    bool frm_delay_flag_;/* 队列帧延时标记 */
     bool support_delay_send_;/* 设备是否支持队列发送 */
     bool support_delay_send_mode_;/* 设备队列发送是否需要设置队列发送模式，USBCANFD系列，PCIECANFD系列设备需要设置发送模式才可以进行队列发送 */
     bool support_get_send_mode_;/* 设备是否支持查询当前模式 */
 
     /* 定时发送相关数据定义 */
-    bool send_enable_;/* 启动/暂停发送 */
-    int auto_send_index_;/* 定时发送索引 */
-    int auto_send_period_;/* 定时间隔 */
+    Enable send_enable_;/* 发送使能 */
+    uint auto_send_index_;/* 定时发送索引 */
+    uint auto_send_period_;/* 定时间隔 */
 
-
-    //?vector<string> data_recv_list_;/* 接收到的数据 */ // 还未确定用何种数据类型
-
+    uint filter_mode_;/* 滤波模式 */
+    QString acc_code_;/* 验收码 */
+    QString acc_mask_;/* 屏蔽码 */
 
     DEVICE_HANDLE device_handle_;/* 设备句柄 */
     CHANNEL_HANDLE channel_handle_;/* 通道句柄 */
-    bool device_opened_;/* 设备是否已经打开 */
+    DeviceState device_opened_;/* 设备是否已经打开 */
 
-    bool start_;/* CAN是否已经启动 */
-
-    // IProperty *property_;/* 属性 */
+    CanState can_start_;/* CAN是否已经启动 */
 };
 
 #endif // DEVICE_MANAGER_H

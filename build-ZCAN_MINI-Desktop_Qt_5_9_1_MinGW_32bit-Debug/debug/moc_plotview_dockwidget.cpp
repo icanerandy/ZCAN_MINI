@@ -32,7 +32,7 @@ struct qt_meta_stringdata_PlotViewDockWidget_t {
 static const qt_meta_stringdata_PlotViewDockWidget_t qt_meta_stringdata_PlotViewDockWidget = {
     {
 QT_MOC_LITERAL(0, 0, 18), // "PlotViewDockWidget"
-QT_MOC_LITERAL(1, 19, 23), // "slot_checkState_Changed"
+QT_MOC_LITERAL(1, 19, 23), // "slot_checkState_changed"
 QT_MOC_LITERAL(2, 43, 0), // ""
 QT_MOC_LITERAL(3, 44, 14), // "Qt::CheckState"
 QT_MOC_LITERAL(4, 59, 5), // "state"
@@ -45,7 +45,7 @@ QT_MOC_LITERAL(10, 131, 5), // "event"
 QT_MOC_LITERAL(11, 137, 26) // "CustomPlotSelectionChanged"
 
     },
-    "PlotViewDockWidget\0slot_checkState_Changed\0"
+    "PlotViewDockWidget\0slot_checkState_changed\0"
     "\0Qt::CheckState\0state\0msg_id\0"
     "CppCAN::CANSignal\0signal\0CustomPlotMousePress\0"
     "QMouseEvent*\0event\0CustomPlotSelectionChanged"
@@ -84,7 +84,7 @@ void PlotViewDockWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, i
         PlotViewDockWidget *_t = static_cast<PlotViewDockWidget *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->slot_checkState_Changed((*reinterpret_cast< Qt::CheckState(*)>(_a[1])),(*reinterpret_cast< const unsigned long long(*)>(_a[2])),(*reinterpret_cast< const CppCAN::CANSignal(*)>(_a[3]))); break;
+        case 0: _t->slot_checkState_changed((*reinterpret_cast< Qt::CheckState(*)>(_a[1])),(*reinterpret_cast< const unsigned long long(*)>(_a[2])),(*reinterpret_cast< const CppCAN::CANSignal(*)>(_a[3]))); break;
         case 1: _t->CustomPlotMousePress((*reinterpret_cast< QMouseEvent*(*)>(_a[1]))); break;
         case 2: _t->CustomPlotSelectionChanged(); break;
         default: ;

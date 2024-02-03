@@ -18,7 +18,7 @@ void SendMsgThread::stopThread()
 void SendMsgThread::run()
 {
     // 线程任务
-    channel_handle_ = DeviceManager::GetInstance()->channel_handle();
+    channel_handle_ = DeviceManager::getInstance()->channel_handle();
     m_stop = false;
 
     uint result = 0;
@@ -44,7 +44,7 @@ void SendMsgThread::run()
                 text = QString::asprintf(("发送数量:%d, 成功数量:%d"), send_count_once_, result);
                 //qDebug(text);
                 //避免无数据时变成While(1),会占用大量的CPU
-                msleep(interval_);
+                msleep(10);
             }
             delete [] pData;
         }
@@ -70,7 +70,7 @@ void SendMsgThread::run()
                 text = QString::asprintf(("发送数量:%d, 成功数量:%d"), send_count_once_, result);
                 //qDebug(text);
                 //避免无数据时变成While(1),会占用大量的CPU
-                msleep(interval_);
+                msleep(10);
             }
             delete [] pData;
         }
@@ -79,11 +79,10 @@ void SendMsgThread::run()
     quit(); // 相当于exit(0)，退出线程的事件循环
 }
 
-SendMsgThread::SendMsgThread(const QVariant &can_data, int send_count_once, int send_count, uint interval)
+SendMsgThread::SendMsgThread(const QVariant &can_data, int send_count_once, int send_count)
     : can_data_(can_data),
       send_count_once_(send_count_once),
-      send_count_(send_count),
-      interval_(interval)
+      send_count_(send_count)
 {
 
 }

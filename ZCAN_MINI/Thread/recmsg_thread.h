@@ -28,7 +28,7 @@ private:
     const RecMsgThread &operator = (const RecMsgThread &recmsg_thread) = delete;
 
 public:
-    static RecMsgThread *GetInstance();
+    static RecMsgThread *getInstance();
 
     void beginThread();
     void pauseThread();

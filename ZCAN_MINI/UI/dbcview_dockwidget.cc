@@ -156,7 +156,7 @@ void DBCViewDockWidget::slot_signal_model_itemChanged(QStandardItem *item)
         const unsigned long long msg_id = msg.can_id();
 
         const CppCAN::CANSignal& signal = msg.at(sig_name.toStdString());
-        emit sig_checkState_Changed(Qt::Checked, msg_id, signal);
+        emit sig_checkState_changed(Qt::Checked, msg_id, signal);
     }
     else
     {
@@ -168,6 +168,6 @@ void DBCViewDockWidget::slot_signal_model_itemChanged(QStandardItem *item)
         const unsigned long long msg_id = msg.can_id();
 
         const CppCAN::CANSignal& signal = msg.at(sig_name.toStdString());
-        emit sig_checkState_Changed(Qt::Unchecked, msg_id, signal);
+        emit sig_checkState_changed(Qt::Unchecked, msg_id, signal);
     }
 }
