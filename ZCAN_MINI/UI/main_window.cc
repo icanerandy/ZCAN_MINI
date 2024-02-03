@@ -4,49 +4,51 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    devicemanager_dialog(nullptr),
-    canview_dockWidget(nullptr),
-    dbcview_dockWidget(nullptr),
-    plotview_dockWidget(nullptr),
-    senddata_dialog(nullptr)
+    canviewDock(new CanViewDockWidget(this)),
+    dbcviewDock(new DBCViewDockWidget(this)),
+    plotviewDcok(new PlotViewDockWidget(this)),
+    deviceManagerDlg(new DeviceManagerDialog(this)),
+    senddataDlg(new SendDataDialog(this)),
+    menuCreateView(new QMenu(QStringLiteral("打开视图"), this)),
+    menuSendData(new QMenu(QStringLiteral("发送数据"), this)),
+    actDeviceManage(new QAction(QStringLiteral("设备管理"), this)),
+    actCreateCanView(new QAction(QStringLiteral("CAN视图"), this)),
+    actCreateDBCView(new QAction(QStringLiteral("DBC视图"), this)),
+    actCreatePlotView(new QAction(QStringLiteral("Plot视图"), this)),
+    actSendData(new QAction(QStringLiteral("发送数据"), this))
 {
     ui->setupUi(this);
 
-    QIcon icon;
-    //icon.addFile();
-    actDeviceManage = new QAction(icon, QStringLiteral("设备管理"), this);
-
+    // 添加菜单和action
     ui->menubar->addAction(actDeviceManage);
+    ui->menubar->addMenu(menuCreateView);
+    ui->menubar->addMenu(menuSendData);
+    menuCreateView->addAction(actCreateCanView);
+    menuCreateView->addAction(actCreateDBCView);
+    menuCreateView->addAction(actCreatePlotView);
+    menuSendData->addAction(actSendData);
 
-    QMenu *createView = new QMenu(QStringLiteral("打开视图"));
-    ui->menubar->addMenu(createView);
-
-    actCreateCanView = new QAction(icon, QStringLiteral("CAN视图"), this);
-    createView->addAction(actCreateCanView);
-
-    actCreateDBCView = new QAction(icon, QStringLiteral("DBC视图"), this);
-    createView->addAction(actCreateDBCView);
-
-    actCreatePlotView = new QAction(icon, QStringLiteral("Plot视图"), this);
-    createView->addAction(actCreatePlotView);
-
-    QMenu *sendData = new QMenu(QStringLiteral("发送数据"), this);
-    ui->menubar->addMenu(sendData);
-
-    actSendData = new QAction(icon, QStringLiteral("普通发送"), this);
-    sendData->addAction(actSendData);
-
-    BindSignals();
-
-    // 移除中间窗口组件
-    QWidget *central_widget = takeCentralWidget();
+    // QMainWindow中自带中央窗体，如果不去除，可能会造成窗口间有空块的情况，去除后，所有窗口都由QDockWidget构成
+    // 移除中间窗口组件，可以使dock居中显示
+    QWidget * const central_widget = takeCentralWidget();
     if (central_widget)
         delete central_widget;
 
     setDockNestingEnabled(true);
 
-    canview_dockWidget = new CanViewDockWidget(this);
-    this->addDockWidget(Qt::TopDockWidgetArea, canview_dockWidget);
+    // 进行布局
+    this->addDockWidget(Qt::LeftDockWidgetArea, canviewDock);
+    this->addDockWidget(Qt::RightDockWidgetArea, dbcviewDock);
+    this->addDockWidget(Qt::RightDockWidgetArea, plotviewDcok);
+
+    // 分割窗口
+    splitDockWidget(dbcviewDock, plotviewDcok, Qt::Vertical);
+
+    // 合并窗口
+    tabifyDockWidget(plotviewDcok, dbcviewDock);
+
+    // 信号绑定
+    bindSignals();
 }
 
 MainWindow::~MainWindow()
@@ -54,70 +56,23 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::BindSignals()
+void MainWindow::bindSignals()
 {
     // 内部信号内部处理即可
-    connect(actDeviceManage, &QAction::triggered, this, &MainWindow::slot_actDeviceManage_triggered);
-    connect(actCreateCanView, &QAction::triggered, this, &MainWindow::slot_actCreateCanView_triggered);
-    connect(actCreateDBCView, &QAction::triggered, this, &MainWindow::slot_actCreateDBCView_triggered);
-    connect(actCreatePlotView, &QAction::triggered, this, &MainWindow::slot_actCreatePlotView_triggered);
-    connect(actSendData, &QAction::triggered, this, &MainWindow::slot_actSendData_triggered);
-}
-
-void MainWindow::slot_actDeviceManage_triggered(bool checked)
-{
-    Q_UNUSED(checked);
-    // 一次创建，多次调用，对话框关闭时只是隐藏
-    if (!devicemanager_dialog)
-        devicemanager_dialog = new DeviceManagerDialog(this);
-    devicemanager_dialog->exec();  // 以模态方式显示对话框
-}
-
-void MainWindow::slot_actCreateCanView_triggered(bool checked)
-{
-    Q_UNUSED(checked);
-    if (!canview_dockWidget)
-    {
-        canview_dockWidget = new CanViewDockWidget(this);
-        this->addDockWidget(Qt::TopDockWidgetArea, canview_dockWidget);
-    }
-    canview_dockWidget->show();
-}
-
-void MainWindow::slot_actCreateDBCView_triggered(bool checked)
-{
-    Q_UNUSED(checked);
-    if (!dbcview_dockWidget)
-    {
-        dbcview_dockWidget = new DBCViewDockWidget(this);
-        this->addDockWidget(Qt::TopDockWidgetArea, dbcview_dockWidget);
-    }
-    dbcview_dockWidget->show();
-}
-
-void MainWindow::slot_actCreatePlotView_triggered(bool checked)
-{
-    Q_UNUSED(checked);
-    if (!plotview_dockWidget)
-    {
-        plotview_dockWidget = new PlotViewDockWidget(this);
-        this->addDockWidget(Qt::TopDockWidgetArea, plotview_dockWidget);
-        if (!dbcview_dockWidget)
-        {
-            dbcview_dockWidget = new DBCViewDockWidget(this);
-            this->addDockWidget(Qt::TopDockWidgetArea, dbcview_dockWidget);
-        }
-
-        connect(dbcview_dockWidget, &DBCViewDockWidget::sig_checkState_Changed, plotview_dockWidget, &PlotViewDockWidget::slot_checkState_Changed);
-    }
-    plotview_dockWidget->show();
-}
-
-void MainWindow::slot_actSendData_triggered(bool checked)
-{
-    Q_UNUSED(checked);
-    // 一次创建，多次调用，对话框关闭时只是隐藏
-    if (!senddata_dialog)
-        senddata_dialog = new SendDataDialog(this);
-    senddata_dialog->exec();  // 以模态方式显示对话框
+    connect(actCreateCanView, &QAction::triggered, this, [this] {
+        canviewDock->show();
+    });
+    connect(actCreateDBCView, &QAction::triggered, this, [this] {
+        dbcviewDock->show();
+    });
+    connect(actCreatePlotView, &QAction::triggered, this, [this] {
+        plotviewDcok->show();
+    });
+    connect(actDeviceManage, &QAction::triggered, this, [this] {
+        deviceManagerDlg->exec();
+    });
+    connect(actSendData, &QAction::triggered, this, [this] {
+        senddataDlg->exec();
+    });
+    connect(dbcviewDock, &DBCViewDockWidget::sig_checkState_Changed, plotviewDcok, &PlotViewDockWidget::slot_checkState_Changed);
 }

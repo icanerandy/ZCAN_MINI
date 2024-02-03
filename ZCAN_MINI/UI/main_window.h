@@ -16,6 +16,23 @@ namespace Ui {
 class MainWindow;
 }
 
+/**
+ * @brief The MainWindow class
+ * 一个主窗口由以下属性构成
+ * - ui
+ * - deviceManagerDlg 设备管理对话框
+ * - canviewDock can视图
+ * - dbcviewDock 设备视图
+ * - plotviewDock 曲线图视图
+ * - senddataDlg 数据发送窗口
+ * - actDeviceManage
+ * - actCreateCanView
+ * - actCreateDBCView
+ * - actCreatePlotView
+ * - actSendData
+ * - recmsg_thread_ 消息接收子线程
+ * 所有成员变量应该在主窗体初始化时完成定义，且不可改变
+ */
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -25,32 +42,25 @@ public:
     ~MainWindow();
 
 private:
-    void BindSignals();
-
-private slots:
-    void slot_actDeviceManage_triggered(bool checked);
-    void slot_actCreateCanView_triggered(bool checked);
-    void slot_actCreateDBCView_triggered(bool checked);
-    void slot_actCreatePlotView_triggered(bool checked);
-    void slot_actSendData_triggered(bool checked);
+    void bindSignals();
 
 private:
-    Ui::MainWindow *ui;
-    DeviceManagerDialog *devicemanager_dialog;
-    CanViewDockWidget *canview_dockWidget;
-    DBCViewDockWidget *dbcview_dockWidget;
-    PlotViewDockWidget *plotview_dockWidget;
-    SendDataDialog *senddata_dialog;
+    Ui::MainWindow * const ui;
+    CanViewDockWidget * const canviewDock;
+    DBCViewDockWidget * const dbcviewDock;
+    PlotViewDockWidget * const plotviewDcok;
+    DeviceManagerDialog * const deviceManagerDlg;
+    SendDataDialog * const senddataDlg;
 
+    QMenu * const menuCreateView;
+    QMenu * const menuSendData;
+    QAction * const actCreateCanView;
+    QAction * const actCreateDBCView;
+    QAction * const actCreatePlotView;
+    QAction * const actDeviceManage;
+    QAction * const actSendData;
 
-    QAction *actDeviceManage;
-    QAction *actCreateCanView;
-    QAction *actCreateDBCView;
-    QAction *actCreatePlotView;
-    QAction *actSendData;
-
-private:
-    RecMsgThread *recmsg_thread;
+    RecMsgThread *recmsg_thread_;
 };
 
 #endif // MAIN_WINDOW_H
