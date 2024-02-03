@@ -18,20 +18,11 @@ public:
     ~InitCanDialog();
 
 private:
-    void InitDialog();
-    void BindSlots();
-
-private slots:
-    void slot_comboCanfdStandard_currentIndexChanged(int index);
-    void slot_comboAbit_currentIndexChanged(int index);
-    void slot_comboDbit_currentIndexChanged(int index);
-    void slot_comboWorkMode_currentIndexChanged(int index);
-    void slot_comboResistance_currentIndexChanged(int index);
-
-    void on_btnOk_clicked();
+    void initDlg();
+    void bindSignals();
 
 private:
-    Ui::InitCanDialog *ui;
+    Ui::InitCanDialog * const ui;
 };
 
 #endif // INIT_CAN_DIALOG_H

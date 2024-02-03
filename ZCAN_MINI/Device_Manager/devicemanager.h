@@ -31,7 +31,7 @@ public:
     static const uint kDbitTimingPCIE[];
     static const uint kBaudrate[];
 
-    enum struct DeviceType {
+    enum struct DeviceTypeIndex {
         zCAN_USBCAN1,
         zCAN_USBCAN2,
         zCAN_PCI9820I,
@@ -98,7 +98,7 @@ private:
 
 public:
     static DeviceManager *getInstance();    // 获取单例对象
-    DeviceType device_type_index();
+    DeviceTypeIndex device_type_index();
     CHANNEL_HANDLE channel_handle();
     DeviceManager::CanState can_start();
     Enable send_enable();
@@ -139,10 +139,10 @@ private:
     bool setResistanceEnable();
 
 public slots:
-    void slot_deviceType_changed(DeviceManager::DeviceType type);
+    void slot_deviceType_changed(DeviceManager::DeviceTypeIndex type);
 
 private:
-    DeviceType device_type_index_;/* 设备 */  // 注意：此处的设备类型仅仅为kDeviceType中的类型索引号
+    DeviceTypeIndex device_type_index_;/* 设备 */  // 注意：此处的设备类型仅仅为kDeviceType中的类型索引号
     uint device_index_;/* 设备索引 */
     uint channel_index_;/* 通道 */
 

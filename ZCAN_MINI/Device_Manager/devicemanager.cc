@@ -84,7 +84,7 @@ DeviceManager *DeviceManager::getInstance()
 }
 
 DeviceManager::DeviceManager(QObject *parent) : QObject(parent),
-    device_type_index_(DeviceType::zCAN_USBCAN1),
+    device_type_index_(DeviceTypeIndex::zCAN_USBCAN1),
     device_index_(0),
     channel_index_(0),
     work_mode_(WorkMode::Normal),
@@ -117,7 +117,7 @@ DeviceManager::DeviceManager(QObject *parent) : QObject(parent),
     support_get_send_mode_ = false;
 }
 
-DeviceManager::DeviceType DeviceManager::device_type_index()
+DeviceManager::DeviceTypeIndex DeviceManager::device_type_index()
 {
     return device_type_index_;
 }
@@ -192,7 +192,7 @@ void DeviceManager::set_data(QString &data)
     datas_ = data;
 }
 
-void DeviceManager::slot_deviceType_changed(DeviceManager::DeviceType index)
+void DeviceManager::slot_deviceType_changed(DeviceManager::DeviceTypeIndex index)
 {
     device_type_index_ = index;
 

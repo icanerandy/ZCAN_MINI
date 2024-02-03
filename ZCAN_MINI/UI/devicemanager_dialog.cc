@@ -35,7 +35,7 @@ void DeviceManagerDialog::bindSignals()
     DeviceManager * const device_manager = DeviceManager::getInstance();
     // 内部信号自身做处理
     connect(ui->comboDeviceType, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-            this, [=] (int index) { device_manager->slot_deviceType_changed(static_cast<DeviceManager::DeviceType>(index)); });
+            this, [=] (int index) { device_manager->slot_deviceType_changed(static_cast<DeviceManager::DeviceTypeIndex>(index)); });
 
     connect(ui->comboDeviceIndex, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
             this, [=] (int index) { device_manager->changeDeviceIndex(index); });
@@ -45,7 +45,7 @@ void DeviceManagerDialog::bindSignals()
         if (ret)
         {
             enableCtrl(true);
-            DeviceManager::DeviceType device_type_index = device_manager->device_type_index();
+            DeviceManager::DeviceTypeIndex device_type_index = device_manager->device_type_index();
 
             // 根据设备类型设置通道数量
             QComboBox * const combo = ui->comboChannelIndex;

@@ -7,9 +7,9 @@ InitCanDialog::InitCanDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    InitDialog();
+    initDlg();
 
-    BindSlots();
+    bindSignals();
 }
 
 InitCanDialog::~InitCanDialog()
@@ -17,11 +17,11 @@ InitCanDialog::~InitCanDialog()
     delete ui;
 }
 
-void InitCanDialog::InitDialog()
+void InitCanDialog::initDlg()
 {
-    DeviceManager *device_manager = DeviceManager::getInstance();
-    DeviceManager::DeviceType device_type_index_ = device_manager->device_type_index();
-    uint type = DeviceManager::kDeviceType[static_cast<uint>(device_type_index_)].device_type;
+    DeviceManager * const device_manager = DeviceManager::getInstance();
+    const DeviceManager::DeviceTypeIndex device_type_index_ = device_manager->device_type_index();
+    const uint type = DeviceManager::kDeviceType[static_cast<uint>(device_type_index_)].device_type;
 
     const bool usbcanfd = type==ZCAN_USBCANFD_100U ||
         type==ZCAN_USBCANFD_200U || type==ZCAN_USBCANFD_MINI;
@@ -30,6 +30,7 @@ void InitCanDialog::InitDialog()
     const bool canfdDevice = usbcanfd || pciecanfd;
 
     QStringList strList;
+    strList.clear();
 
     if (!canfdDevice)
     {
@@ -81,77 +82,34 @@ void InitCanDialog::InitDialog()
     ui->comboResistance->setCurrentIndex(1);
 }
 
-void InitCanDialog::BindSlots()
+void InitCanDialog::bindSignals()
 {
+    DeviceManager * const device_manager = DeviceManager::getInstance();
     // 内部信号自身做处理
-    connect(ui->comboCanfdStandard,
-            static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-            this,
-            &InitCanDialog::slot_comboCanfdStandard_currentIndexChanged);
+    connect(ui->comboCanfdStandard, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+            this, [=] (int index) { device_manager->set_canfd_standard_type(static_cast<DeviceManager::StandardType>(index)); });
 
-    connect(ui->comboAbit,
-            static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-            this,
-            &InitCanDialog::slot_comboAbit_currentIndexChanged);
+    connect(ui->comboAbit, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+            this, [=] (int index) { device_manager->set_abit_baud_index(index); });
 
-    connect(ui->comboDbit,
-            static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-            this,
-            &InitCanDialog::slot_comboDbit_currentIndexChanged);
+    connect(ui->comboDbit, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+            this, [=] (int index) { device_manager->set_dbit_baud_index(index); });
 
-    connect(ui->comboWorkMode,
-            static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-            this,
-            &InitCanDialog::slot_comboWorkMode_currentIndexChanged);
+    connect(ui->comboWorkMode, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+            this, [=] (int index) { device_manager->set_work_mode_index(static_cast<DeviceManager::WorkMode>(index)); });
 
-    connect(ui->comboResistance,
-            static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-            this,
-            &InitCanDialog::slot_comboResistance_currentIndexChanged);
-}
+    connect(ui->comboResistance, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
+            this, [=] (int index) { device_manager->set_resistance_enable(static_cast<DeviceManager::Enable>(index)); });
 
-void InitCanDialog::slot_comboCanfdStandard_currentIndexChanged(int index)
-{
-    DeviceManager *device_manager = DeviceManager::getInstance();
-    device_manager->set_canfd_standard_type(static_cast<DeviceManager::StandardType>(index));
-}
+    connect(ui->btnOk, &QPushButton::clicked, this, [=] {
+        bool ret = device_manager->initCan();
+        if (!ret)
+            return;
 
-void InitCanDialog::slot_comboAbit_currentIndexChanged(int index)
-{
-    DeviceManager *device_manager = DeviceManager::getInstance();
-    device_manager->set_abit_baud_index(index);
-}
+        ret = device_manager->startCan();
+        if (!ret)
+            return;
 
-void InitCanDialog::slot_comboDbit_currentIndexChanged(int index)
-{
-    DeviceManager *device_manager = DeviceManager::getInstance();
-    device_manager->set_dbit_baud_index(index);
-}
-
-void InitCanDialog::slot_comboWorkMode_currentIndexChanged(int index)
-{
-    DeviceManager *device_manager = DeviceManager::getInstance();
-    device_manager->set_work_mode_index(static_cast<DeviceManager::WorkMode>(index));
-}
-
-void InitCanDialog::slot_comboResistance_currentIndexChanged(int index)
-{
-    DeviceManager *device_manager = DeviceManager::getInstance();
-    device_manager->set_resistance_enable(static_cast<DeviceManager::Enable>(index));
-}
-
-void InitCanDialog::on_btnOk_clicked()
-{
-    DeviceManager *device_manager = DeviceManager::getInstance();
-    bool ret = device_manager->initCan();
-    if (!ret)
-    {
-        return;
-    }
-
-    ret = device_manager->startCan();
-    if (!ret)
-        return;
-
-    this->hide();
+        this->hide();
+    });
 }

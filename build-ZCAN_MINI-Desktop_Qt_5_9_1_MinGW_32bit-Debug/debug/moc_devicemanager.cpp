@@ -22,7 +22,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_DeviceManager_t {
     QByteArrayData data[5];
-    char stringdata0[70];
+    char stringdata0[75];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -34,12 +34,12 @@ static const qt_meta_stringdata_DeviceManager_t qt_meta_stringdata_DeviceManager
 QT_MOC_LITERAL(0, 0, 13), // "DeviceManager"
 QT_MOC_LITERAL(1, 14, 23), // "slot_deviceType_changed"
 QT_MOC_LITERAL(2, 38, 0), // ""
-QT_MOC_LITERAL(3, 39, 25), // "DeviceManager::DeviceType"
-QT_MOC_LITERAL(4, 65, 4) // "type"
+QT_MOC_LITERAL(3, 39, 30), // "DeviceManager::DeviceTypeIndex"
+QT_MOC_LITERAL(4, 70, 4) // "type"
 
     },
     "DeviceManager\0slot_deviceType_changed\0"
-    "\0DeviceManager::DeviceType\0type"
+    "\0DeviceManager::DeviceTypeIndex\0type"
 };
 #undef QT_MOC_LITERAL
 
@@ -71,7 +71,7 @@ void DeviceManager::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _i
         DeviceManager *_t = static_cast<DeviceManager *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->slot_deviceType_changed((*reinterpret_cast< DeviceManager::DeviceType(*)>(_a[1]))); break;
+        case 0: _t->slot_deviceType_changed((*reinterpret_cast< DeviceManager::DeviceTypeIndex(*)>(_a[1]))); break;
         default: ;
         }
     }
