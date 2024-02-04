@@ -4,8 +4,8 @@
 SendDataDialog::SendDataDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SendDataDialog),
-    datas_("00 01 02 03 04 05 06 07 08"),
     id_(0x01),
+    datas_("00 01 02 03 04 05 06 07 08"),
     send_count_once_(1),
     frame_type_(DeviceManager::FrameType::Can),
     frame_delay_time_(0),

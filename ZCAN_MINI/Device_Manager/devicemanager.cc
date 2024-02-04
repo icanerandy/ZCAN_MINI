@@ -92,21 +92,27 @@ DeviceManager::DeviceManager(QObject *parent) : QObject(parent),
     abit_baud_index_(2),
     dbit_baud_index_(2),
     canfd_standard_type_(StandardType::Iso),
-    filter_mode_(1),
-    acc_code_("00000000"),
-    acc_mask_("FFFFFFFF"),
     id_(0),
     frame_type_(FrameType::Can),
     protocol_type_(ProtocolType::Can),
-    frm_delay_time_(0),
-    frm_delay_flag_(false),
-    datas_("00 01 02 03 04 05 06 07"),
     dlc_(8),
+    datas_("00 01 02 03 04 05 06 07"),
     send_type_(SendType::Normal),
     send_count_once_(1),
+    send_count_(1),
+    frm_delay_flag_(false),
+    frm_delay_time_(0),
+    support_delay_send_(false),
+    support_delay_send_mode_(false),
+    support_get_send_mode_(false),
     send_enable_(Enable::Unenabled),
     auto_send_index_(0),
     auto_send_period_(1000),
+    filter_mode_(1),
+    acc_code_("00000000"),
+    acc_mask_("FFFFFFFF"),
+    device_opened_(DeviceState::Unopened),
+    can_start_(CanState::Unstarted),
     sendmsg_thread_(nullptr)
 {
     /* 初始化相关数据 */
@@ -369,12 +375,12 @@ bool DeviceManager::startCan()
     return true;
 }
 
-bool DeviceManager::sendMsg()
+void DeviceManager::sendMsg()
 {
     if (datas_.isEmpty())
     {
         qDebug() << "数据发送: 数据为空!";
-        return false;
+        return;
     }
 
     if (ProtocolType::Can == protocol_type_)

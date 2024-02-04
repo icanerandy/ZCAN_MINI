@@ -36,80 +36,89 @@ void PlotGraphThread::stopThread()
     m_stop = true;
 }
 
-int PlotGraphThread::getValue(const unsigned char* const data, uint len)
+/**
+ * @brief PlotGraphThread::getValue
+ * @param data
+ * @param len
+ * @return
+ *
+ * 注意：当传入的信号位数大于32位是会出错！因为编译的是32位的程序，其中uint64_t只有32位
+ */
+int PlotGraphThread::getValue(const BYTE * const data, const uint len)
 {
-    QString bits = "";
-
-    for(uint i=0;i<len;i++)
+    uint8_t start_bit_in_byte = signal_.start_bit() % 8;
+    uint8_t cur_bit = start_bit_in_byte;
+    uint8_t start_byte = signal_.start_bit() / 8;
+    uint8_t cur_byte = start_byte;
+    int64_t value = 0;  // 读取出来的数据存放单元
+    uint8_t bits = 0;  // 已经读取了多少个位
+    if (CppCAN::CANSignal::LittleEndian == signal_.endianness())    // Intel
     {
-        QString str = QString("%1").arg(data[i],8,2,QLatin1Char('0'));
-        QString str1;
-        str1.fill('0',str.size());
-        for(uint j = 0;j<static_cast<uint>(str1.length());j++)
-            str1[j] = str[str1.length()-j-1];
-        bits += str1;
-    }
-
-    int value = 0;
-    bool isGetValue = true;
-
-    if (CppCAN::CANSignal::LittleEndian == signal_.endianness())
-    {
-        for (uint i = 0; i < signal_.length(); i++)
+        while (bits < signal_.length())
         {
-            uint p = i + signal_.start_bit();
-            if (p < len * 8)
+            if (cur_bit > 7)
             {
-                if (bits[i + signal_.start_bit()] == QLatin1Char('1'))
-                    value += (int)qPow(2, i);
+                cur_bit = 0;
+                ++cur_byte;
             }
-            else
-            {
-                isGetValue = false;
-                break;
-            }
+
+            uint8_t bit_val = 0x01<<cur_bit;
+            uint64_t tmp = (0 != (data[cur_byte]&bit_val))?1:0;    // 取出当前位的值 0/1
+            value |= tmp<<bits;   // tmp<<bits相当于给第bits个位取值，然后让value按位或上tmp，让value的第bits位取值
+            ++bits;
+            ++cur_bit;
         }
     }
-    else
+    else  // Motorola_LSB
     {
-        int offset = 0;
-        for (uint i = 0; i < signal_.length(); i++)
+        while (bits < signal_.length())
         {
-            int p = i + signal_.start_bit();
-            if ((p % 8 == 0) && (i != 0))
-                offset -= 16;
-            p += offset;
+            if (cur_bit > 7)
+            {
+                cur_bit = 0;
+                --cur_byte;
+            }
 
-            if (p >= 0 && p < len * 8)
-            {
-                if (bits[p] == QLatin1Char('1'))
-                    value += (qint32)qPow(2, i);
-            }
-            else
-            {
-                isGetValue = false;
-                break;
-            }
+            uint8_t bit_val = 0x01<<cur_bit;
+            uint64_t tmp = (0 != (data[cur_byte]&bit_val))?1:0;    // 取出当前位的值 0/1
+            value |= tmp<<bits;   // tmp<<bits相当于给第bits个位取值，然后让value按位或上tmp，让value的第bits位取值
+            ++bits;
+            ++cur_bit;
         }
     }
+//#define Motorola_MSB
+#ifdef Motorola_MSB
+    else    // Motorola_MSB
+    {
+        while (bits < sig.length())
+        {
+            if (cur_bit < 0)
+            {
+                cur_bit = 7;
+                ++cur_byte;
+            }
+
+            value <<= 1;
+            uint8_t bit_val = 0x01<<cur_bit;
+            uint64_t tmp = (0 != (data[cur_byte]&bit_val))?1:0;    // 取出当前位的值 0/1
+            value += tmp;
+            --tmp;
+        }
+    }
+#endif
 
     if (CppCAN::CANSignal::Signed == signal_.signedness())
     {
-        qint32 vv = qPow(2, signal_.length());
-
-        if (value >= vv / 2) //负数
+        uint64_t tmp = 0x01;
+        tmp <<= (signal_.length()-1);
+        if (0 != (tmp & value))   // 负数
         {
-            value = value - vv;
+            value &= ~tmp;
+            value = ~value + 1;
         }
     }
 
-    if (isGetValue)
-    {
-        qDebug() << value;
-        return value;
-    }
-
-    return -999999;
+    return value + signal_.offset();
 }
 
 void PlotGraphThread::run()
@@ -140,10 +149,10 @@ void PlotGraphThread::slot_newMsg(const ZCAN_Receive_Data* const can_data, const
         if (GET_ID(can_data[i].frame.can_id) != msg_id_)
             return;
 
-        unsigned char buf[can_data[i].frame.can_dlc];
-        memcpy(buf, can_data[i].frame.data, can_data[i].frame.can_dlc);
+        const uint dlc = can_data[i].frame.can_dlc;
+        const BYTE* const data = can_data[i].frame.data;
 
-        int real_value = getValue(buf, can_data[i].frame.can_dlc);
+        int real_value = getValue(data, dlc);
 
         //key的单位是 ms
         double key = QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0;
@@ -171,10 +180,10 @@ void PlotGraphThread::slot_newMsg(const ZCAN_ReceiveFD_Data* const canfd_data, c
         if (GET_ID(canfd_data[i].frame.can_id) != msg_id_)
             return;
 
-        unsigned char buf[canfd_data[i].frame.len];
-        memcpy(buf, canfd_data[i].frame.data, canfd_data[i].frame.len);
+        const uint dlc = canfd_data[i].frame.len;
+        const BYTE* const data = canfd_data[i].frame.data;
 
-        int real_value = getValue(buf, canfd_data[i].frame.len);
+        int real_value = getValue(data, dlc);
 
         //key的单位是 ms
         double key = QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0;

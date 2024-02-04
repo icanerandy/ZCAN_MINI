@@ -11,10 +11,10 @@ MainWindow::MainWindow(QWidget *parent) :
     senddataDlg(new SendDataDialog(this)),
     menuCreateView(new QMenu(QStringLiteral("打开视图"), this)),
     menuSendData(new QMenu(QStringLiteral("发送数据"), this)),
-    actDeviceManage(new QAction(QStringLiteral("设备管理"), this)),
     actCreateCanView(new QAction(QStringLiteral("CAN视图"), this)),
     actCreateDBCView(new QAction(QStringLiteral("DBC视图"), this)),
     actCreatePlotView(new QAction(QStringLiteral("Plot视图"), this)),
+    actDeviceManage(new QAction(QStringLiteral("设备管理"), this)),
     actSendData(new QAction(QStringLiteral("发送数据"), this))
 {
     ui->setupUi(this);

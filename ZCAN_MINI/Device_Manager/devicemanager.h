@@ -93,6 +93,8 @@ public:
 private:
     explicit DeviceManager(QObject *parent = nullptr);  // 禁止外部构造
     //explicit ~DeviceManager();   // 禁止外部析构
+
+public:
     explicit DeviceManager(const DeviceManager &deviceManager) = delete;  // 禁止外部拷贝构造
     const DeviceManager &operator = (const DeviceManager &deviceManager) = delete;   // 禁止外部赋值构造
 
@@ -124,7 +126,7 @@ public:
     bool openDevice();
     bool initCan();
     bool startCan();
-    bool sendMsg();
+    void sendMsg();
     void stopSendMsg();
     bool stopCan();
     bool closeDevice();
@@ -166,8 +168,8 @@ private:
     uint send_count_;/* 一共发送多少次 */
 
     /* 队列发送相关数据定义 */
-    uint frm_delay_time_;/* 延时 */
     bool frm_delay_flag_;/* 队列帧延时标记 */
+    uint frm_delay_time_;/* 延时 */
     bool support_delay_send_;/* 设备是否支持队列发送 */
     bool support_delay_send_mode_;/* 设备队列发送是否需要设置队列发送模式，USBCANFD系列，PCIECANFD系列设备需要设置发送模式才可以进行队列发送 */
     bool support_get_send_mode_;/* 设备是否支持查询当前模式 */

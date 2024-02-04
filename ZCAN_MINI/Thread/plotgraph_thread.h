@@ -2,6 +2,7 @@
 #define PLOTGRAPH_THREAD_H
 
 #include <QThread>
+#include <QByteArray>
 #include "qcustomplot.h"
 #include "recmsg_thread.h"
 #include "CANDatabase.h"
@@ -23,7 +24,7 @@ public:
     void stopThread();
 
 public:
-    int getValue(const unsigned char* const data, uint len);
+    int getValue(const BYTE * const data, const uint len);
 
 private slots:
     void slot_newMsg(const ZCAN_Receive_Data* const can_data, const uint len);

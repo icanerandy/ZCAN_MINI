@@ -20,6 +20,8 @@ protected:
 public:
     explicit SendMsgThread(CHANNEL_HANDLE channel_handle, const QVariant &can_data, uint send_count_once, uint send_count);
 //    ~SendMsgThread() {};
+
+public:
     explicit SendMsgThread(const SendMsgThread &sendmsg_thread) = delete;
     const SendMsgThread &operator = (const SendMsgThread &sendmsg_thread) = delete;
 

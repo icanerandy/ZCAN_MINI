@@ -276,8 +276,6 @@
      <zorder>label</zorder>
      <zorder>comboLength</zorder>
      <zorder>label_4</zorder>
-     <zorder>label_5</zorder>
-     <zorder>editData_2</zorder>
      <zorder>editData</zorder>
      <zorder>label_6</zorder>
      <zorder>pushButton</zorder>
@@ -296,11 +294,7 @@
      <zorder>chkInc</zorder>
      <zorder>chkInc</zorder>
      <zorder>label_8</zorder>
-     <zorder>horizontalSpacer</zorder>
-     <zorder>horizontalSpacer_2</zorder>
      <zorder>btnSend</zorder>
-     <zorder></zorder>
-     <zorder>layoutWidget_5</zorder>
     </widget>
    </item>
    <item>

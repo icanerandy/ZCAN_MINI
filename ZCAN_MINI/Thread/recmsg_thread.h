@@ -24,6 +24,8 @@ protected:
 private:
     explicit RecMsgThread();
 //    ~RecMsgThread() {};
+
+public:
     explicit RecMsgThread(const RecMsgThread &recmsg_thread) = delete;
     const RecMsgThread &operator = (const RecMsgThread &recmsg_thread) = delete;
 

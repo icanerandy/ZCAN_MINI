@@ -167,7 +167,7 @@ void CanFrameTableModel::newMsg(const ZCAN_Receive_Data* const can_data, const u
             removeRows(0, 1);
 
         const ZCAN_Receive_Data& can = can_data[i];
-        const canid_t& id = can.frame.can_id;
+        //const canid_t& id = can.frame.can_id;
 
         beginInsertRows(QModelIndex(), can_frame_list.size(), can_frame_list.size());
         can_frame_list.append(QVariant::fromValue(can));
@@ -185,7 +185,7 @@ void CanFrameTableModel::newMsg(const ZCAN_ReceiveFD_Data* const canfd_data, con
             removeRows(0, 1);
 
         const ZCAN_ReceiveFD_Data& canfd = canfd_data[i];
-        const canid_t& id = canfd.frame.can_id;
+        //const canid_t& id = canfd.frame.can_id;
 
         beginInsertRows(QModelIndex(), can_frame_list.size(), can_frame_list.size());
         can_frame_list.append(QVariant::fromValue(canfd));
