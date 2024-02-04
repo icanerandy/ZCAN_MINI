@@ -105,8 +105,8 @@ void DeviceManagerDialog::enableCtrl(bool enabled)
 
 void DeviceManagerDialog::slot_btnDeviceInfo_clicked()
 {
-    DeviceManager *device_manager = DeviceManager::getInstance();
-    ZCAN_DEVICE_INFO *info = device_manager->getDeviceInfo();
+    const DeviceManager * const device_manager = DeviceManager::getInstance();
+    const ZCAN_DEVICE_INFO *info = device_manager->getDeviceInfo();
 
     QString hw_version = info->hw_Version==0?"000":QString::number(info->hw_Version, 16);
     hw_version.insert(1, '.');
@@ -132,7 +132,7 @@ void DeviceManagerDialog::slot_btnDeviceInfo_clicked()
     msgBox.setText(strInfo);
 
     // 自定义布局
-    QGridLayout* layout = qobject_cast<QGridLayout*>(msgBox.layout());
+    QGridLayout * const layout = qobject_cast<QGridLayout*>(msgBox.layout());
     if (layout) {
         layout->setColumnStretch(1, 2);  // 增加文本列的拉伸系数
         layout->setRowStretch(5, 10);    // 增加图标行的拉伸系数

@@ -23,11 +23,11 @@ public:
     void stopThread();
 
 public:
-    int getValue(const unsigned char *data, int len);
+    int getValue(const unsigned char* const data, uint len);
 
 private slots:
-    void slot_newMsg(ZCAN_Receive_Data *can_data, uint len);
-    void slot_newMsg(ZCAN_ReceiveFD_Data *canfd_data, uint len);
+    void slot_newMsg(const ZCAN_Receive_Data* const can_data, const uint len);
+    void slot_newMsg(const ZCAN_ReceiveFD_Data* const canfd_data, const uint len);
 
 
 private:

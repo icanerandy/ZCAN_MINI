@@ -22,7 +22,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_PlotGraphThread_t {
     QByteArrayData data[8];
-    char stringdata0[93];
+    char stringdata0[103];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -34,16 +34,16 @@ static const qt_meta_stringdata_PlotGraphThread_t qt_meta_stringdata_PlotGraphTh
 QT_MOC_LITERAL(0, 0, 15), // "PlotGraphThread"
 QT_MOC_LITERAL(1, 16, 11), // "slot_newMsg"
 QT_MOC_LITERAL(2, 28, 0), // ""
-QT_MOC_LITERAL(3, 29, 18), // "ZCAN_Receive_Data*"
-QT_MOC_LITERAL(4, 48, 8), // "can_data"
-QT_MOC_LITERAL(5, 57, 3), // "len"
-QT_MOC_LITERAL(6, 61, 20), // "ZCAN_ReceiveFD_Data*"
-QT_MOC_LITERAL(7, 82, 10) // "canfd_data"
+QT_MOC_LITERAL(3, 29, 23), // "ZCAN_Receive_Data*const"
+QT_MOC_LITERAL(4, 53, 8), // "can_data"
+QT_MOC_LITERAL(5, 62, 3), // "len"
+QT_MOC_LITERAL(6, 66, 25), // "ZCAN_ReceiveFD_Data*const"
+QT_MOC_LITERAL(7, 92, 10) // "canfd_data"
 
     },
     "PlotGraphThread\0slot_newMsg\0\0"
-    "ZCAN_Receive_Data*\0can_data\0len\0"
-    "ZCAN_ReceiveFD_Data*\0canfd_data"
+    "ZCAN_Receive_Data*const\0can_data\0len\0"
+    "ZCAN_ReceiveFD_Data*const\0canfd_data"
 };
 #undef QT_MOC_LITERAL
 
@@ -77,8 +77,8 @@ void PlotGraphThread::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int 
         PlotGraphThread *_t = static_cast<PlotGraphThread *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->slot_newMsg((*reinterpret_cast< ZCAN_Receive_Data*(*)>(_a[1])),(*reinterpret_cast< uint(*)>(_a[2]))); break;
-        case 1: _t->slot_newMsg((*reinterpret_cast< ZCAN_ReceiveFD_Data*(*)>(_a[1])),(*reinterpret_cast< uint(*)>(_a[2]))); break;
+        case 0: _t->slot_newMsg((*reinterpret_cast< const ZCAN_Receive_Data*const(*)>(_a[1])),(*reinterpret_cast< const uint(*)>(_a[2]))); break;
+        case 1: _t->slot_newMsg((*reinterpret_cast< const ZCAN_ReceiveFD_Data*const(*)>(_a[1])),(*reinterpret_cast< const uint(*)>(_a[2]))); break;
         default: ;
         }
     }

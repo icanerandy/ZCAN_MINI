@@ -22,7 +22,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_RecMsgThread_t {
     QByteArrayData data[8];
-    char stringdata0[85];
+    char stringdata0[95];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -34,15 +34,15 @@ static const qt_meta_stringdata_RecMsgThread_t qt_meta_stringdata_RecMsgThread =
 QT_MOC_LITERAL(0, 0, 12), // "RecMsgThread"
 QT_MOC_LITERAL(1, 13, 6), // "newMsg"
 QT_MOC_LITERAL(2, 20, 0), // ""
-QT_MOC_LITERAL(3, 21, 18), // "ZCAN_Receive_Data*"
-QT_MOC_LITERAL(4, 40, 8), // "can_data"
-QT_MOC_LITERAL(5, 49, 3), // "len"
-QT_MOC_LITERAL(6, 53, 20), // "ZCAN_ReceiveFD_Data*"
-QT_MOC_LITERAL(7, 74, 10) // "canfd_data"
+QT_MOC_LITERAL(3, 21, 23), // "ZCAN_Receive_Data*const"
+QT_MOC_LITERAL(4, 45, 8), // "can_data"
+QT_MOC_LITERAL(5, 54, 3), // "len"
+QT_MOC_LITERAL(6, 58, 25), // "ZCAN_ReceiveFD_Data*const"
+QT_MOC_LITERAL(7, 84, 10) // "canfd_data"
 
     },
-    "RecMsgThread\0newMsg\0\0ZCAN_Receive_Data*\0"
-    "can_data\0len\0ZCAN_ReceiveFD_Data*\0"
+    "RecMsgThread\0newMsg\0\0ZCAN_Receive_Data*const\0"
+    "can_data\0len\0ZCAN_ReceiveFD_Data*const\0"
     "canfd_data"
 };
 #undef QT_MOC_LITERAL
@@ -77,22 +77,22 @@ void RecMsgThread::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
         RecMsgThread *_t = static_cast<RecMsgThread *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->newMsg((*reinterpret_cast< ZCAN_Receive_Data*(*)>(_a[1])),(*reinterpret_cast< uint(*)>(_a[2]))); break;
-        case 1: _t->newMsg((*reinterpret_cast< ZCAN_ReceiveFD_Data*(*)>(_a[1])),(*reinterpret_cast< uint(*)>(_a[2]))); break;
+        case 0: _t->newMsg((*reinterpret_cast< const ZCAN_Receive_Data*const(*)>(_a[1])),(*reinterpret_cast< const uint(*)>(_a[2]))); break;
+        case 1: _t->newMsg((*reinterpret_cast< const ZCAN_ReceiveFD_Data*const(*)>(_a[1])),(*reinterpret_cast< const uint(*)>(_a[2]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
         void **func = reinterpret_cast<void **>(_a[1]);
         {
-            typedef void (RecMsgThread::*_t)(ZCAN_Receive_Data * , uint );
+            typedef void (RecMsgThread::*_t)(const ZCAN_Receive_Data * const , const uint );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&RecMsgThread::newMsg)) {
                 *result = 0;
                 return;
             }
         }
         {
-            typedef void (RecMsgThread::*_t)(ZCAN_ReceiveFD_Data * , uint );
+            typedef void (RecMsgThread::*_t)(const ZCAN_ReceiveFD_Data * const , const uint );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&RecMsgThread::newMsg)) {
                 *result = 1;
                 return;
@@ -138,14 +138,14 @@ int RecMsgThread::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 }
 
 // SIGNAL 0
-void RecMsgThread::newMsg(ZCAN_Receive_Data * _t1, uint _t2)
+void RecMsgThread::newMsg(const ZCAN_Receive_Data * const _t1, const uint _t2)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 
 // SIGNAL 1
-void RecMsgThread::newMsg(ZCAN_ReceiveFD_Data * _t1, uint _t2)
+void RecMsgThread::newMsg(const ZCAN_ReceiveFD_Data * const _t1, const uint _t2)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);

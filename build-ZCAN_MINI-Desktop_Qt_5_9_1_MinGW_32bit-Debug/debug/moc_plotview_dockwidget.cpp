@@ -22,7 +22,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_PlotViewDockWidget_t {
     QByteArrayData data[12];
-    char stringdata0[164];
+    char stringdata0[176];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -39,16 +39,17 @@ QT_MOC_LITERAL(4, 59, 5), // "state"
 QT_MOC_LITERAL(5, 65, 6), // "msg_id"
 QT_MOC_LITERAL(6, 72, 17), // "CppCAN::CANSignal"
 QT_MOC_LITERAL(7, 90, 6), // "signal"
-QT_MOC_LITERAL(8, 97, 20), // "CustomPlotMousePress"
-QT_MOC_LITERAL(9, 118, 12), // "QMouseEvent*"
-QT_MOC_LITERAL(10, 131, 5), // "event"
-QT_MOC_LITERAL(11, 137, 26) // "CustomPlotSelectionChanged"
+QT_MOC_LITERAL(8, 97, 26), // "slot_customPlot_mousePress"
+QT_MOC_LITERAL(9, 124, 12), // "QMouseEvent*"
+QT_MOC_LITERAL(10, 137, 5), // "event"
+QT_MOC_LITERAL(11, 143, 32) // "slot_customPlot_selectionChanged"
 
     },
     "PlotViewDockWidget\0slot_checkState_changed\0"
     "\0Qt::CheckState\0state\0msg_id\0"
-    "CppCAN::CANSignal\0signal\0CustomPlotMousePress\0"
-    "QMouseEvent*\0event\0CustomPlotSelectionChanged"
+    "CppCAN::CANSignal\0signal\0"
+    "slot_customPlot_mousePress\0QMouseEvent*\0"
+    "event\0slot_customPlot_selectionChanged"
 };
 #undef QT_MOC_LITERAL
 
@@ -84,9 +85,9 @@ void PlotViewDockWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, i
         PlotViewDockWidget *_t = static_cast<PlotViewDockWidget *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->slot_checkState_changed((*reinterpret_cast< Qt::CheckState(*)>(_a[1])),(*reinterpret_cast< const unsigned long long(*)>(_a[2])),(*reinterpret_cast< const CppCAN::CANSignal(*)>(_a[3]))); break;
-        case 1: _t->CustomPlotMousePress((*reinterpret_cast< QMouseEvent*(*)>(_a[1]))); break;
-        case 2: _t->CustomPlotSelectionChanged(); break;
+        case 0: _t->slot_checkState_changed((*reinterpret_cast< const Qt::CheckState(*)>(_a[1])),(*reinterpret_cast< const unsigned long long(*)>(_a[2])),(*reinterpret_cast< const CppCAN::CANSignal(*)>(_a[3]))); break;
+        case 1: _t->slot_customPlot_mousePress((*reinterpret_cast< QMouseEvent*(*)>(_a[1]))); break;
+        case 2: _t->slot_customPlot_selectionChanged(); break;
         default: ;
         }
     }

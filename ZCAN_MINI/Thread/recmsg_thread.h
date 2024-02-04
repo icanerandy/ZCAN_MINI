@@ -35,8 +35,8 @@ public:
     void stopThread();
 
 signals:
-    void newMsg(ZCAN_Receive_Data *can_data, uint len);
-    void newMsg(ZCAN_ReceiveFD_Data *canfd_data, uint len);
+    void newMsg(const ZCAN_Receive_Data* const can_data, const uint len);
+    void newMsg(const ZCAN_ReceiveFD_Data* const canfd_data, const uint len);
 };
 
 #endif // RECMSG_THREAD_H

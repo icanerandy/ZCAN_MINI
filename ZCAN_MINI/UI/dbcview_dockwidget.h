@@ -27,16 +27,14 @@ private slots:
     void slot_signal_model_itemChanged(QStandardItem *item);
 
 signals:
-    void sig_checkState_changed(Qt::CheckState state, const unsigned long long msg_id, const CppCAN::CANSignal &signal);
+    void sig_checkState_changed(const Qt::CheckState state, const unsigned long long msg_id, const CppCAN::CANSignal &signal);
 
 private:
-    Ui::DBCViewDockWidget *ui;
+    Ui::DBCViewDockWidget * const ui;
 
     CppCAN::CANDatabase db;
-
     QStandardItemModel *message_model;
     QStandardItemModel *signal_model;
-
     QItemSelectionModel *item_selection_model;
 };
 

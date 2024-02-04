@@ -18,26 +18,25 @@ public:
     ~SendDataDialog();
 
 private:
-    void InitDialog();
+    void initDlg();
+    void bindSignals();
 
 private slots:
-    void BindSignals();
-    slot_btnSend_clicked();
+    void slot_btnSend_clicked();
 
 private:
-    Ui::SendDataDialog *ui;
+    Ui::SendDataDialog * const ui;
 
-private:
-    QString id_;
+    uint id_;
     QString datas_;
-    int send_count_once_;
-    int frame_type_index_;
-    int frame_delay_time_;
-    int protocol_index_;
-    int data_length_;
-    int send_type_index_;
-    int send_count_;
-    int text_length_;
+    uint send_count_once_;
+    DeviceManager::FrameType frame_type_;
+    uint frame_delay_time_;
+    DeviceManager::ProtocolType protocol_type_;
+    uint data_length_;
+    DeviceManager::SendType send_type_;
+    uint send_count_;
+    uint text_length_;
 };
 
 #endif // SENDDATA_DIALOG_H

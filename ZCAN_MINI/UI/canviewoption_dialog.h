@@ -16,22 +16,11 @@ public:
     explicit CanViewOptionDialog(QWidget *parent = 0);
     ~CanViewOptionDialog();
 
-private slots:
-    slot_chkId_checked(bool isChecked);
-    slot_chkLength_checked(bool isChecked);
-    slot_chkData_checked(bool isChecked);
-    slot_chkStamp_checked(bool isChecked);
-    slot_chkDirection_checked(bool isChecked);
-    slot_chkFrameType_checked(bool isChecked);
-    slot_chkFormat_checked(bool isChecked);
-    slot_chkCanType_checked(bool isChecked);
-    slot_btnOk_clicked();
-
 signals:
-    void signal_visibleCol(QList<int> visible_columns);
+    void sig_visibleCol_changed(const QList<uint> visible_columns);
 
 private:
-    Ui::CanViewOptionDialog *ui;
+    Ui::CanViewOptionDialog * const ui;
 };
 
 #endif // CANVIEWOPTION_DIALOG_H

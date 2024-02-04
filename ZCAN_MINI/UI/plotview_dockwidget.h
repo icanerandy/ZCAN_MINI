@@ -23,19 +23,21 @@ public:
     ~PlotViewDockWidget();
 
 public slots:
-    void slot_checkState_changed(Qt::CheckState state, const unsigned long long msg_id, const CppCAN::CANSignal &signal);
+    void slot_checkState_changed(const Qt::CheckState state, const unsigned long long msg_id, const CppCAN::CANSignal &signal);
 
 private slots:
-    void CustomPlotMousePress(QMouseEvent* event);
-    void CustomPlotSelectionChanged();
+    void slot_customPlot_mousePress(QMouseEvent* event);
+    void slot_customPlot_selectionChanged();
+
 private:
-    void FindSelectedPoint(QCPGraph *graph, QPoint select_point, double &key, double &value);
+    void findSelectedPoint(QCPGraph *graph, QPoint select_point, double &key, double &value);
+
 private:
     QPoint m_PressedPoint;
     DataTracer *p_DataTracer;
 
 private:
-    Ui::PlotViewDockWidget *ui;
+    Ui::PlotViewDockWidget * const ui;
     QCPItemTracer *tracer_;
     QCPItemText *tracer_label_;
     uint plot_num_;

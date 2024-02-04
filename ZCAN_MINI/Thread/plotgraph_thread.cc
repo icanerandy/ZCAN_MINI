@@ -6,33 +6,29 @@ PlotGraphThread::PlotGraphThread(QCustomPlot *plot, uint plot_index, const unsig
       msg_id_(msg_id),
       signal_(signal)
 {
-    RecMsgThread *rec_msg_thread = RecMsgThread::getInstance();
-    connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(ZCAN_Receive_Data *, uint)>(&RecMsgThread::newMsg),
-            this, static_cast<void (PlotGraphThread::*)(ZCAN_Receive_Data *, uint)>(&PlotGraphThread::slot_newMsg));
-    connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(ZCAN_ReceiveFD_Data *, uint)>(&RecMsgThread::newMsg),
-            this, static_cast<void (PlotGraphThread::*)(ZCAN_ReceiveFD_Data *, uint)>(&PlotGraphThread::slot_newMsg));
+
 }
 
 void PlotGraphThread::beginThread()
 {
     m_pause = false;
 
-    RecMsgThread *rec_msg_thread = RecMsgThread::getInstance();
-    connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(ZCAN_Receive_Data *, uint)>(&RecMsgThread::newMsg),
-            this, static_cast<void (PlotGraphThread::*)(ZCAN_Receive_Data *, uint)>(&PlotGraphThread::slot_newMsg));
-    connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(ZCAN_ReceiveFD_Data *, uint)>(&RecMsgThread::newMsg),
-            this, static_cast<void (PlotGraphThread::*)(ZCAN_ReceiveFD_Data *, uint)>(&PlotGraphThread::slot_newMsg));
+    RecMsgThread* rec_msg_thread = RecMsgThread::getInstance();
+    connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_Receive_Data* const, const uint)>(&RecMsgThread::newMsg),
+            this, static_cast<void (PlotGraphThread::*)(const ZCAN_Receive_Data* const, const uint)>(&PlotGraphThread::slot_newMsg));
+    connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_ReceiveFD_Data* const, const uint)>(&RecMsgThread::newMsg),
+            this, static_cast<void (PlotGraphThread::*)(const ZCAN_ReceiveFD_Data* const, const uint)>(&PlotGraphThread::slot_newMsg));
 }
 
 void PlotGraphThread::pauseThread()
 {
     m_pause = true;
 
-    RecMsgThread *rec_msg_thread = RecMsgThread::getInstance();
-    disconnect(rec_msg_thread, static_cast<void (RecMsgThread::*)(ZCAN_Receive_Data *, uint)>(&RecMsgThread::newMsg),
-            this, static_cast<void (PlotGraphThread::*)(ZCAN_Receive_Data *, uint)>(&PlotGraphThread::slot_newMsg));
-    disconnect(rec_msg_thread, static_cast<void (RecMsgThread::*)(ZCAN_ReceiveFD_Data *, uint)>(&RecMsgThread::newMsg),
-            this, static_cast<void (PlotGraphThread::*)(ZCAN_ReceiveFD_Data *, uint)>(&PlotGraphThread::slot_newMsg));
+    RecMsgThread* rec_msg_thread = RecMsgThread::getInstance();
+    disconnect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_Receive_Data* const, const uint)>(&RecMsgThread::newMsg),
+            this, static_cast<void (PlotGraphThread::*)(const ZCAN_Receive_Data* const, const uint)>(&PlotGraphThread::slot_newMsg));
+    disconnect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_ReceiveFD_Data* const, const uint)>(&RecMsgThread::newMsg),
+            this, static_cast<void (PlotGraphThread::*)(const ZCAN_ReceiveFD_Data* const, const uint)>(&PlotGraphThread::slot_newMsg));
 }
 
 void PlotGraphThread::stopThread()
@@ -40,16 +36,16 @@ void PlotGraphThread::stopThread()
     m_stop = true;
 }
 
-int PlotGraphThread::getValue(const unsigned char *data, int len)
+int PlotGraphThread::getValue(const unsigned char* const data, uint len)
 {
     QString bits = "";
 
-    for(int i=0;i<len;i++)
+    for(uint i=0;i<len;i++)
     {
         QString str = QString("%1").arg(data[i],8,2,QLatin1Char('0'));
         QString str1;
         str1.fill('0',str.size());
-        for(int j = 0;j<str1.length();j++)
+        for(uint j = 0;j<static_cast<uint>(str1.length());j++)
             str1[j] = str[str1.length()-j-1];
         bits += str1;
     }
@@ -59,10 +55,10 @@ int PlotGraphThread::getValue(const unsigned char *data, int len)
 
     if (CppCAN::CANSignal::LittleEndian == signal_.endianness())
     {
-        for (int i = 0; i < signal_.length(); i++)
+        for (uint i = 0; i < signal_.length(); i++)
         {
-            int p = i + signal_.start_bit();
-            if (p >= 0 && p < len * 8)
+            uint p = i + signal_.start_bit();
+            if (p < len * 8)
             {
                 if (bits[i + signal_.start_bit()] == QLatin1Char('1'))
                     value += (int)qPow(2, i);
@@ -77,7 +73,7 @@ int PlotGraphThread::getValue(const unsigned char *data, int len)
     else
     {
         int offset = 0;
-        for (int i = 0; i < signal_.length(); i++)
+        for (uint i = 0; i < signal_.length(); i++)
         {
             int p = i + signal_.start_bit();
             if ((p % 8 == 0) && (i != 0))
@@ -112,6 +108,8 @@ int PlotGraphThread::getValue(const unsigned char *data, int len)
         qDebug() << value;
         return value;
     }
+
+    return -999999;
 }
 
 void PlotGraphThread::run()
@@ -134,10 +132,10 @@ void PlotGraphThread::run()
     quit(); // 相当于exit(0)，退出线程的事件循环
 }
 
-void PlotGraphThread::slot_newMsg(ZCAN_Receive_Data *can_data, uint len)
+void PlotGraphThread::slot_newMsg(const ZCAN_Receive_Data* const can_data, const uint len)
 {
     uint i = 0;
-    while (len--)
+    while (i < len)
     {
         if (GET_ID(can_data[i].frame.can_id) != msg_id_)
             return;
@@ -150,10 +148,10 @@ void PlotGraphThread::slot_newMsg(ZCAN_Receive_Data *can_data, uint len)
         //key的单位是 ms
         double key = QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0;
 
-        double value = test_value_;
-        test_value_ -= 10;
-        if (0 == test_value_)
-            test_value_ = 1000;
+//        double value = test_value_;
+//        test_value_ -= 10;
+//        if (0 == test_value_)
+//            test_value_ = 1000;
 
         //这里的1，是指横坐标时间宽度为1s，如果想要横坐标显示更多的时间
         //就把1调整为比较大到值，比如要显示10s，那就改成10。
@@ -165,23 +163,34 @@ void PlotGraphThread::slot_newMsg(ZCAN_Receive_Data *can_data, uint len)
     }
 }
 
-void PlotGraphThread::slot_newMsg(ZCAN_ReceiveFD_Data *canfd_data, uint len)
+void PlotGraphThread::slot_newMsg(const ZCAN_ReceiveFD_Data* const canfd_data, const uint len)
 {
-    if (GET_ID(canfd_data->frame.can_id) != msg_id_)
-        return;
+    uint i = 0;
+    while (i < len)
+    {
+        if (GET_ID(canfd_data[i].frame.can_id) != msg_id_)
+            return;
 
-    //key的单位是 ms
-    double key = QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0;
+        unsigned char buf[canfd_data[i].frame.len];
+        memcpy(buf, canfd_data[i].frame.data, canfd_data[i].frame.len);
 
-    double value = test_value_;
-    test_value_ -= 10;
-    if (0 == test_value_)
-        test_value_ = 1000;
+        int real_value = getValue(buf, canfd_data[i].frame.len);
 
-    //这里的1，是指横坐标时间宽度为1s，如果想要横坐标显示更多的时间
-    //就把1调整为比较大到值，比如要显示10s，那就改成10。
-    plot_->graph(plot_index_)->addData(key, value);
-    plot_->xAxis->setRange(key+0.1, /*100*/1, Qt::AlignRight);
-    plot_->replot();
+        //key的单位是 ms
+        double key = QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0;
+
+//        double value = test_value_;
+//        test_value_ -= 10;
+//        if (0 == test_value_)
+//            test_value_ = 1000;
+
+        //这里的1，是指横坐标时间宽度为1s，如果想要横坐标显示更多的时间
+        //就把1调整为比较大到值，比如要显示10s，那就改成10。
+        plot_->graph(plot_index_)->addData(key, real_value);
+        plot_->xAxis->setRange(key+0.1, /*100*/1, Qt::AlignRight);
+        plot_->replot();
+
+        ++i;
+    }
 }
 

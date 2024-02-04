@@ -14,12 +14,12 @@ DBCViewDockWidget::DBCViewDockWidget(QWidget *parent) :
     signal_model = new QStandardItemModel();
     item_selection_model = new QItemSelectionModel(message_model);
 
-    ui->sigView->setModel(signal_model);
     ui->msgView->setModel(message_model);
+    ui->sigView->setModel(signal_model);
     ui->msgView->setSelectionModel(item_selection_model);
+
     ui->msgView->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->msgView->setSelectionBehavior(QAbstractItemView::SelectItems);
-
 
     //设置选中时为整行选中
     ui->msgView->setSelectionBehavior(QAbstractItemView::SelectRows);
@@ -40,7 +40,7 @@ DBCViewDockWidget::DBCViewDockWidget(QWidget *parent) :
     //ui->sigView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     QStringList str_list;
-    str_list << QStringLiteral("名字") << QStringLiteral("ID") << QStringLiteral("DLC") << QStringLiteral("注释");
+    str_list << QStringLiteral("名字") << QStringLiteral("ID(Hex)") << QStringLiteral("DLC") << QStringLiteral("注释");
     message_model->setHorizontalHeaderLabels(str_list);
     str_list.clear();
     str_list << QStringLiteral("名字") << QStringLiteral("长度") << QStringLiteral("起始位") << QStringLiteral("因子")
@@ -59,7 +59,7 @@ DBCViewDockWidget::~DBCViewDockWidget()
 
 void DBCViewDockWidget::slot_btnReadDBC_clicked()
 {
-    QString filename = QFileDialog::getOpenFileName(this, "选择dbc文件", QDir::currentPath(), nullptr);
+    const QString filename = QFileDialog::getOpenFileName(this, "选择dbc文件", QDir::currentPath(), nullptr);
     if (filename.isEmpty())
         return;
 
@@ -148,11 +148,11 @@ void DBCViewDockWidget::slot_signal_model_itemChanged(QStandardItem *item)
 {
     if (Qt::Checked == item->checkState())
     {
-        QString sig_name = item->text();
-        QModelIndex index = item_selection_model->selectedIndexes().at(0);
-        QStandardItem *item = message_model->itemFromIndex(index);
-        QString msg_name = item->text();
-        CppCAN::CANFrame &msg = db.at(msg_name.toStdString());
+        const QString sig_name = item->text();
+        const QModelIndex index = item_selection_model->selectedIndexes().at(0);
+        const QStandardItem* const item = message_model->itemFromIndex(index);
+        const QString msg_name = item->text();
+        const CppCAN::CANFrame& msg = db.at(msg_name.toStdString());
         const unsigned long long msg_id = msg.can_id();
 
         const CppCAN::CANSignal& signal = msg.at(sig_name.toStdString());
@@ -160,11 +160,11 @@ void DBCViewDockWidget::slot_signal_model_itemChanged(QStandardItem *item)
     }
     else
     {
-        QString sig_name = item->text();
-        QModelIndex index = item_selection_model->selectedIndexes().at(0);
-        QStandardItem *item = message_model->itemFromIndex(index);
-        QString msg_name = item->text();
-        CppCAN::CANFrame &msg = db.at(msg_name.toStdString());
+        const QString sig_name = item->text();
+        const QModelIndex index = item_selection_model->selectedIndexes().at(0);
+        const QStandardItem* const item = message_model->itemFromIndex(index);
+        const QString msg_name = item->text();
+        const CppCAN::CANFrame& msg = db.at(msg_name.toStdString());
         const unsigned long long msg_id = msg.can_id();
 
         const CppCAN::CANSignal& signal = msg.at(sig_name.toStdString());

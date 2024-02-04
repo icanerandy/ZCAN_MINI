@@ -98,11 +98,11 @@ private:
 
 public:
     static DeviceManager *getInstance();    // 获取单例对象
-    DeviceTypeIndex device_type_index();
-    CHANNEL_HANDLE channel_handle();
-    DeviceManager::CanState can_start();
-    Enable send_enable();
-    StandardType canfd_standard_type();
+    DeviceTypeIndex device_type_index() const;
+    CHANNEL_HANDLE channel_handle() const;
+    DeviceManager::CanState can_start() const;
+    Enable send_enable() const;
+    StandardType canfd_standard_type() const;
     void set_abit_baud_index(uint index);
     void set_dbit_baud_index(uint index);
     void set_canfd_standard_type(StandardType type);
@@ -125,9 +125,10 @@ public:
     bool initCan();
     bool startCan();
     bool sendMsg();
+    void stopSendMsg();
     bool stopCan();
     bool closeDevice();
-    ZCAN_DEVICE_INFO *getDeviceInfo();
+    const ZCAN_DEVICE_INFO *getDeviceInfo() const;
 
 private:
     bool isNetCAN( uint type );
@@ -185,6 +186,8 @@ private:
     DeviceState device_opened_;/* 设备是否已经打开 */
 
     CanState can_start_;/* CAN是否已经启动 */
+
+    SendMsgThread *sendmsg_thread_;
 };
 
 #endif // DEVICE_MANAGER_H

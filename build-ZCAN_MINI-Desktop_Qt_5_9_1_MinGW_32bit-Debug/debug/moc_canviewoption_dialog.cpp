@@ -22,8 +22,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_CanViewOptionDialog_t {
-    QByteArrayData data[15];
-    char stringdata0[279];
+    QByteArrayData data[5];
+    char stringdata0[72];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -33,30 +33,14 @@ struct qt_meta_stringdata_CanViewOptionDialog_t {
 static const qt_meta_stringdata_CanViewOptionDialog_t qt_meta_stringdata_CanViewOptionDialog = {
     {
 QT_MOC_LITERAL(0, 0, 19), // "CanViewOptionDialog"
-QT_MOC_LITERAL(1, 20, 17), // "signal_visibleCol"
-QT_MOC_LITERAL(2, 38, 0), // ""
-QT_MOC_LITERAL(3, 39, 10), // "QList<int>"
-QT_MOC_LITERAL(4, 50, 15), // "visible_columns"
-QT_MOC_LITERAL(5, 66, 18), // "slot_chkId_checked"
-QT_MOC_LITERAL(6, 85, 9), // "isChecked"
-QT_MOC_LITERAL(7, 95, 22), // "slot_chkLength_checked"
-QT_MOC_LITERAL(8, 118, 20), // "slot_chkData_checked"
-QT_MOC_LITERAL(9, 139, 21), // "slot_chkStamp_checked"
-QT_MOC_LITERAL(10, 161, 25), // "slot_chkDirection_checked"
-QT_MOC_LITERAL(11, 187, 25), // "slot_chkFrameType_checked"
-QT_MOC_LITERAL(12, 213, 22), // "slot_chkFormat_checked"
-QT_MOC_LITERAL(13, 236, 23), // "slot_chkCanType_checked"
-QT_MOC_LITERAL(14, 260, 18) // "slot_btnOk_clicked"
+QT_MOC_LITERAL(1, 20, 22), // "sig_visibleCol_changed"
+QT_MOC_LITERAL(2, 43, 0), // ""
+QT_MOC_LITERAL(3, 44, 11), // "QList<uint>"
+QT_MOC_LITERAL(4, 56, 15) // "visible_columns"
 
     },
-    "CanViewOptionDialog\0signal_visibleCol\0"
-    "\0QList<int>\0visible_columns\0"
-    "slot_chkId_checked\0isChecked\0"
-    "slot_chkLength_checked\0slot_chkData_checked\0"
-    "slot_chkStamp_checked\0slot_chkDirection_checked\0"
-    "slot_chkFrameType_checked\0"
-    "slot_chkFormat_checked\0slot_chkCanType_checked\0"
-    "slot_btnOk_clicked"
+    "CanViewOptionDialog\0sig_visibleCol_changed\0"
+    "\0QList<uint>\0visible_columns"
 };
 #undef QT_MOC_LITERAL
 
@@ -66,7 +50,7 @@ static const uint qt_meta_data_CanViewOptionDialog[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-      10,   14, // methods
+       1,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -74,32 +58,10 @@ static const uint qt_meta_data_CanViewOptionDialog[] = {
        1,       // signalCount
 
  // signals: name, argc, parameters, tag, flags
-       1,    1,   64,    2, 0x06 /* Public */,
-
- // slots: name, argc, parameters, tag, flags
-       5,    1,   67,    2, 0x08 /* Private */,
-       7,    1,   70,    2, 0x08 /* Private */,
-       8,    1,   73,    2, 0x08 /* Private */,
-       9,    1,   76,    2, 0x08 /* Private */,
-      10,    1,   79,    2, 0x08 /* Private */,
-      11,    1,   82,    2, 0x08 /* Private */,
-      12,    1,   85,    2, 0x08 /* Private */,
-      13,    1,   88,    2, 0x08 /* Private */,
-      14,    0,   91,    2, 0x08 /* Private */,
+       1,    1,   19,    2, 0x06 /* Public */,
 
  // signals: parameters
     QMetaType::Void, 0x80000000 | 3,    4,
-
- // slots: parameters
-    QMetaType::Int, QMetaType::Bool,    6,
-    QMetaType::Int, QMetaType::Bool,    6,
-    QMetaType::Int, QMetaType::Bool,    6,
-    QMetaType::Int, QMetaType::Bool,    6,
-    QMetaType::Int, QMetaType::Bool,    6,
-    QMetaType::Int, QMetaType::Bool,    6,
-    QMetaType::Int, QMetaType::Bool,    6,
-    QMetaType::Int, QMetaType::Bool,    6,
-    QMetaType::Int,
 
        0        // eod
 };
@@ -110,25 +72,7 @@ void CanViewOptionDialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, 
         CanViewOptionDialog *_t = static_cast<CanViewOptionDialog *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->signal_visibleCol((*reinterpret_cast< QList<int>(*)>(_a[1]))); break;
-        case 1: { int _r = _t->slot_chkId_checked((*reinterpret_cast< bool(*)>(_a[1])));
-            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = std::move(_r); }  break;
-        case 2: { int _r = _t->slot_chkLength_checked((*reinterpret_cast< bool(*)>(_a[1])));
-            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = std::move(_r); }  break;
-        case 3: { int _r = _t->slot_chkData_checked((*reinterpret_cast< bool(*)>(_a[1])));
-            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = std::move(_r); }  break;
-        case 4: { int _r = _t->slot_chkStamp_checked((*reinterpret_cast< bool(*)>(_a[1])));
-            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = std::move(_r); }  break;
-        case 5: { int _r = _t->slot_chkDirection_checked((*reinterpret_cast< bool(*)>(_a[1])));
-            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = std::move(_r); }  break;
-        case 6: { int _r = _t->slot_chkFrameType_checked((*reinterpret_cast< bool(*)>(_a[1])));
-            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = std::move(_r); }  break;
-        case 7: { int _r = _t->slot_chkFormat_checked((*reinterpret_cast< bool(*)>(_a[1])));
-            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = std::move(_r); }  break;
-        case 8: { int _r = _t->slot_chkCanType_checked((*reinterpret_cast< bool(*)>(_a[1])));
-            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = std::move(_r); }  break;
-        case 9: { int _r = _t->slot_btnOk_clicked();
-            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = std::move(_r); }  break;
+        case 0: _t->sig_visibleCol_changed((*reinterpret_cast< const QList<uint>(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -138,7 +82,7 @@ void CanViewOptionDialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, 
             switch (*reinterpret_cast<int*>(_a[1])) {
             default: *reinterpret_cast<int*>(_a[0]) = -1; break;
             case 0:
-                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QList<int> >(); break;
+                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QList<uint> >(); break;
             }
             break;
         }
@@ -146,8 +90,8 @@ void CanViewOptionDialog::qt_static_metacall(QObject *_o, QMetaObject::Call _c, 
         int *result = reinterpret_cast<int *>(_a[0]);
         void **func = reinterpret_cast<void **>(_a[1]);
         {
-            typedef void (CanViewOptionDialog::*_t)(QList<int> );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&CanViewOptionDialog::signal_visibleCol)) {
+            typedef void (CanViewOptionDialog::*_t)(const QList<uint> );
+            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&CanViewOptionDialog::sig_visibleCol_changed)) {
                 *result = 0;
                 return;
             }
@@ -180,19 +124,19 @@ int CanViewOptionDialog::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 10)
+        if (_id < 1)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 10;
+        _id -= 1;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 10)
+        if (_id < 1)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 10;
+        _id -= 1;
     }
     return _id;
 }
 
 // SIGNAL 0
-void CanViewOptionDialog::signal_visibleCol(QList<int> _t1)
+void CanViewOptionDialog::sig_visibleCol_changed(const QList<uint> _t1)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);

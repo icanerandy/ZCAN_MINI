@@ -15,8 +15,8 @@ PlotViewDockWidget::PlotViewDockWidget(QWidget *parent) :
 
     QCustomPlot *plot = ui->plot;
 
-    connect(plot, SIGNAL(mousePress(QMouseEvent*)), this, SLOT(CustomPlotMousePress(QMouseEvent*)));
-    connect(plot, SIGNAL(selectionChangedByUser()), this, SLOT(CustomPlotSelectionChanged()));
+    connect(plot, SIGNAL(mousePress(QMouseEvent*)), this, SLOT(slot_customPlot_mousePress(QMouseEvent*)));
+    connect(plot, SIGNAL(selectionChangedByUser()), this, SLOT(slot_customPlot_selectionChanged()));
     this->p_DataTracer = new DataTracer(plot);
 }
 
@@ -25,7 +25,7 @@ PlotViewDockWidget::~PlotViewDockWidget()
     delete ui;
 }
 
-void PlotViewDockWidget::slot_checkState_changed(Qt::CheckState state, const unsigned long long msg_id, const CppCAN::CANSignal &signal)
+void PlotViewDockWidget::slot_checkState_changed(const Qt::CheckState state, const unsigned long long msg_id, const CppCAN::CANSignal &signal)
 {
     QCustomPlot *plot = ui->plot;
     if (Qt::Checked == state)
@@ -76,12 +76,12 @@ void PlotViewDockWidget::slot_checkState_changed(Qt::CheckState state, const uns
     }
 }
 
-void PlotViewDockWidget::CustomPlotMousePress(QMouseEvent *event)
+void PlotViewDockWidget::slot_customPlot_mousePress(QMouseEvent *event)
 {
     this->m_PressedPoint = event->pos();
 }
 
-void PlotViewDockWidget::CustomPlotSelectionChanged()
+void PlotViewDockWidget::slot_customPlot_selectionChanged()
 {
     QCustomPlot *plot = ui->plot;
     if (plot->xAxis->selectedParts().testFlag(QCPAxis::spAxis) || plot->xAxis->selectedParts().testFlag(QCPAxis::spTickLabels) || plot->xAxis->selectedParts().testFlag(QCPAxis::spAxisLabel))
@@ -121,14 +121,14 @@ void PlotViewDockWidget::CustomPlotSelectionChanged()
     }else{
         this->p_DataTracer->setVisible(true);
         double key, value;
-        FindSelectedPoint(plot->graph(graph_index), this->m_PressedPoint, key, value);
+        findSelectedPoint(plot->graph(graph_index), this->m_PressedPoint, key, value);
         QDateTime time = QCPAxisTickerDateTime::keyToDateTime(key);
         this->p_DataTracer->setText(time.toString("Time:hh:mm.ss.zzz"), QString("Depth:%1m").arg(value, 0,'f',2));
         this->p_DataTracer->updatePosition(plot->graph(graph_index), key, value);
     }
 }
 
-void PlotViewDockWidget::FindSelectedPoint(QCPGraph *graph, QPoint select_point, double &key, double &value)
+void PlotViewDockWidget::findSelectedPoint(QCPGraph *graph, QPoint select_point, double &key, double &value)
 {
     double temp_key, temp_value;
     graph->pixelsToCoords(select_point, temp_key, temp_value);

@@ -3,10 +3,10 @@
 CanFrameTableModel::CanFrameTableModel(QObject *parent)
     : QAbstractTableModel(parent)
 {
-    header_list << "时间标识" << "帧ID" << "帧类型" << "帧格式" << "CAN类型" << "方向" << "长度" << "数据";
-    for (int i = 0; i < 8; ++i)
+    header_list << "时间标识" << "帧ID(Hex)" << "帧类型" << "帧格式" << "CAN类型" << "方向" << "长度" << "数据";
+    for (uint i = 0; i < 8; ++i)
     {
-        visible_columns.append(kTimeStamp + i);
+        visible_columns.append(static_cast<uint>(VisibleColumns::TimeStamp) + i);
     }
 }
 
@@ -50,22 +50,30 @@ QVariant CanFrameTableModel::data(const QModelIndex &index, int role) const
             int visible_column = visible_columns.at(index.column());
             switch (visible_column)
             {
-                case kTimeStamp: {
-                    QDateTime currentTime = QDateTime::currentDateTime();
-                    QString formattedTime = currentTime.toString("[hh:mm:ss.zzz] ");
-                    return formattedTime;
+                case static_cast<uint>(VisibleColumns::TimeStamp):
+                    {
+                        QDateTime currentTime = QDateTime::currentDateTime();
+                        QString formattedTime = currentTime.toString("[hh:mm:ss.zzz] ");
+                        return formattedTime;
 
-//                    double timestamp = can.timestamp / 1000.0;
+    //                    double timestamp = can.timestamp / 1000.0;
 
-//                    return QString::number(timestamp, 'f', 3);
-                } break;
-                case kId: return QString::asprintf("%08X", GET_ID(frame.can_id)); break;
-                case kFrameType: return QString(IS_EFF(frame.can_id)?"扩展帧" : "标准帧"); break;
-                case kFormat: return QString(IS_RTR(frame.can_id)?"远程帧" : "数据帧"); break;
-                case kCanType: return QString("CAN"); break;
-                case kDirection: return QString("RX"); break;
-                case kLength: return QString::asprintf("%d", frame.can_dlc); break;
-                case kData: {
+    //                    return QString::number(timestamp, 'f', 3);
+                    } break;
+                case static_cast<uint>(VisibleColumns::Id):
+                    return QString::asprintf("%08X", GET_ID(frame.can_id));
+                case static_cast<uint>(VisibleColumns::FrameType):
+                    return QString(IS_EFF(frame.can_id)?"扩展帧" : "标准帧");
+                case static_cast<uint>(VisibleColumns::Format):
+                    return QString(IS_RTR(frame.can_id)?"远程帧" : "数据帧");
+                case static_cast<uint>(VisibleColumns::CanType):
+                    return QString("CAN");
+                case static_cast<uint>(VisibleColumns::Direction):
+                    return QString("RX");
+                case static_cast<uint>(VisibleColumns::Length):
+                    return QString::asprintf("%d", frame.can_dlc);
+                case static_cast<uint>(VisibleColumns::Data):
+                    {
                     QString str;
                     for (int i = 0; i < frame.can_dlc; ++i) {
                         str += QString::asprintf("%02X ", can.frame.data[i]);
@@ -73,7 +81,7 @@ QVariant CanFrameTableModel::data(const QModelIndex &index, int role) const
                             str += " "; // 添加空格分隔符
                     }
                     return str;
-                } break;
+                    };
             }
         }
         else if (can_frame_list.at(row).canConvert<ZCAN_ReceiveFD_Data>())
@@ -83,25 +91,33 @@ QVariant CanFrameTableModel::data(const QModelIndex &index, int role) const
             int visible_column = visible_columns.at(index.column());
             switch (visible_column)
             {
-                case kTimeStamp: {
-                    QDateTime dateTime = QDateTime::fromMSecsSinceEpoch(can.timestamp);
-                    return dateTime.toString("yyyy-MM-dd HH:mm:ss.zzz");
-                } break;
-                case kId: return QString::asprintf("%08X", GET_ID(frame.can_id)); break;
-                case kFrameType: return QString(IS_EFF(frame.can_id)?"扩展帧" : "标准帧"); break;
-                case kFormat: return QString(IS_RTR(frame.can_id)?"远程帧" : "数据帧"); break;
-                case kCanType: return QString(CANFD_BRS==frame.flags?"CANFD加速":"CANFD"); break;
-                case kDirection: return QString("RX"); break;
-                case kLength: return QString::asprintf("%d", frame.len); break;
-                case kData: {
-                    QString str;
-                    for (int i = 0; i < frame.len; ++i) {
-                        str += QString::asprintf("%02X ", can.frame.data[i]);
-                        if (i < CAN_MAX_DLEN - 1)
-                            str += " "; // 添加空格分隔符
-                    }
-                    return str;
-                } break;
+                case static_cast<uint>(VisibleColumns::TimeStamp):
+                    {
+                        QDateTime dateTime = QDateTime::fromMSecsSinceEpoch(can.timestamp);
+                        return dateTime.toString("yyyy-MM-dd HH:mm:ss.zzz");
+                    };
+                case static_cast<uint>(VisibleColumns::Id):
+                    return QString::asprintf("%08X", GET_ID(frame.can_id));
+                case static_cast<uint>(VisibleColumns::FrameType):
+                    return QString(IS_EFF(frame.can_id)?"扩展帧" : "标准帧");
+                case static_cast<uint>(VisibleColumns::Format):
+                    return QString(IS_RTR(frame.can_id)?"远程帧" : "数据帧");
+                case static_cast<uint>(VisibleColumns::CanType):
+                    return QString(CANFD_BRS==frame.flags?"CANFD加速":"CANFD");
+                case static_cast<uint>(VisibleColumns::Direction):
+                    return QString("RX");
+                case static_cast<uint>(VisibleColumns::Length):
+                    return QString::asprintf("%d", frame.len);
+                case static_cast<uint>(VisibleColumns::Data):
+                    {
+                        QString str;
+                        for (int i = 0; i < frame.len; ++i) {
+                            str += QString::asprintf("%02X ", can.frame.data[i]);
+                            if (i < CAN_MAX_DLEN - 1)
+                                str += " "; // 添加空格分隔符
+                        }
+                        return str;
+                    };
             }
         }
     }
@@ -142,7 +158,7 @@ void CanFrameTableModel::ClearData()
     endResetModel();
 }
 
-void CanFrameTableModel::newMsg(ZCAN_Receive_Data *can_data, uint len)
+void CanFrameTableModel::newMsg(const ZCAN_Receive_Data* const can_data, const uint len)
 {
     QString item;
     for (uint i = 0; i < len; ++i)
@@ -160,7 +176,7 @@ void CanFrameTableModel::newMsg(ZCAN_Receive_Data *can_data, uint len)
     }
 }
 
-void CanFrameTableModel::newMsg(ZCAN_ReceiveFD_Data *canfd_data, uint len)
+void CanFrameTableModel::newMsg(const ZCAN_ReceiveFD_Data* const canfd_data, const uint len)
 {
     QString item;
     for (uint i = 0; i < len; ++i)
@@ -178,7 +194,7 @@ void CanFrameTableModel::newMsg(ZCAN_ReceiveFD_Data *canfd_data, uint len)
     }
 }
 
-void CanFrameTableModel::slot_visibleCol(QList<int> visible_columns)
+void CanFrameTableModel::slot_visibleCol_changed(const QList<uint> visible_columns)
 {
     beginResetModel();
     this->visible_columns = visible_columns;

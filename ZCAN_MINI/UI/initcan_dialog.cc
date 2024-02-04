@@ -19,7 +19,7 @@ InitCanDialog::~InitCanDialog()
 
 void InitCanDialog::initDlg()
 {
-    DeviceManager * const device_manager = DeviceManager::getInstance();
+    const DeviceManager * const device_manager = DeviceManager::getInstance();
     const DeviceManager::DeviceTypeIndex device_type_index_ = device_manager->device_type_index();
     const uint type = DeviceManager::kDeviceType[static_cast<uint>(device_type_index_)].device_type;
 

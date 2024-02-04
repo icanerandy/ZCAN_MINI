@@ -59,19 +59,19 @@ MainWindow::~MainWindow()
 void MainWindow::bindSignals()
 {
     // 内部信号内部处理即可
-    connect(actCreateCanView, &QAction::triggered, this, [this] {
+    connect(actCreateCanView, &QAction::triggered, this, [=] {
         canviewDock->show();
     });
-    connect(actCreateDBCView, &QAction::triggered, this, [this] {
+    connect(actCreateDBCView, &QAction::triggered, this, [=] {
         dbcviewDock->show();
     });
-    connect(actCreatePlotView, &QAction::triggered, this, [this] {
+    connect(actCreatePlotView, &QAction::triggered, this, [=] {
         plotviewDcok->show();
     });
-    connect(actDeviceManage, &QAction::triggered, this, [this] {
+    connect(actDeviceManage, &QAction::triggered, this, [=] {
         deviceManagerDlg->exec();
     });
-    connect(actSendData, &QAction::triggered, this, [this] {
+    connect(actSendData, &QAction::triggered, this, [=] {
         senddataDlg->exec();
     });
     connect(dbcviewDock, &DBCViewDockWidget::sig_checkState_changed, plotviewDcok, &PlotViewDockWidget::slot_checkState_changed);

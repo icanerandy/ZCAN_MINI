@@ -3,8 +3,8 @@
 
 #include <QObject>
 #include <QThread>
+#include <QVariant>
 #include "zlgcan.h"
-#include "devicemanager.h"
 
 class SendMsgThread : public QThread
 {
@@ -14,31 +14,25 @@ private:
     bool m_pause = true;    // 暂停
     bool m_stop = false;    // 停止
 
-private:
-    CHANNEL_HANDLE channel_handle_;// CAN通道句柄
-
 protected:
     void run() Q_DECL_OVERRIDE; // 线程任务
 
 public:
-    explicit SendMsgThread(const QVariant &can_data, int send_count_once, int send_count);
+    explicit SendMsgThread(CHANNEL_HANDLE channel_handle, const QVariant &can_data, uint send_count_once, uint send_count);
 //    ~SendMsgThread() {};
     explicit SendMsgThread(const SendMsgThread &sendmsg_thread) = delete;
     const SendMsgThread &operator = (const SendMsgThread &sendmsg_thread) = delete;
 
 public:
-    static SendMsgThread *GetInstance();
-
     void beginThread();
     void pauseThread();
     void stopThread();
 
 private:
+    CHANNEL_HANDLE channel_handle_;
     QVariant can_data_;
-//    ZCAN_Transmit_Data can_data_;
-//    ZCAN_TransmitFD_Data canfd_data_;
-    int send_count_once_;
-    int send_count_;
+    uint send_count_once_;
+    uint send_count_;
 
 signals:
     void signal_SendError();

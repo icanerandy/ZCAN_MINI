@@ -106,7 +106,8 @@ DeviceManager::DeviceManager(QObject *parent) : QObject(parent),
     send_count_once_(1),
     send_enable_(Enable::Unenabled),
     auto_send_index_(0),
-    auto_send_period_(1000)
+    auto_send_period_(1000),
+    sendmsg_thread_(nullptr)
 {
     /* 初始化相关数据 */
     device_opened_ = DeviceState::Unopened;
@@ -117,27 +118,27 @@ DeviceManager::DeviceManager(QObject *parent) : QObject(parent),
     support_get_send_mode_ = false;
 }
 
-DeviceManager::DeviceTypeIndex DeviceManager::device_type_index()
+DeviceManager::DeviceTypeIndex DeviceManager::device_type_index() const
 {
     return device_type_index_;
 }
 
-CHANNEL_HANDLE DeviceManager::channel_handle()
+CHANNEL_HANDLE DeviceManager::channel_handle() const
 {
     return channel_handle_;
 }
 
-DeviceManager::CanState DeviceManager::can_start()
+DeviceManager::CanState DeviceManager::can_start() const
 {
     return can_start_;
 }
 
-DeviceManager::Enable DeviceManager::send_enable()
+DeviceManager::Enable DeviceManager::send_enable() const
 {
     return send_enable_;
 }
 
-DeviceManager::StandardType DeviceManager::canfd_standard_type()
+DeviceManager::StandardType DeviceManager::canfd_standard_type() const
 {
     return canfd_standard_type_;
 }
@@ -421,9 +422,9 @@ bool DeviceManager::sendMsg()
 //        }
 
 //        ZCAN_Transmit(channel_handle_, &can_data, 1);
-        SendMsgThread * const sendmsg_thread = new SendMsgThread(QVariant::fromValue(can_data), send_count_once_, send_count_);
-        sendmsg_thread->start();
-        sendmsg_thread->beginThread();
+        sendmsg_thread_ = new SendMsgThread(channel_handle_, QVariant::fromValue(can_data), send_count_once_, send_count_);
+        sendmsg_thread_->start();
+        sendmsg_thread_->beginThread();
     }
     else//canfd
     {
@@ -470,10 +471,20 @@ bool DeviceManager::sendMsg()
 //            int nRet = ZCAN_SetValue(device_handle_, path, "0");
 //        }
 
-        SendMsgThread *sendmsg_thread = new SendMsgThread(QVariant::fromValue(canfd_data), send_count_once_, send_count_);
-        sendmsg_thread->start();
-        sendmsg_thread->beginThread();
+        sendmsg_thread_ = new SendMsgThread(channel_handle_, QVariant::fromValue(canfd_data), send_count_once_, send_count_);
+        sendmsg_thread_->start();
+        sendmsg_thread_->beginThread();
     }
+}
+
+void DeviceManager::stopSendMsg()
+{
+    if (sendmsg_thread_->isRunning())
+    {
+        sendmsg_thread_->stopThread();
+        sendmsg_thread_->wait();
+    }
+    sendmsg_thread_ = nullptr;
 }
 
 bool DeviceManager::stopCan()
@@ -512,7 +523,7 @@ bool DeviceManager::closeDevice()
     return true;
 }
 
-ZCAN_DEVICE_INFO *DeviceManager::getDeviceInfo()
+const ZCAN_DEVICE_INFO *DeviceManager::getDeviceInfo() const
 {
     ZCAN_DEVICE_INFO * const info = new ZCAN_DEVICE_INFO();
 

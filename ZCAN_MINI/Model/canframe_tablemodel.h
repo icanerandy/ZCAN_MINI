@@ -8,20 +8,21 @@
 #include "zlgcan.h"
 
 
-enum VisibleColumns {
-    kTimeStamp = 0,
-    kId,
-    kFrameType,
-    kFormat,
-    kCanType,
-    kDirection,
-    kLength,
-    kData
-};
-
 class CanFrameTableModel : public QAbstractTableModel
 {
     Q_OBJECT
+
+public:
+    enum struct VisibleColumns {
+        TimeStamp,
+        Id,
+        FrameType,
+        Format,
+        CanType,
+        Direction,
+        Length,
+        Data
+    };
 
 private:
     explicit CanFrameTableModel(QObject *parent = nullptr);
@@ -44,13 +45,13 @@ signals:
     void rowsInserted();
 
 public slots:
-    void newMsg(ZCAN_Receive_Data *can_data, uint len);
-    void newMsg(ZCAN_ReceiveFD_Data *canfd_data, uint len);
-    void slot_visibleCol(QList<int> visible_columns);
+    void newMsg(const ZCAN_Receive_Data* const can_data, const uint len);
+    void newMsg(const ZCAN_ReceiveFD_Data* const canfd_data, const uint len);
+    void slot_visibleCol_changed(const QList<uint> visible_columns);
 
 private:
     QStringList header_list;
-    QList<int> visible_columns; // 存储可见列的索引
+    QList<uint> visible_columns; // 存储可见列的索引
     QList<QVariant> can_frame_list;
 };
 

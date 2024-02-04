@@ -1,5 +1,15 @@
 #include "sendmsg_thread.h"
 
+
+SendMsgThread::SendMsgThread(CHANNEL_HANDLE channel_handle, const QVariant &can_data, uint send_count_once, uint send_count)
+    : channel_handle_(channel_handle),
+      can_data_(can_data),
+      send_count_once_(send_count_once),
+      send_count_(send_count)
+{
+
+}
+
 void SendMsgThread::beginThread()
 {
     m_pause = false;
@@ -18,7 +28,6 @@ void SendMsgThread::stopThread()
 void SendMsgThread::run()
 {
     // 线程任务
-    channel_handle_ = DeviceManager::getInstance()->channel_handle();
     m_stop = false;
 
     uint result = 0;
@@ -30,7 +39,7 @@ void SendMsgThread::run()
         if (send_count_once_ > 0)
         {
             pData = new ZCAN_Transmit_Data[send_count_once_];
-            for (int i=0; i<send_count_once_; ++i)
+            for (uint i=0; i<send_count_once_; ++i)
             {
                 memcpy_s(&pData[i], sizeof(ZCAN_Transmit_Data), &data, sizeof(data));
             }
@@ -56,7 +65,7 @@ void SendMsgThread::run()
         if (send_count_once_ > 0)
         {
             pData = new ZCAN_TransmitFD_Data[send_count_once_];
-            for (int i=0; i<send_count_once_; ++i)
+            for (uint i=0; i<send_count_once_; ++i)
             {
                 memcpy_s(&pData[i], sizeof(ZCAN_TransmitFD_Data), &data, sizeof(data));
             }
@@ -79,10 +88,4 @@ void SendMsgThread::run()
     quit(); // 相当于exit(0)，退出线程的事件循环
 }
 
-SendMsgThread::SendMsgThread(const QVariant &can_data, int send_count_once, int send_count)
-    : can_data_(can_data),
-      send_count_once_(send_count_once),
-      send_count_(send_count)
-{
 
-}

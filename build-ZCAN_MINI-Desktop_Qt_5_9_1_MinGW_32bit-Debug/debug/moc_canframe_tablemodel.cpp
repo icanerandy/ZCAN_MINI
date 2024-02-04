@@ -23,7 +23,7 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_CanFrameTableModel_t {
     QByteArrayData data[12];
-    char stringdata0[147];
+    char stringdata0[166];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -36,20 +36,21 @@ QT_MOC_LITERAL(0, 0, 18), // "CanFrameTableModel"
 QT_MOC_LITERAL(1, 19, 12), // "rowsInserted"
 QT_MOC_LITERAL(2, 32, 0), // ""
 QT_MOC_LITERAL(3, 33, 6), // "newMsg"
-QT_MOC_LITERAL(4, 40, 18), // "ZCAN_Receive_Data*"
-QT_MOC_LITERAL(5, 59, 8), // "can_data"
-QT_MOC_LITERAL(6, 68, 3), // "len"
-QT_MOC_LITERAL(7, 72, 20), // "ZCAN_ReceiveFD_Data*"
-QT_MOC_LITERAL(8, 93, 10), // "canfd_data"
-QT_MOC_LITERAL(9, 104, 15), // "slot_visibleCol"
-QT_MOC_LITERAL(10, 120, 10), // "QList<int>"
-QT_MOC_LITERAL(11, 131, 15) // "visible_columns"
+QT_MOC_LITERAL(4, 40, 23), // "ZCAN_Receive_Data*const"
+QT_MOC_LITERAL(5, 64, 8), // "can_data"
+QT_MOC_LITERAL(6, 73, 3), // "len"
+QT_MOC_LITERAL(7, 77, 25), // "ZCAN_ReceiveFD_Data*const"
+QT_MOC_LITERAL(8, 103, 10), // "canfd_data"
+QT_MOC_LITERAL(9, 114, 23), // "slot_visibleCol_changed"
+QT_MOC_LITERAL(10, 138, 11), // "QList<uint>"
+QT_MOC_LITERAL(11, 150, 15) // "visible_columns"
 
     },
     "CanFrameTableModel\0rowsInserted\0\0"
-    "newMsg\0ZCAN_Receive_Data*\0can_data\0"
-    "len\0ZCAN_ReceiveFD_Data*\0canfd_data\0"
-    "slot_visibleCol\0QList<int>\0visible_columns"
+    "newMsg\0ZCAN_Receive_Data*const\0can_data\0"
+    "len\0ZCAN_ReceiveFD_Data*const\0canfd_data\0"
+    "slot_visibleCol_changed\0QList<uint>\0"
+    "visible_columns"
 };
 #undef QT_MOC_LITERAL
 
@@ -92,9 +93,9 @@ void CanFrameTableModel::qt_static_metacall(QObject *_o, QMetaObject::Call _c, i
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->rowsInserted(); break;
-        case 1: _t->newMsg((*reinterpret_cast< ZCAN_Receive_Data*(*)>(_a[1])),(*reinterpret_cast< uint(*)>(_a[2]))); break;
-        case 2: _t->newMsg((*reinterpret_cast< ZCAN_ReceiveFD_Data*(*)>(_a[1])),(*reinterpret_cast< uint(*)>(_a[2]))); break;
-        case 3: _t->slot_visibleCol((*reinterpret_cast< QList<int>(*)>(_a[1]))); break;
+        case 1: _t->newMsg((*reinterpret_cast< const ZCAN_Receive_Data*const(*)>(_a[1])),(*reinterpret_cast< const uint(*)>(_a[2]))); break;
+        case 2: _t->newMsg((*reinterpret_cast< const ZCAN_ReceiveFD_Data*const(*)>(_a[1])),(*reinterpret_cast< const uint(*)>(_a[2]))); break;
+        case 3: _t->slot_visibleCol_changed((*reinterpret_cast< const QList<uint>(*)>(_a[1]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
@@ -104,7 +105,7 @@ void CanFrameTableModel::qt_static_metacall(QObject *_o, QMetaObject::Call _c, i
             switch (*reinterpret_cast<int*>(_a[1])) {
             default: *reinterpret_cast<int*>(_a[0]) = -1; break;
             case 0:
-                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QList<int> >(); break;
+                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QList<uint> >(); break;
             }
             break;
         }

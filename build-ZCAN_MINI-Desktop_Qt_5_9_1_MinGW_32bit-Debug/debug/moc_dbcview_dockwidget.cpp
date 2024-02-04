@@ -95,7 +95,7 @@ void DBCViewDockWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, in
         DBCViewDockWidget *_t = static_cast<DBCViewDockWidget *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
-        case 0: _t->sig_checkState_changed((*reinterpret_cast< Qt::CheckState(*)>(_a[1])),(*reinterpret_cast< const unsigned long long(*)>(_a[2])),(*reinterpret_cast< const CppCAN::CANSignal(*)>(_a[3]))); break;
+        case 0: _t->sig_checkState_changed((*reinterpret_cast< const Qt::CheckState(*)>(_a[1])),(*reinterpret_cast< const unsigned long long(*)>(_a[2])),(*reinterpret_cast< const CppCAN::CANSignal(*)>(_a[3]))); break;
         case 1: _t->slot_btnReadDBC_clicked(); break;
         case 2: _t->slot_message_model_clicked((*reinterpret_cast< const QModelIndex(*)>(_a[1]))); break;
         case 3: _t->slot_signal_model_itemChanged((*reinterpret_cast< QStandardItem*(*)>(_a[1]))); break;
@@ -105,7 +105,7 @@ void DBCViewDockWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, in
         int *result = reinterpret_cast<int *>(_a[0]);
         void **func = reinterpret_cast<void **>(_a[1]);
         {
-            typedef void (DBCViewDockWidget::*_t)(Qt::CheckState , const unsigned long long , const CppCAN::CANSignal & );
+            typedef void (DBCViewDockWidget::*_t)(const Qt::CheckState , const unsigned long long , const CppCAN::CANSignal & );
             if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&DBCViewDockWidget::sig_checkState_changed)) {
                 *result = 0;
                 return;
@@ -151,7 +151,7 @@ int DBCViewDockWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 }
 
 // SIGNAL 0
-void DBCViewDockWidget::sig_checkState_changed(Qt::CheckState _t1, const unsigned long long _t2, const CppCAN::CANSignal & _t3)
+void DBCViewDockWidget::sig_checkState_changed(const Qt::CheckState _t1, const unsigned long long _t2, const CppCAN::CANSignal & _t3)
 {
     void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)), const_cast<void*>(reinterpret_cast<const void*>(&_t3)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
