@@ -24,7 +24,7 @@ public:
     void stopThread();
 
 public:
-    int getValue(const BYTE * const data, const uint len);
+    int getValue(const BYTE * const data);
 
 private slots:
     void slot_newMsg(const ZCAN_Receive_Data* const can_data, const uint len);

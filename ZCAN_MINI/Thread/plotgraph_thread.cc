@@ -44,11 +44,11 @@ void PlotGraphThread::stopThread()
  *
  * 注意：当传入的信号位数大于32位是会出错！因为编译的是32位的程序，其中uint64_t只有32位
  */
-int PlotGraphThread::getValue(const BYTE * const data, const uint len)
+int PlotGraphThread::getValue(const BYTE * const data)
 {
-    uint8_t start_bit_in_byte = signal_.start_bit() % 8;
+    const uint8_t start_bit_in_byte = signal_.start_bit() % 8;
     uint8_t cur_bit = start_bit_in_byte;
-    uint8_t start_byte = signal_.start_bit() / 8;
+    const uint8_t start_byte = signal_.start_bit() / 8;
     uint8_t cur_byte = start_byte;
     int64_t value = 0;  // 读取出来的数据存放单元
     uint8_t bits = 0;  // 已经读取了多少个位
@@ -149,10 +149,10 @@ void PlotGraphThread::slot_newMsg(const ZCAN_Receive_Data* const can_data, const
         if (GET_ID(can_data[i].frame.can_id) != msg_id_)
             return;
 
-        const uint dlc = can_data[i].frame.can_dlc;
+        //const uint dlc = can_data[i].frame.can_dlc;
         const BYTE* const data = can_data[i].frame.data;
 
-        int real_value = getValue(data, dlc);
+        int real_value = getValue(data);
 
         //key的单位是 ms
         double key = QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0;
@@ -180,10 +180,10 @@ void PlotGraphThread::slot_newMsg(const ZCAN_ReceiveFD_Data* const canfd_data, c
         if (GET_ID(canfd_data[i].frame.can_id) != msg_id_)
             return;
 
-        const uint dlc = canfd_data[i].frame.len;
+        //const uint dlc = canfd_data[i].frame.len;
         const BYTE* const data = canfd_data[i].frame.data;
 
-        int real_value = getValue(data, dlc);
+        int real_value = getValue(data);
 
         //key的单位是 ms
         double key = QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0;
