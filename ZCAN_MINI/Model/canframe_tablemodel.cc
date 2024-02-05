@@ -55,10 +55,6 @@ QVariant CanFrameTableModel::data(const QModelIndex &index, int role) const
                         QDateTime currentTime = QDateTime::currentDateTime();
                         QString formattedTime = currentTime.toString("[hh:mm:ss.zzz] ");
                         return formattedTime;
-
-    //                    double timestamp = can.timestamp / 1000.0;
-
-    //                    return QString::number(timestamp, 'f', 3);
                     } break;
                 case static_cast<uint>(VisibleColumns::Id):
                     return QString::asprintf("%08X", GET_ID(frame.can_id));
