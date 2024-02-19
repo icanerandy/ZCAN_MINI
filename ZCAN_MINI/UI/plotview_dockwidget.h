@@ -28,6 +28,7 @@ public slots:
 private slots:
     void slot_customPlot_mousePress(QMouseEvent* event);
     void slot_customPlot_selectionChanged();
+    void onLegendClicked(QCPLegend* legend, QCPAbstractLegendItem* item);
 
 private:
     void findSelectedPoint(QCPGraph *graph, QPoint select_point, double &key, double &value);

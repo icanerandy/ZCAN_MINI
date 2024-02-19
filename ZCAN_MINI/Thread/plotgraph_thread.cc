@@ -157,15 +157,8 @@ void PlotGraphThread::slot_newMsg(const ZCAN_Receive_Data* const can_data, const
         //key的单位是 ms
         double key = QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0;
 
-//        double value = test_value_;
-//        test_value_ -= 10;
-//        if (0 == test_value_)
-//            test_value_ = 1000;
-
-        //这里的1，是指横坐标时间宽度为1s，如果想要横坐标显示更多的时间
-        //就把1调整为比较大到值，比如要显示10s，那就改成10。
         plot_->graph(plot_index_)->addData(key, real_value);
-        plot_->xAxis->setRange(key+0.1, /*100*/1, Qt::AlignRight);
+        plot_->xAxis->setRange(key, 8, Qt::AlignRight);
         plot_->replot();
 
         ++i;
@@ -188,15 +181,8 @@ void PlotGraphThread::slot_newMsg(const ZCAN_ReceiveFD_Data* const canfd_data, c
         //key的单位是 ms
         double key = QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0;
 
-//        double value = test_value_;
-//        test_value_ -= 10;
-//        if (0 == test_value_)
-//            test_value_ = 1000;
-
-        //这里的1，是指横坐标时间宽度为1s，如果想要横坐标显示更多的时间
-        //就把1调整为比较大到值，比如要显示10s，那就改成10。
         plot_->graph(plot_index_)->addData(key, real_value);
-        plot_->xAxis->setRange(key+0.1, /*100*/1, Qt::AlignRight);
+        plot_->xAxis->setRange(key, 8, Qt::AlignRight);
         plot_->replot();
 
         ++i;

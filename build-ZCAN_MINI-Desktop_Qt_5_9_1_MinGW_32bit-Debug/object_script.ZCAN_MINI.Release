@@ -1,6 +1,7 @@
 INPUT(
 ./release\main.o
 ./release\canframe_tablemodel.o
+./release\sendlist_tablemodel.o
 ./release\main_window.o
 ./release\canview_dockwidget.o
 ./release\devicemanager_dialog.o
@@ -16,6 +17,7 @@ INPUT(
 ./release\qcustomplot.o
 ./release\datatracer.o
 ./release\moc_canframe_tablemodel.o
+./release\moc_sendlist_tablemodel.o
 ./release\moc_main_window.o
 ./release\moc_canview_dockwidget.o
 ./release\moc_devicemanager_dialog.o

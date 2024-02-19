@@ -1,6 +1,7 @@
 INPUT(
 ./debug\main.o
 ./debug\canframe_tablemodel.o
+./debug\sendlist_tablemodel.o
 ./debug\main_window.o
 ./debug\canview_dockwidget.o
 ./debug\devicemanager_dialog.o
@@ -16,6 +17,7 @@ INPUT(
 ./debug\qcustomplot.o
 ./debug\datatracer.o
 ./debug\moc_canframe_tablemodel.o
+./debug\moc_sendlist_tablemodel.o
 ./debug\moc_main_window.o
 ./debug\moc_canview_dockwidget.o
 ./debug\moc_devicemanager_dialog.o

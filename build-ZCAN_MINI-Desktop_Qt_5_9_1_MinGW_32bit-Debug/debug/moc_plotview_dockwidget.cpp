@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_PlotViewDockWidget_t {
-    QByteArrayData data[12];
-    char stringdata0[176];
+    QByteArrayData data[17];
+    char stringdata0[238];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -42,14 +42,21 @@ QT_MOC_LITERAL(7, 90, 6), // "signal"
 QT_MOC_LITERAL(8, 97, 26), // "slot_customPlot_mousePress"
 QT_MOC_LITERAL(9, 124, 12), // "QMouseEvent*"
 QT_MOC_LITERAL(10, 137, 5), // "event"
-QT_MOC_LITERAL(11, 143, 32) // "slot_customPlot_selectionChanged"
+QT_MOC_LITERAL(11, 143, 32), // "slot_customPlot_selectionChanged"
+QT_MOC_LITERAL(12, 176, 15), // "onLegendClicked"
+QT_MOC_LITERAL(13, 192, 10), // "QCPLegend*"
+QT_MOC_LITERAL(14, 203, 6), // "legend"
+QT_MOC_LITERAL(15, 210, 22), // "QCPAbstractLegendItem*"
+QT_MOC_LITERAL(16, 233, 4) // "item"
 
     },
     "PlotViewDockWidget\0slot_checkState_changed\0"
     "\0Qt::CheckState\0state\0msg_id\0"
     "CppCAN::CANSignal\0signal\0"
     "slot_customPlot_mousePress\0QMouseEvent*\0"
-    "event\0slot_customPlot_selectionChanged"
+    "event\0slot_customPlot_selectionChanged\0"
+    "onLegendClicked\0QCPLegend*\0legend\0"
+    "QCPAbstractLegendItem*\0item"
 };
 #undef QT_MOC_LITERAL
 
@@ -59,7 +66,7 @@ static const uint qt_meta_data_PlotViewDockWidget[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       3,   14, // methods
+       4,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -67,14 +74,16 @@ static const uint qt_meta_data_PlotViewDockWidget[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    3,   29,    2, 0x0a /* Public */,
-       8,    1,   36,    2, 0x08 /* Private */,
-      11,    0,   39,    2, 0x08 /* Private */,
+       1,    3,   34,    2, 0x0a /* Public */,
+       8,    1,   41,    2, 0x08 /* Private */,
+      11,    0,   44,    2, 0x08 /* Private */,
+      12,    2,   45,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void, 0x80000000 | 3, QMetaType::ULongLong, 0x80000000 | 6,    4,    5,    7,
     QMetaType::Void, 0x80000000 | 9,   10,
     QMetaType::Void,
+    QMetaType::Void, 0x80000000 | 13, 0x80000000 | 15,   14,   16,
 
        0        // eod
 };
@@ -88,7 +97,21 @@ void PlotViewDockWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, i
         case 0: _t->slot_checkState_changed((*reinterpret_cast< const Qt::CheckState(*)>(_a[1])),(*reinterpret_cast< const unsigned long long(*)>(_a[2])),(*reinterpret_cast< const CppCAN::CANSignal(*)>(_a[3]))); break;
         case 1: _t->slot_customPlot_mousePress((*reinterpret_cast< QMouseEvent*(*)>(_a[1]))); break;
         case 2: _t->slot_customPlot_selectionChanged(); break;
+        case 3: _t->onLegendClicked((*reinterpret_cast< QCPLegend*(*)>(_a[1])),(*reinterpret_cast< QCPAbstractLegendItem*(*)>(_a[2]))); break;
         default: ;
+        }
+    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
+        switch (_id) {
+        default: *reinterpret_cast<int*>(_a[0]) = -1; break;
+        case 3:
+            switch (*reinterpret_cast<int*>(_a[1])) {
+            default: *reinterpret_cast<int*>(_a[0]) = -1; break;
+            case 1:
+                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QCPAbstractLegendItem* >(); break;
+            case 0:
+                *reinterpret_cast<int*>(_a[0]) = qRegisterMetaType< QCPLegend* >(); break;
+            }
+            break;
         }
     }
 }
@@ -118,13 +141,13 @@ int PlotViewDockWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 3)
+        if (_id < 4)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 3;
+        _id -= 4;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 3)
-            *reinterpret_cast<int*>(_a[0]) = -1;
-        _id -= 3;
+        if (_id < 4)
+            qt_static_metacall(this, _c, _id, _a);
+        _id -= 4;
     }
     return _id;
 }

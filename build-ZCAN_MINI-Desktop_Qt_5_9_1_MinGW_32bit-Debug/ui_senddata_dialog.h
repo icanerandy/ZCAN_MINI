@@ -25,6 +25,7 @@
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QSpinBox>
+#include <QtWidgets/QTableView>
 #include <QtWidgets/QVBoxLayout>
 
 QT_BEGIN_NAMESPACE
@@ -72,6 +73,11 @@ public:
     QPushButton *btnSend;
     QSpacerItem *horizontalSpacer;
     QGroupBox *groupBox_2;
+    QGridLayout *gridLayout_2;
+    QTableView *tableView;
+    QHBoxLayout *horizontalLayout_5;
+    QSpacerItem *horizontalSpacer_3;
+    QPushButton *btnSendList;
 
     void setupUi(QDialog *SendDataDialog)
     {
@@ -271,43 +277,32 @@ public:
 
         gridLayout->addItem(horizontalSpacer, 0, 1, 1, 1);
 
-        label->raise();
-        comboFrameType->raise();
-        comboProtocolType->raise();
-        label_2->raise();
-        comboSendType->raise();
-        label_3->raise();
-        comboFormat->raise();
-        comboFrameType->raise();
-        label->raise();
-        comboLength->raise();
-        label_4->raise();
-        editData->raise();
-        label_6->raise();
-        pushButton->raise();
-        label_7->raise();
-        spinSendCountOnce->raise();
-        spinSendCount->raise();
-        label_8->raise();
-        label_9->raise();
-        spinInterval->raise();
-        editName->raise();
-        label_10->raise();
-        chkInc->raise();
-        label_9->raise();
-        label_8->raise();
-        chkInc->raise();
-        chkInc->raise();
-        chkInc->raise();
-        label_8->raise();
-        btnSend->raise();
 
         verticalLayout_2->addWidget(groupBox);
 
         groupBox_2 = new QGroupBox(SendDataDialog);
         groupBox_2->setObjectName(QStringLiteral("groupBox_2"));
-        groupBox->raise();
-        groupBox->raise();
+        gridLayout_2 = new QGridLayout(groupBox_2);
+        gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
+        tableView = new QTableView(groupBox_2);
+        tableView->setObjectName(QStringLiteral("tableView"));
+
+        gridLayout_2->addWidget(tableView, 0, 0, 1, 1);
+
+        horizontalLayout_5 = new QHBoxLayout();
+        horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
+        horizontalSpacer_3 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout_5->addItem(horizontalSpacer_3);
+
+        btnSendList = new QPushButton(groupBox_2);
+        btnSendList->setObjectName(QStringLiteral("btnSendList"));
+
+        horizontalLayout_5->addWidget(btnSendList);
+
+
+        gridLayout_2->addLayout(horizontalLayout_5, 1, 0, 1, 1);
+
 
         verticalLayout_2->addWidget(groupBox_2);
 
@@ -336,6 +331,7 @@ public:
         label_9->setText(QApplication::translate("SendDataDialog", "\346\257\217\346\254\241\351\227\264\351\232\224(ms):", Q_NULLPTR));
         btnSend->setText(QApplication::translate("SendDataDialog", "\347\253\213\345\215\263\345\217\221\351\200\201", Q_NULLPTR));
         groupBox_2->setTitle(QApplication::translate("SendDataDialog", "\345\210\227\350\241\250\345\217\221\351\200\201", Q_NULLPTR));
+        btnSendList->setText(QApplication::translate("SendDataDialog", "\345\210\227\350\241\250\345\217\221\351\200\201", Q_NULLPTR));
     } // retranslateUi
 
 };

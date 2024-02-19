@@ -13,11 +13,41 @@ PlotViewDockWidget::PlotViewDockWidget(QWidget *parent) :
     sig_plot_.clear();
     plot_threads.clear();
 
-    QCustomPlot *plot = ui->plot;
+    QCustomPlot* const plot = ui->plot;
+
+    //设置坐标轴显示范围,否则我们只能看到默认的范围
+    QSharedPointer<QCPAxisTickerDateTime> date_tick(new QCPAxisTickerDateTime);
+    date_tick->setDateTimeFormat("mm:ss.zzz");
+    date_tick->setTickCount(10);   // 设置时间轴，一共多少格
+    plot->xAxis->setTicker(date_tick);
+    plot->xAxis->setTickLabelRotation(35);
+
+    plot->yAxis->setVisible(true);
+    plot->yAxis2->setVisible(true);
+
+    plot->axisRect()->setupFullAxesBox();   // 四周安上轴并显示
+    plot->axisRect()->setBackground(QBrush(Qt::black)); // 设置背景颜色
+
+    connect(plot->xAxis, SIGNAL(rangeChanged(QCPRange)), plot->xAxis2, SLOT(setRange(QCPRange)));
+    connect(plot->yAxis, SIGNAL(rangeChanged(QCPRange)), plot->yAxis2, SLOT(setRange(QCPRange)));
+
+    // 设置图例
+    plot->legend->setBrush(QColor(255, 255, 255, 150));   // 设置图例为灰色透明
+    plot->legend->setVisible(true); // 设置图例可见
+
+    //设置属性可缩放，移动等
+    plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectAxes |
+                                     QCP::iSelectLegend | QCP::iSelectPlottables);
+
+    plot->legend->setSelectableParts(QCPLegend::spItems);    //设置legend只能选择图例
 
     connect(plot, SIGNAL(mousePress(QMouseEvent*)), this, SLOT(slot_customPlot_mousePress(QMouseEvent*)));
     connect(plot, SIGNAL(selectionChangedByUser()), this, SLOT(slot_customPlot_selectionChanged()));
+    connect(plot->legend, SIGNAL(legendClicked(QCPLegend*, QCPAbstractLegendItem*, QMouseEvent*)),
+            this, SLOT(onLegendClicked(QCPLegend*, QCPAbstractLegendItem*)));
     this->p_DataTracer = new DataTracer(plot);
+
+    plot->replot();
 }
 
 PlotViewDockWidget::~PlotViewDockWidget()
@@ -27,52 +57,40 @@ PlotViewDockWidget::~PlotViewDockWidget()
 
 void PlotViewDockWidget::slot_checkState_changed(const Qt::CheckState state, const unsigned long long msg_id, const CppCAN::CANSignal &signal)
 {
-    QCustomPlot *plot = ui->plot;
+    QCustomPlot* const plot = ui->plot;
     if (Qt::Checked == state)
     {
-        if (sig_plot_.end() != sig_plot_.find(signal.name()))
-        {
-            int index = *sig_plot_.find(signal.name());
-            PlotGraphThread *plotgraph_thread = plot_threads.at(index);
-            plotgraph_thread->beginThread();
-            plot->graph(index)->setVisible(true);
-            return;
-        }
-
-        //设置属性可缩放，移动等
-        plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectAxes |
-                                         QCP::iSelectLegend | QCP::iSelectPlottables);
-        //设置坐标轴标签名称
-        plot->xAxis->setLabel("timestamp");
-        plot->yAxis->setLabel("value");
-        plot->legend->setVisible(true);
-
-        //  plot->axisRect()->setupFullAxesBox();
         plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
         ++plot_num_;    // 曲线总数加一
         sig_plot_.insert(signal.name(), plot_num_-1);  // 将信号与曲线关联起来
-        plot->graph(plot_num_-1)->setName(QString::fromStdString(signal.name()));//曲线名称
 
-        PlotGraphThread *plotgraph_thread = new PlotGraphThread(plot, plot_num_-1, msg_id, signal);
+        QColor color(20+200/4.0*plot_num_,70*(1.6-plot_num_/4.0), 150, 150);
+        plot->graph()->setLineStyle(QCPGraph::lsLine);
+        plot->graph()->setPen(QPen(color.lighter(200)));
+        plot->graph()->setBrush(QBrush(color));
+        plot->graph()->setName(QString::fromStdString(signal.name()));//曲线名称
+
+        // 坐标轴自动缩放
+        if (1 == plot_num_)
+            plot->graph()->rescaleAxes();
+        else
+            plot->graph()->rescaleAxes(true);
+
+        plot->replot();
+
+        PlotGraphThread* plotgraph_thread = new PlotGraphThread(plot, plot_num_-1, msg_id, signal);
         plot_threads.append(plotgraph_thread);
         plotgraph_thread->start();
         plotgraph_thread->beginThread();
-
-        //设置坐标轴显示范围,否则我们只能看到默认的范围
-        QSharedPointer<QCPAxisTickerDateTime> date_tick(new QCPAxisTickerDateTime);
-        date_tick->setDateTimeFormat("HH:mm:ss.zzz");
-        plot->xAxis->setTicker(date_tick);
-
-        plot->graph(plot_num_-1)->rescaleAxes();
-        plot->replot();
     }
     else if (Qt::Unchecked == state)
     {
-        int index = *sig_plot_.find(signal.name());
-        PlotGraphThread *plotgraph_thread = plot_threads.at(index);
-        plotgraph_thread->pauseThread();
-        //plot->removeGraph(index);
-        plot->graph(index)->setVisible(false);
+        const int index = *sig_plot_.find(signal.name());
+        PlotGraphThread* const plotgraph_thread = plot_threads.at(index);
+        plotgraph_thread->stopThread();
+
+        plot->removeGraph(index);
+        sig_plot_.remove(signal.name());
     }
 }
 
@@ -83,7 +101,7 @@ void PlotViewDockWidget::slot_customPlot_mousePress(QMouseEvent *event)
 
 void PlotViewDockWidget::slot_customPlot_selectionChanged()
 {
-    QCustomPlot *plot = ui->plot;
+    QCustomPlot* const plot = ui->plot;
     if (plot->xAxis->selectedParts().testFlag(QCPAxis::spAxis) || plot->xAxis->selectedParts().testFlag(QCPAxis::spTickLabels) || plot->xAxis->selectedParts().testFlag(QCPAxis::spAxisLabel))
     {
         plot->xAxis2->setSelectedParts(QCPAxis::spAxis | QCPAxis::spTickLabels | QCPAxis::spAxisLabel);
@@ -123,8 +141,23 @@ void PlotViewDockWidget::slot_customPlot_selectionChanged()
         double key, value;
         findSelectedPoint(plot->graph(graph_index), this->m_PressedPoint, key, value);
         QDateTime time = QCPAxisTickerDateTime::keyToDateTime(key);
-        this->p_DataTracer->setText(time.toString("Time:hh:mm.ss.zzz"), QString("Depth:%1m").arg(value, 0,'f',2));
+        this->p_DataTracer->setText(time.toString("Time:mm.ss.zzz"), QString("Value:%1m").arg(value, 0,'f',2));
         this->p_DataTracer->updatePosition(plot->graph(graph_index), key, value);
+    }
+}
+
+void PlotViewDockWidget::onLegendClicked(QCPLegend *legend, QCPAbstractLegendItem *item)
+{
+    Q_UNUSED(legend);
+    QCPPlottableLegendItem* plottableLegendItem = qobject_cast<QCPPlottableLegendItem*>(item);
+    if (plottableLegendItem)
+    {
+        QCPAbstractPlottable* plottable = plottableLegendItem->plottable();
+        if (plottable)
+        {
+            plottable->setVisible(!plottable->visible());
+            ui->plot->replot();
+        }
     }
 }
 

@@ -292,7 +292,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="btnSend_2">
+         <widget class="QPushButton" name="btnSendList">
           <property name="text">
            <string>列表发送</string>
           </property>
