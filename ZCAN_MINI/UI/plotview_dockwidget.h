@@ -10,6 +10,8 @@
 #include "plotgraph_thread.h"
 #include "datatracer.h"
 
+#include <GL/freeglut.h>
+
 namespace Ui {
 class PlotViewDockWidget;
 }
@@ -23,7 +25,8 @@ public:
     ~PlotViewDockWidget();
 
 public slots:
-    void slot_checkState_changed(const Qt::CheckState state, const unsigned long long msg_id, const CppCAN::CANSignal &signal);
+    void slot_paint(const unsigned long long msg_id, const CppCAN::CANSignal& ref_speed, const CppCAN::CANSignal& rel_speed);
+    bool slot_btnSave_clicked(bool checked);
 
 private slots:
     void slot_customPlot_mousePress(QMouseEvent* event);
@@ -41,9 +44,7 @@ private:
     Ui::PlotViewDockWidget * const ui;
     QCPItemTracer *tracer_;
     QCPItemText *tracer_label_;
-    uint plot_num_;
-    QMap<std::string, uint> sig_plot_;
-    QList<PlotGraphThread *> plot_threads;
+    PlotGraphThread* plot_thread_;
 };
 
 #endif // PLOT_DOCKWIDGET_H

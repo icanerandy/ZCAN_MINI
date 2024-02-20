@@ -19,10 +19,13 @@ SOURCES += \
     main.cc
 
 INCLUDEPATH += $$PWD/Can_Parser
-include ($$PWD/Can_Parser/Can_Parser.pri)
+include ($$PWD/CanParser/CanParser.pri)
 
 INCLUDEPATH += $$PWD/zlgcan_x86
 include ($$PWD/zlgcan_x86/zlgcan_x86.pri)
+
+INCLUDEPATH += $$PWD/DeviceManager
+include ($$PWD/DeviceManager/DeviceManager.pri)
 
 INCLUDEPATH += $$PWD/Model
 include ($$PWD/Model/Model.pri)
@@ -30,11 +33,9 @@ include ($$PWD/Model/Model.pri)
 INCLUDEPATH += $$PWD/Ui
 include ($$PWD/Ui/Ui.pri)
 
-INCLUDEPATH += $$PWD/Device_Manager
-include ($$PWD/Device_Manager/Device_Manager.pri)
-
 INCLUDEPATH += $$PWD/Thread
 include ($$PWD/Thread/Thread.pri)
 
 INCLUDEPATH += $$PWD/QCustomPlot
-include ($$PWD/QCustomPlot/qcustomplot.pri)
+include ($$PWD/QCustomPlot/Qcustomplot.pri)
+

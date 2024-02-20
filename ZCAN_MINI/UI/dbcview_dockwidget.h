@@ -24,18 +24,21 @@ public:
 private slots:
     void slot_btnReadDBC_clicked();
     void slot_message_model_clicked(const QModelIndex &index);
-    void slot_signal_model_itemChanged(QStandardItem *item);
 
 signals:
-    void sig_checkState_changed(const Qt::CheckState state, const unsigned long long msg_id, const CppCAN::CANSignal &signal);
+    void sig_paint(const unsigned long long msg_id, const CppCAN::CANSignal& ref_speed_, const CppCAN::CANSignal& rel_speed_);
 
 private:
     Ui::DBCViewDockWidget * const ui;
 
-    CppCAN::CANDatabase db;
-    QStandardItemModel *message_model;
-    QStandardItemModel *signal_model;
-    QItemSelectionModel *item_selection_model;
+    CppCAN::CANDatabase db_;
+    QStandardItemModel* message_model_;
+    QStandardItemModel* signal_model_;
+    QItemSelectionModel* item_selection_model_;
+
+    CppCAN::CANFrame* msg_;
+    CppCAN::CANSignal* ref_speed_;
+    CppCAN::CANSignal* rel_speed_;
 };
 
 #endif // DBCPARSER_DOCKWIDGET_H

@@ -74,5 +74,5 @@ void MainWindow::bindSignals()
     connect(actSendData, &QAction::triggered, this, [=] {
         senddataDlg->exec();
     });
-    connect(dbcviewDock, &DBCViewDockWidget::sig_checkState_changed, plotviewDcok, &PlotViewDockWidget::slot_checkState_changed);
+    connect(dbcviewDock, &DBCViewDockWidget::sig_paint, plotviewDcok, &PlotViewDockWidget::slot_paint);
 }

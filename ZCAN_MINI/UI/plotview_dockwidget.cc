@@ -5,20 +5,19 @@ PlotViewDockWidget::PlotViewDockWidget(QWidget *parent) :
     QDockWidget(parent),
     ui(new Ui::PlotViewDockWidget),
     tracer_(nullptr),
-    tracer_label_(nullptr),
-    plot_num_(0)
+    tracer_label_(nullptr)
 {
     ui->setupUi(this);
 
-    sig_plot_.clear();
-    plot_threads.clear();
-
     QCustomPlot* const plot = ui->plot;
+    plot->setOpenGl(true);
+    qDebug() << "OpenGl开启状态: " << plot->openGl();
+    plot->setNoAntialiasingOnDrag(true);
 
     //设置坐标轴显示范围,否则我们只能看到默认的范围
     QSharedPointer<QCPAxisTickerDateTime> date_tick(new QCPAxisTickerDateTime);
     date_tick->setDateTimeFormat("mm:ss.zzz");
-    date_tick->setTickCount(10);   // 设置时间轴，一共多少格
+    //date_tick->setTickCount(10);   // 设置时间轴，一共多少格
     plot->xAxis->setTicker(date_tick);
     plot->xAxis->setTickLabelRotation(35);
 
@@ -26,13 +25,14 @@ PlotViewDockWidget::PlotViewDockWidget(QWidget *parent) :
     plot->yAxis2->setVisible(true);
 
     plot->axisRect()->setupFullAxesBox();   // 四周安上轴并显示
-    plot->axisRect()->setBackground(QBrush(Qt::black)); // 设置背景颜色
+    plot->axisRect()->setBackground(QBrush(QColor(0, 0, 0, 255))); // 设置背景颜色
 
+    qRegisterMetaType<QCPRange>("QCPRange");
     connect(plot->xAxis, SIGNAL(rangeChanged(QCPRange)), plot->xAxis2, SLOT(setRange(QCPRange)));
     connect(plot->yAxis, SIGNAL(rangeChanged(QCPRange)), plot->yAxis2, SLOT(setRange(QCPRange)));
 
     // 设置图例
-    plot->legend->setBrush(QColor(255, 255, 255, 150));   // 设置图例为灰色透明
+    plot->legend->setBrush(QColor(255, 255, 255, 255));   // 设置图例为不透明
     plot->legend->setVisible(true); // 设置图例可见
 
     //设置属性可缩放，移动等
@@ -43,11 +43,13 @@ PlotViewDockWidget::PlotViewDockWidget(QWidget *parent) :
 
     connect(plot, SIGNAL(mousePress(QMouseEvent*)), this, SLOT(slot_customPlot_mousePress(QMouseEvent*)));
     connect(plot, SIGNAL(selectionChangedByUser()), this, SLOT(slot_customPlot_selectionChanged()));
-    connect(plot->legend, SIGNAL(legendClicked(QCPLegend*, QCPAbstractLegendItem*, QMouseEvent*)),
+    connect(plot, SIGNAL(legendClick(QCPLegend*, QCPAbstractLegendItem*, QMouseEvent*)),
             this, SLOT(onLegendClicked(QCPLegend*, QCPAbstractLegendItem*)));
     this->p_DataTracer = new DataTracer(plot);
 
     plot->replot();
+
+    connect(ui->btnSave, SIGNAL(clicked(bool)), this, SLOT(slot_btnSave_clicked(bool)));
 }
 
 PlotViewDockWidget::~PlotViewDockWidget()
@@ -55,42 +57,72 @@ PlotViewDockWidget::~PlotViewDockWidget()
     delete ui;
 }
 
-void PlotViewDockWidget::slot_checkState_changed(const Qt::CheckState state, const unsigned long long msg_id, const CppCAN::CANSignal &signal)
+void PlotViewDockWidget::slot_paint(const unsigned long long msg_id, const CppCAN::CANSignal& ref_speed, const CppCAN::CANSignal& rel_speed)
 {
     QCustomPlot* const plot = ui->plot;
-    if (Qt::Checked == state)
-    {
-        plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
-        ++plot_num_;    // 曲线总数加一
-        sig_plot_.insert(signal.name(), plot_num_-1);  // 将信号与曲线关联起来
 
-        QColor color(20+200/4.0*plot_num_,70*(1.6-plot_num_/4.0), 150, 150);
-        plot->graph()->setLineStyle(QCPGraph::lsLine);
-        plot->graph()->setPen(QPen(color.lighter(200)));
-        plot->graph()->setBrush(QBrush(color));
-        plot->graph()->setName(QString::fromStdString(signal.name()));//曲线名称
+    plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
+    QColor color(20+200/4.0*1,70*(1.6-1/4.0), 150, 150);
+    QPen pen(color.lighter(200));
+    pen.setWidth(3);
+    plot->graph()->setLineStyle(QCPGraph::lsLine);
+    plot->graph()->setPen(pen);
+    plot->graph()->setName(QString::fromStdString(ref_speed.name()));//曲线名称
 
-        // 坐标轴自动缩放
-        if (1 == plot_num_)
-            plot->graph()->rescaleAxes();
-        else
-            plot->graph()->rescaleAxes(true);
+    plot->graph()->rescaleAxes();
 
-        plot->replot();
+    plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
+    QColor color1(20+200/4.0*2,70*(1.6-2/4.0), 150, 150);
+    QPen pen1(color1.lighter(200));
+    pen1.setWidth(3);
+    plot->graph()->setLineStyle(QCPGraph::lsLine);
+    plot->graph()->setPen(pen1);
+    plot->graph()->setName(QString::fromStdString(ref_speed.name()));//曲线名称
 
-        PlotGraphThread* plotgraph_thread = new PlotGraphThread(plot, plot_num_-1, msg_id, signal);
-        plot_threads.append(plotgraph_thread);
-        plotgraph_thread->start();
-        plotgraph_thread->beginThread();
-    }
-    else if (Qt::Unchecked == state)
-    {
-        const int index = *sig_plot_.find(signal.name());
-        PlotGraphThread* const plotgraph_thread = plot_threads.at(index);
-        plotgraph_thread->stopThread();
+    plot->graph()->rescaleAxes(true);
+    plot->replot();
 
-        plot->removeGraph(index);
-        sig_plot_.remove(signal.name());
+    PlotGraphThread* const plotgraph_thread = new PlotGraphThread(plot, msg_id, ref_speed, rel_speed);
+    plotgraph_thread->start();
+    plotgraph_thread->beginThread();
+
+}
+
+bool PlotViewDockWidget::slot_btnSave_clicked(bool checked)
+{
+    Q_UNUSED(checked);
+
+    QString filename = QFileDialog::getSaveFileName();
+    QCustomPlot* const plot = ui->plot;
+
+    if( filename == "" ){
+        QMessageBox::information(this,"fail","保存失败");
+         return false;
+     }
+     if( filename.endsWith(".png") ){
+         QMessageBox::information(this,"success","成功保存为png文件");
+         return plot->savePng(filename, plot->width(), plot->height());
+
+     }
+     if( filename.endsWith(".jpg")||filename.endsWith(".jpeg") ){
+         QMessageBox::information(this,"success","成功保存为jpg文件");
+         return plot->saveJpg(filename, plot->width(), plot->height());
+
+     }
+     if( filename.endsWith(".bmp") ){
+         QMessageBox::information(this,"success","成功保存为bmp文件");
+         return plot->saveBmp(filename, plot->width(), plot->height());
+
+     }
+     if( filename.endsWith(".pdf") ){
+         QMessageBox::information(this,"success","成功保存为pdf文件");
+         return plot->savePdf(filename, plot->width(), plot->height());
+
+     }
+    else{
+         //否则追加后缀名为.png保存文件
+         QMessageBox::information(this,"success","保存成功,已默认保存为png文件");
+         return plot->savePng(filename.append(".png"), plot->width(), plot->height());
     }
 }
 
@@ -141,7 +173,7 @@ void PlotViewDockWidget::slot_customPlot_selectionChanged()
         double key, value;
         findSelectedPoint(plot->graph(graph_index), this->m_PressedPoint, key, value);
         QDateTime time = QCPAxisTickerDateTime::keyToDateTime(key);
-        this->p_DataTracer->setText(time.toString("Time:mm.ss.zzz"), QString("Value:%1m").arg(value, 0,'f',2));
+        this->p_DataTracer->setText(time.toString("Time:mm.ss.zzz"), QString("Value:%1").arg(value, 0,'f',2));
         this->p_DataTracer->updatePosition(plot->graph(graph_index), key, value);
     }
 }

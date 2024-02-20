@@ -16,6 +16,7 @@
 #include <QtWidgets/QDockWidget>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QWidget>
 #include "qcustomplot.h"
 
@@ -27,6 +28,7 @@ public:
     QWidget *dockWidgetContents;
     QGridLayout *gridLayout;
     QCustomPlot *plot;
+    QPushButton *btnSave;
 
     void setupUi(QDockWidget *PlotViewDockWidget)
     {
@@ -40,7 +42,12 @@ public:
         plot = new QCustomPlot(dockWidgetContents);
         plot->setObjectName(QStringLiteral("plot"));
 
-        gridLayout->addWidget(plot, 0, 0, 1, 1);
+        gridLayout->addWidget(plot, 1, 0, 1, 1);
+
+        btnSave = new QPushButton(dockWidgetContents);
+        btnSave->setObjectName(QStringLiteral("btnSave"));
+
+        gridLayout->addWidget(btnSave, 0, 0, 1, 1);
 
         PlotViewDockWidget->setWidget(dockWidgetContents);
 
@@ -52,6 +59,7 @@ public:
     void retranslateUi(QDockWidget *PlotViewDockWidget)
     {
         PlotViewDockWidget->setWindowTitle(QApplication::translate("PlotViewDockWidget", "\345\256\236\346\227\266\345\233\276\350\241\250", Q_NULLPTR));
+        btnSave->setText(QApplication::translate("PlotViewDockWidget", "\344\277\235\345\255\230\345\233\276\345\203\217", Q_NULLPTR));
     } // retranslateUi
 
 };

@@ -16,7 +16,7 @@ protected:
     void run() Q_DECL_OVERRIDE; // 线程任务
 
 public:
-    explicit PlotGraphThread(QCustomPlot *plot, uint plot_index, const unsigned long long msg_id, const CppCAN::CANSignal &signal);
+    explicit PlotGraphThread(QCustomPlot *plot, const unsigned long long msg_id, const CppCAN::CANSignal& ref_speed, const CppCAN::CANSignal& rel_speed);
 
 public:
     void beginThread();
@@ -24,7 +24,7 @@ public:
     void stopThread();
 
 public:
-    int getValue(const BYTE * const data);
+    int getValue(const BYTE * const data, const CppCAN::CANSignal& signal);
 
 private slots:
     void slot_newMsg(const ZCAN_Receive_Data* const can_data, const uint len);
@@ -35,11 +35,11 @@ private:
     bool m_pause = true;    // 暂停
     bool m_stop = false;    // 停止
     QCustomPlot *plot_;
-    uint plot_index_;
     int test_value_ = 1000;
 
     unsigned long long msg_id_;
-    const CppCAN::CANSignal signal_;
+    const CppCAN::CANSignal ref_speed_;
+    const CppCAN::CANSignal rel_speed_;
 };
 
 #endif // PLOTGRAPH_THREAD_H

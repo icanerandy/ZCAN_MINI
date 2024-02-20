@@ -34,6 +34,8 @@ public:
     QHBoxLayout *horizontalLayout;
     QPushButton *btnReadDBC;
     QSpacerItem *horizontalSpacer;
+    QPushButton *btnPaint;
+    QSpacerItem *horizontalSpacer_2;
     QVBoxLayout *verticalLayout;
     QGroupBox *groupBox;
     QGridLayout *gridLayout;
@@ -61,6 +63,15 @@ public:
         horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         horizontalLayout->addItem(horizontalSpacer);
+
+        btnPaint = new QPushButton(dockWidgetContents);
+        btnPaint->setObjectName(QStringLiteral("btnPaint"));
+
+        horizontalLayout->addWidget(btnPaint);
+
+        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        horizontalLayout->addItem(horizontalSpacer_2);
 
 
         gridLayout_3->addLayout(horizontalLayout, 0, 0, 1, 1);
@@ -105,6 +116,7 @@ public:
     {
         DBCViewDockWidget->setWindowTitle(QApplication::translate("DBCViewDockWidget", "DBC\350\247\243\346\236\220", Q_NULLPTR));
         btnReadDBC->setText(QApplication::translate("DBCViewDockWidget", "\345\212\240\350\275\275DBC", Q_NULLPTR));
+        btnPaint->setText(QApplication::translate("DBCViewDockWidget", "\347\273\230\345\233\276", Q_NULLPTR));
         groupBox->setTitle(QApplication::translate("DBCViewDockWidget", "CAN Message", Q_NULLPTR));
         groupBox_2->setTitle(QApplication::translate("DBCViewDockWidget", "Signals of Selected CAN Message", Q_NULLPTR));
     } // retranslateUi

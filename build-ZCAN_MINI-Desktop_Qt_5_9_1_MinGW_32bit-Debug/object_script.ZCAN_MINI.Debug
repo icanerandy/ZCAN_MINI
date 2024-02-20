@@ -1,5 +1,6 @@
 INPUT(
 ./debug\main.o
+./debug\devicemanager.o
 ./debug\canframe_tablemodel.o
 ./debug\sendlist_tablemodel.o
 ./debug\main_window.o
@@ -10,12 +11,12 @@ INPUT(
 ./debug\senddata_dialog.o
 ./debug\dbcview_dockwidget.o
 ./debug\plotview_dockwidget.o
-./debug\devicemanager.o
 ./debug\recmsg_thread.o
 ./debug\sendmsg_thread.o
 ./debug\plotgraph_thread.o
 ./debug\qcustomplot.o
 ./debug\datatracer.o
+./debug\moc_devicemanager.o
 ./debug\moc_canframe_tablemodel.o
 ./debug\moc_sendlist_tablemodel.o
 ./debug\moc_main_window.o
@@ -26,7 +27,6 @@ INPUT(
 ./debug\moc_senddata_dialog.o
 ./debug\moc_dbcview_dockwidget.o
 ./debug\moc_plotview_dockwidget.o
-./debug\moc_devicemanager.o
 ./debug\moc_recmsg_thread.o
 ./debug\moc_sendmsg_thread.o
 ./debug\moc_plotgraph_thread.o

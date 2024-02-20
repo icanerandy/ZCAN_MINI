@@ -41,6 +41,8 @@ int SendListTableModel::columnCount(const QModelIndex &parent) const
 
 QVariant SendListTableModel::data(const QModelIndex &index, int role) const
 {
+    Q_UNUSED(role);
+
     if (!index.isValid())
         return QVariant();
 

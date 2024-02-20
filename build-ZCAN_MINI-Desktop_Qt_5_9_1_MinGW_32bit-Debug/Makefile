@@ -211,13 +211,13 @@ Makefile: ../ZCAN_MINI/ZCAN_MINI.pro ../../../../Software/Qt/Qt5.9.1/5.9.1/mingw
 		../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/toolchain.prf \
 		../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/default_pre.prf \
 		../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/win32/default_pre.prf \
-		../ZCAN_MINI/Can_Parser/Can_Parser.pri \
+		../ZCAN_MINI/CanParser/CanParser.pri \
 		../ZCAN_MINI/zlgcan_x86/zlgcan_x86.pri \
+		../ZCAN_MINI/DeviceManager/DeviceManager.pri \
 		../ZCAN_MINI/Model/Model.pri \
 		../ZCAN_MINI/Ui/Ui.pri \
-		../ZCAN_MINI/Device_Manager/Device_Manager.pri \
 		../ZCAN_MINI/Thread/Thread.pri \
-		../ZCAN_MINI/QCustomPlot/qcustomplot.pri \
+		../ZCAN_MINI/QCustomPlot/Qcustomplot.pri \
 		../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/resolve_config.prf \
 		../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/exclusive_builds_post.prf \
 		../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/default_post.prf \
@@ -393,13 +393,13 @@ Makefile: ../ZCAN_MINI/ZCAN_MINI.pro ../../../../Software/Qt/Qt5.9.1/5.9.1/mingw
 ../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/toolchain.prf:
 ../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/default_pre.prf:
 ../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/win32/default_pre.prf:
-../ZCAN_MINI/Can_Parser/Can_Parser.pri:
+../ZCAN_MINI/CanParser/CanParser.pri:
 ../ZCAN_MINI/zlgcan_x86/zlgcan_x86.pri:
+../ZCAN_MINI/DeviceManager/DeviceManager.pri:
 ../ZCAN_MINI/Model/Model.pri:
 ../ZCAN_MINI/Ui/Ui.pri:
-../ZCAN_MINI/Device_Manager/Device_Manager.pri:
 ../ZCAN_MINI/Thread/Thread.pri:
-../ZCAN_MINI/QCustomPlot/qcustomplot.pri:
+../ZCAN_MINI/QCustomPlot/Qcustomplot.pri:
 ../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/resolve_config.prf:
 ../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/exclusive_builds_post.prf:
 ../../../../Software/Qt/Qt5.9.1/5.9.1/mingw53_32/mkspecs/features/default_post.prf:

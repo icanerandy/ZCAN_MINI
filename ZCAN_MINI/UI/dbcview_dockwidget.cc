@@ -4,19 +4,22 @@
 DBCViewDockWidget::DBCViewDockWidget(QWidget *parent) :
     QDockWidget(parent),
     ui(new Ui::DBCViewDockWidget),
-    message_model(nullptr),
-    signal_model(nullptr),
-    item_selection_model(nullptr)
+    message_model_(nullptr),
+    signal_model_(nullptr),
+    item_selection_model_(nullptr),
+    msg_(nullptr),
+    ref_speed_(nullptr),
+    rel_speed_(nullptr)
 {
     ui->setupUi(this);
 
-    message_model = new QStandardItemModel();
-    signal_model = new QStandardItemModel();
-    item_selection_model = new QItemSelectionModel(message_model);
+    message_model_ = new QStandardItemModel();
+    signal_model_ = new QStandardItemModel();
+    item_selection_model_ = new QItemSelectionModel(message_model_);
 
-    ui->msgView->setModel(message_model);
-    ui->sigView->setModel(signal_model);
-    ui->msgView->setSelectionModel(item_selection_model);
+    ui->msgView->setModel(message_model_);
+    ui->sigView->setModel(signal_model_);
+    ui->msgView->setSelectionModel(item_selection_model_);
 
     ui->msgView->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->msgView->setSelectionBehavior(QAbstractItemView::SelectItems);
@@ -41,15 +44,19 @@ DBCViewDockWidget::DBCViewDockWidget(QWidget *parent) :
 
     QStringList str_list;
     str_list << QStringLiteral("名字") << QStringLiteral("ID(Hex)") << QStringLiteral("DLC") << QStringLiteral("注释");
-    message_model->setHorizontalHeaderLabels(str_list);
+    message_model_->setHorizontalHeaderLabels(str_list);
     str_list.clear();
     str_list << QStringLiteral("名字") << QStringLiteral("长度") << QStringLiteral("起始位") << QStringLiteral("因子")
              << QStringLiteral("偏移") << QStringLiteral("类型") << QStringLiteral("字节序") << QStringLiteral("最小值")
              << QStringLiteral("最大值") << QStringLiteral("注释");
-    signal_model->setHorizontalHeaderLabels(str_list);
+    signal_model_->setHorizontalHeaderLabels(str_list);
 
     connect(ui->btnReadDBC, &QPushButton::clicked, this, &DBCViewDockWidget::slot_btnReadDBC_clicked);
     connect(ui->msgView, &QAbstractItemView::clicked, this, &DBCViewDockWidget::slot_message_model_clicked);
+
+    connect(ui->btnPaint, &QPushButton::clicked, this, [=] {
+        emit sig_paint(msg_->can_id(), *ref_speed_, *rel_speed_);
+    });
 }
 
 DBCViewDockWidget::~DBCViewDockWidget()
@@ -63,21 +70,21 @@ void DBCViewDockWidget::slot_btnReadDBC_clicked()
     if (filename.isEmpty())
         return;
 
-    db = CppCAN::CANDatabase::fromFile(filename.toStdString());
+    db_ = CppCAN::CANDatabase::fromFile(filename.toStdString());
     QStandardItem *item = nullptr;
     size_t i = 0;
-    for(const auto& frame : db) {
+    for(const auto& frame : db_) {
         item = new QStandardItem(QString::fromStdString(frame.second.name()));
-        message_model->setItem(i, 0, item);
+        message_model_->setItem(i, 0, item);
 
         item = new QStandardItem(QString::number(frame.second.can_id(), 16));
-        message_model->setItem(i, 1, item);
+        message_model_->setItem(i, 1, item);
 
         item = new QStandardItem(QString::number(frame.second.dlc(), 10));
-        message_model->setItem(i, 2, item);
+        message_model_->setItem(i, 2, item);
 
         item = new QStandardItem(QString::fromStdString(frame.second.comment()));
-        message_model->setItem(i, 3, item);
+        message_model_->setItem(i, 3, item);
 
         i++;
     }
@@ -85,89 +92,61 @@ void DBCViewDockWidget::slot_btnReadDBC_clicked()
 
 void DBCViewDockWidget::slot_message_model_clicked(const QModelIndex &index)
 {
-    signal_model->clear();
-    disconnect(signal_model, &QStandardItemModel::itemChanged, this, &DBCViewDockWidget::slot_signal_model_itemChanged);
+    signal_model_->clear();
 
     uint row = index.row();
-    QStandardItem *item = message_model->item(row);
+    QStandardItem *item = message_model_->item(row);
     QString msg_name = item->text();
-    const CppCAN::CANFrame& msg = db.at(msg_name.toStdString());
+    msg_ = &db_.at(msg_name.toStdString());
 
     item = nullptr;
     size_t i = 0;
-    for(const auto& sig : msg) {
+    for(auto& sig : *msg_) {
+        if (0 == i)
+            ref_speed_ = &sig.second;
+        else
+            rel_speed_ = &sig.second;
+
         item = new QStandardItem(QString::fromStdString(sig.second.name()));
-        item->setCheckable(true);
-        item->setCheckState(Qt::Unchecked);
         item->setEditable(false);
-        signal_model->setItem(i, 0, item);
+        signal_model_->setItem(i, 0, item);
 
         item = new QStandardItem(QString::number(sig.second.length(), 16));
         item->setEditable(false);
-        signal_model->setItem(i, 1, item);
+        signal_model_->setItem(i, 1, item);
 
         item = new QStandardItem(QString::number(sig.second.start_bit(), 10));
         item->setEditable(false);
-        signal_model->setItem(i, 2, item);
+        signal_model_->setItem(i, 2, item);
 
         item = new QStandardItem(QString::number(sig.second.scale(), 'f', 2));
         item->setEditable(false);
-        signal_model->setItem(i, 3, item);
+        signal_model_->setItem(i, 3, item);
 
         item = new QStandardItem(QString::number(sig.second.offset(), 'f', 2));
         item->setEditable(false);
-        signal_model->setItem(i, 4, item);
+        signal_model_->setItem(i, 4, item);
 
         item = new QStandardItem(QString(sig.second.signedness()==CppCAN::CANSignal::Signed?"Signed":"Unsigned"));
         item->setEditable(false);
-        signal_model->setItem(i, 5, item);
+        signal_model_->setItem(i, 5, item);
 
         item = new QStandardItem(QString(sig.second.endianness()==CppCAN::CANSignal::BigEndian?"BigEndian":"LittleEndian"));
         item->setEditable(false);
-        signal_model->setItem(i, 6, item);
+        signal_model_->setItem(i, 6, item);
 
         item = new QStandardItem(QString::number(sig.second.range().min, 10));
         item->setEditable(false);
-        signal_model->setItem(i, 7, item);
+        signal_model_->setItem(i, 7, item);
 
         item = new QStandardItem(QString::number(sig.second.range().max, 10));
         item->setEditable(false);
-        signal_model->setItem(i, 8, item);
+        signal_model_->setItem(i, 8, item);
 
         item = new QStandardItem(QString::fromStdString(sig.second.comment()));
         item->setEditable(false);
-        signal_model->setItem(i, 9, item);
+        signal_model_->setItem(i, 9, item);
 
         i++;
-    }
-
-    connect(signal_model, &QStandardItemModel::itemChanged, this, &DBCViewDockWidget::slot_signal_model_itemChanged);
-}
-
-void DBCViewDockWidget::slot_signal_model_itemChanged(QStandardItem *item)
-{
-    if (Qt::Checked == item->checkState())
-    {
-        const QString sig_name = item->text();
-        const QModelIndex index = item_selection_model->selectedIndexes().at(0);
-        const QStandardItem* const item = message_model->itemFromIndex(index);
-        const QString msg_name = item->text();
-        const CppCAN::CANFrame& msg = db.at(msg_name.toStdString());
-        const unsigned long long msg_id = msg.can_id();
-
-        const CppCAN::CANSignal& signal = msg.at(sig_name.toStdString());
-        emit sig_checkState_changed(Qt::Checked, msg_id, signal);
-    }
-    else
-    {
-        const QString sig_name = item->text();
-        const QModelIndex index = item_selection_model->selectedIndexes().at(0);
-        const QStandardItem* const item = message_model->itemFromIndex(index);
-        const QString msg_name = item->text();
-        const CppCAN::CANFrame& msg = db.at(msg_name.toStdString());
-        const unsigned long long msg_id = msg.can_id();
-
-        const CppCAN::CANSignal& signal = msg.at(sig_name.toStdString());
-        emit sig_checkState_changed(Qt::Unchecked, msg_id, signal);
     }
 }

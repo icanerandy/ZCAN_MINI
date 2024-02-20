@@ -1,10 +1,10 @@
 #include "plotgraph_thread.h"
 
-PlotGraphThread::PlotGraphThread(QCustomPlot *plot, uint plot_index, const unsigned long long msg_id, const CppCAN::CANSignal &signal)
+PlotGraphThread::PlotGraphThread(QCustomPlot *plot,const unsigned long long msg_id, const CppCAN::CANSignal &ref_speed, const CppCAN::CANSignal &rel_speed)
     : plot_(plot),
-      plot_index_(plot_index),
       msg_id_(msg_id),
-      signal_(signal)
+      ref_speed_(ref_speed),
+      rel_speed_(rel_speed)
 {
 
 }
@@ -44,17 +44,17 @@ void PlotGraphThread::stopThread()
  *
  * 注意：当传入的信号位数大于32位是会出错！因为编译的是32位的程序，其中uint64_t只有32位
  */
-int PlotGraphThread::getValue(const BYTE * const data)
+int PlotGraphThread::getValue(const BYTE * const data, const CppCAN::CANSignal& signal)
 {
-    const uint8_t start_bit_in_byte = signal_.start_bit() % 8;
+    const uint8_t start_bit_in_byte = signal.start_bit() % 8;
     uint8_t cur_bit = start_bit_in_byte;
-    const uint8_t start_byte = signal_.start_bit() / 8;
+    const uint8_t start_byte = signal.start_bit() / 8;
     uint8_t cur_byte = start_byte;
     int64_t value = 0;  // 读取出来的数据存放单元
     uint8_t bits = 0;  // 已经读取了多少个位
-    if (CppCAN::CANSignal::LittleEndian == signal_.endianness())    // Intel
+    if (CppCAN::CANSignal::LittleEndian == signal.endianness())    // Intel
     {
-        while (bits < signal_.length())
+        while (bits < signal.length())
         {
             if (cur_bit > 7)
             {
@@ -71,7 +71,7 @@ int PlotGraphThread::getValue(const BYTE * const data)
     }
     else  // Motorola_LSB
     {
-        while (bits < signal_.length())
+        while (bits < signal.length())
         {
             if (cur_bit > 7)
             {
@@ -107,10 +107,10 @@ int PlotGraphThread::getValue(const BYTE * const data)
     }
 #endif
 
-    if (CppCAN::CANSignal::Signed == signal_.signedness())
+    if (CppCAN::CANSignal::Signed == signal.signedness())
     {
         uint64_t tmp = 0x01;
-        tmp <<= (signal_.length()-1);
+        tmp <<= (signal.length()-1);
         if (0 != (tmp & value))   // 负数
         {
             value &= ~tmp;
@@ -118,7 +118,7 @@ int PlotGraphThread::getValue(const BYTE * const data)
         }
     }
 
-    return value + signal_.offset();
+    return value + signal.offset();
 }
 
 void PlotGraphThread::run()
@@ -133,6 +133,35 @@ void PlotGraphThread::run()
             //分类信号
 
             //绘制图像
+
+
+
+            plot_->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, 4));
+
+            plot_->graph(0)->setBrush(QBrush(QColor(255,50,30,75)));
+            plot_->graph(0)->setChannelFillGraph(plot_->graph(1));
+            int i = 1;
+            while (i++ <= 100000 && !m_stop)
+            {
+                double key = QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0;
+                plot_->graph(0)->addData(key, rand() % 10);
+                plot_->xAxis->setRange(key, 5, Qt::AlignRight);
+
+                plot_->graph(1)->addData(key, rand() % 10);
+                plot_->xAxis->setRange(key, 5, Qt::AlignRight);
+                plot_->replot(QCustomPlot::rpQueuedReplot);
+
+                msleep(10);
+            }
+            m_pause = true;
+
+
+
+
+
+
+
+
 
             //避免无数据时变成While(1),会占用大量的CPU
             msleep(15);
@@ -152,14 +181,14 @@ void PlotGraphThread::slot_newMsg(const ZCAN_Receive_Data* const can_data, const
         //const uint dlc = can_data[i].frame.can_dlc;
         const BYTE* const data = can_data[i].frame.data;
 
-        int real_value = getValue(data);
+        int real_value = getValue(data, ref_speed_);
 
         //key的单位是 ms
         double key = QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0;
 
-        plot_->graph(plot_index_)->addData(key, real_value);
-        plot_->xAxis->setRange(key, 8, Qt::AlignRight);
-        plot_->replot();
+        plot_->graph(0)->addData(key, real_value);
+        plot_->xAxis->setRange(key, 5, Qt::AlignRight);
+        plot_->replot(QCustomPlot::rpQueuedReplot);
 
         ++i;
     }
@@ -176,14 +205,14 @@ void PlotGraphThread::slot_newMsg(const ZCAN_ReceiveFD_Data* const canfd_data, c
         //const uint dlc = canfd_data[i].frame.len;
         const BYTE* const data = canfd_data[i].frame.data;
 
-        int real_value = getValue(data);
+        int real_value = getValue(data, ref_speed_);
 
         //key的单位是 ms
         double key = QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0;
 
-        plot_->graph(plot_index_)->addData(key, real_value);
-        plot_->xAxis->setRange(key, 8, Qt::AlignRight);
-        plot_->replot();
+        plot_->graph(0)->addData(key, real_value);
+        plot_->xAxis->setRange(key, 5, Qt::AlignRight);
+        plot_->replot(QCustomPlot::rpQueuedReplot);
 
         ++i;
     }

@@ -22,6 +22,8 @@
 **             Date: 06.11.22                                             **
 **          Version: 2.1.1                                                **
 ****************************************************************************/
+#define GLUT_DISABLE_ATEXIT_HACK
+#include <GL/freeglut.h>
 
 #include "qcustomplot.h"
 
@@ -908,6 +910,13 @@ void QCPPaintBufferGlFbo::draw(QCPPainter *painter) const
     qDebug() << Q_FUNC_INFO << "OpenGL frame buffer object doesn't exist, reallocateBuffer was not called?";
     return;
   }
+
+  // 这个 if 语句是新添加的
+  if(QOpenGLContext::currentContext() != mGlContext.data())
+  {
+      mGlContext.data()->makeCurrent(mGlContext.data()->surface());
+  }
+
   painter->drawImage(0, 0, mGlFrameBuffer->toImage());
 }
 
