@@ -20901,6 +20901,8 @@ QCPGraph::QCPGraph(QCPAxis *keyAxis, QCPAxis *valueAxis) :
   setScatterSkip(0);
   setChannelFillGraph(nullptr);
   setAdaptiveSampling(true);
+
+  smooth_ = false;  // 新增内容
 }
 
 QCPGraph::~QCPGraph()
@@ -21128,7 +21130,12 @@ QCPRange QCPGraph::getKeyRange(bool &foundRange, QCP::SignDomain inSignDomain) c
 /* inherits documentation from base class */
 QCPRange QCPGraph::getValueRange(bool &foundRange, QCP::SignDomain inSignDomain, const QCPRange &inKeyRange) const
 {
-  return mDataContainer->valueRange(foundRange, inSignDomain, inKeyRange);
+    return mDataContainer->valueRange(foundRange, inSignDomain, inKeyRange);
+}
+
+void QCPGraph::setSmooth(bool smooth)
+{
+    smooth_ = smooth;
 }
 
 /* inherits documentation from base class */
@@ -21661,11 +21668,12 @@ void QCPGraph::drawScatterPlot(QCPPainter *painter, const QVector<QPointF> &scat
 */
 void QCPGraph::drawLinePlot(QCPPainter *painter, const QVector<QPointF> &lines) const
 {
-  if (painter->pen().style() != Qt::NoPen && painter->pen().color().alpha() != 0)
-  {
-    applyDefaultAntialiasingHint(painter);
-    drawPolyline(painter, lines);
-  }
+    if (painter->pen().style() != Qt::NoPen && painter->pen().color().alpha() != 0)
+    {
+        applyDefaultAntialiasingHint(painter);
+        if (smooth_ && mLineStyle == lsLine) painter->drawPath(SmoothCurveGenerator::generateSmoothCurve(lines));
+        else drawPolyline(painter, lines);
+    }
 }
 
 /*! \internal

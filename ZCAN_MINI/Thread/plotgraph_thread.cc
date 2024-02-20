@@ -138,17 +138,17 @@ void PlotGraphThread::run()
 
             plot_->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, 4));
 
-            plot_->graph(0)->setBrush(QBrush(QColor(255,50,30,75)));
-            plot_->graph(0)->setChannelFillGraph(plot_->graph(1));
+//            plot_->graph(0)->setBrush(QBrush(QColor(255,50,30,75)));
+//            plot_->graph(0)->setChannelFillGraph(plot_->graph(1));
             int i = 1;
-            while (i++ <= 100000 && !m_stop)
+            while (i++ <= 1000 && !m_stop)
             {
                 double key = QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0;
                 plot_->graph(0)->addData(key, rand() % 10);
-                plot_->xAxis->setRange(key, 5, Qt::AlignRight);
+                plot_->xAxis->setRange(key, 0.5, Qt::AlignRight);
 
                 plot_->graph(1)->addData(key, rand() % 10);
-                plot_->xAxis->setRange(key, 5, Qt::AlignRight);
+                plot_->xAxis->setRange(key, 0.5, Qt::AlignRight);
                 plot_->replot(QCustomPlot::rpQueuedReplot);
 
                 msleep(10);
