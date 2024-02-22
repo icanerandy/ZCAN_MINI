@@ -8,6 +8,7 @@
 #include "CANDatabase.h"
 #include "qcustomplot.h"
 #include "plotgraph_thread.h"
+#include "replot_thread.h"
 #include "datatracer.h"
 
 #include <GL/freeglut.h>

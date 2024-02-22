@@ -50,6 +50,10 @@ PlotViewDockWidget::PlotViewDockWidget(QWidget *parent) :
     plot->replot();
 
     connect(ui->btnSave, SIGNAL(clicked(bool)), this, SLOT(slot_btnSave_clicked(bool)));
+
+//    connect(plot->xAxis, static_cast<void (QCPAxis::*)(const QCPRange&)>(&QCPAxis::rangeChanged), [=] (const QCPRange& newRange) {
+//        plot->xAxis->setRange(newRange.bounded(0, 10));
+//    });
 }
 
 PlotViewDockWidget::~PlotViewDockWidget()
@@ -62,8 +66,8 @@ void PlotViewDockWidget::slot_paint(const unsigned long long msg_id, const CppCA
     QCustomPlot* const plot = ui->plot;
 
     plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
-    plot->graph()->setSmooth(true); // 启用曲线平滑
-    QColor color(20+200/4.0*1,70*(1.6-1/4.0), 150, 150);
+    //plot->graph()->setSmooth(true); // 启用曲线平滑
+    QColor color(20+200/4.0*1,70*(1.6-1/4.0), 150, 250);
     QPen pen(color.lighter(200));
     pen.setWidth(3);
     plot->graph()->setLineStyle(QCPGraph::lsLine);
@@ -73,8 +77,8 @@ void PlotViewDockWidget::slot_paint(const unsigned long long msg_id, const CppCA
     plot->graph()->rescaleAxes();
 
     plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
-    plot->graph()->setSmooth(true); // 启用曲线平滑
-    QColor color1(20+200/4.0*2,70*(1.6-2/4.0), 150, 150);
+    //plot->graph()->setSmooth(true); // 启用曲线平滑
+    QColor color1(20+200/4.0*2,70*(1.6-2/4.0), 150, 250);
     QPen pen1(color1.lighter(200));
     pen1.setWidth(3);
     plot->graph()->setLineStyle(QCPGraph::lsLine);
@@ -88,6 +92,9 @@ void PlotViewDockWidget::slot_paint(const unsigned long long msg_id, const CppCA
     plotgraph_thread->start();
     plotgraph_thread->beginThread();
 
+    ReplotThread* const replot_thread = new ReplotThread(plot);
+    replot_thread->start();
+    replot_thread->beginThread();
 }
 
 bool PlotViewDockWidget::slot_btnSave_clicked(bool checked)

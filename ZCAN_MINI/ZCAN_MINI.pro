@@ -18,7 +18,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     main.cc
 
-INCLUDEPATH += $$PWD/Can_Parser
+INCLUDEPATH += $$PWD/CanParser
 include ($$PWD/CanParser/CanParser.pri)
 
 INCLUDEPATH += $$PWD/zlgcan_x86

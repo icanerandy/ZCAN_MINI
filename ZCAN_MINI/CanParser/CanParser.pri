@@ -1,3 +1,3 @@
 INCLUDEPATH += $$PWD/include
 
-LIBS += -L$$PWD/lib -llibcpp-can-parser
+LIBS += -L$$PWD/lib -llibcpp-can-parser.dll

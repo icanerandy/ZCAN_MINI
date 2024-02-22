@@ -1,0 +1,724 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "D:/Software/Coding/CMake/share/cmake-3.26/Modules/CMakeDetermineSystem.cmake:204 (message)"
+      - "CMakeLists.txt:2 (PROJECT)"
+    message: |
+      The system is: Windows - 10.0.22635 - AMD64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "D:/Software/Coding/CMake/share/cmake-3.26/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "D:/Software/Coding/CMake/share/cmake-3.26/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "D:/Software/Coding/CMake/share/cmake-3.26/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (PROJECT)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler:  
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      适用于 .NET Framework MSBuild 版本 17.7.2+d6990bcfa
+      生成启动时间为 2024-02-20 15:16:32。
+      
+      节点 1 上的项目“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\3.26.4\\CompilerIdC\\CompilerIdC.vcxproj”(默认目标)。
+      PrepareForBuild:
+        正在创建目录“Debug\\”。
+        正在创建目录“Debug\\CompilerIdC.tlog\\”。
+      InitializeBuildStatus:
+        正在创建“Debug\\CompilerIdC.tlog\\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+        正在对“Debug\\CompilerIdC.tlog\\unsuccessfulbuild”执行 Touch 任务。
+      ClCompile:
+        D:\\Software\\Coding\\VS\\Perfessional\\VC\\Tools\\MSVC\\14.37.32822\\bin\\HostX64\\x64\\CL.exe /c /nologo /W0 /WX- /diagnostics:column /Od /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\\\" /Fd"Debug\\vc143.pdb" /external:W0 /Gd /TC /FC /errorReport:queue CMakeCCompilerId.c
+        CMakeCCompilerId.c
+      Link:
+        D:\\Software\\Coding\\VS\\Perfessional\\VC\\Tools\\MSVC\\14.37.32822\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:".\\CompilerIdC.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\\CompilerIdC.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\\CompilerIdC.lib" /MACHINE:X64 Debug\\CMakeCCompilerId.obj
+        CompilerIdC.vcxproj -> D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\3.26.4\\CompilerIdC\\CompilerIdC.exe
+      PostBuildEvent:
+        for %%i in (cl.exe) do @echo CMAKE_C_COMPILER=%%~$PATH:i
+        :VCEnd
+        CMAKE_C_COMPILER=D:\\Software\\Coding\\VS\\Perfessional\\VC\\Tools\\MSVC\\14.37.32822\\bin\\Hostx64\\x64\\cl.exe
+      FinalizeBuildStatus:
+        正在删除文件“Debug\\CompilerIdC.tlog\\unsuccessfulbuild”。
+        正在对“Debug\\CompilerIdC.tlog\\CompilerIdC.lastbuildstate”执行 Touch 任务。
+      已完成生成项目“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\3.26.4\\CompilerIdC\\CompilerIdC.vcxproj”(默认目标)的操作。
+      
+      已成功生成。
+          0 个警告
+          0 个错误
+      
+      已用时间 00:00:01.25
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.exe"
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.vcxproj"
+      
+      The C compiler identification is MSVC, found in:
+        D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/3.26.4/CompilerIdC/CompilerIdC.exe
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/Software/Coding/CMake/share/cmake-3.26/Modules/CMakeDetermineCompilerABI.cmake:57 (try_compile)"
+      - "D:/Software/Coding/CMake/share/cmake-3.26/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (PROJECT)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-uxgoj6"
+      binary: "D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-uxgoj6"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-uxgoj6
+        
+        Run Build Command(s):D:/Software/Coding/VS/Perfessional/MSBuild/Current/Bin/amd64/MSBuild.exe cmTC_822d1.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n && 适用于 .NET Framework MSBuild 版本 17.7.2+d6990bcfa
+        生成启动时间为 2024-02-20 15:16:34。
+        
+        节点 1 上的项目“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-uxgoj6\\cmTC_822d1.vcxproj”(默认目标)。
+        PrepareForBuild:
+          正在创建目录“cmTC_822d1.dir\\Debug\\”。
+          正在创建目录“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-uxgoj6\\Debug\\”。
+          正在创建目录“cmTC_822d1.dir\\Debug\\cmTC_822d1.tlog\\”。
+        InitializeBuildStatus:
+          正在创建“cmTC_822d1.dir\\Debug\\cmTC_822d1.tlog\\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+          正在对“cmTC_822d1.dir\\Debug\\cmTC_822d1.tlog\\unsuccessfulbuild”执行 Touch 任务。
+        ClCompile:
+          D:\\Software\\Coding\\VS\\Perfessional\\VC\\Tools\\MSVC\\14.37.32822\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_822d1.dir\\Debug\\\\" /Fd"cmTC_822d1.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\Software\\Coding\\CMake\\share\\cmake-3.26\\Modules\\CMakeCCompilerABI.c"
+          用于 x64 的 Microsoft (R) C/C++ 优化编译器 19.37.32824 版
+          CMakeCCompilerABI.c
+          版权所有(C) Microsoft Corporation。保留所有权利。
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_822d1.dir\\Debug\\\\" /Fd"cmTC_822d1.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\Software\\Coding\\CMake\\share\\cmake-3.26\\Modules\\CMakeCCompilerABI.c"
+        Link:
+          D:\\Software\\Coding\\VS\\Perfessional\\VC\\Tools\\MSVC\\14.37.32822\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-uxgoj6\\Debug\\cmTC_822d1.exe" /INCREMENTAL /ILK:"cmTC_822d1.dir\\Debug\\cmTC_822d1.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGLUT/CMakeFiles/CMakeScratch/TryCompile-uxgoj6/Debug/cmTC_822d1.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGLUT/CMakeFiles/CMakeScratch/TryCompile-uxgoj6/Debug/cmTC_822d1.lib" /MACHINE:X64  /machine:x64 cmTC_822d1.dir\\Debug\\CMakeCCompilerABI.obj
+          cmTC_822d1.vcxproj -> D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-uxgoj6\\Debug\\cmTC_822d1.exe
+        FinalizeBuildStatus:
+          正在删除文件“cmTC_822d1.dir\\Debug\\cmTC_822d1.tlog\\unsuccessfulbuild”。
+          正在对“cmTC_822d1.dir\\Debug\\cmTC_822d1.tlog\\cmTC_822d1.lastbuildstate”执行 Touch 任务。
+        已完成生成项目“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-uxgoj6\\cmTC_822d1.vcxproj”(默认目标)的操作。
+        
+        已成功生成。
+            0 个警告
+            0 个错误
+        
+        已用时间 00:00:00.50
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/Software/Coding/CMake/share/cmake-3.26/Modules/CheckIncludeFiles.cmake:137 (try_compile)"
+      - "CMakeLists.txt:376 (CHECK_INCLUDE_FILES)"
+    checks:
+      - "Looking for include file sys/types.h"
+    directories:
+      source: "D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-qoz4ti"
+      binary: "D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-qoz4ti"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+    buildResult:
+      variable: "HAVE_SYS_TYPES_H"
+      cached: true
+      stdout: |
+        Change Dir: D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-qoz4ti
+        
+        Run Build Command(s):D:/Software/Coding/VS/Perfessional/MSBuild/Current/Bin/amd64/MSBuild.exe cmTC_a59be.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n && 适用于 .NET Framework MSBuild 版本 17.7.2+d6990bcfa
+        生成启动时间为 2024-02-20 15:16:34。
+        
+        节点 1 上的项目“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-qoz4ti\\cmTC_a59be.vcxproj”(默认目标)。
+        PrepareForBuild:
+          正在创建目录“cmTC_a59be.dir\\Debug\\”。
+          正在创建目录“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-qoz4ti\\Debug\\”。
+          正在创建目录“cmTC_a59be.dir\\Debug\\cmTC_a59be.tlog\\”。
+        InitializeBuildStatus:
+          正在创建“cmTC_a59be.dir\\Debug\\cmTC_a59be.tlog\\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+          正在对“cmTC_a59be.dir\\Debug\\cmTC_a59be.tlog\\unsuccessfulbuild”执行 Touch 任务。
+        ClCompile:
+          D:\\Software\\Coding\\VS\\Perfessional\\VC\\Tools\\MSVC\\14.37.32822\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_a59be.dir\\Debug\\\\" /Fd"cmTC_a59be.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-qoz4ti\\HAVE_SYS_TYPES_H.c"
+          用于 x64 的 Microsoft (R) C/C++ 优化编译器 19.37.32824 版
+          HAVE_SYS_TYPES_H.c
+          版权所有(C) Microsoft Corporation。保留所有权利。
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_a59be.dir\\Debug\\\\" /Fd"cmTC_a59be.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-qoz4ti\\HAVE_SYS_TYPES_H.c"
+        Link:
+          D:\\Software\\Coding\\VS\\Perfessional\\VC\\Tools\\MSVC\\14.37.32822\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-qoz4ti\\Debug\\cmTC_a59be.exe" /INCREMENTAL /ILK:"cmTC_a59be.dir\\Debug\\cmTC_a59be.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGLUT/CMakeFiles/CMakeScratch/TryCompile-qoz4ti/Debug/cmTC_a59be.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGLUT/CMakeFiles/CMakeScratch/TryCompile-qoz4ti/Debug/cmTC_a59be.lib" /MACHINE:X64  /machine:x64 cmTC_a59be.dir\\Debug\\HAVE_SYS_TYPES_H.obj
+          cmTC_a59be.vcxproj -> D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-qoz4ti\\Debug\\cmTC_a59be.exe
+        FinalizeBuildStatus:
+          正在删除文件“cmTC_a59be.dir\\Debug\\cmTC_a59be.tlog\\unsuccessfulbuild”。
+          正在对“cmTC_a59be.dir\\Debug\\cmTC_a59be.tlog\\cmTC_a59be.lastbuildstate”执行 Touch 任务。
+        已完成生成项目“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-qoz4ti\\cmTC_a59be.vcxproj”(默认目标)的操作。
+        
+        已成功生成。
+            0 个警告
+            0 个错误
+        
+        已用时间 00:00:00.52
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/Software/Coding/CMake/share/cmake-3.26/Modules/CheckIncludeFiles.cmake:137 (try_compile)"
+      - "CMakeLists.txt:377 (CHECK_INCLUDE_FILES)"
+    checks:
+      - "Looking for include file unistd.h"
+    directories:
+      source: "D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-aiymyj"
+      binary: "D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-aiymyj"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+    buildResult:
+      variable: "HAVE_UNISTD_H"
+      cached: true
+      stdout: |
+        Change Dir: D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-aiymyj
+        
+        Run Build Command(s):D:/Software/Coding/VS/Perfessional/MSBuild/Current/Bin/amd64/MSBuild.exe cmTC_60880.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n && 适用于 .NET Framework MSBuild 版本 17.7.2+d6990bcfa
+        生成启动时间为 2024-02-20 15:16:35。
+        
+        节点 1 上的项目“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-aiymyj\\cmTC_60880.vcxproj”(默认目标)。
+        PrepareForBuild:
+          正在创建目录“cmTC_60880.dir\\Debug\\”。
+          正在创建目录“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-aiymyj\\Debug\\”。
+          正在创建目录“cmTC_60880.dir\\Debug\\cmTC_60880.tlog\\”。
+        InitializeBuildStatus:
+          正在创建“cmTC_60880.dir\\Debug\\cmTC_60880.tlog\\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+          正在对“cmTC_60880.dir\\Debug\\cmTC_60880.tlog\\unsuccessfulbuild”执行 Touch 任务。
+        ClCompile:
+          D:\\Software\\Coding\\VS\\Perfessional\\VC\\Tools\\MSVC\\14.37.32822\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_60880.dir\\Debug\\\\" /Fd"cmTC_60880.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-aiymyj\\HAVE_UNISTD_H.c"
+          用于 x64 的 Microsoft (R) C/C++ 优化编译器 19.37.32824 版
+          HAVE_UNISTD_H.c
+          版权所有(C) Microsoft Corporation。保留所有权利。
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_60880.dir\\Debug\\\\" /Fd"cmTC_60880.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-aiymyj\\HAVE_UNISTD_H.c"
+        D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-aiymyj\\HAVE_UNISTD_H.c(2,10): fatal  error C1083: 无法打开包括文件: “unistd.h”: No such file or directory [D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-aiymyj\\cmTC_60880.vcxproj]
+        已完成生成项目“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-aiymyj\\cmTC_60880.vcxproj”(默认目标)的操作 - 失败。
+        
+        生成失败。
+        
+        “D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-aiymyj\\cmTC_60880.vcxproj”(默认目标) (1) ->
+        (ClCompile 目标) -> 
+          D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-aiymyj\\HAVE_UNISTD_H.c(2,10): fatal  error C1083: 无法打开包括文件: “unistd.h”: No such file or directory [D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-aiymyj\\cmTC_60880.vcxproj]
+        
+            0 个警告
+            1 个错误
+        
+        已用时间 00:00:00.27
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/Software/Coding/CMake/share/cmake-3.26/Modules/CheckIncludeFiles.cmake:137 (try_compile)"
+      - "CMakeLists.txt:378 (CHECK_INCLUDE_FILES)"
+    checks:
+      - "Looking for include file sys/time.h"
+    directories:
+      source: "D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-mq1awt"
+      binary: "D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-mq1awt"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+    buildResult:
+      variable: "HAVE_SYS_TIME_H"
+      cached: true
+      stdout: |
+        Change Dir: D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-mq1awt
+        
+        Run Build Command(s):D:/Software/Coding/VS/Perfessional/MSBuild/Current/Bin/amd64/MSBuild.exe cmTC_40297.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n && 适用于 .NET Framework MSBuild 版本 17.7.2+d6990bcfa
+        生成启动时间为 2024-02-20 15:16:35。
+        
+        节点 1 上的项目“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-mq1awt\\cmTC_40297.vcxproj”(默认目标)。
+        PrepareForBuild:
+          正在创建目录“cmTC_40297.dir\\Debug\\”。
+          正在创建目录“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-mq1awt\\Debug\\”。
+          正在创建目录“cmTC_40297.dir\\Debug\\cmTC_40297.tlog\\”。
+        InitializeBuildStatus:
+          正在创建“cmTC_40297.dir\\Debug\\cmTC_40297.tlog\\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+          正在对“cmTC_40297.dir\\Debug\\cmTC_40297.tlog\\unsuccessfulbuild”执行 Touch 任务。
+        ClCompile:
+          D:\\Software\\Coding\\VS\\Perfessional\\VC\\Tools\\MSVC\\14.37.32822\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_40297.dir\\Debug\\\\" /Fd"cmTC_40297.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-mq1awt\\HAVE_SYS_TIME_H.c"
+          用于 x64 的 Microsoft (R) C/C++ 优化编译器 19.37.32824 版
+          HAVE_SYS_TIME_H.c
+        D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-mq1awt\\HAVE_SYS_TIME_H.c(2,10): fatal  error C1083: 无法打开包括文件: “sys/time.h”: No such file or directory [D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-mq1awt\\cmTC_40297.vcxproj]
+          版权所有(C) Microsoft Corporation。保留所有权利。
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_40297.dir\\Debug\\\\" /Fd"cmTC_40297.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-mq1awt\\HAVE_SYS_TIME_H.c"
+        已完成生成项目“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-mq1awt\\cmTC_40297.vcxproj”(默认目标)的操作 - 失败。
+        
+        生成失败。
+        
+        “D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-mq1awt\\cmTC_40297.vcxproj”(默认目标) (1) ->
+        (ClCompile 目标) -> 
+          D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-mq1awt\\HAVE_SYS_TIME_H.c(2,10): fatal  error C1083: 无法打开包括文件: “sys/time.h”: No such file or directory [D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-mq1awt\\cmTC_40297.vcxproj]
+        
+            0 个警告
+            1 个错误
+        
+        已用时间 00:00:00.26
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/Software/Coding/CMake/share/cmake-3.26/Modules/CheckIncludeFiles.cmake:137 (try_compile)"
+      - "CMakeLists.txt:379 (CHECK_INCLUDE_FILES)"
+    checks:
+      - "Looking for include file stdbool.h"
+    directories:
+      source: "D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-6lg0md"
+      binary: "D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-6lg0md"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+    buildResult:
+      variable: "HAVE_STDBOOL_H"
+      cached: true
+      stdout: |
+        Change Dir: D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-6lg0md
+        
+        Run Build Command(s):D:/Software/Coding/VS/Perfessional/MSBuild/Current/Bin/amd64/MSBuild.exe cmTC_b707a.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n && 适用于 .NET Framework MSBuild 版本 17.7.2+d6990bcfa
+        生成启动时间为 2024-02-20 15:16:36。
+        
+        节点 1 上的项目“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-6lg0md\\cmTC_b707a.vcxproj”(默认目标)。
+        PrepareForBuild:
+          正在创建目录“cmTC_b707a.dir\\Debug\\”。
+          正在创建目录“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-6lg0md\\Debug\\”。
+          正在创建目录“cmTC_b707a.dir\\Debug\\cmTC_b707a.tlog\\”。
+        InitializeBuildStatus:
+          正在创建“cmTC_b707a.dir\\Debug\\cmTC_b707a.tlog\\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+          正在对“cmTC_b707a.dir\\Debug\\cmTC_b707a.tlog\\unsuccessfulbuild”执行 Touch 任务。
+        ClCompile:
+          D:\\Software\\Coding\\VS\\Perfessional\\VC\\Tools\\MSVC\\14.37.32822\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_b707a.dir\\Debug\\\\" /Fd"cmTC_b707a.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-6lg0md\\HAVE_STDBOOL_H.c"
+          用于 x64 的 Microsoft (R) C/C++ 优化编译器 19.37.32824 版
+          HAVE_STDBOOL_H.c
+          版权所有(C) Microsoft Corporation。保留所有权利。
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_b707a.dir\\Debug\\\\" /Fd"cmTC_b707a.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-6lg0md\\HAVE_STDBOOL_H.c"
+        Link:
+          D:\\Software\\Coding\\VS\\Perfessional\\VC\\Tools\\MSVC\\14.37.32822\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-6lg0md\\Debug\\cmTC_b707a.exe" /INCREMENTAL /ILK:"cmTC_b707a.dir\\Debug\\cmTC_b707a.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGLUT/CMakeFiles/CMakeScratch/TryCompile-6lg0md/Debug/cmTC_b707a.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGLUT/CMakeFiles/CMakeScratch/TryCompile-6lg0md/Debug/cmTC_b707a.lib" /MACHINE:X64  /machine:x64 cmTC_b707a.dir\\Debug\\HAVE_STDBOOL_H.obj
+          cmTC_b707a.vcxproj -> D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-6lg0md\\Debug\\cmTC_b707a.exe
+        FinalizeBuildStatus:
+          正在删除文件“cmTC_b707a.dir\\Debug\\cmTC_b707a.tlog\\unsuccessfulbuild”。
+          正在对“cmTC_b707a.dir\\Debug\\cmTC_b707a.tlog\\cmTC_b707a.lastbuildstate”执行 Touch 任务。
+        已完成生成项目“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-6lg0md\\cmTC_b707a.vcxproj”(默认目标)的操作。
+        
+        已成功生成。
+            0 个警告
+            0 个错误
+        
+        已用时间 00:00:00.49
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/Software/Coding/CMake/share/cmake-3.26/Modules/CheckIncludeFiles.cmake:137 (try_compile)"
+      - "CMakeLists.txt:380 (CHECK_INCLUDE_FILES)"
+    checks:
+      - "Looking for include file sys/param.h"
+    directories:
+      source: "D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-jp7do1"
+      binary: "D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-jp7do1"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+    buildResult:
+      variable: "HAVE_SYS_PARAM_H"
+      cached: true
+      stdout: |
+        Change Dir: D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-jp7do1
+        
+        Run Build Command(s):D:/Software/Coding/VS/Perfessional/MSBuild/Current/Bin/amd64/MSBuild.exe cmTC_46c96.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n && 适用于 .NET Framework MSBuild 版本 17.7.2+d6990bcfa
+        生成启动时间为 2024-02-20 15:16:37。
+        
+        节点 1 上的项目“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-jp7do1\\cmTC_46c96.vcxproj”(默认目标)。
+        PrepareForBuild:
+          正在创建目录“cmTC_46c96.dir\\Debug\\”。
+          正在创建目录“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-jp7do1\\Debug\\”。
+          正在创建目录“cmTC_46c96.dir\\Debug\\cmTC_46c96.tlog\\”。
+        InitializeBuildStatus:
+          正在创建“cmTC_46c96.dir\\Debug\\cmTC_46c96.tlog\\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+          正在对“cmTC_46c96.dir\\Debug\\cmTC_46c96.tlog\\unsuccessfulbuild”执行 Touch 任务。
+        ClCompile:
+          D:\\Software\\Coding\\VS\\Perfessional\\VC\\Tools\\MSVC\\14.37.32822\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_46c96.dir\\Debug\\\\" /Fd"cmTC_46c96.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-jp7do1\\HAVE_SYS_PARAM_H.c"
+          用于 x64 的 Microsoft (R) C/C++ 优化编译器 19.37.32824 版
+          HAVE_SYS_PARAM_H.c
+        D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-jp7do1\\HAVE_SYS_PARAM_H.c(2,10): fatal  error C1083: 无法打开包括文件: “sys/param.h”: No such file or directory [D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-jp7do1\\cmTC_46c96.vcxproj]
+          版权所有(C) Microsoft Corporation。保留所有权利。
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_46c96.dir\\Debug\\\\" /Fd"cmTC_46c96.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-jp7do1\\HAVE_SYS_PARAM_H.c"
+        已完成生成项目“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-jp7do1\\cmTC_46c96.vcxproj”(默认目标)的操作 - 失败。
+        
+        生成失败。
+        
+        “D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-jp7do1\\cmTC_46c96.vcxproj”(默认目标) (1) ->
+        (ClCompile 目标) -> 
+          D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-jp7do1\\HAVE_SYS_PARAM_H.c(2,10): fatal  error C1083: 无法打开包括文件: “sys/param.h”: No such file or directory [D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-jp7do1\\cmTC_46c96.vcxproj]
+        
+            0 个警告
+            1 个错误
+        
+        已用时间 00:00:00.26
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/Software/Coding/CMake/share/cmake-3.26/Modules/CheckIncludeFiles.cmake:137 (try_compile)"
+      - "CMakeLists.txt:381 (CHECK_INCLUDE_FILES)"
+    checks:
+      - "Looking for include file sys/ioctl.h"
+    directories:
+      source: "D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-kdf728"
+      binary: "D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-kdf728"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+    buildResult:
+      variable: "HAVE_SYS_IOCTL_H"
+      cached: true
+      stdout: |
+        Change Dir: D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-kdf728
+        
+        Run Build Command(s):D:/Software/Coding/VS/Perfessional/MSBuild/Current/Bin/amd64/MSBuild.exe cmTC_68325.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n && 适用于 .NET Framework MSBuild 版本 17.7.2+d6990bcfa
+        生成启动时间为 2024-02-20 15:16:37。
+        
+        节点 1 上的项目“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-kdf728\\cmTC_68325.vcxproj”(默认目标)。
+        PrepareForBuild:
+          正在创建目录“cmTC_68325.dir\\Debug\\”。
+          正在创建目录“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-kdf728\\Debug\\”。
+          正在创建目录“cmTC_68325.dir\\Debug\\cmTC_68325.tlog\\”。
+        InitializeBuildStatus:
+          正在创建“cmTC_68325.dir\\Debug\\cmTC_68325.tlog\\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+          正在对“cmTC_68325.dir\\Debug\\cmTC_68325.tlog\\unsuccessfulbuild”执行 Touch 任务。
+        ClCompile:
+          D:\\Software\\Coding\\VS\\Perfessional\\VC\\Tools\\MSVC\\14.37.32822\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_68325.dir\\Debug\\\\" /Fd"cmTC_68325.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-kdf728\\HAVE_SYS_IOCTL_H.c"
+          用于 x64 的 Microsoft (R) C/C++ 优化编译器 19.37.32824 版
+          HAVE_SYS_IOCTL_H.c
+        D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-kdf728\\HAVE_SYS_IOCTL_H.c(2,10): fatal  error C1083: 无法打开包括文件: “sys/ioctl.h”: No such file or directory [D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-kdf728\\cmTC_68325.vcxproj]
+          版权所有(C) Microsoft Corporation。保留所有权利。
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_68325.dir\\Debug\\\\" /Fd"cmTC_68325.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-kdf728\\HAVE_SYS_IOCTL_H.c"
+        已完成生成项目“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-kdf728\\cmTC_68325.vcxproj”(默认目标)的操作 - 失败。
+        
+        生成失败。
+        
+        “D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-kdf728\\cmTC_68325.vcxproj”(默认目标) (1) ->
+        (ClCompile 目标) -> 
+          D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-kdf728\\HAVE_SYS_IOCTL_H.c(2,10): fatal  error C1083: 无法打开包括文件: “sys/ioctl.h”: No such file or directory [D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-kdf728\\cmTC_68325.vcxproj]
+        
+            0 个警告
+            1 个错误
+        
+        已用时间 00:00:00.25
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/Software/Coding/CMake/share/cmake-3.26/Modules/CheckIncludeFiles.cmake:137 (try_compile)"
+      - "CMakeLists.txt:382 (CHECK_INCLUDE_FILES)"
+    checks:
+      - "Looking for include file fcntl.h"
+    directories:
+      source: "D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-x80o9k"
+      binary: "D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-x80o9k"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+    buildResult:
+      variable: "HAVE_FCNTL_H"
+      cached: true
+      stdout: |
+        Change Dir: D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-x80o9k
+        
+        Run Build Command(s):D:/Software/Coding/VS/Perfessional/MSBuild/Current/Bin/amd64/MSBuild.exe cmTC_5eb6a.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n && 适用于 .NET Framework MSBuild 版本 17.7.2+d6990bcfa
+        生成启动时间为 2024-02-20 15:16:37。
+        
+        节点 1 上的项目“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-x80o9k\\cmTC_5eb6a.vcxproj”(默认目标)。
+        PrepareForBuild:
+          正在创建目录“cmTC_5eb6a.dir\\Debug\\”。
+          正在创建目录“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-x80o9k\\Debug\\”。
+          正在创建目录“cmTC_5eb6a.dir\\Debug\\cmTC_5eb6a.tlog\\”。
+        InitializeBuildStatus:
+          正在创建“cmTC_5eb6a.dir\\Debug\\cmTC_5eb6a.tlog\\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+          正在对“cmTC_5eb6a.dir\\Debug\\cmTC_5eb6a.tlog\\unsuccessfulbuild”执行 Touch 任务。
+        ClCompile:
+          D:\\Software\\Coding\\VS\\Perfessional\\VC\\Tools\\MSVC\\14.37.32822\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_5eb6a.dir\\Debug\\\\" /Fd"cmTC_5eb6a.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-x80o9k\\HAVE_FCNTL_H.c"
+          用于 x64 的 Microsoft (R) C/C++ 优化编译器 19.37.32824 版
+          HAVE_FCNTL_H.c
+          版权所有(C) Microsoft Corporation。保留所有权利。
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_5eb6a.dir\\Debug\\\\" /Fd"cmTC_5eb6a.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-x80o9k\\HAVE_FCNTL_H.c"
+        Link:
+          D:\\Software\\Coding\\VS\\Perfessional\\VC\\Tools\\MSVC\\14.37.32822\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-x80o9k\\Debug\\cmTC_5eb6a.exe" /INCREMENTAL /ILK:"cmTC_5eb6a.dir\\Debug\\cmTC_5eb6a.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGLUT/CMakeFiles/CMakeScratch/TryCompile-x80o9k/Debug/cmTC_5eb6a.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGLUT/CMakeFiles/CMakeScratch/TryCompile-x80o9k/Debug/cmTC_5eb6a.lib" /MACHINE:X64  /machine:x64 cmTC_5eb6a.dir\\Debug\\HAVE_FCNTL_H.obj
+          cmTC_5eb6a.vcxproj -> D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-x80o9k\\Debug\\cmTC_5eb6a.exe
+        FinalizeBuildStatus:
+          正在删除文件“cmTC_5eb6a.dir\\Debug\\cmTC_5eb6a.tlog\\unsuccessfulbuild”。
+          正在对“cmTC_5eb6a.dir\\Debug\\cmTC_5eb6a.tlog\\cmTC_5eb6a.lastbuildstate”执行 Touch 任务。
+        已完成生成项目“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-x80o9k\\cmTC_5eb6a.vcxproj”(默认目标)的操作。
+        
+        已成功生成。
+            0 个警告
+            0 个错误
+        
+        已用时间 00:00:00.48
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/Software/Coding/CMake/share/cmake-3.26/Modules/CheckIncludeFiles.cmake:137 (try_compile)"
+      - "CMakeLists.txt:383 (CHECK_INCLUDE_FILES)"
+    checks:
+      - "Looking for include file usbhid.h"
+    directories:
+      source: "D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-3z0upm"
+      binary: "D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-3z0upm"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+    buildResult:
+      variable: "HAVE_USBHID_H"
+      cached: true
+      stdout: |
+        Change Dir: D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-3z0upm
+        
+        Run Build Command(s):D:/Software/Coding/VS/Perfessional/MSBuild/Current/Bin/amd64/MSBuild.exe cmTC_4d984.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n && 适用于 .NET Framework MSBuild 版本 17.7.2+d6990bcfa
+        生成启动时间为 2024-02-20 15:16:38。
+        
+        节点 1 上的项目“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-3z0upm\\cmTC_4d984.vcxproj”(默认目标)。
+        PrepareForBuild:
+          正在创建目录“cmTC_4d984.dir\\Debug\\”。
+          正在创建目录“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-3z0upm\\Debug\\”。
+          正在创建目录“cmTC_4d984.dir\\Debug\\cmTC_4d984.tlog\\”。
+        InitializeBuildStatus:
+          正在创建“cmTC_4d984.dir\\Debug\\cmTC_4d984.tlog\\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+          正在对“cmTC_4d984.dir\\Debug\\cmTC_4d984.tlog\\unsuccessfulbuild”执行 Touch 任务。
+        ClCompile:
+          D:\\Software\\Coding\\VS\\Perfessional\\VC\\Tools\\MSVC\\14.37.32822\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_4d984.dir\\Debug\\\\" /Fd"cmTC_4d984.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-3z0upm\\HAVE_USBHID_H.c"
+          用于 x64 的 Microsoft (R) C/C++ 优化编译器 19.37.32824 版
+          HAVE_USBHID_H.c
+          版权所有(C) Microsoft Corporation。保留所有权利。
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_4d984.dir\\Debug\\\\" /Fd"cmTC_4d984.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-3z0upm\\HAVE_USBHID_H.c"
+        D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-3z0upm\\HAVE_USBHID_H.c(2,10): fatal  error C1083: 无法打开包括文件: “usbhid.h”: No such file or directory [D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-3z0upm\\cmTC_4d984.vcxproj]
+        已完成生成项目“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-3z0upm\\cmTC_4d984.vcxproj”(默认目标)的操作 - 失败。
+        
+        生成失败。
+        
+        “D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-3z0upm\\cmTC_4d984.vcxproj”(默认目标) (1) ->
+        (ClCompile 目标) -> 
+          D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-3z0upm\\HAVE_USBHID_H.c(2,10): fatal  error C1083: 无法打开包括文件: “usbhid.h”: No such file or directory [D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-3z0upm\\cmTC_4d984.vcxproj]
+        
+            0 个警告
+            1 个错误
+        
+        已用时间 00:00:00.28
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/Software/Coding/CMake/share/cmake-3.26/Modules/CheckFunctionExists.cmake:91 (try_compile)"
+      - "CMakeLists.txt:384 (CHECK_FUNCTION_EXISTS)"
+    checks:
+      - "Looking for gettimeofday"
+    directories:
+      source: "D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-jg1snc"
+      binary: "D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-jg1snc"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+    buildResult:
+      variable: "HAVE_GETTIMEOFDAY"
+      cached: true
+      stdout: |
+        Change Dir: D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-jg1snc
+        
+        Run Build Command(s):D:/Software/Coding/VS/Perfessional/MSBuild/Current/Bin/amd64/MSBuild.exe cmTC_96e9a.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n && 适用于 .NET Framework MSBuild 版本 17.7.2+d6990bcfa
+        生成启动时间为 2024-02-20 15:16:38。
+        
+        节点 1 上的项目“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-jg1snc\\cmTC_96e9a.vcxproj”(默认目标)。
+        PrepareForBuild:
+          正在创建目录“cmTC_96e9a.dir\\Debug\\”。
+          正在创建目录“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-jg1snc\\Debug\\”。
+          正在创建目录“cmTC_96e9a.dir\\Debug\\cmTC_96e9a.tlog\\”。
+        InitializeBuildStatus:
+          正在创建“cmTC_96e9a.dir\\Debug\\cmTC_96e9a.tlog\\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+          正在对“cmTC_96e9a.dir\\Debug\\cmTC_96e9a.tlog\\unsuccessfulbuild”执行 Touch 任务。
+        ClCompile:
+          D:\\Software\\Coding\\VS\\Perfessional\\VC\\Tools\\MSVC\\14.37.32822\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=gettimeofday /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_96e9a.dir\\Debug\\\\" /Fd"cmTC_96e9a.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-jg1snc\\CheckFunctionExists.c"
+          用于 x64 的 Microsoft (R) C/C++ 优化编译器 19.37.32824 版
+          CheckFunctionExists.c
+          版权所有(C) Microsoft Corporation。保留所有权利。
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=gettimeofday /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_96e9a.dir\\Debug\\\\" /Fd"cmTC_96e9a.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-jg1snc\\CheckFunctionExists.c"
+        Link:
+          D:\\Software\\Coding\\VS\\Perfessional\\VC\\Tools\\MSVC\\14.37.32822\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-jg1snc\\Debug\\cmTC_96e9a.exe" /INCREMENTAL /ILK:"cmTC_96e9a.dir\\Debug\\cmTC_96e9a.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGLUT/CMakeFiles/CMakeScratch/TryCompile-jg1snc/Debug/cmTC_96e9a.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGLUT/CMakeFiles/CMakeScratch/TryCompile-jg1snc/Debug/cmTC_96e9a.lib" /MACHINE:X64  /machine:x64 cmTC_96e9a.dir\\Debug\\CheckFunctionExists.obj
+        CheckFunctionExists.obj : error LNK2019: 无法解析的外部符号 gettimeofday，函数 main 中引用了该符号 [D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-jg1snc\\cmTC_96e9a.vcxproj]
+        D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-jg1snc\\Debug\\cmTC_96e9a.exe : fatal error LNK1120: 1 个无法解析的外部命令 [D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-jg1snc\\cmTC_96e9a.vcxproj]
+        已完成生成项目“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-jg1snc\\cmTC_96e9a.vcxproj”(默认目标)的操作 - 失败。
+        
+        生成失败。
+        
+        “D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-jg1snc\\cmTC_96e9a.vcxproj”(默认目标) (1) ->
+        (Link 目标) -> 
+          CheckFunctionExists.obj : error LNK2019: 无法解析的外部符号 gettimeofday，函数 main 中引用了该符号 [D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-jg1snc\\cmTC_96e9a.vcxproj]
+          D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-jg1snc\\Debug\\cmTC_96e9a.exe : fatal error LNK1120: 1 个无法解析的外部命令 [D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-jg1snc\\cmTC_96e9a.vcxproj]
+        
+            0 个警告
+            2 个错误
+        
+        已用时间 00:00:00.47
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/Software/Coding/CMake/share/cmake-3.26/Modules/CheckFunctionExists.cmake:91 (try_compile)"
+      - "CMakeLists.txt:385 (CHECK_FUNCTION_EXISTS)"
+    checks:
+      - "Looking for XParseGeometry"
+    directories:
+      source: "D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-v40y3k"
+      binary: "D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-v40y3k"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+    buildResult:
+      variable: "HAVE_XPARSEGEOMETRY"
+      cached: true
+      stdout: |
+        Change Dir: D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-v40y3k
+        
+        Run Build Command(s):D:/Software/Coding/VS/Perfessional/MSBuild/Current/Bin/amd64/MSBuild.exe cmTC_e9187.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n && 适用于 .NET Framework MSBuild 版本 17.7.2+d6990bcfa
+        生成启动时间为 2024-02-20 15:16:39。
+        
+        节点 1 上的项目“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-v40y3k\\cmTC_e9187.vcxproj”(默认目标)。
+        PrepareForBuild:
+          正在创建目录“cmTC_e9187.dir\\Debug\\”。
+          正在创建目录“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-v40y3k\\Debug\\”。
+          正在创建目录“cmTC_e9187.dir\\Debug\\cmTC_e9187.tlog\\”。
+        InitializeBuildStatus:
+          正在创建“cmTC_e9187.dir\\Debug\\cmTC_e9187.tlog\\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+          正在对“cmTC_e9187.dir\\Debug\\cmTC_e9187.tlog\\unsuccessfulbuild”执行 Touch 任务。
+        ClCompile:
+          D:\\Software\\Coding\\VS\\Perfessional\\VC\\Tools\\MSVC\\14.37.32822\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=XParseGeometry /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_e9187.dir\\Debug\\\\" /Fd"cmTC_e9187.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-v40y3k\\CheckFunctionExists.c"
+          用于 x64 的 Microsoft (R) C/C++ 优化编译器 19.37.32824 版
+          CheckFunctionExists.c
+          版权所有(C) Microsoft Corporation。保留所有权利。
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=XParseGeometry /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_e9187.dir\\Debug\\\\" /Fd"cmTC_e9187.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-v40y3k\\CheckFunctionExists.c"
+        Link:
+          D:\\Software\\Coding\\VS\\Perfessional\\VC\\Tools\\MSVC\\14.37.32822\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-v40y3k\\Debug\\cmTC_e9187.exe" /INCREMENTAL /ILK:"cmTC_e9187.dir\\Debug\\cmTC_e9187.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGLUT/CMakeFiles/CMakeScratch/TryCompile-v40y3k/Debug/cmTC_e9187.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGLUT/CMakeFiles/CMakeScratch/TryCompile-v40y3k/Debug/cmTC_e9187.lib" /MACHINE:X64  /machine:x64 cmTC_e9187.dir\\Debug\\CheckFunctionExists.obj
+        CheckFunctionExists.obj : error LNK2019: 无法解析的外部符号 XParseGeometry，函数 main 中引用了该符号 [D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-v40y3k\\cmTC_e9187.vcxproj]
+        D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-v40y3k\\Debug\\cmTC_e9187.exe : fatal error LNK1120: 1 个无法解析的外部命令 [D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-v40y3k\\cmTC_e9187.vcxproj]
+        已完成生成项目“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-v40y3k\\cmTC_e9187.vcxproj”(默认目标)的操作 - 失败。
+        
+        生成失败。
+        
+        “D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-v40y3k\\cmTC_e9187.vcxproj”(默认目标) (1) ->
+        (Link 目标) -> 
+          CheckFunctionExists.obj : error LNK2019: 无法解析的外部符号 XParseGeometry，函数 main 中引用了该符号 [D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-v40y3k\\cmTC_e9187.vcxproj]
+          D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-v40y3k\\Debug\\cmTC_e9187.exe : fatal error LNK1120: 1 个无法解析的外部命令 [D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-v40y3k\\cmTC_e9187.vcxproj]
+        
+            0 个警告
+            2 个错误
+        
+        已用时间 00:00:00.43
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/Software/Coding/CMake/share/cmake-3.26/Modules/CheckIncludeFiles.cmake:137 (try_compile)"
+      - "CMakeLists.txt:393 (CHECK_INCLUDE_FILES)"
+    checks:
+      - "Looking for include file stdint.h"
+    directories:
+      source: "D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-tui36w"
+      binary: "D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-tui36w"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+    buildResult:
+      variable: "HAVE_STDINT_H"
+      cached: true
+      stdout: |
+        Change Dir: D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-tui36w
+        
+        Run Build Command(s):D:/Software/Coding/VS/Perfessional/MSBuild/Current/Bin/amd64/MSBuild.exe cmTC_c97a4.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n && 适用于 .NET Framework MSBuild 版本 17.7.2+d6990bcfa
+        生成启动时间为 2024-02-20 15:16:39。
+        
+        节点 1 上的项目“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-tui36w\\cmTC_c97a4.vcxproj”(默认目标)。
+        PrepareForBuild:
+          正在创建目录“cmTC_c97a4.dir\\Debug\\”。
+          正在创建目录“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-tui36w\\Debug\\”。
+          正在创建目录“cmTC_c97a4.dir\\Debug\\cmTC_c97a4.tlog\\”。
+        InitializeBuildStatus:
+          正在创建“cmTC_c97a4.dir\\Debug\\cmTC_c97a4.tlog\\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+          正在对“cmTC_c97a4.dir\\Debug\\cmTC_c97a4.tlog\\unsuccessfulbuild”执行 Touch 任务。
+        ClCompile:
+          D:\\Software\\Coding\\VS\\Perfessional\\VC\\Tools\\MSVC\\14.37.32822\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_c97a4.dir\\Debug\\\\" /Fd"cmTC_c97a4.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-tui36w\\HAVE_STDINT_H.c"
+          用于 x64 的 Microsoft (R) C/C++ 优化编译器 19.37.32824 版
+          HAVE_STDINT_H.c
+          版权所有(C) Microsoft Corporation。保留所有权利。
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_c97a4.dir\\Debug\\\\" /Fd"cmTC_c97a4.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-tui36w\\HAVE_STDINT_H.c"
+        Link:
+          D:\\Software\\Coding\\VS\\Perfessional\\VC\\Tools\\MSVC\\14.37.32822\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-tui36w\\Debug\\cmTC_c97a4.exe" /INCREMENTAL /ILK:"cmTC_c97a4.dir\\Debug\\cmTC_c97a4.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGLUT/CMakeFiles/CMakeScratch/TryCompile-tui36w/Debug/cmTC_c97a4.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGLUT/CMakeFiles/CMakeScratch/TryCompile-tui36w/Debug/cmTC_c97a4.lib" /MACHINE:X64  /machine:x64 cmTC_c97a4.dir\\Debug\\HAVE_STDINT_H.obj
+          cmTC_c97a4.vcxproj -> D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-tui36w\\Debug\\cmTC_c97a4.exe
+        FinalizeBuildStatus:
+          正在删除文件“cmTC_c97a4.dir\\Debug\\cmTC_c97a4.tlog\\unsuccessfulbuild”。
+          正在对“cmTC_c97a4.dir\\Debug\\cmTC_c97a4.tlog\\cmTC_c97a4.lastbuildstate”执行 Touch 任务。
+        已完成生成项目“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-tui36w\\cmTC_c97a4.vcxproj”(默认目标)的操作。
+        
+        已成功生成。
+            0 个警告
+            0 个错误
+        
+        已用时间 00:00:00.50
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "D:/Software/Coding/CMake/share/cmake-3.26/Modules/CheckIncludeFiles.cmake:137 (try_compile)"
+      - "CMakeLists.txt:394 (CHECK_INCLUDE_FILES)"
+    checks:
+      - "Looking for include file inttypes.h"
+    directories:
+      source: "D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-yk8jfw"
+      binary: "D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-yk8jfw"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS /W3"
+    buildResult:
+      variable: "HAVE_INTTYPES_H"
+      cached: true
+      stdout: |
+        Change Dir: D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/CMakeScratch/TryCompile-yk8jfw
+        
+        Run Build Command(s):D:/Software/Coding/VS/Perfessional/MSBuild/Current/Bin/amd64/MSBuild.exe cmTC_ca24a.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n && 适用于 .NET Framework MSBuild 版本 17.7.2+d6990bcfa
+        生成启动时间为 2024-02-20 15:16:40。
+        
+        节点 1 上的项目“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-yk8jfw\\cmTC_ca24a.vcxproj”(默认目标)。
+        PrepareForBuild:
+          正在创建目录“cmTC_ca24a.dir\\Debug\\”。
+          正在创建目录“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-yk8jfw\\Debug\\”。
+          正在创建目录“cmTC_ca24a.dir\\Debug\\cmTC_ca24a.tlog\\”。
+        InitializeBuildStatus:
+          正在创建“cmTC_ca24a.dir\\Debug\\cmTC_ca24a.tlog\\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+          正在对“cmTC_ca24a.dir\\Debug\\cmTC_ca24a.tlog\\unsuccessfulbuild”执行 Touch 任务。
+        ClCompile:
+          D:\\Software\\Coding\\VS\\Perfessional\\VC\\Tools\\MSVC\\14.37.32822\\bin\\HostX64\\x64\\CL.exe /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_ca24a.dir\\Debug\\\\" /Fd"cmTC_ca24a.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-yk8jfw\\HAVE_INTTYPES_H.c"
+          用于 x64 的 Microsoft (R) C/C++ 优化编译器 19.37.32824 版
+          HAVE_INTTYPES_H.c
+          版权所有(C) Microsoft Corporation。保留所有权利。
+          cl /c /Zi /W3 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /Gm- /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_ca24a.dir\\Debug\\\\" /Fd"cmTC_ca24a.dir\\Debug\\vc143.pdb" /external:W3 /Gd /TC /errorReport:queue "D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-yk8jfw\\HAVE_INTTYPES_H.c"
+        Link:
+          D:\\Software\\Coding\\VS\\Perfessional\\VC\\Tools\\MSVC\\14.37.32822\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-yk8jfw\\Debug\\cmTC_ca24a.exe" /INCREMENTAL /ILK:"cmTC_ca24a.dir\\Debug\\cmTC_ca24a.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGLUT/CMakeFiles/CMakeScratch/TryCompile-yk8jfw/Debug/cmTC_ca24a.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGLUT/CMakeFiles/CMakeScratch/TryCompile-yk8jfw/Debug/cmTC_ca24a.lib" /MACHINE:X64  /machine:x64 cmTC_ca24a.dir\\Debug\\HAVE_INTTYPES_H.obj
+          cmTC_ca24a.vcxproj -> D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGLUT\\CMakeFiles\\CMakeScratch\\TryCompile-yk8jfw\\Debug\\cmTC_ca24a.exe
+        FinalizeBuildStatus:
+          正在删除文件“cmTC_ca24a.dir\\Debug\\cmTC_ca24a.tlog\\unsuccessfulbuild”。
+          正在对“cmTC_ca24a.dir\\Debug\\cmTC_ca24a.tlog\\cmTC_ca24a.lastbuildstate”执行 Touch 任务。
+        已完成生成项目“D:\\Project\\Qt5\\ZCAN_MINI\\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\\debug\\FreeGlut\\CMakeFiles\\CMakeScratch\\TryCompile-yk8jfw\\cmTC_ca24a.vcxproj”(默认目标)的操作。
+        
+        已成功生成。
+            0 个警告
+            0 个错误
+        
+        已用时间 00:00:00.50
+        
+      exitCode: 0
+...

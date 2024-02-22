@@ -18,6 +18,9 @@ void PlotGraphThread::beginThread()
             this, static_cast<void (PlotGraphThread::*)(const ZCAN_Receive_Data* const, const uint)>(&PlotGraphThread::slot_newMsg));
     connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_ReceiveFD_Data* const, const uint)>(&RecMsgThread::newMsg),
             this, static_cast<void (PlotGraphThread::*)(const ZCAN_ReceiveFD_Data* const, const uint)>(&PlotGraphThread::slot_newMsg));
+
+//    connect(&data_timer_, SIGNAL(timeout()), this, SLOT(slot_realTimeData()));
+//    data_timer_.start(0);   // 间隔时间 0ms 表示尽可能快的触发
 }
 
 void PlotGraphThread::pauseThread()
@@ -29,6 +32,9 @@ void PlotGraphThread::pauseThread()
             this, static_cast<void (PlotGraphThread::*)(const ZCAN_Receive_Data* const, const uint)>(&PlotGraphThread::slot_newMsg));
     disconnect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_ReceiveFD_Data* const, const uint)>(&RecMsgThread::newMsg),
             this, static_cast<void (PlotGraphThread::*)(const ZCAN_ReceiveFD_Data* const, const uint)>(&PlotGraphThread::slot_newMsg));
+
+//    disconnect(&data_timer_, SIGNAL(timeout()), this, SLOT(slot_realTimeData()));
+//    data_timer_.stop();
 }
 
 void PlotGraphThread::stopThread()
@@ -121,50 +127,71 @@ int PlotGraphThread::getValue(const BYTE * const data, const CppCAN::CANSignal& 
     return value + signal.offset();
 }
 
+void PlotGraphThread::timerMsByCPU(double mSleepTime)
+{
+    LARGE_INTEGER litmp;
+    LONGLONG Qpart1,Qpart2;
+    double dfMinus = 0,dfFreq = 0,dfTime = 0;//不初始化是一个不好的习惯，而且会有bug
+
+    //获得CPU计时器的时钟频率
+    QueryPerformanceFrequency(&litmp);//取得高精度运行计数器的频率f,单位是每秒多少次（n/s），
+    dfFreq = (double)litmp.QuadPart;
+
+    QueryPerformanceCounter(&litmp);//取得高精度运行计数器的数值
+    Qpart1 = litmp.QuadPart; //开始计时
+
+    while((mSleepTime-dfTime*1000.000)>0.0000001){
+        QueryPerformanceCounter(&litmp);//取得高精度运行计数器的数值
+        Qpart2 = litmp.QuadPart; //终止计时
+
+        dfMinus = (double)(Qpart2 - Qpart1);//计算计数器值
+        dfTime = dfMinus / dfFreq;//获得对应时间，单位为秒,可以乘1000000精确到微秒级（us）
+        //qDebug()<<"ms"<<QString::number(dfTime*1000.00,'f',9);
+    }
+    //qDebug()<<"ms"<<QString::number(dfTime*1000.00,'f',9);
+}
+
+void PlotGraphThread::timerUsByCPU(double uSleepTime)
+{
+    LARGE_INTEGER litmp;
+    LONGLONG Qpart1,Qpart2;
+    double dfMinus = 0,dfFreq = 0,dfTime = 0;//不初始化是一个不好的习惯，而且会有bug
+
+    //获得CPU计时器的时钟频率
+    QueryPerformanceFrequency(&litmp);//取得高精度运行计数器的频率f,单位是每秒多少次（n/s），
+    dfFreq = (double)litmp.QuadPart;
+
+    QueryPerformanceCounter(&litmp);//取得高精度运行计数器的数值
+    Qpart1 = litmp.QuadPart; //开始计时
+
+    while((uSleepTime-dfTime*1000000.000)>0.0000001){
+        QueryPerformanceCounter(&litmp);//取得高精度运行计数器的数值
+        Qpart2 = litmp.QuadPart; //终止计时
+
+        dfMinus = (double)(Qpart2 - Qpart1);//计算计数器值
+        dfTime = dfMinus / dfFreq;//获得对应时间，单位为秒,可以乘1000000精确到微秒级（us）
+        //        qDebug()<<"us"<<QString::number(dfTime*1000000.00,'f',9);
+    }
+}
+
 void PlotGraphThread::run()
 {
     // 线程任务
     m_stop = false;
 
+    plot_->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, 5));
+    plot_->graph(1)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, 5));
+
     while (!m_stop) // 循环主体
     {
         if (!m_pause)
         {
-            //分类信号
+            timerMsByCPU(1);   // 定时 1 ms
+            slot_realTimeData();
 
-            //绘制图像
-
-
-
-            plot_->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, 4));
-
-//            plot_->graph(0)->setBrush(QBrush(QColor(255,50,30,75)));
-//            plot_->graph(0)->setChannelFillGraph(plot_->graph(1));
-            int i = 1;
-            while (i++ <= 1000 && !m_stop)
-            {
-                double key = QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0;
-                plot_->graph(0)->addData(key, rand() % 10);
-                plot_->xAxis->setRange(key, 0.5, Qt::AlignRight);
-
-                plot_->graph(1)->addData(key, rand() % 10);
-                plot_->xAxis->setRange(key, 0.5, Qt::AlignRight);
-                plot_->replot(QCustomPlot::rpQueuedReplot);
-
-                msleep(10);
-            }
-            m_pause = true;
-
-
-
-
-
-
-
-
-
+            //qDebug()<<"======================";
             //避免无数据时变成While(1),会占用大量的CPU
-            msleep(15);
+            //msleep(15);
         }
     }
     quit(); // 相当于exit(0)，退出线程的事件循环
@@ -216,5 +243,20 @@ void PlotGraphThread::slot_newMsg(const ZCAN_ReceiveFD_Data* const canfd_data, c
 
         ++i;
     }
+}
+
+void PlotGraphThread::slot_realTimeData()
+{
+    static QTime time(QTime::currentTime());
+
+    double key = time.elapsed()/1000.0; // 开始到现在的时间，单位秒
+
+    // 添加数据到graph
+    plot_->graph(0)->addData(key, rand() % 10);
+    plot_->graph(1)->addData(key, rand() % 10);
+
+    if (key - last_key_ > 0.003)
+        qDebug() << int((key - last_key_) * 1000);
+    last_key_ = key;
 }
 

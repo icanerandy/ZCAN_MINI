@@ -2651,6 +2651,8 @@ public:
   QCPRange valueRange(bool &foundRange, QCP::SignDomain signDomain=QCP::sdBoth, const QCPRange &inKeyRange=QCPRange());
   QCPDataRange dataRange() const { return QCPDataRange(0, size()); }
   void limitIteratorsToDataRange(const_iterator &begin, const_iterator &end, const QCPDataRange &dataRange) const;
+
+  QVector<DataType>* coreData() { return &mData; }  // 新增内容
   
 protected:
   // property members:

@@ -1,0 +1,324 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ResolveNugetPackages>false</ResolveNugetPackages>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A8239D0F-8C1F-35B8-B775-3D346C4BEF61}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.22000.0</WindowsTargetPlatformVersion>
+    <Platform>x64</Platform>
+    <ProjectName>ALL_BUILD</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\icaner\Desktop\freeglut-3.4.0\src;C:\Users\icaner\Desktop\freeglut-3.4.0\include;D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\icaner\Desktop\freeglut-3.4.0\src;C:\Users\icaner\Desktop\freeglut-3.4.0\include;D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\icaner\Desktop\freeglut-3.4.0\src;C:\Users\icaner\Desktop\freeglut-3.4.0\include;D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Users\icaner\Desktop\freeglut-3.4.0\src;C:\Users\icaner\Desktop\freeglut-3.4.0\include;D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\icaner\Desktop\freeglut-3.4.0\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule C:/Users/icaner/Desktop/freeglut-3.4.0/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+D:\Software\Coding\CMake\bin\cmake.exe -SC:/Users/icaner/Desktop/freeglut-3.4.0 -BD:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut --check-stamp-file D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">C:\Users\icaner\Desktop\freeglut-3.4.0\FreeGLUTConfig.cmake.in;C:\Users\icaner\Desktop\freeglut-3.4.0\config.h.in;C:\Users\icaner\Desktop\freeglut-3.4.0\freeglut.pc.in;C:\Users\icaner\Desktop\freeglut-3.4.0\freeglut.rc.in;C:\Users\icaner\Desktop\freeglut-3.4.0\src\fg_version.h.in;D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\CMakeFiles\3.26.4\CMakeCCompiler.cmake;D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\CMakeFiles\3.26.4\CMakeRCCompiler.cmake;D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\CMakeFiles\3.26.4\CMakeSystem.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\BasicConfigVersion-AnyNewerVersion.cmake.in;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeCInformation.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeCheckCompilerFlagCommonPatterns.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeCommonLanguageInclude.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeGenericSystem.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeInitializeConfigs.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeLanguageInformation.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakePackageConfigHelpers.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeRCInformation.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInformation.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInitialize.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CheckCCompilerFlag.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CheckCSourceCompiles.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CheckFunctionExists.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CheckIncludeFile.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CheckIncludeFileCXX.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CheckIncludeFiles.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CheckTypeSize.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Compiler\MSVC-C.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Compiler\MSVC.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\FindOpenGL.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\FindPackageHandleStandardArgs.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\FindPackageMessage.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\GNUInstallDirs.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Internal\CheckCompilerFlag.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Internal\CheckFlagCommonConfig.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Internal\CheckSourceCompiles.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-C.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Platform\Windows.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Platform\WindowsPaths.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\WriteBasicConfigVersionFile.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule C:/Users/icaner/Desktop/freeglut-3.4.0/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+D:\Software\Coding\CMake\bin\cmake.exe -SC:/Users/icaner/Desktop/freeglut-3.4.0 -BD:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut --check-stamp-file D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">C:\Users\icaner\Desktop\freeglut-3.4.0\FreeGLUTConfig.cmake.in;C:\Users\icaner\Desktop\freeglut-3.4.0\config.h.in;C:\Users\icaner\Desktop\freeglut-3.4.0\freeglut.pc.in;C:\Users\icaner\Desktop\freeglut-3.4.0\freeglut.rc.in;C:\Users\icaner\Desktop\freeglut-3.4.0\src\fg_version.h.in;D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\CMakeFiles\3.26.4\CMakeCCompiler.cmake;D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\CMakeFiles\3.26.4\CMakeRCCompiler.cmake;D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\CMakeFiles\3.26.4\CMakeSystem.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\BasicConfigVersion-AnyNewerVersion.cmake.in;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeCInformation.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeCheckCompilerFlagCommonPatterns.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeCommonLanguageInclude.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeGenericSystem.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeInitializeConfigs.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeLanguageInformation.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakePackageConfigHelpers.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeRCInformation.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInformation.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInitialize.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CheckCCompilerFlag.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CheckCSourceCompiles.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CheckFunctionExists.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CheckIncludeFile.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CheckIncludeFileCXX.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CheckIncludeFiles.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CheckTypeSize.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Compiler\MSVC-C.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Compiler\MSVC.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\FindOpenGL.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\FindPackageHandleStandardArgs.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\FindPackageMessage.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\GNUInstallDirs.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Internal\CheckCompilerFlag.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Internal\CheckFlagCommonConfig.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Internal\CheckSourceCompiles.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-C.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Platform\Windows.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Platform\WindowsPaths.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\WriteBasicConfigVersionFile.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule C:/Users/icaner/Desktop/freeglut-3.4.0/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+D:\Software\Coding\CMake\bin\cmake.exe -SC:/Users/icaner/Desktop/freeglut-3.4.0 -BD:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut --check-stamp-file D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">C:\Users\icaner\Desktop\freeglut-3.4.0\FreeGLUTConfig.cmake.in;C:\Users\icaner\Desktop\freeglut-3.4.0\config.h.in;C:\Users\icaner\Desktop\freeglut-3.4.0\freeglut.pc.in;C:\Users\icaner\Desktop\freeglut-3.4.0\freeglut.rc.in;C:\Users\icaner\Desktop\freeglut-3.4.0\src\fg_version.h.in;D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\CMakeFiles\3.26.4\CMakeCCompiler.cmake;D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\CMakeFiles\3.26.4\CMakeRCCompiler.cmake;D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\CMakeFiles\3.26.4\CMakeSystem.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\BasicConfigVersion-AnyNewerVersion.cmake.in;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeCInformation.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeCheckCompilerFlagCommonPatterns.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeCommonLanguageInclude.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeGenericSystem.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeInitializeConfigs.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeLanguageInformation.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakePackageConfigHelpers.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeRCInformation.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInformation.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInitialize.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CheckCCompilerFlag.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CheckCSourceCompiles.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CheckFunctionExists.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CheckIncludeFile.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CheckIncludeFileCXX.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CheckIncludeFiles.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CheckTypeSize.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Compiler\MSVC-C.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Compiler\MSVC.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\FindOpenGL.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\FindPackageHandleStandardArgs.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\FindPackageMessage.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\GNUInstallDirs.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Internal\CheckCompilerFlag.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Internal\CheckFlagCommonConfig.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Internal\CheckSourceCompiles.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-C.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Platform\Windows.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Platform\WindowsPaths.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\WriteBasicConfigVersionFile.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule C:/Users/icaner/Desktop/freeglut-3.4.0/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+D:\Software\Coding\CMake\bin\cmake.exe -SC:/Users/icaner/Desktop/freeglut-3.4.0 -BD:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut --check-stamp-file D:/Project/Qt5/ZCAN_MINI/build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug/debug/FreeGlut/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">C:\Users\icaner\Desktop\freeglut-3.4.0\FreeGLUTConfig.cmake.in;C:\Users\icaner\Desktop\freeglut-3.4.0\config.h.in;C:\Users\icaner\Desktop\freeglut-3.4.0\freeglut.pc.in;C:\Users\icaner\Desktop\freeglut-3.4.0\freeglut.rc.in;C:\Users\icaner\Desktop\freeglut-3.4.0\src\fg_version.h.in;D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\CMakeFiles\3.26.4\CMakeCCompiler.cmake;D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\CMakeFiles\3.26.4\CMakeRCCompiler.cmake;D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\CMakeFiles\3.26.4\CMakeSystem.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\BasicConfigVersion-AnyNewerVersion.cmake.in;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeCInformation.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeCheckCompilerFlagCommonPatterns.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeCommonLanguageInclude.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeGenericSystem.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeInitializeConfigs.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeLanguageInformation.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakePackageConfigHelpers.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeRCInformation.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInformation.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CMakeSystemSpecificInitialize.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CheckCCompilerFlag.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CheckCSourceCompiles.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CheckFunctionExists.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CheckIncludeFile.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CheckIncludeFileCXX.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CheckIncludeFiles.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\CheckTypeSize.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Compiler\MSVC-C.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Compiler\MSVC.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\FindOpenGL.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\FindPackageHandleStandardArgs.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\FindPackageMessage.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\GNUInstallDirs.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Internal\CheckCompilerFlag.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Internal\CheckFlagCommonConfig.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Internal\CheckSourceCompiles.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC-C.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Platform\Windows-MSVC.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Platform\Windows.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\Platform\WindowsPaths.cmake;D:\Software\Coding\CMake\share\cmake-3.26\Modules\WriteBasicConfigVersionFile.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\ZERO_CHECK.vcxproj">
+      <Project>{9865A67B-CB67-3A17-B74A-82BCE38470B6}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\3dview.vcxproj">
+      <Project>{065DB741-C980-3D6F-959A-C8757B222326}</Project>
+      <Name>3dview</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\3dview_static.vcxproj">
+      <Project>{EDB45FF7-062D-39BD-B8B2-BA3BF6F78B4C}</Project>
+      <Name>3dview_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\CallbackMaker.vcxproj">
+      <Project>{574ED52C-91B4-3127-91CB-C5CB93B04F6D}</Project>
+      <Name>CallbackMaker</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\CallbackMaker_static.vcxproj">
+      <Project>{07549831-0CC4-334A-9403-8DDDCDD9407E}</Project>
+      <Name>CallbackMaker_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\Fractals.vcxproj">
+      <Project>{D8AEF1DC-89D0-37DC-A60A-87FF6A9B76DD}</Project>
+      <Name>Fractals</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\Fractals_random.vcxproj">
+      <Project>{E10D72BD-CBD7-38D1-A49B-BFC9CB94A698}</Project>
+      <Name>Fractals_random</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\Fractals_random_static.vcxproj">
+      <Project>{69E8C034-2B02-305F-80FD-4713B1A90283}</Project>
+      <Name>Fractals_random_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\Fractals_static.vcxproj">
+      <Project>{657350DA-839E-3CC4-8B72-8CDA6C339917}</Project>
+      <Name>Fractals_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\Lorenz.vcxproj">
+      <Project>{D0BB52E1-FD2B-3A88-819D-15906D439EC7}</Project>
+      <Name>Lorenz</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\Lorenz_static.vcxproj">
+      <Project>{CA784D6F-E18D-3952-914E-B59819DB5A71}</Project>
+      <Name>Lorenz_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\One.vcxproj">
+      <Project>{3D5D2BD7-47EC-3247-81AD-C99BBDD998E8}</Project>
+      <Name>One</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\One_static.vcxproj">
+      <Project>{888B4240-65BB-3944-A870-8B83B0DD57A4}</Project>
+      <Name>One_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\freeglut.vcxproj">
+      <Project>{19E58892-DBB3-3B1F-82F6-C4668119CC14}</Project>
+      <Name>freeglut</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\freeglut_static.vcxproj">
+      <Project>{065DB084-2FE1-3168-BE86-8F4ABF96517B}</Project>
+      <Name>freeglut_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\indexed_color.vcxproj">
+      <Project>{9019D6FE-910C-30B6-83C1-9A217206E94C}</Project>
+      <Name>indexed_color</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\indexed_color_static.vcxproj">
+      <Project>{9979B279-BBEB-3881-BEBD-89CCC182406C}</Project>
+      <Name>indexed_color_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\joystick.vcxproj">
+      <Project>{7791110C-0E83-3159-AD03-3AF57D88DA64}</Project>
+      <Name>joystick</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\joystick_static.vcxproj">
+      <Project>{F1CAE6A0-C104-30A1-9816-F07D94D13ABD}</Project>
+      <Name>joystick_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\keyboard.vcxproj">
+      <Project>{02C2F65F-E616-3835-843E-3EF89BCD97C5}</Project>
+      <Name>keyboard</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\keyboard_static.vcxproj">
+      <Project>{F9BBDF54-95F0-380A-8138-5B6B3DD57841}</Project>
+      <Name>keyboard_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\multi-touch.vcxproj">
+      <Project>{F2F2C3B0-F87E-3652-BE09-A69761DC75A9}</Project>
+      <Name>multi-touch</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\multi-touch_static.vcxproj">
+      <Project>{93BAEEF2-552E-32DB-B02B-20844CDA89A6}</Project>
+      <Name>multi-touch_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\resizer.vcxproj">
+      <Project>{16869410-A374-302C-95C8-6A2304171F07}</Project>
+      <Name>resizer</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\resizer_static.vcxproj">
+      <Project>{FEF99301-EC49-31CB-A58B-6A66B2FEDFA8}</Project>
+      <Name>resizer_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\shapes.vcxproj">
+      <Project>{8051415C-C593-3CA5-B372-9842A5C6F886}</Project>
+      <Name>shapes</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\shapes_static.vcxproj">
+      <Project>{F9D9A322-9A8C-3EF6-B6B6-D51FD493D7FF}</Project>
+      <Name>shapes_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\smooth_opengl3.vcxproj">
+      <Project>{5CE771C0-2F85-3E83-AC33-C726F577BBB8}</Project>
+      <Name>smooth_opengl3</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\smooth_opengl3_static.vcxproj">
+      <Project>{A1B3052D-00FC-36AB-96D9-281F8A767F02}</Project>
+      <Name>smooth_opengl3_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\spaceball.vcxproj">
+      <Project>{8B2AC056-A0B3-30FE-B590-8E1FFCAC0D94}</Project>
+      <Name>spaceball</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\spaceball_static.vcxproj">
+      <Project>{43B2CDC5-68A3-37FC-A3A0-362765187B71}</Project>
+      <Name>spaceball_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\subwin.vcxproj">
+      <Project>{104C0DB2-DC86-3AE2-8E99-D7F0C60858EB}</Project>
+      <Name>subwin</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\subwin_static.vcxproj">
+      <Project>{CF138969-03D5-3D72-9AF4-70BED248D8DA}</Project>
+      <Name>subwin_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\timer.vcxproj">
+      <Project>{E3064512-B0D5-362E-AE59-D46408D18CDE}</Project>
+      <Name>timer</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\timer_callback.vcxproj">
+      <Project>{7E5B4F9E-55AA-3312-AF99-8BAFE3CDBFC3}</Project>
+      <Name>timer_callback</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\timer_callback_static.vcxproj">
+      <Project>{F2EF926E-BAC8-3DAB-9D7B-164B87040196}</Project>
+      <Name>timer_callback_static</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Project\Qt5\ZCAN_MINI\build-ZCAN_MINI-Desktop_Qt_5_9_1_MinGW_32bit-Debug\debug\FreeGlut\timer_static.vcxproj">
+      <Project>{67C5160D-26A8-38E0-B68E-FC2DACB9B103}</Project>
+      <Name>timer_static</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
