@@ -32,9 +32,9 @@ private:
     Ui::DBCViewDockWidget * const ui;
 
     CppCAN::CANDatabase db_;
-    QStandardItemModel* message_model_;
-    QStandardItemModel* signal_model_;
-    QItemSelectionModel* item_selection_model_;
+    QStandardItemModel* const message_model_;
+    QStandardItemModel* const signal_model_;
+    QItemSelectionModel* const item_selection_model_;
 
     CppCAN::CANFrame* msg_;
     CppCAN::CANSignal* ref_speed_;

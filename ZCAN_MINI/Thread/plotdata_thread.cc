@@ -1,6 +1,6 @@
-#include "plotgraph_thread.h"
+#include "plotdata_thread.h"
 
-PlotGraphThread::PlotGraphThread(QCustomPlot *plot,const unsigned long long msg_id, const CppCAN::CANSignal &ref_speed, const CppCAN::CANSignal &rel_speed)
+PlotDataThread::PlotDataThread(QCustomPlot* const plot,const unsigned long long msg_id, const CppCAN::CANSignal& ref_speed, const CppCAN::CANSignal& rel_speed)
     : plot_(plot),
       msg_id_(msg_id),
       ref_speed_(ref_speed),
@@ -9,54 +9,40 @@ PlotGraphThread::PlotGraphThread(QCustomPlot *plot,const unsigned long long msg_
 
 }
 
-void PlotGraphThread::beginThread()
+void PlotDataThread::beginThread()
 {
     m_pause = false;
 
     RecMsgThread* rec_msg_thread = RecMsgThread::getInstance();
     connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_Receive_Data* const, const uint)>(&RecMsgThread::newMsg),
-            this, static_cast<void (PlotGraphThread::*)(const ZCAN_Receive_Data* const, const uint)>(&PlotGraphThread::slot_newMsg));
+            this, static_cast<void (PlotDataThread::*)(const ZCAN_Receive_Data* const, const uint)>(&PlotDataThread::slot_newMsg));
     connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_ReceiveFD_Data* const, const uint)>(&RecMsgThread::newMsg),
-            this, static_cast<void (PlotGraphThread::*)(const ZCAN_ReceiveFD_Data* const, const uint)>(&PlotGraphThread::slot_newMsg));
-
-//    connect(&data_timer_, SIGNAL(timeout()), this, SLOT(slot_realTimeData()));
-//    data_timer_.start(0);   // 间隔时间 0ms 表示尽可能快的触发
+            this, static_cast<void (PlotDataThread::*)(const ZCAN_ReceiveFD_Data* const, const uint)>(&PlotDataThread::slot_newMsg));
 }
 
-void PlotGraphThread::pauseThread()
+void PlotDataThread::pauseThread()
 {
     m_pause = true;
 
     RecMsgThread* rec_msg_thread = RecMsgThread::getInstance();
     disconnect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_Receive_Data* const, const uint)>(&RecMsgThread::newMsg),
-            this, static_cast<void (PlotGraphThread::*)(const ZCAN_Receive_Data* const, const uint)>(&PlotGraphThread::slot_newMsg));
+            this, static_cast<void (PlotDataThread::*)(const ZCAN_Receive_Data* const, const uint)>(&PlotDataThread::slot_newMsg));
     disconnect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_ReceiveFD_Data* const, const uint)>(&RecMsgThread::newMsg),
-            this, static_cast<void (PlotGraphThread::*)(const ZCAN_ReceiveFD_Data* const, const uint)>(&PlotGraphThread::slot_newMsg));
-
-//    disconnect(&data_timer_, SIGNAL(timeout()), this, SLOT(slot_realTimeData()));
-//    data_timer_.stop();
+            this, static_cast<void (PlotDataThread::*)(const ZCAN_ReceiveFD_Data* const, const uint)>(&PlotDataThread::slot_newMsg));
 }
 
-void PlotGraphThread::stopThread()
+void PlotDataThread::stopThread()
 {
     m_stop = true;
 }
 
-/**
- * @brief PlotGraphThread::getValue
- * @param data
- * @param len
- * @return
- *
- * 注意：当传入的信号位数大于32位是会出错！因为编译的是32位的程序，其中uint64_t只有32位
- */
-int PlotGraphThread::getValue(const BYTE * const data, const CppCAN::CANSignal& signal)
+double PlotDataThread::getValue(const BYTE * const data, const CppCAN::CANSignal& signal)
 {
     const uint8_t start_bit_in_byte = signal.start_bit() % 8;
     uint8_t cur_bit = start_bit_in_byte;
     const uint8_t start_byte = signal.start_bit() / 8;
     uint8_t cur_byte = start_byte;
-    int64_t value = 0;  // 读取出来的数据存放单元
+    int32_t value = 0;  // 读取出来的数据存放单元
     uint8_t bits = 0;  // 已经读取了多少个位
     if (CppCAN::CANSignal::LittleEndian == signal.endianness())    // Intel
     {
@@ -69,7 +55,7 @@ int PlotGraphThread::getValue(const BYTE * const data, const CppCAN::CANSignal& 
             }
 
             uint8_t bit_val = 0x01<<cur_bit;
-            uint64_t tmp = (0 != (data[cur_byte]&bit_val))?1:0;    // 取出当前位的值 0/1
+            uint32_t tmp = (0 != (data[cur_byte]&bit_val))?1:0;    // 取出当前位的值 0/1
             value |= tmp<<bits;   // tmp<<bits相当于给第bits个位取值，然后让value按位或上tmp，让value的第bits位取值
             ++bits;
             ++cur_bit;
@@ -86,7 +72,7 @@ int PlotGraphThread::getValue(const BYTE * const data, const CppCAN::CANSignal& 
             }
 
             uint8_t bit_val = 0x01<<cur_bit;
-            uint64_t tmp = (0 != (data[cur_byte]&bit_val))?1:0;    // 取出当前位的值 0/1
+            uint32_t tmp = (0 != (data[cur_byte]&bit_val))?1:0;    // 取出当前位的值 0/1
             value |= tmp<<bits;   // tmp<<bits相当于给第bits个位取值，然后让value按位或上tmp，让value的第bits位取值
             ++bits;
             ++cur_bit;
@@ -106,7 +92,7 @@ int PlotGraphThread::getValue(const BYTE * const data, const CppCAN::CANSignal& 
 
             value <<= 1;
             uint8_t bit_val = 0x01<<cur_bit;
-            uint64_t tmp = (0 != (data[cur_byte]&bit_val))?1:0;    // 取出当前位的值 0/1
+            uint32_t tmp = (0 != (data[cur_byte]&bit_val))?1:0;    // 取出当前位的值 0/1
             value += tmp;
             --tmp;
         }
@@ -115,7 +101,7 @@ int PlotGraphThread::getValue(const BYTE * const data, const CppCAN::CANSignal& 
 
     if (CppCAN::CANSignal::Signed == signal.signedness())
     {
-        uint64_t tmp = 0x01;
+        uint32_t tmp = 0x01;
         tmp <<= (signal.length()-1);
         if (0 != (tmp & value))   // 负数
         {
@@ -124,20 +110,13 @@ int PlotGraphThread::getValue(const BYTE * const data, const CppCAN::CANSignal& 
         }
     }
 
-    return value + signal.offset();
+    return value * signal.scale() + signal.offset();
 }
 
-void PlotGraphThread::run()
+void PlotDataThread::run()
 {
     // 线程任务
     m_stop = false;
-
-    plot_->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, 5));
-    plot_->graph(1)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, 5));
-
-    plot_->graph(0)->rescaleValueAxis();
-    plot_->graph(1)->rescaleValueAxis();
-
 
     last_time = std::chrono::high_resolution_clock::time_point(std::chrono::high_resolution_clock::now());
 
@@ -146,7 +125,7 @@ void PlotGraphThread::run()
     t2 = std::chrono::high_resolution_clock::time_point(std::chrono::microseconds::zero());
     t1 = std::chrono::high_resolution_clock::now();
 
-    while (!m_stop) // 循环主体
+    while (!m_stop)
     {
         if (!m_pause)
         {
@@ -159,80 +138,90 @@ void PlotGraphThread::run()
             }
         }
     }
-    quit(); // 相当于exit(0)，退出线程的事件循环
+    quit();
 }
 
-void PlotGraphThread::slot_newMsg(const ZCAN_Receive_Data* const can_data, const uint len)
+void PlotDataThread::slot_newMsg(const ZCAN_Receive_Data* const can_data, const uint len)
 {
+    QVector<QCPGraphData>* const ref_data = plot_->graph(0)->data()->coreData();
+    QVector<QCPGraphData>* const rel_data = plot_->graph(1)->data()->coreData();
+
+    static auto start_time = std::chrono::high_resolution_clock::now();
+    std::chrono::high_resolution_clock::time_point current_time;
+    std::chrono::high_resolution_clock::duration duration_us;
+
     uint i = 0;
     while (i < len)
     {
         if (GET_ID(can_data[i].frame.can_id) != msg_id_)
             return;
 
-        //const uint dlc = can_data[i].frame.can_dlc;
         const BYTE* const data = can_data[i].frame.data;
 
-        int real_value = getValue(data, ref_speed_);
+        const double ref_speed = getValue(data, ref_speed_);
+        const double rel_speed = getValue(data, rel_speed_);
 
-        //key的单位是 ms
-        double key = QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0;
+        current_time = std::chrono::high_resolution_clock::now();
+        duration_us = std::chrono::duration_cast<std::chrono::microseconds>(current_time - start_time);
 
-        plot_->graph(0)->addData(key, real_value);
-        plot_->xAxis->setRange(key, 5, Qt::AlignRight);
-        plot_->replot(QCustomPlot::rpQueuedReplot);
+        const double key = duration_us.count() / 1000000.0;
+
+        ref_data->push_back(QCPGraphData(key, ref_speed));
+        rel_data->push_back(QCPGraphData(key, rel_speed));
 
         ++i;
     }
 }
 
-void PlotGraphThread::slot_newMsg(const ZCAN_ReceiveFD_Data* const canfd_data, const uint len)
+void PlotDataThread::slot_newMsg(const ZCAN_ReceiveFD_Data* const canfd_data, const uint len)
 {
+    QVector<QCPGraphData>* ref_data = plot_->graph(0)->data()->coreData();
+    QVector<QCPGraphData>* rel_data = plot_->graph(1)->data()->coreData();
+
+    static auto start_time = std::chrono::high_resolution_clock::now();
+    std::chrono::high_resolution_clock::time_point current_time;
+    std::chrono::high_resolution_clock::duration duration_us;
+
     uint i = 0;
     while (i < len)
     {
         if (GET_ID(canfd_data[i].frame.can_id) != msg_id_)
             return;
 
-        //const uint dlc = canfd_data[i].frame.len;
         const BYTE* const data = canfd_data[i].frame.data;
 
-        int real_value = getValue(data, ref_speed_);
+        const double ref_speed = getValue(data, ref_speed_);
+        const double rel_speed = getValue(data, rel_speed_);
 
-        //key的单位是 ms
-        double key = QDateTime::currentDateTime().toMSecsSinceEpoch()/1000.0;
+        current_time = std::chrono::high_resolution_clock::now();
+        duration_us = std::chrono::duration_cast<std::chrono::microseconds>(current_time - start_time);
 
-        plot_->graph(0)->addData(key, real_value);
-        plot_->xAxis->setRange(key, 5, Qt::AlignRight);
-        plot_->replot(QCustomPlot::rpQueuedReplot);
+        const double key = duration_us.count() / 1000000.0;
+
+        ref_data->push_back(QCPGraphData(key, ref_speed));
+        rel_data->push_back(QCPGraphData(key, rel_speed));
 
         ++i;
     }
 }
 
-void PlotGraphThread::realTimeData()
+void PlotDataThread::realTimeData()
 {
     static auto start_time = std::chrono::high_resolution_clock::now();
 
-    // Calculate the current time point
     auto current_time = std::chrono::high_resolution_clock::now();
 
-    // Calculate the duration since the start time in microseconds
     auto duration_us = std::chrono::duration_cast<std::chrono::microseconds>(current_time - start_time);
 
-    // Convert duration to a double representing seconds
     double key = duration_us.count() / 1000000.0;
 
-    // 添加数据到graph
-    QVector<QCPGraphData>* data = plot_->graph(0)->data()->coreData();
+    QVector<QCPGraphData>* const data = plot_->graph(0)->data()->coreData();
     data->push_back(QCPGraphData(key, rand() % 10));
-    QVector<QCPGraphData>* data1 = plot_->graph(1)->data()->coreData();
+    QVector<QCPGraphData>* const data1 = plot_->graph(1)->data()->coreData();
     data1->push_back(QCPGraphData(key, rand() % 10));
-//    plot_->graph(0)->addData(key, rand() % 10);
-//    plot_->graph(1)->addData(key, rand() % 10);
 
-    auto last_duration = std::chrono::duration_cast<std::chrono::microseconds>(current_time - last_time);
-    if (last_duration.count()/1.0 > 1)
-        qDebug() << last_duration.count() / 1.0 << " us";
-    last_time = current_time;
+//    auto last_duration = std::chrono::duration_cast<std::chrono::microseconds>(current_time - last_time);
+//    if (last_duration.count()/1.0 > 1)
+//        qDebug() << last_duration.count() / 1.0 << " us";
+//    last_time = current_time;
 }

@@ -2,6 +2,7 @@
 #define CANVIEW_DOCKWIDGET_H
 
 #include <QDockWidget>
+#include <QTimer>
 #include "canframe_tablemodel.h"
 #include "recmsg_thread.h"
 #include "canviewoption_dialog.h"

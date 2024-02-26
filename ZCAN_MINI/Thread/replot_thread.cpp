@@ -78,9 +78,9 @@ void ReplotThread::replotData()
     ++frame_count;
     if (key - last_fps > 1) // 每1秒求一次平均值
     {
-        qDebug() << QString("%1 FPS, Total Data points: %2")
-                    .arg(frame_count/(key-last_fps), 0, 'f', 0)
-                    .arg(plot_->graph(0)->data()->size()+plot_->graph(1)->data()->size());
+        emit sig_frmChanged(QString("FPS %1, Total Data points: %2")
+                 .arg(frame_count/(key-last_fps), 0, 'f', 0)
+                 .arg(plot_->graph(0)->data()->size()+plot_->graph(1)->data()->size()));
         last_fps = key;
         frame_count = 0;
     }

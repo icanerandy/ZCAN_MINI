@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_PlotViewDockWidget_t {
-    QByteArrayData data[18];
-    char stringdata0[246];
+    QByteArrayData data[19];
+    char stringdata0[269];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -44,11 +44,12 @@ QT_MOC_LITERAL(9, 105, 26), // "slot_customPlot_mousePress"
 QT_MOC_LITERAL(10, 132, 12), // "QMouseEvent*"
 QT_MOC_LITERAL(11, 145, 5), // "event"
 QT_MOC_LITERAL(12, 151, 32), // "slot_customPlot_selectionChanged"
-QT_MOC_LITERAL(13, 184, 15), // "onLegendClicked"
-QT_MOC_LITERAL(14, 200, 10), // "QCPLegend*"
-QT_MOC_LITERAL(15, 211, 6), // "legend"
-QT_MOC_LITERAL(16, 218, 22), // "QCPAbstractLegendItem*"
-QT_MOC_LITERAL(17, 241, 4) // "item"
+QT_MOC_LITERAL(13, 184, 21), // "slot_btnExcel_clicked"
+QT_MOC_LITERAL(14, 206, 16), // "slot_legendClick"
+QT_MOC_LITERAL(15, 223, 10), // "QCPLegend*"
+QT_MOC_LITERAL(16, 234, 6), // "legend"
+QT_MOC_LITERAL(17, 241, 22), // "QCPAbstractLegendItem*"
+QT_MOC_LITERAL(18, 264, 4) // "item"
 
     },
     "PlotViewDockWidget\0slot_paint\0\0msg_id\0"
@@ -56,8 +57,9 @@ QT_MOC_LITERAL(17, 241, 4) // "item"
     "slot_btnSave_clicked\0checked\0"
     "slot_customPlot_mousePress\0QMouseEvent*\0"
     "event\0slot_customPlot_selectionChanged\0"
-    "onLegendClicked\0QCPLegend*\0legend\0"
-    "QCPAbstractLegendItem*\0item"
+    "slot_btnExcel_clicked\0slot_legendClick\0"
+    "QCPLegend*\0legend\0QCPAbstractLegendItem*\0"
+    "item"
 };
 #undef QT_MOC_LITERAL
 
@@ -67,7 +69,7 @@ static const uint qt_meta_data_PlotViewDockWidget[] = {
        7,       // revision
        0,       // classname
        0,    0, // classinfo
-       5,   14, // methods
+       6,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -75,18 +77,20 @@ static const uint qt_meta_data_PlotViewDockWidget[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags
-       1,    3,   39,    2, 0x0a /* Public */,
-       7,    1,   46,    2, 0x0a /* Public */,
-       9,    1,   49,    2, 0x08 /* Private */,
-      12,    0,   52,    2, 0x08 /* Private */,
-      13,    2,   53,    2, 0x08 /* Private */,
+       1,    3,   44,    2, 0x0a /* Public */,
+       7,    1,   51,    2, 0x0a /* Public */,
+       9,    1,   54,    2, 0x08 /* Private */,
+      12,    0,   57,    2, 0x08 /* Private */,
+      13,    1,   58,    2, 0x08 /* Private */,
+      14,    2,   61,    2, 0x08 /* Private */,
 
  // slots: parameters
     QMetaType::Void, QMetaType::ULongLong, 0x80000000 | 4, 0x80000000 | 4,    3,    5,    6,
     QMetaType::Bool, QMetaType::Bool,    8,
     QMetaType::Void, 0x80000000 | 10,   11,
     QMetaType::Void,
-    QMetaType::Void, 0x80000000 | 14, 0x80000000 | 16,   15,   17,
+    QMetaType::Void, QMetaType::Bool,    8,
+    QMetaType::Void, 0x80000000 | 15, 0x80000000 | 17,   16,   18,
 
        0        // eod
 };
@@ -102,13 +106,14 @@ void PlotViewDockWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, i
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = std::move(_r); }  break;
         case 2: _t->slot_customPlot_mousePress((*reinterpret_cast< QMouseEvent*(*)>(_a[1]))); break;
         case 3: _t->slot_customPlot_selectionChanged(); break;
-        case 4: _t->onLegendClicked((*reinterpret_cast< QCPLegend*(*)>(_a[1])),(*reinterpret_cast< QCPAbstractLegendItem*(*)>(_a[2]))); break;
+        case 4: _t->slot_btnExcel_clicked((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 5: _t->slot_legendClick((*reinterpret_cast< QCPLegend*(*)>(_a[1])),(*reinterpret_cast< QCPAbstractLegendItem*(*)>(_a[2]))); break;
         default: ;
         }
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
         switch (_id) {
         default: *reinterpret_cast<int*>(_a[0]) = -1; break;
-        case 4:
+        case 5:
             switch (*reinterpret_cast<int*>(_a[1])) {
             default: *reinterpret_cast<int*>(_a[0]) = -1; break;
             case 1:
@@ -146,13 +151,13 @@ int PlotViewDockWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 5)
+        if (_id < 6)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 5;
+        _id -= 6;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 5)
+        if (_id < 6)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 5;
+        _id -= 6;
     }
     return _id;
 }

@@ -66,6 +66,7 @@ public:
 
         btnPaint = new QPushButton(dockWidgetContents);
         btnPaint->setObjectName(QStringLiteral("btnPaint"));
+        btnPaint->setEnabled(false);
 
         horizontalLayout->addWidget(btnPaint);
 

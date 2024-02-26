@@ -17,7 +17,6 @@ PlotViewDockWidget::PlotViewDockWidget(QWidget *parent) :
     //设置坐标轴显示范围,否则我们只能看到默认的范围
     QSharedPointer<QCPAxisTickerDateTime> date_tick(new QCPAxisTickerDateTime);
     date_tick->setDateTimeFormat("mm:ss.zzz");
-    //date_tick->setTickCount(10);   // 设置时间轴，一共多少格
     plot->xAxis->setTicker(date_tick);
     plot->xAxis->setTickLabelRotation(35);
 
@@ -44,12 +43,13 @@ PlotViewDockWidget::PlotViewDockWidget(QWidget *parent) :
     connect(plot, SIGNAL(mousePress(QMouseEvent*)), this, SLOT(slot_customPlot_mousePress(QMouseEvent*)));
     connect(plot, SIGNAL(selectionChangedByUser()), this, SLOT(slot_customPlot_selectionChanged()));
     connect(plot, SIGNAL(legendClick(QCPLegend*, QCPAbstractLegendItem*, QMouseEvent*)),
-            this, SLOT(onLegendClicked(QCPLegend*, QCPAbstractLegendItem*)));
+            this, SLOT(slot_legendClick(QCPLegend*, QCPAbstractLegendItem*)));
     this->p_DataTracer = new DataTracer(plot);
 
     plot->replot();
 
     connect(ui->btnSave, SIGNAL(clicked(bool)), this, SLOT(slot_btnSave_clicked(bool)));
+    connect(ui->btnExcel, SIGNAL(clicked(bool)), this, SLOT(slot_btnExcel_clicked(bool)));
 }
 
 PlotViewDockWidget::~PlotViewDockWidget()
@@ -65,8 +65,9 @@ void PlotViewDockWidget::slot_paint(const unsigned long long msg_id, const CppCA
     //plot->graph()->setSmooth(true); // 启用曲线平滑
     QColor color(20+200/4.0*1,70*(1.6-1/4.0), 150, 250);
     QPen pen(color.lighter(200));
-    pen.setWidth(3);
+    pen.setWidth(2);
     plot->graph()->setLineStyle(QCPGraph::lsLine);
+    plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 3));
     plot->graph()->setPen(pen);
     plot->graph()->setName(QString::fromStdString(ref_speed.name()));//曲线名称
 
@@ -76,21 +77,26 @@ void PlotViewDockWidget::slot_paint(const unsigned long long msg_id, const CppCA
     //plot->graph()->setSmooth(true); // 启用曲线平滑
     QColor color1(20+200/4.0*2,70*(1.6-2/4.0), 150, 250);
     QPen pen1(color1.lighter(200));
-    pen1.setWidth(3);
+    pen1.setWidth(2);
     plot->graph()->setLineStyle(QCPGraph::lsLine);
+    plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 3));
     plot->graph()->setPen(pen1);
     plot->graph()->setName(QString::fromStdString(ref_speed.name()));//曲线名称
 
     plot->graph()->rescaleAxes(true);
     plot->replot();
 
-    PlotGraphThread* const plotgraph_thread = new PlotGraphThread(plot, msg_id, ref_speed, rel_speed);
-    plotgraph_thread->start();
-    plotgraph_thread->beginThread();
+    PlotDataThread* const plotdata_thread = new PlotDataThread(plot, msg_id, ref_speed, rel_speed);
+    plotdata_thread->start();
+    plotdata_thread->beginThread();
 
     ReplotThread* const replot_thread = new ReplotThread(plot);
     replot_thread->start();
     replot_thread->beginThread();
+
+    connect(replot_thread, &ReplotThread::sig_frmChanged, this, [=] (const QString& msg) {
+        ui->labFps->setText(msg);
+    });
 }
 
 bool PlotViewDockWidget::slot_btnSave_clicked(bool checked)
@@ -183,7 +189,53 @@ void PlotViewDockWidget::slot_customPlot_selectionChanged()
     }
 }
 
-void PlotViewDockWidget::onLegendClicked(QCPLegend *legend, QCPAbstractLegendItem *item)
+void PlotViewDockWidget::slot_btnExcel_clicked(bool checked)
+{
+    Q_UNUSED(checked);
+
+    if (QXlsx::Document("test.xlsx").load())
+        return;
+
+    QCustomPlot* const plot = ui->plot;
+
+    QVector<QCPGraphData>* const ref_speed_lst = plot->graph(0)->data()->coreData();
+    QVector<QCPGraphData>* const rel_speed_lst = plot->graph(1)->data()->coreData();
+
+    QXlsx::Document doc;
+
+    int row = 1;
+    doc.addSheet(QStringLiteral("数据汇总"));
+    doc.addSheet(QStringLiteral("误差分析"));
+    doc.selectSheet(0);
+
+    for (int i = 0; i < ref_speed_lst->length(); ++i)
+    {
+        doc.write(i+1, 1, ref_speed_lst->at(i).key);
+        doc.write(i+1, 2, ref_speed_lst->at(i).value);
+        doc.write(i+1, 3, rel_speed_lst->at(i).value);
+
+        const double difference = doc.cellAt(i+1, 2)->value().toDouble() - doc.cellAt(i+1, 3)->value().toDouble();
+        if (qAbs(difference) > 8)
+        {
+            QXlsx::Format format;
+            format.setFontColor(QColor(Qt::black));
+            format.setPatternBackgroundColor(Qt::red);
+            doc.setRowFormat(i+1, format);
+
+            doc.selectSheet(1);
+            doc.write(row, 1, ref_speed_lst->at(i).key);
+            doc.write(row, 2, ref_speed_lst->at(i).value);
+            doc.write(row, 3, rel_speed_lst->at(i).value);
+            ++row;
+
+            doc.selectSheet(0);
+        }
+    }
+
+    doc.saveAs("test.xlsx");
+}
+
+void PlotViewDockWidget::slot_legendClick(QCPLegend *legend, QCPAbstractLegendItem *item)
 {
     Q_UNUSED(legend);
     QCPPlottableLegendItem* plottableLegendItem = qobject_cast<QCPPlottableLegendItem*>(item);

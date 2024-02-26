@@ -6,8 +6,6 @@
 
 QT       += core gui printsupport
 
-# CONFIG += console
-
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = ZCAN_MINI
@@ -39,3 +37,5 @@ include ($$PWD/Thread/Thread.pri)
 INCLUDEPATH += $$PWD/QCustomPlot
 include ($$PWD/QCustomPlot/Qcustomplot.pri)
 
+INCLUDEPATH += $$PWD/QXlsx
+include ($$PWD/QXlsx/QXlsx.pri)

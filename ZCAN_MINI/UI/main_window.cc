@@ -42,6 +42,7 @@ MainWindow::MainWindow(QWidget *parent) :
     this->addDockWidget(Qt::RightDockWidgetArea, plotviewDcok);
 
     // 分割窗口
+    splitDockWidget(canviewDock, dbcviewDock, Qt::Horizontal);
     splitDockWidget(dbcviewDock, plotviewDcok, Qt::Vertical);
 
     // 合并窗口

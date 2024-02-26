@@ -13,14 +13,16 @@ public:
     explicit ReplotThread(QCustomPlot* const plot);
 
 protected:
-    void run() Q_DECL_OVERRIDE; // 线程任务
+    void run() override; // 线程任务
+
+signals:
+    void sig_frmChanged(const QString& msg);
 
 public:
     void beginThread();
     void pauseThread();
     void stopThread();
     void replotData(); // 定时重绘
-
 
 private:
     bool m_pause = true;    // 暂停

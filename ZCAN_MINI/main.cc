@@ -6,10 +6,10 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    QFont font;
-    bool ok = false;
-    font = QFontDialog::getFont(&ok, font, 0, "", QFontDialog::DontUseNativeDialog);
-    a.setFont(font);
+//    QFont font;
+//    bool ok = false;
+//    font = QFontDialog::getFont(&ok, font, 0, "", QFontDialog::DontUseNativeDialog);
+//    a.setFont(font);
 
     MainWindow w;
     w.show();

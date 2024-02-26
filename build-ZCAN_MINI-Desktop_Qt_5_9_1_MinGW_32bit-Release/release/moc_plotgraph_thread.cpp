@@ -20,34 +20,34 @@
 QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
-struct qt_meta_stringdata_PlotGraphThread_t {
+struct qt_meta_stringdata_PlotDataThread_t {
     QByteArrayData data[8];
-    char stringdata0[103];
+    char stringdata0[102];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
-    qptrdiff(offsetof(qt_meta_stringdata_PlotGraphThread_t, stringdata0) + ofs \
+    qptrdiff(offsetof(qt_meta_stringdata_PlotDataThread_t, stringdata0) + ofs \
         - idx * sizeof(QByteArrayData)) \
     )
-static const qt_meta_stringdata_PlotGraphThread_t qt_meta_stringdata_PlotGraphThread = {
+static const qt_meta_stringdata_PlotDataThread_t qt_meta_stringdata_PlotDataThread = {
     {
-QT_MOC_LITERAL(0, 0, 15), // "PlotGraphThread"
-QT_MOC_LITERAL(1, 16, 11), // "slot_newMsg"
-QT_MOC_LITERAL(2, 28, 0), // ""
-QT_MOC_LITERAL(3, 29, 23), // "ZCAN_Receive_Data*const"
-QT_MOC_LITERAL(4, 53, 8), // "can_data"
-QT_MOC_LITERAL(5, 62, 3), // "len"
-QT_MOC_LITERAL(6, 66, 25), // "ZCAN_ReceiveFD_Data*const"
-QT_MOC_LITERAL(7, 92, 10) // "canfd_data"
+QT_MOC_LITERAL(0, 0, 14), // "PlotDataThread"
+QT_MOC_LITERAL(1, 15, 11), // "slot_newMsg"
+QT_MOC_LITERAL(2, 27, 0), // ""
+QT_MOC_LITERAL(3, 28, 23), // "ZCAN_Receive_Data*const"
+QT_MOC_LITERAL(4, 52, 8), // "can_data"
+QT_MOC_LITERAL(5, 61, 3), // "len"
+QT_MOC_LITERAL(6, 65, 25), // "ZCAN_ReceiveFD_Data*const"
+QT_MOC_LITERAL(7, 91, 10) // "canfd_data"
 
     },
-    "PlotGraphThread\0slot_newMsg\0\0"
+    "PlotDataThread\0slot_newMsg\0\0"
     "ZCAN_Receive_Data*const\0can_data\0len\0"
     "ZCAN_ReceiveFD_Data*const\0canfd_data"
 };
 #undef QT_MOC_LITERAL
 
-static const uint qt_meta_data_PlotGraphThread[] = {
+static const uint qt_meta_data_PlotDataThread[] = {
 
  // content:
        7,       // revision
@@ -71,10 +71,10 @@ static const uint qt_meta_data_PlotGraphThread[] = {
        0        // eod
 };
 
-void PlotGraphThread::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+void PlotDataThread::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
-        PlotGraphThread *_t = static_cast<PlotGraphThread *>(_o);
+        PlotDataThread *_t = static_cast<PlotDataThread *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->slot_newMsg((*reinterpret_cast< const ZCAN_Receive_Data*const(*)>(_a[1])),(*reinterpret_cast< const uint(*)>(_a[2]))); break;
@@ -84,26 +84,26 @@ void PlotGraphThread::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int 
     }
 }
 
-const QMetaObject PlotGraphThread::staticMetaObject = {
-    { &QThread::staticMetaObject, qt_meta_stringdata_PlotGraphThread.data,
-      qt_meta_data_PlotGraphThread,  qt_static_metacall, nullptr, nullptr}
+const QMetaObject PlotDataThread::staticMetaObject = {
+    { &QThread::staticMetaObject, qt_meta_stringdata_PlotDataThread.data,
+      qt_meta_data_PlotDataThread,  qt_static_metacall, nullptr, nullptr}
 };
 
 
-const QMetaObject *PlotGraphThread::metaObject() const
+const QMetaObject *PlotDataThread::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
 }
 
-void *PlotGraphThread::qt_metacast(const char *_clname)
+void *PlotDataThread::qt_metacast(const char *_clname)
 {
     if (!_clname) return nullptr;
-    if (!strcmp(_clname, qt_meta_stringdata_PlotGraphThread.stringdata0))
-        return static_cast<void*>(const_cast< PlotGraphThread*>(this));
+    if (!strcmp(_clname, qt_meta_stringdata_PlotDataThread.stringdata0))
+        return static_cast<void*>(const_cast< PlotDataThread*>(this));
     return QThread::qt_metacast(_clname);
 }
 
-int PlotGraphThread::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int PlotDataThread::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QThread::qt_metacall(_c, _id, _a);
     if (_id < 0)

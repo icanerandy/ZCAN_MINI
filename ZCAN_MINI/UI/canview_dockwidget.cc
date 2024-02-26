@@ -10,8 +10,8 @@ CanViewDockWidget::CanViewDockWidget(QWidget *parent) :
 
     bindSignals();
 
-    CanFrameTableModel *canframe_tablemodel = CanFrameTableModel::GetInstance();
-    this->ui->tableView->setModel(canframe_tablemodel);
+    CanFrameTableModel* const canframe_tablemodel = CanFrameTableModel::GetInstance();
+    ui->tableView->setModel(canframe_tablemodel);
 }
 
 CanViewDockWidget::~CanViewDockWidget()
@@ -21,7 +21,8 @@ CanViewDockWidget::~CanViewDockWidget()
 
 void CanViewDockWidget::bindSignals()
 {
-    CanFrameTableModel *canframe_tablemodel = CanFrameTableModel::GetInstance();
+    CanFrameTableModel* const canframe_tablemodel = CanFrameTableModel::GetInstance();
+
     connect(ui->btnClear, &QPushButton::clicked, this, [=] {
         if (canframe_tablemodel->rowCount() > 0)
             canframe_tablemodel->removeRows(0, canframe_tablemodel->rowCount());
@@ -35,6 +36,7 @@ void CanViewDockWidget::bindSignals()
     connect(ui->btnOption, &QPushButton::clicked, this, [=] {
         option_dialog->exec();
     });
-    // connect(canframe_tablemodel, &CanFrameTableModel::dataChanged, this, [] { ui->tableView->scrollToBottom(); });
     connect(option_dialog, &CanViewOptionDialog::sig_visibleCol_changed, canframe_tablemodel, &CanFrameTableModel::slot_visibleCol_changed);
+
+    // connect(canframe_tablemodel, &CanFrameTableModel::dataChanged, this, [] { ui->tableView->scrollToBottom(); });
 }

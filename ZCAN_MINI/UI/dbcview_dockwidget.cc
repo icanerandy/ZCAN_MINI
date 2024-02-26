@@ -4,18 +4,14 @@
 DBCViewDockWidget::DBCViewDockWidget(QWidget *parent) :
     QDockWidget(parent),
     ui(new Ui::DBCViewDockWidget),
-    message_model_(nullptr),
-    signal_model_(nullptr),
-    item_selection_model_(nullptr),
+    message_model_(new QStandardItemModel()),
+    signal_model_(new QStandardItemModel()),
+    item_selection_model_(new QItemSelectionModel(message_model_)),
     msg_(nullptr),
     ref_speed_(nullptr),
     rel_speed_(nullptr)
 {
     ui->setupUi(this);
-
-    message_model_ = new QStandardItemModel();
-    signal_model_ = new QStandardItemModel();
-    item_selection_model_ = new QItemSelectionModel(message_model_);
 
     ui->msgView->setModel(message_model_);
     ui->sigView->setModel(signal_model_);
@@ -149,4 +145,6 @@ void DBCViewDockWidget::slot_message_model_clicked(const QModelIndex &index)
 
         i++;
     }
+
+    ui->btnPaint->setEnabled(true);
 }

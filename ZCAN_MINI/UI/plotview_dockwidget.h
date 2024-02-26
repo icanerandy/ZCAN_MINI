@@ -7,9 +7,16 @@
 #include "zlgcan.h"
 #include "CANDatabase.h"
 #include "qcustomplot.h"
-#include "plotgraph_thread.h"
+#include "plotdata_thread.h"
 #include "replot_thread.h"
 #include "datatracer.h"
+
+#include "xlsxdocument.h"
+#include "xlsxchartsheet.h"
+#include "xlsxcellrange.h"
+#include "xlsxchart.h"
+#include "xlsxrichstring.h"
+#include "xlsxworkbook.h"
 
 #include <GL/freeglut.h>
 
@@ -32,20 +39,21 @@ public slots:
 private slots:
     void slot_customPlot_mousePress(QMouseEvent* event);
     void slot_customPlot_selectionChanged();
-    void onLegendClicked(QCPLegend* legend, QCPAbstractLegendItem* item);
+    void slot_btnExcel_clicked(bool checked);
+    void slot_legendClick(QCPLegend* legend, QCPAbstractLegendItem* item);
 
 private:
     void findSelectedPoint(QCPGraph *graph, QPoint select_point, double &key, double &value);
 
 private:
     QPoint m_PressedPoint;
-    DataTracer *p_DataTracer;
+    DataTracer* p_DataTracer;
 
 private:
-    Ui::PlotViewDockWidget * const ui;
-    QCPItemTracer *tracer_;
-    QCPItemText *tracer_label_;
-    PlotGraphThread* plot_thread_;
+    Ui::PlotViewDockWidget* const ui;
+    QCPItemTracer* tracer_;
+    QCPItemText* tracer_label_;
+    PlotDataThread* plot_thread_;
 };
 
 #endif // PLOT_DOCKWIDGET_H

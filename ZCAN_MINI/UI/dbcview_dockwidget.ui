@@ -39,6 +39,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="btnPaint">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>绘图</string>
         </property>
