@@ -2,6 +2,7 @@
 #define PLOTGRAPH_THREAD_H
 
 #include <QThread>
+#include <chrono>
 #include <QByteArray>
 #include "qcustomplot.h"
 #include "recmsg_thread.h"
@@ -25,13 +26,11 @@ public:
 
 private:
     int getValue(const BYTE * const data, const CppCAN::CANSignal& signal);
-    void timerMsByCPU(double mSleepTime);
-    void timerUsByCPU(double uSleepTime);
+    void realTimeData();   // 定时添加数据
 
 private slots:
     void slot_newMsg(const ZCAN_Receive_Data* const can_data, const uint len);
     void slot_newMsg(const ZCAN_ReceiveFD_Data* const canfd_data, const uint len);
-    void slot_realTimeData();   // 定时添加数据
 
 
 private:
@@ -43,8 +42,10 @@ private:
     const CppCAN::CANSignal ref_speed_;
     const CppCAN::CANSignal rel_speed_;
 
-    QTimer data_timer_; // 定时添加数据
-    double last_key_ = 0;
+    std::chrono::high_resolution_clock::time_point t1;
+    std::chrono::high_resolution_clock::time_point t2;
+
+    std::chrono::high_resolution_clock::time_point last_time;
 };
 
 #endif // PLOTGRAPH_THREAD_H

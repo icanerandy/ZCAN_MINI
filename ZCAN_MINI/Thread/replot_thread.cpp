@@ -11,11 +11,30 @@ void ReplotThread::run()
     // 线程任务
     m_stop = false;
 
+    last_time = std::chrono::high_resolution_clock::time_point(std::chrono::high_resolution_clock::now());
+
+    double duration_time = 0.0;
+    t1 = std::chrono::high_resolution_clock::time_point(std::chrono::microseconds::zero());
+    t2 = std::chrono::high_resolution_clock::time_point(std::chrono::microseconds::zero());
+    t1 = std::chrono::high_resolution_clock::now();
+
     while (!m_stop) // 循环主体
     {
         if (!m_pause)
         {
-            msleep(15);
+            t2 = std::chrono::high_resolution_clock::now();
+            duration_time = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count() / 1.0;
+            if (qAbs(duration_time - 10000) < 50 || duration_time - 10000 > 0) // 定时 10000us，即 10ms
+            {
+                /*
+                 1. qAbs(duration_time - 10000) < 50 是为了提前进入新周期开始绘制，保证绘图精度及帧率（因为 replotData() 的调用会消耗时间）
+                 2. if 判断中，如果 replotData执行完后，为 t1 重新赋值 - 再次判断 这个过程，如果时间间隔超过了 11000 会发生什么？
+                    会卡住，if 内条件不满足会一直循环下去
+                    如何解决？添加第二条判断语句 || duration_time - 10000 > 0
+                 */
+                replotData();
+                t1 = std::chrono::high_resolution_clock::now();
+            }
         }
     }
     quit(); // 相当于exit(0)，退出线程的事件循环
@@ -24,17 +43,11 @@ void ReplotThread::run()
 void ReplotThread::beginThread()
 {
     m_pause = false;
-
-    connect(&replot_timer_, SIGNAL(timeout()), this, SLOT(slot_replotData()));
-    replot_timer_.start(10);    // 间隔10ms刷新一次
 }
 
 void ReplotThread::pauseThread()
 {
     m_pause = true;
-
-    disconnect(&replot_timer_, SIGNAL(timeout()), this, SLOT(slot_replotData()));
-    replot_timer_.stop();
 }
 
 void ReplotThread::stopThread()
@@ -42,10 +55,18 @@ void ReplotThread::stopThread()
     m_stop = true;
 }
 
-void ReplotThread::slot_replotData()
+void ReplotThread::replotData()
 {
-    static QTime time(QTime::currentTime());
-    double key = time.elapsed()/1000.0;
+    static auto start_time = std::chrono::high_resolution_clock::now();
+
+    // Calculate the current time point
+    auto current_time = std::chrono::high_resolution_clock::now();
+
+    // Calculate the duration since the start time in microseconds
+    auto duration_us = std::chrono::duration_cast<std::chrono::microseconds>(current_time - start_time);
+
+    // Convert duration to a double representing seconds
+    double key = duration_us.count() / 1000000.0;
 
     // 设定x范围为最近的100ms个时刻
     plot_->xAxis->setRange(key, 0.100, Qt::AlignRight);
@@ -63,6 +84,11 @@ void ReplotThread::slot_replotData()
         last_fps = key;
         frame_count = 0;
     }
+
+    auto last_duration = std::chrono::duration_cast<std::chrono::milliseconds>(current_time - last_time);
+    if (last_duration.count()/1.0 > 10)
+        qDebug() << last_duration.count() / 1.0;
+    last_time = current_time;
 
     if (key > 10)
         pauseThread();

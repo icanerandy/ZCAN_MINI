@@ -2,7 +2,7 @@
 #define REPLOT_THREAD_H
 
 #include <QThread>
-
+#include <chrono>
 #include <qcustomplot.h>
 
 class ReplotThread : public QThread
@@ -19,9 +19,7 @@ public:
     void beginThread();
     void pauseThread();
     void stopThread();
-
-private slots:
-    void slot_replotData(); // 定时重绘
+    void replotData(); // 定时重绘
 
 
 private:
@@ -29,7 +27,11 @@ private:
     bool m_stop = false;    // 停止
 
     QCustomPlot* const plot_;
-    QTimer replot_timer_;    // 定时绘图
+
+    std::chrono::high_resolution_clock::time_point t1;
+    std::chrono::high_resolution_clock::time_point t2;
+
+    std::chrono::high_resolution_clock::time_point last_time;
 };
 
 #endif // REPLOT_THREAD_H

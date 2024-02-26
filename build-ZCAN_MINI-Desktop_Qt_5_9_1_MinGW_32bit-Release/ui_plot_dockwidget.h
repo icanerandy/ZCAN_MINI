@@ -17,6 +17,7 @@
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QWidget>
 #include "qcustomplot.h"
 
@@ -27,8 +28,9 @@ class Ui_PlotViewDockWidget
 public:
     QWidget *dockWidgetContents;
     QGridLayout *gridLayout;
-    QCustomPlot *plot;
     QPushButton *btnSave;
+    QSpacerItem *horizontalSpacer;
+    QCustomPlot *plot;
 
     void setupUi(QDockWidget *PlotViewDockWidget)
     {
@@ -39,15 +41,19 @@ public:
         dockWidgetContents->setObjectName(QStringLiteral("dockWidgetContents"));
         gridLayout = new QGridLayout(dockWidgetContents);
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
-        plot = new QCustomPlot(dockWidgetContents);
-        plot->setObjectName(QStringLiteral("plot"));
-
-        gridLayout->addWidget(plot, 1, 0, 1, 1);
-
         btnSave = new QPushButton(dockWidgetContents);
         btnSave->setObjectName(QStringLiteral("btnSave"));
 
         gridLayout->addWidget(btnSave, 0, 0, 1, 1);
+
+        horizontalSpacer = new QSpacerItem(739, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout->addItem(horizontalSpacer, 0, 1, 1, 1);
+
+        plot = new QCustomPlot(dockWidgetContents);
+        plot->setObjectName(QStringLiteral("plot"));
+
+        gridLayout->addWidget(plot, 1, 0, 1, 2);
 
         PlotViewDockWidget->setWidget(dockWidgetContents);
 

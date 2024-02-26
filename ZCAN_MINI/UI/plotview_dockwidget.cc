@@ -50,10 +50,6 @@ PlotViewDockWidget::PlotViewDockWidget(QWidget *parent) :
     plot->replot();
 
     connect(ui->btnSave, SIGNAL(clicked(bool)), this, SLOT(slot_btnSave_clicked(bool)));
-
-//    connect(plot->xAxis, static_cast<void (QCPAxis::*)(const QCPRange&)>(&QCPAxis::rangeChanged), [=] (const QCPRange& newRange) {
-//        plot->xAxis->setRange(newRange.bounded(0, 10));
-//    });
 }
 
 PlotViewDockWidget::~PlotViewDockWidget()

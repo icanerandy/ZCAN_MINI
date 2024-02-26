@@ -45,7 +45,7 @@ MainWindow::MainWindow(QWidget *parent) :
     splitDockWidget(dbcviewDock, plotviewDcok, Qt::Vertical);
 
     // 合并窗口
-    tabifyDockWidget(plotviewDcok, dbcviewDock);
+    //tabifyDockWidget(plotviewDcok, dbcviewDock);
 
     // 信号绑定
     bindSignals();

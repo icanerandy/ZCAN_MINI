@@ -127,53 +127,6 @@ int PlotGraphThread::getValue(const BYTE * const data, const CppCAN::CANSignal& 
     return value + signal.offset();
 }
 
-void PlotGraphThread::timerMsByCPU(double mSleepTime)
-{
-    LARGE_INTEGER litmp;
-    LONGLONG Qpart1,Qpart2;
-    double dfMinus = 0,dfFreq = 0,dfTime = 0;//不初始化是一个不好的习惯，而且会有bug
-
-    //获得CPU计时器的时钟频率
-    QueryPerformanceFrequency(&litmp);//取得高精度运行计数器的频率f,单位是每秒多少次（n/s），
-    dfFreq = (double)litmp.QuadPart;
-
-    QueryPerformanceCounter(&litmp);//取得高精度运行计数器的数值
-    Qpart1 = litmp.QuadPart; //开始计时
-
-    while((mSleepTime-dfTime*1000.000)>0.0000001){
-        QueryPerformanceCounter(&litmp);//取得高精度运行计数器的数值
-        Qpart2 = litmp.QuadPart; //终止计时
-
-        dfMinus = (double)(Qpart2 - Qpart1);//计算计数器值
-        dfTime = dfMinus / dfFreq;//获得对应时间，单位为秒,可以乘1000000精确到微秒级（us）
-        //qDebug()<<"ms"<<QString::number(dfTime*1000.00,'f',9);
-    }
-    //qDebug()<<"ms"<<QString::number(dfTime*1000.00,'f',9);
-}
-
-void PlotGraphThread::timerUsByCPU(double uSleepTime)
-{
-    LARGE_INTEGER litmp;
-    LONGLONG Qpart1,Qpart2;
-    double dfMinus = 0,dfFreq = 0,dfTime = 0;//不初始化是一个不好的习惯，而且会有bug
-
-    //获得CPU计时器的时钟频率
-    QueryPerformanceFrequency(&litmp);//取得高精度运行计数器的频率f,单位是每秒多少次（n/s），
-    dfFreq = (double)litmp.QuadPart;
-
-    QueryPerformanceCounter(&litmp);//取得高精度运行计数器的数值
-    Qpart1 = litmp.QuadPart; //开始计时
-
-    while((uSleepTime-dfTime*1000000.000)>0.0000001){
-        QueryPerformanceCounter(&litmp);//取得高精度运行计数器的数值
-        Qpart2 = litmp.QuadPart; //终止计时
-
-        dfMinus = (double)(Qpart2 - Qpart1);//计算计数器值
-        dfTime = dfMinus / dfFreq;//获得对应时间，单位为秒,可以乘1000000精确到微秒级（us）
-        //        qDebug()<<"us"<<QString::number(dfTime*1000000.00,'f',9);
-    }
-}
-
 void PlotGraphThread::run()
 {
     // 线程任务
@@ -182,16 +135,28 @@ void PlotGraphThread::run()
     plot_->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, 5));
     plot_->graph(1)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, 5));
 
+    plot_->graph(0)->rescaleValueAxis();
+    plot_->graph(1)->rescaleValueAxis();
+
+
+    last_time = std::chrono::high_resolution_clock::time_point(std::chrono::high_resolution_clock::now());
+
+    double duration_time = 0.0;
+    t1 = std::chrono::high_resolution_clock::time_point(std::chrono::microseconds::zero());
+    t2 = std::chrono::high_resolution_clock::time_point(std::chrono::microseconds::zero());
+    t1 = std::chrono::high_resolution_clock::now();
+
     while (!m_stop) // 循环主体
     {
         if (!m_pause)
         {
-            timerMsByCPU(1);   // 定时 1 ms
-            slot_realTimeData();
-
-            //qDebug()<<"======================";
-            //避免无数据时变成While(1),会占用大量的CPU
-            //msleep(15);
+            t2 = std::chrono::high_resolution_clock::now();
+            duration_time = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count() / 1.0;  // 定时1us，其实是1ms，精度为1us
+            if (duration_time - 1 > 0)
+            {
+                realTimeData();
+                t1 = std::chrono::high_resolution_clock::now();
+            }
         }
     }
     quit(); // 相当于exit(0)，退出线程的事件循环
@@ -245,18 +210,29 @@ void PlotGraphThread::slot_newMsg(const ZCAN_ReceiveFD_Data* const canfd_data, c
     }
 }
 
-void PlotGraphThread::slot_realTimeData()
+void PlotGraphThread::realTimeData()
 {
-    static QTime time(QTime::currentTime());
+    static auto start_time = std::chrono::high_resolution_clock::now();
 
-    double key = time.elapsed()/1000.0; // 开始到现在的时间，单位秒
+    // Calculate the current time point
+    auto current_time = std::chrono::high_resolution_clock::now();
+
+    // Calculate the duration since the start time in microseconds
+    auto duration_us = std::chrono::duration_cast<std::chrono::microseconds>(current_time - start_time);
+
+    // Convert duration to a double representing seconds
+    double key = duration_us.count() / 1000000.0;
 
     // 添加数据到graph
-    plot_->graph(0)->addData(key, rand() % 10);
-    plot_->graph(1)->addData(key, rand() % 10);
+    QVector<QCPGraphData>* data = plot_->graph(0)->data()->coreData();
+    data->push_back(QCPGraphData(key, rand() % 10));
+    QVector<QCPGraphData>* data1 = plot_->graph(1)->data()->coreData();
+    data1->push_back(QCPGraphData(key, rand() % 10));
+//    plot_->graph(0)->addData(key, rand() % 10);
+//    plot_->graph(1)->addData(key, rand() % 10);
 
-    if (key - last_key_ > 0.003)
-        qDebug() << int((key - last_key_) * 1000);
-    last_key_ = key;
+    auto last_duration = std::chrono::duration_cast<std::chrono::microseconds>(current_time - last_time);
+    if (last_duration.count()/1.0 > 1)
+        qDebug() << last_duration.count() / 1.0 << " us";
+    last_time = current_time;
 }
-
