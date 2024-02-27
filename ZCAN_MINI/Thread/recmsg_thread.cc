@@ -1,4 +1,4 @@
-#include "recmsg_thread.h"
+﻿#include "recmsg_thread.h"
 
 RecMsgThread::RecMsgThread()
 {
@@ -47,12 +47,12 @@ void RecMsgThread::run()
         {
             if ((len = ZCAN_GetReceiveNum(channel_handle_, TYPE_CAN)) > 0)
             {
-                len = ZCAN_Receive(channel_handle_, can_data, 100, 50);
+                len = ZCAN_Receive(channel_handle_, can_data, len, -1);
                 emit newMsg(can_data, len);
             }
             if ((len = ZCAN_GetReceiveNum(channel_handle_, TYPE_CANFD)) > 0)
             {
-                len = ZCAN_ReceiveFD(channel_handle_, canfd_data, 100, 50);
+                len = ZCAN_ReceiveFD(channel_handle_, canfd_data, len, -1);
                 emit newMsg(canfd_data, len);
             }
             //避免无数据时变成While(1),会占用大量的CPU

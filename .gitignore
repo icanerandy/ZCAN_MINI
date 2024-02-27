@@ -1,5 +1,2 @@
 # 忽略debug目录下除动态链接库的所有文件
 build*/
-
-!build*/debug/kerneldlls/*
-!build*/debug/zlgcan.dll

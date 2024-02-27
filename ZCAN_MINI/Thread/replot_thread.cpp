@@ -1,4 +1,4 @@
-#include "replot_thread.h"
+﻿#include "replot_thread.h"
 
 ReplotThread::ReplotThread(QCustomPlot* const plot) :
     plot_(plot)
@@ -59,17 +59,14 @@ void ReplotThread::replotData()
 {
     static auto start_time = std::chrono::high_resolution_clock::now();
 
-    // Calculate the current time point
     auto current_time = std::chrono::high_resolution_clock::now();
 
-    // Calculate the duration since the start time in microseconds
     auto duration_us = std::chrono::duration_cast<std::chrono::microseconds>(current_time - start_time);
 
-    // Convert duration to a double representing seconds
     double key = duration_us.count() / 1000000.0;
 
-    // 设定x范围为最近的100ms个时刻
-    plot_->xAxis->setRange(key, 0.100, Qt::AlignRight);
+    // 设定x范围为最近的250ms个时刻
+    plot_->xAxis->setRange(key, 0.250, Qt::AlignRight);
     // 重绘
     plot_->replot(QCustomPlot::rpQueuedReplot);
     // 计算帧数

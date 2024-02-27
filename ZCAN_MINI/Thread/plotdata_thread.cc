@@ -1,4 +1,4 @@
-#include "plotdata_thread.h"
+﻿#include "plotdata_thread.h"
 
 PlotDataThread::PlotDataThread(QCustomPlot* const plot,const unsigned long long msg_id, const CppCAN::CANSignal& ref_speed, const CppCAN::CANSignal& rel_speed)
     : plot_(plot),
@@ -207,6 +207,26 @@ void PlotDataThread::slot_newMsg(const ZCAN_ReceiveFD_Data* const canfd_data, co
 
 void PlotDataThread::realTimeData()
 {
+    // 定义车速范围和每次变化的最大步长
+    const double minSpeed = 0.0;        // 最小车速（km/h）
+    const double maxSpeed = 180.0;      // 最大车速（km/h）
+    const double maxChange = 2.0;       // 每次变化的最大步长（km/h）
+
+    // 创建随机数引擎和分布
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    std::uniform_real_distribution<double> dis(-maxChange, maxChange);
+
+    // 更新当前车速
+    static double currentSpeed = minSpeed + (maxSpeed - minSpeed) / 2.0;  // 初始车速为速度范围的中间值
+    currentSpeed += dis(gen);
+    if (currentSpeed < minSpeed) {
+        currentSpeed = minSpeed;
+    } else if (currentSpeed > maxSpeed) {
+        currentSpeed = maxSpeed;
+    }
+
+    /*--------------------------------------------------------------------*/
     static auto start_time = std::chrono::high_resolution_clock::now();
 
     auto current_time = std::chrono::high_resolution_clock::now();
@@ -216,12 +236,15 @@ void PlotDataThread::realTimeData()
     double key = duration_us.count() / 1000000.0;
 
     QVector<QCPGraphData>* const data = plot_->graph(0)->data()->coreData();
-    data->push_back(QCPGraphData(key, rand() % 10));
+    data->push_back(QCPGraphData(key, currentSpeed));
     QVector<QCPGraphData>* const data1 = plot_->graph(1)->data()->coreData();
-    data1->push_back(QCPGraphData(key, rand() % 10));
+    data1->push_back(QCPGraphData(key, currentSpeed + (std::rand() % 10 - 5)));
 
 //    auto last_duration = std::chrono::duration_cast<std::chrono::microseconds>(current_time - last_time);
 //    if (last_duration.count()/1.0 > 1)
 //        qDebug() << last_duration.count() / 1.0 << " us";
 //    last_time = current_time;
+
+    if (key > 10)
+        pauseThread();
 }
