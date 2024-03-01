@@ -36,6 +36,9 @@ private:
     void bindSignals();
     void enableCtrl(bool enabled);
 
+signals:
+    void sig_chkDeviceType();
+
 private slots:
     void slot_btnDeviceInfo_clicked();
 

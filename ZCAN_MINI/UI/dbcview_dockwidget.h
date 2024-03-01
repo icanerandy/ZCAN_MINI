@@ -28,7 +28,7 @@ private slots:
     void slot_btnReadDBC_clicked();
 
 signals:
-    void sig_paint(const unsigned long long msg_id, const CppCAN::CANSignal& ref_speed_, const CppCAN::CANSignal& rel_speed_);
+    void sig_paint(const unsigned long long msg_id, QList<CppCAN::CANSignal*>& sig_lst);
 
 private:
     Ui::DBCViewDockWidget * const ui;
@@ -39,8 +39,7 @@ private:
     QItemSelectionModel* const item_selection_model_;
 
     CppCAN::CANFrame* msg_;
-    CppCAN::CANSignal* ref_speed_;
-    CppCAN::CANSignal* rel_speed_;
+    QList<CppCAN::CANSignal*> sig_lst_;
 };
 
 #endif // DBCPARSER_DOCKWIDGET_H

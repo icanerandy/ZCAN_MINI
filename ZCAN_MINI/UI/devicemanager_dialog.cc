@@ -34,11 +34,19 @@ void DeviceManagerDialog::bindSignals()
 {
     DeviceManager * const device_manager = DeviceManager::getInstance();
     // 内部信号自身做处理
+    connect(this, &DeviceManagerDialog::sig_chkDeviceType,
+            initCanDlg, &InitCanDialog::slot_chkDeviceType);
+
     connect(ui->comboDeviceType, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-            this, [=] (int index) { device_manager->slot_deviceType_changed(static_cast<DeviceManager::DeviceTypeIndex>(index)); });
+            this, [=] (int index) {
+        device_manager->slot_deviceType_changed(static_cast<DeviceManager::DeviceTypeIndex>(index));
+        emit sig_chkDeviceType();
+    });
 
     connect(ui->comboDeviceIndex, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged),
-            this, [=] (int index) { device_manager->changeDeviceIndex(index); });
+            this, [=] (int index) {
+        device_manager->changeDeviceIndex(index);
+    });
 
     connect(ui->btnOpenDevice, &QPushButton::clicked, this, [=] {
         bool ret = device_manager->openDevice();
@@ -83,7 +91,7 @@ void DeviceManagerDialog::bindSignals()
         enableCtrl(false);
     });
 
-    connect(ui->btnDeviceInfo, &QPushButton::clicked, this, &slot_btnDeviceInfo_clicked);
+    connect(ui->btnDeviceInfo, &QPushButton::clicked, this, &DeviceManagerDialog::slot_btnDeviceInfo_clicked);
 }
 
 void DeviceManagerDialog::enableCtrl(bool enabled)

@@ -37,8 +37,8 @@ void RecMsgThread::run()
     channel_handle_ = DeviceManager::getInstance()->channel_handle();
     m_stop = false;
 
-    ZCAN_Receive_Data can_data[100];
-    ZCAN_ReceiveFD_Data canfd_data[100];
+    ZCAN_Receive_Data* can_data = nullptr;
+    ZCAN_ReceiveFD_Data* canfd_data = nullptr;
     uint len = 0;
 
     while (!m_stop) // 循环主体
@@ -47,12 +47,12 @@ void RecMsgThread::run()
         {
             if ((len = ZCAN_GetReceiveNum(channel_handle_, TYPE_CAN)) > 0)
             {
-                len = ZCAN_Receive(channel_handle_, can_data, len, -1);
+                len = ZCAN_Receive(channel_handle_, can_data, 100, 50);
                 emit newMsg(can_data, len);
             }
             if ((len = ZCAN_GetReceiveNum(channel_handle_, TYPE_CANFD)) > 0)
             {
-                len = ZCAN_ReceiveFD(channel_handle_, canfd_data, len, -1);
+                len = ZCAN_ReceiveFD(channel_handle_, canfd_data, 100, 50);
                 emit newMsg(canfd_data, len);
             }
             //避免无数据时变成While(1),会占用大量的CPU

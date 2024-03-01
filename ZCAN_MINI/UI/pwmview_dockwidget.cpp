@@ -1,9 +1,9 @@
-#include "speedview_dockwidget.h"
-#include "ui_speedview_dockwidget.h"
+#include "pwmview_dockwidget.h"
+#include "ui_pwmview_dockwidget.h"
 
-SpeedViewDockWidget::SpeedViewDockWidget(QWidget *parent) :
+PwmViewDockWidget::PwmViewDockWidget(QWidget *parent) :
     QDockWidget(parent),
-    ui(new Ui::SpeedViewDockWidget),
+    ui(new Ui::PwmViewDockWidget),
     tracer_(nullptr),
     tracer_label_(nullptr)
 {
@@ -48,16 +48,16 @@ SpeedViewDockWidget::SpeedViewDockWidget(QWidget *parent) :
 
     plot->replot();
 
-    connect(ui->btnSave, SIGNAL(clicked(bool)), this, SLOT(slot_btnSave_clicked(bool)));
-    connect(ui->btnExcel, SIGNAL(clicked(bool)), this, SLOT(slot_btnExcel_clicked(bool)));
+    connect(ui->btnSave_2, SIGNAL(clicked(bool)), this, SLOT(slot_btnSave_clicked(bool)));
+    connect(ui->btnExcel_2, SIGNAL(clicked(bool)), this, SLOT(slot_btnExcel_clicked(bool)));
 }
 
-SpeedViewDockWidget::~SpeedViewDockWidget()
+PwmViewDockWidget::~PwmViewDockWidget()
 {
     delete ui;
 }
 
-void SpeedViewDockWidget::slot_paint(const unsigned long long msg_id, QList<CppCAN::CANSignal*>& sig_lst)
+void PwmViewDockWidget::slot_paint(const unsigned long long msg_id, QList<CppCAN::CANSignal*>& sig_lst)
 {
     QCustomPlot* const plot = ui->plot;
 
@@ -84,9 +84,22 @@ void SpeedViewDockWidget::slot_paint(const unsigned long long msg_id, QList<CppC
     plot->graph()->setName(QString::fromStdString(sig_lst.at(1)->name()));//曲线名称
 
     plot->graph()->rescaleAxes(true);
+
+    plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
+    //plot->graph()->setSmooth(true); // 启用曲线平滑
+    QColor color2(20+200/4.0*3,70*(1.6-3/4.0), 150, 250);
+    QPen pen2(color1.lighter(200));
+    pen1.setWidth(2);
+    plot->graph()->setLineStyle(QCPGraph::lsLine);
+    plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 3));
+    plot->graph()->setPen(pen1);
+    plot->graph()->setName(QString::fromStdString(sig_lst.at(2)->name()));//曲线名称
+
+    plot->graph()->rescaleAxes(true);
+
     plot->replot();
 
-    const QList<CppCAN::CANSignal> sig_lst1 { *sig_lst.at(0), *sig_lst.at(1) };
+    const QList<CppCAN::CANSignal> sig_lst1 { *sig_lst.at(0), *sig_lst.at(1), *sig_lst.at(2) };
     SignalParserThread* const signal_parser_thread = new SignalParserThread(msg_id, sig_lst1);
 
     PlotDataThread* const plotdata_thread = new PlotDataThread(plot, signal_parser_thread);
@@ -98,11 +111,11 @@ void SpeedViewDockWidget::slot_paint(const unsigned long long msg_id, QList<CppC
     replot_thread->beginThread();
 
     connect(replot_thread, &ReplotThread::sig_frmChanged, this, [=] (const QString& msg) {
-        ui->labFps->setText(msg);
+        ui->labFps_2->setText(msg);
     });
 }
 
-bool SpeedViewDockWidget::slot_btnSave_clicked(bool checked)
+bool PwmViewDockWidget::slot_btnSave_clicked(bool checked)
 {
     Q_UNUSED(checked);
 
@@ -140,12 +153,12 @@ bool SpeedViewDockWidget::slot_btnSave_clicked(bool checked)
     }
 }
 
-void SpeedViewDockWidget::slot_customPlot_mousePress(QMouseEvent *event)
+void PwmViewDockWidget::slot_customPlot_mousePress(QMouseEvent *event)
 {
     this->m_PressedPoint = event->pos();
 }
 
-void SpeedViewDockWidget::slot_customPlot_selectionChanged()
+void PwmViewDockWidget::slot_customPlot_selectionChanged()
 {
     QCustomPlot* const plot = ui->plot;
     if (plot->xAxis->selectedParts().testFlag(QCPAxis::spAxis) || plot->xAxis->selectedParts().testFlag(QCPAxis::spTickLabels) || plot->xAxis->selectedParts().testFlag(QCPAxis::spAxisLabel))
@@ -192,7 +205,7 @@ void SpeedViewDockWidget::slot_customPlot_selectionChanged()
     }
 }
 
-void SpeedViewDockWidget::slot_btnExcel_clicked(bool checked)
+void PwmViewDockWidget::slot_btnExcel_clicked(bool checked)
 {
     Q_UNUSED(checked);
 
@@ -238,7 +251,7 @@ void SpeedViewDockWidget::slot_btnExcel_clicked(bool checked)
     doc.saveAs("test.xlsx");
 }
 
-void SpeedViewDockWidget::slot_legendClick(QCPLegend *legend, QCPAbstractLegendItem *item)
+void PwmViewDockWidget::slot_legendClick(QCPLegend *legend, QCPAbstractLegendItem *item)
 {
     Q_UNUSED(legend);
     QCPPlottableLegendItem* plottableLegendItem = qobject_cast<QCPPlottableLegendItem*>(item);
@@ -253,7 +266,7 @@ void SpeedViewDockWidget::slot_legendClick(QCPLegend *legend, QCPAbstractLegendI
     }
 }
 
-void SpeedViewDockWidget::findSelectedPoint(QCPGraph *graph, QPoint select_point, double &key, double &value)
+void PwmViewDockWidget::findSelectedPoint(QCPGraph *graph, QPoint select_point, double &key, double &value)
 {
     double temp_key, temp_value;
     graph->pixelsToCoords(select_point, temp_key, temp_value);

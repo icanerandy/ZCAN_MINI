@@ -1,5 +1,5 @@
-#ifndef PLOT_DOCKWIDGET_H
-#define PLOT_DOCKWIDGET_H
+#ifndef PWMVIEW_DOCKWIDGET_H
+#define PWMVIEW_DOCKWIDGET_H
 
 #include <QObject>
 #include <QMap>
@@ -21,16 +21,16 @@
 #include <GL/freeglut.h>
 
 namespace Ui {
-class SpeedViewDockWidget;
+class PwmViewDockWidget;
 }
 
-class SpeedViewDockWidget : public QDockWidget
+class PwmViewDockWidget : public QDockWidget
 {
     Q_OBJECT
 
 public:
-    explicit SpeedViewDockWidget(QWidget *parent = 0);
-    ~SpeedViewDockWidget();
+    explicit PwmViewDockWidget(QWidget *parent = 0);
+    ~PwmViewDockWidget();
 
 public slots:
     void slot_paint(const unsigned long long msg_id, QList<CppCAN::CANSignal*>& sig_lst);
@@ -50,10 +50,10 @@ private:
     DataTracer* p_DataTracer;
 
 private:
-    Ui::SpeedViewDockWidget* const ui;
+    Ui::PwmViewDockWidget* const ui;
     QCPItemTracer* tracer_;
     QCPItemText* tracer_label_;
     PlotDataThread* plot_thread_;
 };
 
-#endif // PLOT_DOCKWIDGET_H
+#endif // PWMVIEW_DOCKWIDGET_H

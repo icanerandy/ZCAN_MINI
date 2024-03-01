@@ -6,7 +6,8 @@ FORMS += \
     $$PWD/canviewoption_dialog.ui \
     $$PWD/senddata_dialog.ui \
     $$PWD/dbcview_dockwidget.ui \
-    $$PWD/speed_dockwidget.ui
+    $$PWD/pwmview_dockwidget.ui \
+    $$PWD/speedview_dockwidget.ui
 
 HEADERS += \
     $$PWD/main_window.h \
@@ -16,7 +17,8 @@ HEADERS += \
     $$PWD/canviewoption_dialog.h \
     $$PWD/senddata_dialog.h \
     $$PWD/dbcview_dockwidget.h \
-    $$PWD/speedview_dockwidget.h
+    $$PWD/speedview_dockwidget.h \
+    $$PWD/pwmview_dockwidget.h
 
 SOURCES += \
     $$PWD/main_window.cc \
@@ -26,4 +28,5 @@ SOURCES += \
     $$PWD/canviewoption_dialog.cc \
     $$PWD/senddata_dialog.cc \
     $$PWD/dbcview_dockwidget.cc \
-    $$PWD/speedview_dockwidget.cc
+    $$PWD/speedview_dockwidget.cc \
+    $$PWD/pwmview_dockwidget.cpp

@@ -21,6 +21,9 @@ private:
     void initDlg();
     void bindSignals();
 
+public slots:
+    void slot_chkDeviceType();
+
 private:
     Ui::InitCanDialog * const ui;
 };

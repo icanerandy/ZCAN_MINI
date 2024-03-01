@@ -7,9 +7,7 @@ DBCViewDockWidget::DBCViewDockWidget(QWidget *parent) :
     message_model_(new QStandardItemModel()),
     signal_model_(new QStandardItemModel()),
     item_selection_model_(new QItemSelectionModel(message_model_)),
-    msg_(nullptr),
-    ref_speed_(nullptr),
-    rel_speed_(nullptr)
+    msg_(nullptr)
 {
     ui->setupUi(this);
 
@@ -50,7 +48,7 @@ DBCViewDockWidget::DBCViewDockWidget(QWidget *parent) :
     connect(ui->btnReadDBC, &QPushButton::clicked, this, &DBCViewDockWidget::slot_btnReadDBC_clicked);
 
     connect(ui->btnPaint, &QPushButton::clicked, this, [=] {
-        emit sig_paint(msg_->can_id(), *ref_speed_, *rel_speed_);
+        emit sig_paint(msg_->can_id(), sig_lst_);
     });
 }
 
@@ -102,11 +100,13 @@ void DBCViewDockWidget::showSignals()
 
     item = nullptr;
     size_t i = 0;
+    sig_lst_.clear();
     for(auto& sig : *msg_) {
-        if (0 == i)
-            ref_speed_ = &sig.second;
-        else
-            rel_speed_ = &sig.second;
+        sig_lst_.push_back(&sig.second);
+//        if (0 == i)
+//            ref_speed_ = &sig.second;
+//        else
+//            rel_speed_ = &sig.second;
 
         item = new QStandardItem(QString::fromStdString(sig.second.name()));
         item->setEditable(false);

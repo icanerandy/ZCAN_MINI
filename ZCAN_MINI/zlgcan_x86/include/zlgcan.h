@@ -2,7 +2,7 @@
 #define ZLGCAN_H_
 
 #include <time.h>
-
+#include <QtCore/QVariant>
 #include "canframe.h"
 #include "config.h"
 
