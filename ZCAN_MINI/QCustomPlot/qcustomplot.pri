@@ -3,7 +3,7 @@
 Qt += opengl
 DEFINES += QCUSTOMPLOT_USE_OPENGL
 
-LIBS += -LD:/Software/Qt/Qt5.9.1/5.9.1/mingw53_32/lib  -lfreeglut -lopengl32
+LIBS += -LD:/Qt/5.15.2/mingw81_32/lib  -llibfreeglut.dll -lopengl32
 
 HEADERS += \
     $$PWD/qcustomplot.h \
