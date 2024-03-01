@@ -21,16 +21,16 @@
 #include <GL/freeglut.h>
 
 namespace Ui {
-class PlotViewDockWidget;
+class SpeedViewDockWidget;
 }
 
-class PlotViewDockWidget : public QDockWidget
+class SpeedViewDockWidget : public QDockWidget
 {
     Q_OBJECT
 
 public:
-    explicit PlotViewDockWidget(QWidget *parent = 0);
-    ~PlotViewDockWidget();
+    explicit SpeedViewDockWidget(QWidget *parent = 0);
+    ~SpeedViewDockWidget();
 
 public slots:
     void slot_paint(const unsigned long long msg_id, const CppCAN::CANSignal& ref_speed, const CppCAN::CANSignal& rel_speed);
@@ -50,7 +50,7 @@ private:
     DataTracer* p_DataTracer;
 
 private:
-    Ui::PlotViewDockWidget* const ui;
+    Ui::SpeedViewDockWidget* const ui;
     QCPItemTracer* tracer_;
     QCPItemText* tracer_label_;
     PlotDataThread* plot_thread_;

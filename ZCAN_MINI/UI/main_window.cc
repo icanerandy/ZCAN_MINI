@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow),
     canviewDock(new CanViewDockWidget(this)),
     dbcviewDock(new DBCViewDockWidget(this)),
-    plotviewDcok(new PlotViewDockWidget(this)),
+    speedviewDcok(new SpeedViewDockWidget(this)),
     deviceManagerDlg(new DeviceManagerDialog(this)),
     senddataDlg(new SendDataDialog(this)),
     menuSendData(new QMenu(QStringLiteral("发送数据"), this)),
@@ -27,7 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
 //        delete central_widget;
 
     canviewDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
-    plotviewDcok->setFeatures(QDockWidget::NoDockWidgetFeatures);
+    speedviewDcok->setFeatures(QDockWidget::NoDockWidgetFeatures);
     dbcviewDock->setFeatures(QDockWidget::NoDockWidgetFeatures);
 
     QVBoxLayout* const layout = new QVBoxLayout();
@@ -36,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QHBoxLayout* const layout1 = new QHBoxLayout();
     layout1->addWidget(dbcviewDock);
-    layout1->addWidget(plotviewDcok);
+    layout1->addWidget(speedviewDcok);
     ui->tabSpeed->setLayout(layout1);
 
 //    QVBoxLayout* const layout2 = new QVBoxLayout();
@@ -63,5 +63,5 @@ void MainWindow::bindSignals()
     connect(actSendData, &QAction::triggered, this, [=] {
         senddataDlg->exec();
     });
-    connect(dbcviewDock, &DBCViewDockWidget::sig_paint, plotviewDcok, &PlotViewDockWidget::slot_paint);
+    connect(dbcviewDock, &DBCViewDockWidget::sig_paint, speedviewDcok, &SpeedViewDockWidget::slot_paint);
 }

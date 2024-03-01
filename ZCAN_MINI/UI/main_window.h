@@ -9,7 +9,7 @@
 #include <recmsg_thread.h>
 #include "canview_dockwidget.h"
 #include "dbcview_dockwidget.h"
-#include "plotview_dockwidget.h"
+#include "speedview_dockwidget.h"
 #include "senddata_dialog.h"
 
 namespace Ui {
@@ -48,7 +48,7 @@ private:
     Ui::MainWindow * const ui;
     CanViewDockWidget * const canviewDock;
     DBCViewDockWidget * const dbcviewDock;
-    PlotViewDockWidget * const plotviewDcok;
+    SpeedViewDockWidget * const speedviewDcok;
     DeviceManagerDialog * const deviceManagerDlg;
     SendDataDialog * const senddataDlg;
 

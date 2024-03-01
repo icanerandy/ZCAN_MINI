@@ -40,7 +40,7 @@ DBCViewDockWidget::DBCViewDockWidget(QWidget *parent) :
 
     QStringList str_list;
     str_list << QStringLiteral("名字") << QStringLiteral("ID(Hex)") << QStringLiteral("DLC") << QStringLiteral("注释");
-    message_model_->setHorizontalHeaderLabels(str_list);
+    message_model_->setVerticalHeaderLabels(str_list);
     str_list.clear();
     str_list << QStringLiteral("名字") << QStringLiteral("长度") << QStringLiteral("起始位") << QStringLiteral("因子")
              << QStringLiteral("偏移") << QStringLiteral("类型") << QStringLiteral("字节序") << QStringLiteral("最小值")
@@ -48,7 +48,6 @@ DBCViewDockWidget::DBCViewDockWidget(QWidget *parent) :
     signal_model_->setHorizontalHeaderLabels(str_list);
 
     connect(ui->btnReadDBC, &QPushButton::clicked, this, &DBCViewDockWidget::slot_btnReadDBC_clicked);
-    connect(ui->msgView, &QAbstractItemView::clicked, this, &DBCViewDockWidget::slot_message_model_clicked);
 
     connect(ui->btnPaint, &QPushButton::clicked, this, [=] {
         emit sig_paint(msg_->can_id(), *ref_speed_, *rel_speed_);
@@ -62,36 +61,42 @@ DBCViewDockWidget::~DBCViewDockWidget()
 
 void DBCViewDockWidget::slot_btnReadDBC_clicked()
 {
-    const QString filename = QFileDialog::getOpenFileName(this, "选择dbc文件", QDir::currentPath(), nullptr);
+    const QString filename = QFileDialog::getOpenFileName(this, QStringLiteral("选择dbc文件"),
+                                                          QDir::currentPath(), QStringLiteral("DBC files (*.dbc)"));
     if (filename.isEmpty())
         return;
 
     db_ = CppCAN::CANDatabase::fromFile(filename.toStdString());
-    QStandardItem *item = nullptr;
-    size_t i = 0;
+
+    QStandardItem* item = nullptr;
     for(const auto& frame : db_) {
         item = new QStandardItem(QString::fromStdString(frame.second.name()));
-        message_model_->setItem(i, 0, item);
+        message_model_->setItem(0, 0, item);
 
         item = new QStandardItem(QString::number(frame.second.can_id(), 16));
-        message_model_->setItem(i, 1, item);
+        message_model_->setItem(1, 0, item);
 
         item = new QStandardItem(QString::number(frame.second.dlc(), 10));
-        message_model_->setItem(i, 2, item);
+        message_model_->setItem(2, 0, item);
 
         item = new QStandardItem(QString::fromStdString(frame.second.comment()));
-        message_model_->setItem(i, 3, item);
-
-        i++;
+        message_model_->setItem(3, 0, item);
     }
+
+    showSignals();
 }
 
-void DBCViewDockWidget::slot_message_model_clicked(const QModelIndex &index)
+void DBCViewDockWidget::showSignals()
 {
     signal_model_->clear();
+    QStringList str_list;
+    str_list.clear();
+    str_list << QStringLiteral("名字") << QStringLiteral("长度") << QStringLiteral("起始位") << QStringLiteral("因子")
+             << QStringLiteral("偏移") << QStringLiteral("类型") << QStringLiteral("字节序") << QStringLiteral("最小值")
+             << QStringLiteral("最大值") << QStringLiteral("注释");
+    signal_model_->setHorizontalHeaderLabels(str_list);
 
-    uint row = index.row();
-    QStandardItem *item = message_model_->item(row);
+    QStandardItem *item = message_model_->item(0);
     QString msg_name = item->text();
     msg_ = &db_.at(msg_name.toStdString());
 

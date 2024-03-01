@@ -21,9 +21,11 @@ public:
     explicit DBCViewDockWidget(QWidget *parent = 0);
     ~DBCViewDockWidget();
 
+private:
+    void showSignals();
+
 private slots:
     void slot_btnReadDBC_clicked();
-    void slot_message_model_clicked(const QModelIndex &index);
 
 signals:
     void sig_paint(const unsigned long long msg_id, const CppCAN::CANSignal& ref_speed_, const CppCAN::CANSignal& rel_speed_);

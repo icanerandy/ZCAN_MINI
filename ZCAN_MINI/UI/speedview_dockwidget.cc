@@ -1,9 +1,9 @@
-#include "plotview_dockwidget.h"
+#include "speedview_dockwidget.h"
 #include "ui_plot_dockwidget.h"
 
-PlotViewDockWidget::PlotViewDockWidget(QWidget *parent) :
+SpeedViewDockWidget::SpeedViewDockWidget(QWidget *parent) :
     QDockWidget(parent),
-    ui(new Ui::PlotViewDockWidget),
+    ui(new Ui::SpeedViewDockWidget),
     tracer_(nullptr),
     tracer_label_(nullptr)
 {
@@ -52,12 +52,12 @@ PlotViewDockWidget::PlotViewDockWidget(QWidget *parent) :
     connect(ui->btnExcel, SIGNAL(clicked(bool)), this, SLOT(slot_btnExcel_clicked(bool)));
 }
 
-PlotViewDockWidget::~PlotViewDockWidget()
+SpeedViewDockWidget::~SpeedViewDockWidget()
 {
     delete ui;
 }
 
-void PlotViewDockWidget::slot_paint(const unsigned long long msg_id, const CppCAN::CANSignal& ref_speed, const CppCAN::CANSignal& rel_speed)
+void SpeedViewDockWidget::slot_paint(const unsigned long long msg_id, const CppCAN::CANSignal& ref_speed, const CppCAN::CANSignal& rel_speed)
 {
     QCustomPlot* const plot = ui->plot;
 
@@ -99,7 +99,7 @@ void PlotViewDockWidget::slot_paint(const unsigned long long msg_id, const CppCA
     });
 }
 
-bool PlotViewDockWidget::slot_btnSave_clicked(bool checked)
+bool SpeedViewDockWidget::slot_btnSave_clicked(bool checked)
 {
     Q_UNUSED(checked);
 
@@ -137,12 +137,12 @@ bool PlotViewDockWidget::slot_btnSave_clicked(bool checked)
     }
 }
 
-void PlotViewDockWidget::slot_customPlot_mousePress(QMouseEvent *event)
+void SpeedViewDockWidget::slot_customPlot_mousePress(QMouseEvent *event)
 {
     this->m_PressedPoint = event->pos();
 }
 
-void PlotViewDockWidget::slot_customPlot_selectionChanged()
+void SpeedViewDockWidget::slot_customPlot_selectionChanged()
 {
     QCustomPlot* const plot = ui->plot;
     if (plot->xAxis->selectedParts().testFlag(QCPAxis::spAxis) || plot->xAxis->selectedParts().testFlag(QCPAxis::spTickLabels) || plot->xAxis->selectedParts().testFlag(QCPAxis::spAxisLabel))
@@ -189,7 +189,7 @@ void PlotViewDockWidget::slot_customPlot_selectionChanged()
     }
 }
 
-void PlotViewDockWidget::slot_btnExcel_clicked(bool checked)
+void SpeedViewDockWidget::slot_btnExcel_clicked(bool checked)
 {
     Q_UNUSED(checked);
 
@@ -235,7 +235,7 @@ void PlotViewDockWidget::slot_btnExcel_clicked(bool checked)
     doc.saveAs("test.xlsx");
 }
 
-void PlotViewDockWidget::slot_legendClick(QCPLegend *legend, QCPAbstractLegendItem *item)
+void SpeedViewDockWidget::slot_legendClick(QCPLegend *legend, QCPAbstractLegendItem *item)
 {
     Q_UNUSED(legend);
     QCPPlottableLegendItem* plottableLegendItem = qobject_cast<QCPPlottableLegendItem*>(item);
@@ -250,7 +250,7 @@ void PlotViewDockWidget::slot_legendClick(QCPLegend *legend, QCPAbstractLegendIt
     }
 }
 
-void PlotViewDockWidget::findSelectedPoint(QCPGraph *graph, QPoint select_point, double &key, double &value)
+void SpeedViewDockWidget::findSelectedPoint(QCPGraph *graph, QPoint select_point, double &key, double &value)
 {
     double temp_key, temp_value;
     graph->pixelsToCoords(select_point, temp_key, temp_value);
