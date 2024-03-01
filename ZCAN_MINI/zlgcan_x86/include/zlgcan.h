@@ -2,7 +2,7 @@
 #define ZLGCAN_H_
 
 #include <time.h>
-#include <QtCore/QVariant>
+#include <QMetaType>
 #include "canframe.h"
 #include "config.h"
 
@@ -311,25 +311,25 @@ typedef struct tagZCAN_Transmit_Data {
     can_frame frame;
     UINT      transmit_type;
 } ZCAN_Transmit_Data;
-Q_DECLARE_METATYPE(ZCAN_Transmit_Data);
+Q_DECLARE_METATYPE(ZCAN_Transmit_Data)
 
 typedef struct tagZCAN_Receive_Data {
     can_frame frame;
     UINT64    timestamp;  // us
 } ZCAN_Receive_Data;
-Q_DECLARE_METATYPE(ZCAN_Receive_Data);
+Q_DECLARE_METATYPE(ZCAN_Receive_Data)
 
 typedef struct tagZCAN_TransmitFD_Data {
     canfd_frame frame;
     UINT        transmit_type;
 } ZCAN_TransmitFD_Data;
-Q_DECLARE_METATYPE(ZCAN_TransmitFD_Data);
+Q_DECLARE_METATYPE(ZCAN_TransmitFD_Data)
 
 typedef struct tagZCAN_ReceiveFD_Data {
     canfd_frame frame;
     UINT64      timestamp;  // us
 } ZCAN_ReceiveFD_Data;
-Q_DECLARE_METATYPE(ZCAN_ReceiveFD_Data);
+Q_DECLARE_METATYPE(ZCAN_ReceiveFD_Data)
 
 typedef struct tagZCAN_AUTO_TRANSMIT_OBJ {
     USHORT             enable;

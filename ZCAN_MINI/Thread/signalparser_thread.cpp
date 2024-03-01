@@ -1,4 +1,4 @@
-#include "signalparser_thread.h"
+﻿#include "signalparser_thread.h"
 
 SignalParserThread::SignalParserThread(const unsigned long long msg_id, const QList<CppCAN::CANSignal>& sig_lst)
     : msg_id_(msg_id),
@@ -12,10 +12,10 @@ void SignalParserThread::beginThread()
     m_pause = false;
 
     RecMsgThread* const rec_msg_thread = RecMsgThread::getInstance();
-    connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_Receive_Data* const, const uint)>(&RecMsgThread::newMsg),
-            this, static_cast<void (SignalParserThread::*)(const ZCAN_Receive_Data* const, const uint)>(&SignalParserThread::slot_newMsg));
-    connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_ReceiveFD_Data* const, const uint)>(&RecMsgThread::newMsg),
-            this, static_cast<void (SignalParserThread::*)(const ZCAN_ReceiveFD_Data* const, const uint)>(&SignalParserThread::slot_newMsg));
+    connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_Receive_Data*, const uint)>(&RecMsgThread::sig_newMsg),
+            this, static_cast<void (SignalParserThread::*)(const ZCAN_Receive_Data*, const uint)>(&SignalParserThread::slot_newMsg));
+    connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&RecMsgThread::sig_newMsg),
+            this, static_cast<void (SignalParserThread::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&SignalParserThread::slot_newMsg));
 }
 
 void SignalParserThread::pauseThread()
@@ -23,10 +23,10 @@ void SignalParserThread::pauseThread()
     m_pause = true;
 
     RecMsgThread* const rec_msg_thread = RecMsgThread::getInstance();
-    disconnect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_Receive_Data* const, const uint)>(&RecMsgThread::newMsg),
-            this, static_cast<void (SignalParserThread::*)(const ZCAN_Receive_Data* const, const uint)>(&SignalParserThread::slot_newMsg));
-    disconnect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_ReceiveFD_Data* const, const uint)>(&RecMsgThread::newMsg),
-            this, static_cast<void (SignalParserThread::*)(const ZCAN_ReceiveFD_Data* const, const uint)>(&SignalParserThread::slot_newMsg));
+    disconnect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_Receive_Data*, const uint)>(&RecMsgThread::sig_newMsg),
+            this, static_cast<void (SignalParserThread::*)(const ZCAN_Receive_Data*, const uint)>(&SignalParserThread::slot_newMsg));
+    disconnect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&RecMsgThread::sig_newMsg),
+            this, static_cast<void (SignalParserThread::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&SignalParserThread::slot_newMsg));
 }
 
 void SignalParserThread::stopThread()
@@ -126,7 +126,7 @@ void SignalParserThread::run()
     quit();
 }
 
-void SignalParserThread::slot_newMsg(const ZCAN_Receive_Data* const can_data, const uint len)
+void SignalParserThread::slot_newMsg(const ZCAN_Receive_Data* can_data, const uint len)
 {
     uint i = 0;
     while (i < len)
@@ -145,7 +145,7 @@ void SignalParserThread::slot_newMsg(const ZCAN_Receive_Data* const can_data, co
     }
 }
 
-void SignalParserThread::slot_newMsg(const ZCAN_ReceiveFD_Data* const canfd_data, const uint len)
+void SignalParserThread::slot_newMsg(const ZCAN_ReceiveFD_Data* canfd_data, const uint len)
 {
     uint i = 0;
     while (i < len)

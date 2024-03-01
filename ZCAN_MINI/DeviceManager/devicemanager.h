@@ -1,8 +1,7 @@
-#ifndef DEVICE_MANAGER_H
+﻿#ifndef DEVICE_MANAGER_H
 #define DEVICE_MANAGER_H
 
 #include <QObject>
-#include <vector>
 #include "zlgcan.h"
 #include "recmsg_thread.h"
 #include "sendmsg_thread.h"
@@ -140,6 +139,9 @@ private:
     bool setBaudrate();
     bool setCanfdBaudrate();
     bool setResistanceEnable();
+
+signals:
+    void sig_channelHandle(CHANNEL_HANDLE channel_handle);
 
 public slots:
     void slot_deviceType_changed(DeviceManager::DeviceTypeIndex type);

@@ -103,10 +103,6 @@ void DBCViewDockWidget::showSignals()
     sig_lst_.clear();
     for(auto& sig : *msg_) {
         sig_lst_.push_back(&sig.second);
-//        if (0 == i)
-//            ref_speed_ = &sig.second;
-//        else
-//            rel_speed_ = &sig.second;
 
         item = new QStandardItem(QString::fromStdString(sig.second.name()));
         item->setEditable(false);

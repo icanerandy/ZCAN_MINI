@@ -1,4 +1,4 @@
-#ifndef CANFRAMETABLEMODEL_H
+﻿#ifndef CANFRAMETABLEMODEL_H
 #define CANFRAMETABLEMODEL_H
 
 #include <QAbstractTableModel>
@@ -44,8 +44,8 @@ signals:
     void rowsInserted();
 
 public slots:
-    void newMsg(const ZCAN_Receive_Data* const can_data, const uint len);
-    void newMsg(const ZCAN_ReceiveFD_Data* const canfd_data, const uint len);
+    void slot_newMsg(const ZCAN_Receive_Data* can_data, const uint len);
+    void slot_newMsg(const ZCAN_ReceiveFD_Data* canfd_data, const uint len);
     void slot_visibleCol_changed(const QList<uint> visible_columns);
 
 private:

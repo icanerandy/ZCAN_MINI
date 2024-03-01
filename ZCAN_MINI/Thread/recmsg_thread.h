@@ -1,11 +1,10 @@
-#ifndef RECMSG_THREAD_H
+﻿#ifndef RECMSG_THREAD_H
 #define RECMSG_THREAD_H
 
 #include <QObject>
 #include <QThread>
 #include "zlgcan.h"
 #include "canframe_tablemodel.h"
-#include "devicemanager.h"
 
 class RecMsgThread : public QThread
 {
@@ -37,8 +36,11 @@ public:
     void stopThread();
 
 signals:
-    void newMsg(const ZCAN_Receive_Data* const can_data, const uint len);
-    void newMsg(const ZCAN_ReceiveFD_Data* const canfd_data, const uint len);
+    void sig_newMsg(const ZCAN_Receive_Data* can_data, const uint len);
+    void sig_newMsg(const ZCAN_ReceiveFD_Data* canfd_data, const uint len);
+
+public slots:
+    void slot_channelHandle(CHANNEL_HANDLE channel_handle);
 };
 
 #endif // RECMSG_THREAD_H

@@ -69,7 +69,6 @@ void ReplotThread::replotData()
     QElapsedTimer timer;
     timer.start();
     plot_->xAxis->setRange(key, 0.250, Qt::AlignRight);
-    qDebug() << QString("work-work took %1 msecs").arg(timer.elapsed());
     // 重绘
     plot_->replot(QCustomPlot::rpQueuedReplot);
     // 计算帧数
@@ -89,7 +88,4 @@ void ReplotThread::replotData()
     if (last_duration.count()/1.0 > 10)
         qDebug() << last_duration.count() / 1.0;
     last_time = current_time;
-
-    if (key > 10)
-        pauseThread();
 }

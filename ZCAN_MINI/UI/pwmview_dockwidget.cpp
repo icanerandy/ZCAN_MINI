@@ -1,4 +1,4 @@
-#include "pwmview_dockwidget.h"
+﻿#include "pwmview_dockwidget.h"
 #include "ui_pwmview_dockwidget.h"
 
 PwmViewDockWidget::PwmViewDockWidget(QWidget *parent) :
@@ -101,6 +101,8 @@ void PwmViewDockWidget::slot_paint(const unsigned long long msg_id, QList<CppCAN
 
     const QList<CppCAN::CANSignal> sig_lst1 { *sig_lst.at(0), *sig_lst.at(1), *sig_lst.at(2) };
     SignalParserThread* const signal_parser_thread = new SignalParserThread(msg_id, sig_lst1);
+    signal_parser_thread->start();
+    signal_parser_thread->beginThread();
 
     PlotDataThread* const plotdata_thread = new PlotDataThread(plot, signal_parser_thread);
     plotdata_thread->start();

@@ -68,7 +68,4 @@ void PlotDataThread::slot_realTimeData(const QList<double> vals)
 //    if (last_duration.count()/1.0 > 1)
 //        qDebug() << last_duration.count() / 1.0 << " us";
 //    last_time = current_time;
-
-    if (key > 10)
-        pauseThread();
 }

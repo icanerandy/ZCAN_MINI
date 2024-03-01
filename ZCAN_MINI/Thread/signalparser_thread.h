@@ -1,4 +1,4 @@
-#ifndef SIGNALPARSER_THREAD_H
+﻿#ifndef SIGNALPARSER_THREAD_H
 #define SIGNALPARSER_THREAD_H
 
 #include <QThread>
@@ -30,8 +30,8 @@ signals:
     void sig_pwm(const QList<double> vals);
 
 private slots:
-    void slot_newMsg(const ZCAN_Receive_Data* const can_data, const uint len);
-    void slot_newMsg(const ZCAN_ReceiveFD_Data* const canfd_data, const uint len);
+    void slot_newMsg(const ZCAN_Receive_Data* can_data, const uint len);
+    void slot_newMsg(const ZCAN_ReceiveFD_Data* canfd_data, const uint len);
 
 private:
     bool m_pause = true;    // 暂停

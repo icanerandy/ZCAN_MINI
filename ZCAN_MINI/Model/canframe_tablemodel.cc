@@ -1,4 +1,4 @@
-#include "canframe_tablemodel.h"
+﻿#include "canframe_tablemodel.h"
 
 CanFrameTableModel::CanFrameTableModel(QObject *parent)
     : QAbstractTableModel(parent)
@@ -154,7 +154,7 @@ void CanFrameTableModel::ClearData()
     endResetModel();
 }
 
-void CanFrameTableModel::newMsg(const ZCAN_Receive_Data* const can_data, const uint len)
+void CanFrameTableModel::slot_newMsg(const ZCAN_Receive_Data* can_data, const uint len)
 {
     QString item;
     for (uint i = 0; i < len; ++i)
@@ -172,7 +172,7 @@ void CanFrameTableModel::newMsg(const ZCAN_Receive_Data* const can_data, const u
     }
 }
 
-void CanFrameTableModel::newMsg(const ZCAN_ReceiveFD_Data* const canfd_data, const uint len)
+void CanFrameTableModel::slot_newMsg(const ZCAN_ReceiveFD_Data* canfd_data, const uint len)
 {
     QString item;
     for (uint i = 0; i < len; ++i)

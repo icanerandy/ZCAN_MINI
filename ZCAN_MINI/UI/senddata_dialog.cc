@@ -146,7 +146,7 @@ void SendDataDialog::bindSignals()
         ui->editData->setValidator(new QRegularExpressionValidator(regExp, this));
     });
 
-    connect(ui->btnSend, &QPushButton::clicked, this, &slot_btnSend_clicked);
+    connect(ui->btnSend, &QPushButton::clicked, this, &SendDataDialog::slot_btnSend_clicked);
 }
 
 void SendDataDialog::slot_btnSend_clicked()
