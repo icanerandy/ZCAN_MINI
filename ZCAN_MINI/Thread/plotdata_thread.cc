@@ -49,19 +49,35 @@ void PlotDataThread::run()
 
 void PlotDataThread::slot_realTimeData(const QList<double> vals)
 {
-    static auto start_time = std::chrono::high_resolution_clock::now();
+    // static auto start_time = std::chrono::high_resolution_clock::now();
 
-    auto current_time = std::chrono::high_resolution_clock::now();
+    // auto current_time = std::chrono::high_resolution_clock::now();
 
-    auto duration_us = std::chrono::duration_cast<std::chrono::microseconds>(current_time - start_time);
+    // auto duration_us = std::chrono::duration_cast<std::chrono::microseconds>(current_time - start_time);
 
-    double key = duration_us.count() / 1000000.0;
+    // double key = duration_us.count() / 1000000.0;
+
+    // 假设的时间戳，以微秒为单位
+    uint64_t timestamp_us = vals.at(0);
+
+    // 将时间戳转换为std::chrono::microseconds
+    std::chrono::microseconds us_duration(timestamp_us);
+
+    // 转换为小时、分钟和秒
+    auto hours = std::chrono::duration_cast<std::chrono::hours>(us_duration);
+    auto minutes = std::chrono::duration_cast<std::chrono::minutes>(us_duration % std::chrono::hours(1));
+    auto seconds = std::chrono::duration_cast<std::chrono::seconds>(us_duration % std::chrono::minutes(1));
+
+    // 输出结果
+    qDebug() << "Hours: " << hours.count();
+    qDebug() << "Minutes: " << minutes.count();
+    qDebug() << "Seconds: " << seconds.count();
 
     QVector<QCPGraphData>* data = nullptr;
     for (int i = 0; i < plot_->graphCount(); ++i)
     {
         data = plot_->graph(i)->data()->coreData();
-        data->push_back(QCPGraphData( key, vals.at(i) ));
+        data->push_back(QCPGraphData( timestamp_us, vals.at(i+1) ));
     }
 
 //    auto last_duration = std::chrono::duration_cast<std::chrono::microseconds>(current_time - last_time);
