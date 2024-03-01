@@ -52,11 +52,7 @@ private:
     DeviceManagerDialog * const deviceManagerDlg;
     SendDataDialog * const senddataDlg;
 
-    QMenu * const menuCreateView;
     QMenu * const menuSendData;
-    QAction * const actCreateCanView;
-    QAction * const actCreateDBCView;
-    QAction * const actCreatePlotView;
     QAction * const actDeviceManage;
     QAction * const actSendData;
 

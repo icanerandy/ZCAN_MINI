@@ -66,7 +66,10 @@ void ReplotThread::replotData()
     double key = duration_us.count() / 1000000.0;
 
     // 设定x范围为最近的250ms个时刻
+    QElapsedTimer timer;
+    timer.start();
     plot_->xAxis->setRange(key, 0.250, Qt::AlignRight);
+    qDebug() << QString("work-work took %1 msecs").arg(timer.elapsed());
     // 重绘
     plot_->replot(QCustomPlot::rpQueuedReplot);
     // 计算帧数

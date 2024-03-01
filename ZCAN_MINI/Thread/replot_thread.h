@@ -22,6 +22,8 @@ public:
     void beginThread();
     void pauseThread();
     void stopThread();
+
+private slots:
     void replotData(); // 定时重绘
 
 private:
@@ -35,5 +37,4 @@ private:
 
     std::chrono::high_resolution_clock::time_point last_time;
 };
-
 #endif // REPLOT_THREAD_H

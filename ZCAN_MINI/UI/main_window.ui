@@ -13,14 +13,39 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tabCan">
+       <attribute name="title">
+        <string>CAN报文</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="tabSpeed">
+       <attribute name="title">
+        <string>车速分析</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="tabPwm">
+       <attribute name="title">
+        <string>PWM</string>
+       </attribute>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
      <width>1246</width>
-     <height>23</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
