@@ -6,9 +6,9 @@ DEFINES += QCUSTOMPLOT_USE_OPENGL
 LIBS += -LD:/Qt/5.15.2/mingw81_32/lib  -llibfreeglut.dll -lopengl32
 
 HEADERS += \
-    $$PWD/qcustomplot.h \
-    $$PWD/datatracer.h
+    $$PWD/myplot.h \
+    $$PWD/qcustomplot.h
 
 SOURCES += \
-    $$PWD/qcustomplot.cc \
-    $$PWD/datatracer.cc
+    $$PWD/myplot.cpp \
+    $$PWD/qcustomplot.cc

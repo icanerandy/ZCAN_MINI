@@ -24,7 +24,7 @@ void ReplotThread::run()
         {
             t2 = std::chrono::high_resolution_clock::now();
             duration_time = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count() / 1.0;
-            if (qAbs(duration_time - 10000) < 50 || duration_time - 10000 > 0) // 定时 10000us，即 10ms
+            if (qAbs(duration_time - 30000) < 50 || duration_time - 30000 > 0) // 定时 30000us，即 30ms
             {
                 /*
                  1. qAbs(duration_time - 10000) < 50 是为了提前进入新周期开始绘制，保证绘图精度及帧率（因为 replotData() 的调用会消耗时间）
@@ -57,25 +57,21 @@ void ReplotThread::stopThread()
 
 void ReplotThread::replotData()
 {
-    static auto start_time = std::chrono::high_resolution_clock::now();
+    double key = 0;
+    qDebug() << "graph count: " << plot_->graphCount();
+    qDebug() << "data count: " << plot_->graph(0)->dataCount();
+    if (plot_->graph(0)->dataCount() > 0)
+        key = plot_->graph(0)->data()->coreData()->at(plot_->graph(0)->dataCount()-1).key;
 
-    auto current_time = std::chrono::high_resolution_clock::now();
+    qDebug() << "last key: " << key;
+    qDebug() << "range: " << plot_->xAxis->range();
 
-    auto duration_us = std::chrono::duration_cast<std::chrono::microseconds>(current_time - start_time);
-
-    double key = duration_us.count() / 1000000.0;
-
-    // 设定x范围为最近的250ms个时刻
-    QElapsedTimer timer;
-    timer.start();
-
-    uint max_range = plot_->graph(0)->data()->coreData()->count();
-    qDebug() << "max_range: " << max_range;
-    // plot_->xAxis->setRange(max_range - plot_->xAxis->range().upper, max_range, Qt::AlignRight);
-    plot_->xAxis->setRangeUpper(max_range);
+    // if (plot_->xAxis->range().size() < key)
+    //     plot_->xAxis->setRange(key, 0.100, Qt::AlignRight);
 
     // 重绘
     plot_->replot(QCustomPlot::rpQueuedReplot);
+
     // 计算帧数
     static double last_fps;
     static int frame_count;
@@ -88,9 +84,4 @@ void ReplotThread::replotData()
         last_fps = key;
         frame_count = 0;
     }
-
-    auto last_duration = std::chrono::duration_cast<std::chrono::milliseconds>(current_time - last_time);
-    if (last_duration.count()/1.0 > 10)
-        qDebug() << last_duration.count() / 1.0;
-    last_time = current_time;
 }

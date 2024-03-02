@@ -1,4 +1,4 @@
-/***************************************************************************
+﻿/***************************************************************************
 **                                                                        **
 **  QCustomPlot, an easy to use, modern plotting widget for Qt            **
 **  Copyright (C) 2011-2022 Emanuel Eichhammer                            **
@@ -13697,7 +13697,7 @@ QCustomPlot::QCustomPlot(QWidget *parent) :
   mSelectionRect->setLayer(QLatin1String("overlay"));
   
   setViewport(rect()); // needs to be called after mPlotLayout has been created
-  
+
   replot(rpQueuedReplot);
 }
 
@@ -15589,11 +15589,11 @@ void QCustomPlot::mousePressEvent(QMouseEvent *event)
   mMouseHasMoved = false;
   mMousePressPos = event->pos();
   
-  if (mSelectionRect && mSelectionRectMode != QCP::srmNone)
+  if (event->button() == Qt::LeftButton && mSelectionRect && mSelectionRectMode != QCP::srmNone)    // 框选功能
   {
     if (mSelectionRectMode != QCP::srmZoom || qobject_cast<QCPAxisRect*>(axisRectAt(mMousePressPos))) // in zoom mode only activate selection rect if on an axis rect
       mSelectionRect->startSelection(event);
-  } else
+  } else if (event->button() != Qt::LeftButton) // 拖拽功能
   {
     // no selection rect interaction, prepare for click signal emission and forward event to layerable under the cursor:
     QList<QVariant> details;
@@ -18552,7 +18552,7 @@ void QCPAxisRect::layoutChanged()
 void QCPAxisRect::mousePressEvent(QMouseEvent *event, const QVariant &details)
 {
   Q_UNUSED(details)
-  if (event->buttons() & Qt::LeftButton)
+  if (event->buttons() & Qt::RightButton)
   {
     mDragging = true;
     // initialize antialiasing backup in case we start dragging:
