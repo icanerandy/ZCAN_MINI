@@ -67,21 +67,13 @@ void PlotDataThread::slot_realTimeData(const QList<double> vals)
     auto hours = std::chrono::duration_cast<std::chrono::hours>(us_duration);
     auto minutes = std::chrono::duration_cast<std::chrono::minutes>(us_duration % std::chrono::hours(1));
     auto seconds = std::chrono::duration_cast<std::chrono::seconds>(us_duration % std::chrono::minutes(1));
-
-    // 输出结果
-    qDebug() << "Hours: " << hours.count();
-    qDebug() << "Minutes: " << minutes.count();
-    qDebug() << "Seconds: " << seconds.count();
+    auto millis = std::chrono::duration_cast<std::chrono::milliseconds>(us_duration % std::chrono::milliseconds(1));
+    auto mircors = std::chrono::duration_cast<std::chrono::microseconds>(us_duration % std::chrono::microseconds(1));
 
     QVector<QCPGraphData>* data = nullptr;
-    for (int i = 0; i < plot_->graphCount(); ++i)
+    for (int i = 0; i < plot_->graphCount() - 1; ++i)
     {
         data = plot_->graph(i)->data()->coreData();
         data->push_back(QCPGraphData( timestamp_us, vals.at(i+1) ));
     }
-
-//    auto last_duration = std::chrono::duration_cast<std::chrono::microseconds>(current_time - last_time);
-//    if (last_duration.count()/1.0 > 1)
-//        qDebug() << last_duration.count() / 1.0 << " us";
-//    last_time = current_time;
 }

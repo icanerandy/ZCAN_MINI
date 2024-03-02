@@ -62,7 +62,6 @@ void PwmViewDockWidget::slot_paint(const unsigned long long msg_id, QList<CppCAN
     QCustomPlot* const plot = ui->plot;
 
     plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
-    //plot->graph()->setSmooth(true); // 启用曲线平滑
     QColor color(20+200/4.0*1,70*(1.6-1/4.0), 150, 250);
     QPen pen(color.lighter(200));
     pen.setWidth(2);
@@ -74,7 +73,6 @@ void PwmViewDockWidget::slot_paint(const unsigned long long msg_id, QList<CppCAN
     plot->graph()->rescaleAxes();
 
     plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
-    //plot->graph()->setSmooth(true); // 启用曲线平滑
     QColor color1(20+200/4.0*2,70*(1.6-2/4.0), 150, 250);
     QPen pen1(color1.lighter(200));
     pen1.setWidth(2);
@@ -86,7 +84,6 @@ void PwmViewDockWidget::slot_paint(const unsigned long long msg_id, QList<CppCAN
     plot->graph()->rescaleAxes(true);
 
     plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
-    //plot->graph()->setSmooth(true); // 启用曲线平滑
     QColor color2(20+200/4.0*3,70*(1.6-3/4.0), 150, 250);
     QPen pen2(color1.lighter(200));
     pen1.setWidth(2);

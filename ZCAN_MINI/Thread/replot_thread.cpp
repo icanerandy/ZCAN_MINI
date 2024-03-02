@@ -68,7 +68,12 @@ void ReplotThread::replotData()
     // 设定x范围为最近的250ms个时刻
     QElapsedTimer timer;
     timer.start();
-    plot_->xAxis->setRange(key, 0.250, Qt::AlignRight);
+
+    uint max_range = plot_->graph(0)->data()->coreData()->count();
+    qDebug() << "max_range: " << max_range;
+    // plot_->xAxis->setRange(max_range - plot_->xAxis->range().upper, max_range, Qt::AlignRight);
+    plot_->xAxis->setRangeUpper(max_range);
+
     // 重绘
     plot_->replot(QCustomPlot::rpQueuedReplot);
     // 计算帧数
