@@ -3,7 +3,13 @@
 Qt += opengl
 DEFINES += QCUSTOMPLOT_USE_OPENGL
 
-LIBS += -LD:/Qt/5.15.2/mingw81_32/lib  -llibfreeglut.dll -lopengl32
+mingw {
+    LIBS += -LD:/Qt/5.15.2/mingw81_32/lib  -llibfreeglut.dll -lopengl32
+}
+
+msvc {
+    LIBS += -LD:/Qt/5.15.2/msvc2019/lib  -lfreeglut -lopengl32
+}
 
 HEADERS += \
     $$PWD/myplot.h \

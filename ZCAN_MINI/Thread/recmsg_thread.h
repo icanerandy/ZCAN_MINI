@@ -1,6 +1,10 @@
 ﻿#ifndef RECMSG_THREAD_H
 #define RECMSG_THREAD_H
 
+#if _MSC_VER >= 1600
+#pragma execution_character_set("utf-8")
+#endif
+
 #include <QObject>
 #include <QThread>
 #include "zlgcan.h"

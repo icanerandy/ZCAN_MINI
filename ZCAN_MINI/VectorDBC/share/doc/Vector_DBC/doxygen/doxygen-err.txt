@@ -1,0 +1,8 @@
+error: When enabling GENERATE_HTMLHELP the SEARCHENGINE option should be disabled. I'll adjust it for you.
+error: When enabling GENERATE_HTMLHELP the HTML_DYNAMIC_MENUS option should be disabled. I'll adjust it for you.
+error: When enabling GENERATE_HTMLHELP the HTML_CODE_FOLDING option should be disabled. I'll adjust it for you.
+error: When enabling GENERATE_HTMLHELP the HTML_COPY_CLIPBOARD option should be disabled. I'll adjust it for you.
+error: When enabling 'GENERATE_HTMLHELP' the 'HTML_COLORSTYLE' option should be either 'LIGHT' or 'DARK' but has value 'AUTO_LIGHT'. I'll adjust it for you to 'LIGHT'.
+E:/library/vector_dbc/src/Vector/DBC/Scanner.h:38: warning: Member Scanner(std::istream &istream) (function) of class Vector::DBC::Scanner is not documented.
+E:/library/vector_dbc/src/Vector/DBC/mainpage.dox:99: warning: ignoring \dot command because HAVE_DOT is not set
+error: failed to run html help compiler on index.hhp

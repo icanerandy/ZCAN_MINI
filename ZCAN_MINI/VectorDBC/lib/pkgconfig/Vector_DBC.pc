@@ -1,0 +1,10 @@
+prefix=C:/Program Files (x86)/Vector_DBC
+exec_prefix=${prefix}
+includedir=${prefix}/include
+libdir=${exec_prefix}/lib
+
+Name: Vector_DBC
+Description: Vector DBC
+Version: 2.0.6
+Cflags: -I${includedir}
+Libs: -L${libdir} -lVector_DBC

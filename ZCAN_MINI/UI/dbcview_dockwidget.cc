@@ -1,4 +1,4 @@
-#include "dbcview_dockwidget.h"
+﻿#include "dbcview_dockwidget.h"
 #include "ui_dbcview_dockwidget.h"
 
 DBCViewDockWidget::DBCViewDockWidget(QWidget *parent) :
@@ -82,6 +82,29 @@ void DBCViewDockWidget::slot_btnReadDBC_clicked()
     }
 
     showSignals();
+
+    std::ifstream ifs(filename.toStdString());
+    if (!ifs.is_open())
+    {
+        qDebug() << "List_Message_Signals <database.dbc>";
+        return;
+    }
+    ifs >> network_;
+    if (!network_.successfullyParsed)
+    {
+        qDebug() << "Unable to parse file";
+        return;
+    }
+
+    /* loop over messages */
+    for (const auto& message : network_.messages)
+    {
+        qDebug() << QString("%1 %2").arg("Message").arg(QString::fromStdString(message.second.name));
+
+        /* loop over signals of this message */
+        for (const auto& signal : message.second._signals)
+            qDebug() << QString("%1%2").arg(" Signal ").arg(QString::fromStdString(signal.second.name));
+    }
 }
 
 void DBCViewDockWidget::showSignals()

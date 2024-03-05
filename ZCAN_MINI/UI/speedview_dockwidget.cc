@@ -3,7 +3,8 @@
 
 SpeedViewDockWidget::SpeedViewDockWidget(QWidget *parent) :
     QDockWidget(parent),
-    ui(new Ui::SpeedViewDockWidget)
+    ui(new Ui::SpeedViewDockWidget),
+    distribution_dialog_(new DistributionDialog(this))
 {
     ui->setupUi(this);
 
@@ -12,36 +13,59 @@ SpeedViewDockWidget::SpeedViewDockWidget(QWidget *parent) :
     qDebug() << "OpenGl开启状态: " << plot->openGl();
     plot->setNoAntialiasingOnDrag(true);
 
-    //设置坐标轴显示范围,否则我们只能看到默认的范围
-    // QSharedPointer<QCPAxisTickerDateTime> date_tick(new QCPAxisTickerDateTime);
-    // date_tick->setDateTimeFormat("mm:ss.zzz");
-    // plot->xAxis->setTicker(date_tick);
-    // plot->xAxis->setTickLabelRotation(35);
+    // 使用框选
+    plot->selectionRect()->setPen(QPen(Qt::black,1,Qt::DashLine));//设置选框的样式：虚线
+    plot->selectionRect()->setBrush(QBrush(QColor(0,0,100,50)));//设置选框的样式：半透明浅蓝
+    plot->setSelectionRectMode(QCP::SelectionRectMode::srmZoom);
+
+    // 时间轴做x轴，X轴的数据以1970-01-01 00:00:00至当前时间的总秒数
+    QSharedPointer<QCPAxisTickerDateTime> date_tick(new QCPAxisTickerDateTime);
+    date_tick->setDateTimeSpec(Qt::LocalTime);
+    // date_tick->setDateTimeSpec(Qt::UTC);
+    date_tick->setDateTimeFormat("hh:mm:ss.zzz");
+    plot->xAxis->setTicker(date_tick);
+    plot->xAxis->ticker()->setTickOrigin(0);//设置刻度原点
+    plot->xAxis->ticker()->setTickCount(20);
+    plot->xAxis->ticker()->setTickStepStrategy(QCPAxisTicker::tssReadability);//可读性优于设置
+
+    plot->xAxis->setTickLabelRotation(35);
+
+    // 边框右侧和上侧均显示刻度线，但不显示刻度值
+    plot->xAxis->setVisible(true);
+    plot->xAxis2->setVisible(true);
+    plot->xAxis2->setTickLabels(false);
 
     plot->yAxis->setVisible(true);
     plot->yAxis2->setVisible(true);
+    plot->yAxis2->setTickLabels(false);
 
-    plot->axisRect()->setupFullAxesBox();   // 四周安上轴并显示
+    plot->yAxis->setRangeUpper(10000);
+    plot->yAxis->setRangeLower(-10000);
+
+    // plot->axisRect()->setRangeZoomFactor(1, 2.2);
     plot->axisRect()->setBackground(QBrush(QColor(255, 255, 255, 255))); // 设置背景颜色
 
+    // 使上下两个X轴的范围总是相等，使左右两个Y轴的范围总是相等
     qRegisterMetaType<QCPRange>("QCPRange");
     connect(plot->xAxis, SIGNAL(rangeChanged(QCPRange)), plot->xAxis2, SLOT(setRange(QCPRange)));
     connect(plot->yAxis, SIGNAL(rangeChanged(QCPRange)), plot->yAxis2, SLOT(setRange(QCPRange)));
 
     // 设置图例
-    plot->legend->setBrush(QColor(255, 255, 255, 255));   // 设置图例为不透明
     plot->legend->setVisible(true); // 设置图例可见
-
-    //设置属性可缩放，移动等
-    plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectAxes |
-                                     QCP::iSelectLegend | QCP::iSelectPlottables);
-
+    plot->axisRect()->insetLayout()->setInsetAlignment(0,Qt::AlignTop|Qt::AlignRight);  // 设置为让图例居右上
+    plot->legend->setBrush(QColor(255, 255, 255, 150));   // 设置图例为灰色透明
     plot->legend->setSelectableParts(QCPLegend::spItems);    //设置legend只能选择图例
+    connect(plot, &QCustomPlot::selectionChangedByUser, this, &SpeedViewDockWidget::slot_selectionChanged);
+
+    // 支持鼠标拖拽轴的范围、滚动缩放轴的范围，左键点选图层（每条曲线独占一个图层）
+    plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectAxes |
+                          QCP::iSelectLegend | QCP::iSelectPlottables);
 
     plot->replot();
 
     connect(ui->btnSave, SIGNAL(clicked(bool)), this, SLOT(slot_btnSave_clicked(bool)));
     connect(ui->btnExcel, SIGNAL(clicked(bool)), this, SLOT(slot_btnExcel_clicked(bool)));
+    connect(ui->btnErrorDistribution, SIGNAL(clicked(bool)), this, SLOT(slot_btnErrorDistribution_clicked(bool)));
 }
 
 SpeedViewDockWidget::~SpeedViewDockWidget()
@@ -49,33 +73,69 @@ SpeedViewDockWidget::~SpeedViewDockWidget()
     delete ui;
 }
 
+void SpeedViewDockWidget::slot_selectionChanged()
+{
+    // make top and bottom axes be selected synchronously, and handle axis and tick labels as one selectable object:
+    if (ui->plot->xAxis->selectedParts().testFlag(QCPAxis::spAxis) || ui->plot->xAxis->selectedParts().testFlag(QCPAxis::spTickLabels) ||
+        ui->plot->xAxis2->selectedParts().testFlag(QCPAxis::spAxis) || ui->plot->xAxis2->selectedParts().testFlag(QCPAxis::spTickLabels))
+    {
+        ui->plot->xAxis2->setSelectedParts(QCPAxis::spAxis|QCPAxis::spTickLabels);
+        ui->plot->xAxis->setSelectedParts(QCPAxis::spAxis|QCPAxis::spTickLabels);
+    }
+    // make left and right axes be selected synchronously, and handle axis and tick labels as one selectable object:
+    if (ui->plot->yAxis->selectedParts().testFlag(QCPAxis::spAxis) || ui->plot->yAxis->selectedParts().testFlag(QCPAxis::spTickLabels) ||
+        ui->plot->yAxis2->selectedParts().testFlag(QCPAxis::spAxis) || ui->plot->yAxis2->selectedParts().testFlag(QCPAxis::spTickLabels))
+    {
+        ui->plot->yAxis2->setSelectedParts(QCPAxis::spAxis|QCPAxis::spTickLabels);
+        ui->plot->yAxis->setSelectedParts(QCPAxis::spAxis|QCPAxis::spTickLabels);
+    }
+
+    // 将图形的选择与相应图例项的选择同步
+    ui->plot->set_tracer_graph(nullptr);
+    for (int i=0; i<ui->plot->graphCount(); ++i)
+    {
+        QCPGraph *graph = ui->plot->graph(i);
+        QCPPlottableLegendItem *item = ui->plot->legend->itemWithPlottable(graph);
+        if (item->selected() || graph->selected())
+        {
+            item->setSelected(true);
+            ui->plot->set_tracer_graph(graph);
+            //注意：这句需要Qcustomplot2.0系列版本
+            graph->setSelection(QCPDataSelection(graph->data()->dataRange()));
+            //这句1.0系列版本即可
+            //graph->setSelected(true);
+        }
+    }
+}
+
 void SpeedViewDockWidget::slot_paint(const unsigned long long msg_id, QList<CppCAN::CANSignal*>& sig_lst)
 {
     QCustomPlot* const plot = ui->plot;
 
     plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
-    //plot->graph()->setSmooth(true); // 启用曲线平滑
     QColor color(20+200/4.0*1,70*(1.6-1/4.0), 150, 250);
     QPen pen(color.lighter(200));
+    // pen.setColor(Qt::red);
     pen.setWidth(2);
     plot->graph()->setLineStyle(QCPGraph::lsLine);
-    plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 3));
+    // plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 3));
     plot->graph()->setPen(pen);
     plot->graph()->setName(QString::fromStdString(sig_lst.at(0)->name()));//曲线名称
 
     plot->graph()->rescaleAxes();
 
     plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
-    //plot->graph()->setSmooth(true); // 启用曲线平滑
     QColor color1(20+200/4.0*2,70*(1.6-2/4.0), 150, 250);
     QPen pen1(color1.lighter(200));
+    // pen1.setColor(Qt::blue);
     pen1.setWidth(2);
     plot->graph()->setLineStyle(QCPGraph::lsLine);
-    plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 3));
+    // plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 3));
     plot->graph()->setPen(pen1);
     plot->graph()->setName(QString::fromStdString(sig_lst.at(1)->name()));//曲线名称
 
     plot->graph()->rescaleAxes(true);
+
     plot->replot();
 
     const QList<CppCAN::CANSignal> sig_lst1 { *sig_lst.at(0), *sig_lst.at(1) };
@@ -131,7 +191,58 @@ bool SpeedViewDockWidget::slot_btnSave_clicked(bool checked)
          //否则追加后缀名为.png保存文件
          QMessageBox::information(this,"success","保存成功,已默认保存为png文件");
          return plot->savePng(filename.append(".png"), plot->width(), plot->height());
+     }
+}
+
+void SpeedViewDockWidget::slot_btnErrorDistribution_clicked(bool checked)
+{
+    Q_UNUSED(checked);
+
+
+    // 创建一个直方图（bar chart）
+    QCustomPlot* distribuition_plot = distribution_dialog_->myplot_;
+    QCPBars* errorBars = new QCPBars(distribuition_plot->xAxis, distribuition_plot->yAxis);
+
+    // 计算误差数据
+    QVector<double> errorData;
+    QVector<QCPGraphData>* const ref_speed_lst = ui->plot->graph(0)->data()->coreData();
+    QVector<QCPGraphData>* const rel_speed_lst = ui->plot->graph(1)->data()->coreData();
+    for (int i = 0; i < ref_speed_lst->size(); ++i) {
+        double actualSpeed = (*ref_speed_lst)[i].value;
+        double estimatedSpeed = (*rel_speed_lst)[i].value;
+        double error = actualSpeed - estimatedSpeed;
+        errorData.append(error);
     }
+
+    // 准备数据
+    QVector<double> errorTicks;
+    QVector<double> errorFrequency;
+    int numberOfBins = 10; // 可以根据需要调整直方图的分组数量
+
+    double minError = *std::min_element(errorData.constBegin(), errorData.constEnd());
+    double maxError = *std::max_element(errorData.constBegin(), errorData.constEnd());
+    double binWidth = (maxError - minError) / numberOfBins;
+
+    errorTicks.resize(numberOfBins);
+    errorFrequency.resize(numberOfBins);
+
+    for (int i = 0; i < numberOfBins; ++i) {
+        errorTicks[i] = minError + (i + 0.5) * binWidth; // 计算每个分组的中心值
+        errorFrequency[i] = 0;
+    }
+
+    for (double error : errorData) {
+        int binIndex = std::floor((error - minError) / binWidth);
+        if (binIndex >= 0 && binIndex < numberOfBins) {
+            errorFrequency[binIndex]++;
+        }
+    }
+
+    errorBars->setData(errorTicks, errorFrequency);
+    distribuition_plot->rescaleAxes();
+    distribuition_plot->replot();
+
+    distribution_dialog_->show();
 }
 
 void SpeedViewDockWidget::slot_btnExcel_clicked(bool checked)

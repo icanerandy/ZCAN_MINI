@@ -1,4 +1,5 @@
 FORMS += \
+    $$PWD/distribution_dialog.ui \
     $$PWD/main_window.ui \
     $$PWD/canview_dockwidget.ui \
     $$PWD/devicemanager_dialog.ui \
@@ -10,6 +11,7 @@ FORMS += \
     $$PWD/speedview_dockwidget.ui
 
 HEADERS += \
+    $$PWD/distribution_dialog.h \
     $$PWD/main_window.h \
     $$PWD/canview_dockwidget.h \
     $$PWD/devicemanager_dialog.h \
@@ -21,6 +23,7 @@ HEADERS += \
     $$PWD/pwmview_dockwidget.h
 
 SOURCES += \
+    $$PWD/distribution_dialog.cpp \
     $$PWD/main_window.cc \
     $$PWD/canview_dockwidget.cc \
     $$PWD/devicemanager_dialog.cc \

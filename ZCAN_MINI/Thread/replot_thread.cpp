@@ -24,7 +24,7 @@ void ReplotThread::run()
         {
             t2 = std::chrono::high_resolution_clock::now();
             duration_time = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count() / 1.0;
-            if (qAbs(duration_time - 30000) < 50 || duration_time - 30000 > 0) // 定时 30000us，即 30ms
+            if (qAbs(duration_time - 50000) < 50 || duration_time - 50000 > 0) // 定时 50000us，即 50ms
             {
                 /*
                  1. qAbs(duration_time - 10000) < 50 是为了提前进入新周期开始绘制，保证绘图精度及帧率（因为 replotData() 的调用会消耗时间）
@@ -58,13 +58,8 @@ void ReplotThread::stopThread()
 void ReplotThread::replotData()
 {
     double key = 0;
-    qDebug() << "graph count: " << plot_->graphCount();
-    qDebug() << "data count: " << plot_->graph(0)->dataCount();
     if (plot_->graph(0)->dataCount() > 0)
         key = plot_->graph(0)->data()->coreData()->at(plot_->graph(0)->dataCount()-1).key;
-
-    qDebug() << "last key: " << key;
-    qDebug() << "range: " << plot_->xAxis->range();
 
     // if (plot_->xAxis->range().size() < key)
     //     plot_->xAxis->setRange(key, 0.100, Qt::AlignRight);

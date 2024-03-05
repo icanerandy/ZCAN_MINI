@@ -44,8 +44,8 @@ void RecMsgThread::run()
     // 线程任务
     m_stop = false;
 
-    ZCAN_Receive_Data can_data[100];
-    ZCAN_ReceiveFD_Data canfd_data[100];
+    ZCAN_Receive_Data can_data[1024];
+    ZCAN_ReceiveFD_Data canfd_data[1024];
     uint len = 0;
 
     while (!m_stop) // 循环主体
@@ -54,19 +54,19 @@ void RecMsgThread::run()
         {
             if ((len = ZCAN_GetReceiveNum(channel_handle_, TYPE_CAN)) > 0)
             {
-                len = ZCAN_Receive(channel_handle_, can_data, 100, 50);
+                len = ZCAN_Receive(channel_handle_, can_data, 1024, 50);
                 emit sig_newMsg(can_data, len);
             }
             if ((len = ZCAN_GetReceiveNum(channel_handle_, TYPE_CANFD)) > 0)
             {
-                len = ZCAN_ReceiveFD(channel_handle_, canfd_data, 100, 50);
+                len = ZCAN_ReceiveFD(channel_handle_, canfd_data, 1024, 50);
                 emit sig_newMsg(canfd_data, len);
             }
 
             // // test
             // {
             //     memset(&canfd_data, 0, sizeof(canfd_data));
-            //     canfd_data[0].frame.can_id = MAKE_CAN_ID(258, static_cast<BYTE>(1), 0, 0);
+            //     canfd_data[0].frame.can_id = MAKE_CAN_ID(/*258*/123, static_cast<BYTE>(1), 0, 0);
             //     for (size_t i = 0; i < 48; ++i)
             //     {
             //         canfd_data[0].frame.data[i] = 0xff;

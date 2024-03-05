@@ -1,5 +1,9 @@
-#ifndef SENDMSG_THREAD_H
+﻿#ifndef SENDMSG_THREAD_H
 #define SENDMSG_THREAD_H
+
+#if _MSC_VER >= 1600
+#pragma execution_character_set("utf-8")
+#endif
 
 #include <QObject>
 #include <QThread>

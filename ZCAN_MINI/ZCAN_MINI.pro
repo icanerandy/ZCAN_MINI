@@ -8,6 +8,11 @@ QT       += core gui printsupport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+msvc {
+    QMAKE_CFLAGS += /utf-8
+    QMAKE_CXXFLAGS += /utf-8
+}
+
 TARGET = ZCAN_MINI
 TEMPLATE = app
 
@@ -18,6 +23,9 @@ SOURCES += \
 
 INCLUDEPATH += $$PWD/CanParser
 include ($$PWD/CanParser/CanParser.pri)
+
+INCLUDEPATH += $$PWD/VectorDBC
+include ($$PWD/VectorDBC/VectorDBC.pri)
 
 INCLUDEPATH += $$PWD/zlgcan_x86
 include ($$PWD/zlgcan_x86/zlgcan_x86.pri)

@@ -140,7 +140,8 @@ void SignalParserThread::slot_newMsg(const ZCAN_Receive_Data* can_data, const ui
         vals.push_back(can_data[i].timestamp);
         for (auto sig : sig_lst_)
             vals.push_back(getValue(data, sig));
-        emit sig_pwm(vals);
+        // emit sig_pwm(vals);
+        emit sig_speed(vals);
 
         ++i;
     }
@@ -160,7 +161,8 @@ void SignalParserThread::slot_newMsg(const ZCAN_ReceiveFD_Data* canfd_data, cons
         vals.push_back(canfd_data[i].timestamp);
         for (auto sig : sig_lst_)
             vals.push_back(getValue(data, sig));
-        emit sig_pwm(vals);
+        // emit sig_pwm(vals);
+        emit sig_speed(vals);
 
         ++i;
     }

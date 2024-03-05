@@ -1,12 +1,12 @@
-#include "sendlist_tablemodel.h"
+﻿#include "sendlist_tablemodel.h"
 
 SendListTableModel::SendListTableModel(QObject *parent)
     : QAbstractTableModel(parent)
 {
-    header_lst << "序号" << "ID(Hex)" << "协议"
-               << "长度" << "名称" << "数据"
-               << "帧类型" << "每次发送帧数" << "发送次数"
-               << "每次间隔(ms)";
+    header_lst << QStringLiteral("序号") << QStringLiteral("ID(Hex)") << QStringLiteral("协议")
+               << QStringLiteral("长度") << QStringLiteral("名称") << QStringLiteral("数据")
+               << QStringLiteral("帧类型") << QStringLiteral("每次发送帧数") << QStringLiteral("发送次数")
+               << QStringLiteral("每次间隔(ms)");
 }
 
 QVariant SendListTableModel::headerData(int section, Qt::Orientation orientation, int role) const

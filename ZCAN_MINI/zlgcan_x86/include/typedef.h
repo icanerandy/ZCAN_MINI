@@ -1,4 +1,4 @@
-#ifndef TYPEDEF_H_
+﻿#ifndef TYPEDEF_H_
 #define TYPEDEF_H_
 
 typedef unsigned char      BYTE;

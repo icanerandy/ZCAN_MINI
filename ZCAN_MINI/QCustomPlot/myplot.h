@@ -15,6 +15,9 @@ protected:
     void wheelEvent(QWheelEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
 
+public:
+    void set_tracer_graph(QCPGraph* tracer_graph);
+
 private:
     QCPItemText* const text_label_;
     QCPItemLine* const arrow_;

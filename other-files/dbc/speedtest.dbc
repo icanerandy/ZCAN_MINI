@@ -1,4 +1,4 @@
-VERSION "SingleFrame1.dbc"
+VERSION ""
 
 NS_ : 
 	CM_
@@ -30,12 +30,13 @@ NS_ :
 
 BS_:
 
-BU_: TestNode
+BU_: Vector__XXX
 
-BO_ 123 Speed: 8 TestNode
+BO_ 123 Speed: 8 Vector__XXX
 	SG_ refSpeed : 0|8@1+ (1,0) [0|0] "km/s" Vector__XXX
 	SG_ relSpeed : 0|8@1+ (1,0) [0|0] "km/s" Vector__XXX
 
 CM_ BO_ 123 "test msg";
-CM_ SG_ 123 speed "speed";
+CM_ SG_ 123 refSpeed "refSpeed";
+CM_ SG_ 123 relSpeed "relSpeed";
 

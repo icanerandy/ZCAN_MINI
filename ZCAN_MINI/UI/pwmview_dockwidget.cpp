@@ -19,10 +19,11 @@ PwmViewDockWidget::PwmViewDockWidget(QWidget *parent) :
 
     // 时间轴做x轴，X轴的数据以1970-01-01 00:00:00至当前时间的总秒数
     QSharedPointer<QCPAxisTickerDateTime> date_tick(new QCPAxisTickerDateTime);
-    // plot->xAxis->setDateTimeSpec(Qt::LocalTime);
+    date_tick->setDateTimeSpec(Qt::LocalTime);
+    // date_tick->setDateTimeSpec(Qt::UTC);
     date_tick->setDateTimeFormat("hh:mm:ss.zzz");
     plot->xAxis->setTicker(date_tick);
-
+    plot->xAxis->ticker()->setTickOrigin(0);//设置刻度原点
     plot->xAxis->ticker()->setTickCount(20);
     plot->xAxis->ticker()->setTickStepStrategy(QCPAxisTicker::tssReadability);//可读性优于设置
 
@@ -49,9 +50,11 @@ PwmViewDockWidget::PwmViewDockWidget(QWidget *parent) :
     connect(plot->yAxis, SIGNAL(rangeChanged(QCPRange)), plot->yAxis2, SLOT(setRange(QCPRange)));
 
     // 设置图例
-    plot->legend->setBrush(QColor(255, 255, 255, 255));   // 设置图例为不透明
     plot->legend->setVisible(true); // 设置图例可见
+    plot->axisRect()->insetLayout()->setInsetAlignment(0,Qt::AlignTop|Qt::AlignRight);  // 设置为让图例居右上
+    plot->legend->setBrush(QColor(255, 255, 255, 150));   // 设置图例为灰色透明
     plot->legend->setSelectableParts(QCPLegend::spItems);    //设置legend只能选择图例
+    connect(plot, &QCustomPlot::selectionChangedByUser, this, &PwmViewDockWidget::slot_selectionChanged);
 
     // 支持鼠标拖拽轴的范围、滚动缩放轴的范围，左键点选图层（每条曲线独占一个图层）
     plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectAxes |
@@ -68,6 +71,41 @@ PwmViewDockWidget::~PwmViewDockWidget()
     delete ui;
 }
 
+void PwmViewDockWidget::slot_selectionChanged()
+{
+    // make top and bottom axes be selected synchronously, and handle axis and tick labels as one selectable object:
+    if (ui->plot->xAxis->selectedParts().testFlag(QCPAxis::spAxis) || ui->plot->xAxis->selectedParts().testFlag(QCPAxis::spTickLabels) ||
+        ui->plot->xAxis2->selectedParts().testFlag(QCPAxis::spAxis) || ui->plot->xAxis2->selectedParts().testFlag(QCPAxis::spTickLabels))
+    {
+        ui->plot->xAxis2->setSelectedParts(QCPAxis::spAxis|QCPAxis::spTickLabels);
+        ui->plot->xAxis->setSelectedParts(QCPAxis::spAxis|QCPAxis::spTickLabels);
+    }
+    // make left and right axes be selected synchronously, and handle axis and tick labels as one selectable object:
+    if (ui->plot->yAxis->selectedParts().testFlag(QCPAxis::spAxis) || ui->plot->yAxis->selectedParts().testFlag(QCPAxis::spTickLabels) ||
+        ui->plot->yAxis2->selectedParts().testFlag(QCPAxis::spAxis) || ui->plot->yAxis2->selectedParts().testFlag(QCPAxis::spTickLabels))
+    {
+        ui->plot->yAxis2->setSelectedParts(QCPAxis::spAxis|QCPAxis::spTickLabels);
+        ui->plot->yAxis->setSelectedParts(QCPAxis::spAxis|QCPAxis::spTickLabels);
+    }
+
+    // 将图形的选择与相应图例项的选择同步
+    ui->plot->set_tracer_graph(nullptr);
+    for (int i=0; i<ui->plot->graphCount(); ++i)
+    {
+        QCPGraph *graph = ui->plot->graph(i);
+        QCPPlottableLegendItem *item = ui->plot->legend->itemWithPlottable(graph);
+        if (item->selected() || graph->selected())
+        {
+            item->setSelected(true);
+            ui->plot->set_tracer_graph(graph);
+            //注意：这句需要Qcustomplot2.0系列版本
+            graph->setSelection(QCPDataSelection(graph->data()->dataRange()));
+            //这句1.0系列版本即可
+            //graph->setSelected(true);
+        }
+    }
+}
+
 void PwmViewDockWidget::slot_paint(const unsigned long long msg_id, QList<CppCAN::CANSignal*>& sig_lst)
 {
     QCustomPlot* const plot = ui->plot;
@@ -75,6 +113,7 @@ void PwmViewDockWidget::slot_paint(const unsigned long long msg_id, QList<CppCAN
     plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
     QColor color(20+200/4.0*1,70*(1.6-1/4.0), 150, 250);
     QPen pen(color.lighter(200));
+    // pen.setColor(Qt::red);
     pen.setWidth(2);
     plot->graph()->setLineStyle(QCPGraph::lsLine);
     // plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 3));
@@ -86,6 +125,7 @@ void PwmViewDockWidget::slot_paint(const unsigned long long msg_id, QList<CppCAN
     plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
     QColor color1(20+200/4.0*2,70*(1.6-2/4.0), 150, 250);
     QPen pen1(color1.lighter(200));
+    // pen1.setColor(Qt::blue);
     pen1.setWidth(2);
     plot->graph()->setLineStyle(QCPGraph::lsLine);
     // plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 3));
@@ -96,11 +136,12 @@ void PwmViewDockWidget::slot_paint(const unsigned long long msg_id, QList<CppCAN
 
     plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
     QColor color2(20+200/4.0*3,70*(1.6-3/4.0), 150, 250);
-    QPen pen2(color1.lighter(200));
-    pen1.setWidth(2);
+    QPen pen2(color2.lighter(200));
+    // pen2.setColor(Qt::green);
+    pen2.setWidth(2);
     plot->graph()->setLineStyle(QCPGraph::lsLine);
     // plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 3));
-    plot->graph()->setPen(pen1);
+    plot->graph()->setPen(pen2);
     plot->graph()->setName(QString::fromStdString(sig_lst.at(2)->name()));//曲线名称
 
     plot->graph()->rescaleAxes(true);

@@ -1,6 +1,10 @@
 ﻿#ifndef PWMVIEW_DOCKWIDGET_H
 #define PWMVIEW_DOCKWIDGET_H
 
+#if _MSC_VER >= 1600
+#pragma execution_character_set("utf-8")
+#endif
+
 #include <QObject>
 #include <QMap>
 #include <QDockWidget>
@@ -32,6 +36,7 @@ public:
     ~PwmViewDockWidget();
 
 public slots:
+    void slot_selectionChanged();
     void slot_paint(const unsigned long long msg_id, QList<CppCAN::CANSignal*>& sig_lst);
     bool slot_btnSave_clicked(bool checked);
 

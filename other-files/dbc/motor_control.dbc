@@ -33,10 +33,12 @@ BS_:
 BU_: Vector__XXX
 
 BO_ 258 foc: 48 Vector__XXX
- SG_ pwm3 : 208|16@1- (1,0) [0|0] "" Vector__XXX
+ SG_ sendCount : 192|32@1- (1,0) [-2147483648|2147483647] "" Vector__XXX
  SG_ pwm2 : 192|16@1- (1,0) [0|0] "" Vector__XXX
- SG_ pwm1 : 176|16@1- (1,0) [0|0] "" Vector__XXX
+ SG_ pwm3 : 208|16@1- (1,0) [0|0] "" Vector__XXX
 
 CM_ BO_ 258 "test msg";
-CM_ SG_ 258 pwm "pwm";
+CM_ SG_ 258 sendCount "sendCount";
+CM_ SG_ 258 pwm2 "pwm2";
+CM_ SG_ 258 pwm3 "pwm3";
 

@@ -1,4 +1,4 @@
-#ifndef CANDatabase_H
+﻿#ifndef CANDatabase_H
 #define CANDatabase_H
 
 #include <string>
@@ -6,8 +6,6 @@
 #include <stdexcept>
 #include <map>
 #include <vector>
-
-#include "cpp_can_parser_export.h"
 
 namespace CppCAN {
 
@@ -30,9 +28,9 @@ namespace CppCAN {
  * All the attributes except for the comment and choices must be defined at the instanciation
  * and are immutable.
  */
-class CPP_CAN_PARSER_EXPORT CANSignal {
+class CANSignal {
 public:
-  struct CPP_CAN_PARSER_EXPORT Range {
+  struct Range {
     static Range fromString(const std::string& minstr, const std::string& maxstr);
 
     Range() = default; 
@@ -122,7 +120,7 @@ private:
  * cbegin(), cend(), ... You can traverse all the signals of the frame in a range-for loop
  * or use the standard library's algorithms !
  */
-class CPP_CAN_PARSER_EXPORT CANFrame {
+class CANFrame {
 public:
   using container_type = std::map<std::string, CANSignal>;
   using iterator = container_type::iterator;
@@ -271,12 +269,12 @@ private:
  * If the database was parsed from a file, the filename() method can be used to
  * retrieve the name of the source file.
  */
-class CPP_CAN_PARSER_EXPORT CANDatabase {
+class CANDatabase {
 public:
   /**
    * @brief A parsing warning and its location
    */
-  struct CPP_CAN_PARSER_EXPORT parsing_warning {
+  struct parsing_warning {
     unsigned long long line;
     std::string description;
   };
@@ -301,12 +299,12 @@ public:
     const std::string& src_string, std::vector<parsing_warning>* warnings = nullptr);
 
 public:
-  struct CPP_CAN_PARSER_EXPORT IDKey {
+  struct IDKey {
     std::string str_key;
     unsigned long long int_key;
   };
 
-  struct CPP_CAN_PARSER_EXPORT IntIDKeyCompare {
+  struct IntIDKeyCompare {
     bool operator()(const IDKey& k1, const IDKey& k2) const;
   };
 

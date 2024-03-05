@@ -1,6 +1,10 @@
 ﻿#ifndef CANFRAMETABLEMODEL_H
 #define CANFRAMETABLEMODEL_H
 
+#if _MSC_VER >= 1600
+#pragma execution_character_set("utf-8")
+#endif
+
 #include <QAbstractTableModel>
 #include <QList>
 #include <QDateTime>

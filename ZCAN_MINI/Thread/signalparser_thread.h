@@ -1,6 +1,10 @@
 ﻿#ifndef SIGNALPARSER_THREAD_H
 #define SIGNALPARSER_THREAD_H
 
+#if _MSC_VER >= 1600
+#pragma execution_character_set("utf-8")
+#endif
+
 #include <QThread>
 #include "qcustomplot.h"
 #include "CANDatabase.h"

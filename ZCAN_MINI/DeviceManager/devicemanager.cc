@@ -249,7 +249,7 @@ bool DeviceManager::openDevice()
     if (INVALID_DEVICE_HANDLE == device_handle_)
     {
         qDebug() << "打开设备失败!";
-        // /* 启动消息接收线程 */
+        /* 启动消息接收线程 */
         // RecMsgThread * const rec_msg_thread = RecMsgThread::getInstance();
         // connect(this, &DeviceManager::sig_channelHandle, rec_msg_thread, &RecMsgThread::slot_channelHandle);
         // emit sig_channelHandle(channel_handle_);

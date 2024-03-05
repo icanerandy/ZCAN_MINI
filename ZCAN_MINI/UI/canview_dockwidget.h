@@ -1,5 +1,9 @@
-#ifndef CANVIEW_DOCKWIDGET_H
+﻿#ifndef CANVIEW_DOCKWIDGET_H
 #define CANVIEW_DOCKWIDGET_H
+
+#if _MSC_VER >= 1600
+#pragma execution_character_set("utf-8")
+#endif
 
 #include <QDockWidget>
 #include <QTimer>
