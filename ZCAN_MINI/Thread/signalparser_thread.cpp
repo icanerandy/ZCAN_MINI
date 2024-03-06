@@ -32,6 +32,12 @@ void SignalParserThread::pauseThread()
 void SignalParserThread::stopThread()
 {
     m_stop = true;
+
+    RecMsgThread* const rec_msg_thread = RecMsgThread::getInstance();
+    disconnect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_Receive_Data*, const uint)>(&RecMsgThread::sig_newMsg),
+               this, static_cast<void (SignalParserThread::*)(const ZCAN_Receive_Data*, const uint)>(&SignalParserThread::slot_newMsg));
+    disconnect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&RecMsgThread::sig_newMsg),
+               this, static_cast<void (SignalParserThread::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&SignalParserThread::slot_newMsg));
 }
 
 double SignalParserThread::getValue(const BYTE * const data, const CppCAN::CANSignal& signal)

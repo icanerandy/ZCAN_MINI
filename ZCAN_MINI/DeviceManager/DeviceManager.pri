@@ -2,4 +2,4 @@ HEADERS += \
     $$PWD/devicemanager.h
 
 SOURCES += \
-    $$PWD/devicemanager.cc
+    $$PWD/devicemanager.cpp

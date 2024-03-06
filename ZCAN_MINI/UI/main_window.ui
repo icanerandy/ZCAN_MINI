@@ -18,7 +18,7 @@
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tabCan">
        <attribute name="title">
@@ -28,11 +28,6 @@
       <widget class="QWidget" name="tabSpeed">
        <attribute name="title">
         <string>车速分析</string>
-       </attribute>
-      </widget>
-      <widget class="QWidget" name="tabPwm">
-       <attribute name="title">
-        <string>PWM</string>
        </attribute>
       </widget>
      </widget>
@@ -45,7 +40,7 @@
      <x>0</x>
      <y>0</y>
      <width>1246</width>
-     <height>22</height>
+     <height>20</height>
     </rect>
    </property>
   </widget>

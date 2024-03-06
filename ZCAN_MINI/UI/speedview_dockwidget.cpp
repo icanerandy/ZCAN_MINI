@@ -1,9 +1,13 @@
-﻿#include "pwmview_dockwidget.h"
-#include "ui_pwmview_dockwidget.h"
+﻿#include "speedview_dockwidget.h"
+#include "ui_speedview_dockwidget.h"
 
-PwmViewDockWidget::PwmViewDockWidget(QWidget *parent) :
+SpeedViewDockWidget::SpeedViewDockWidget(QWidget *parent) :
     QDockWidget(parent),
-    ui(new Ui::PwmViewDockWidget)
+    ui(new Ui::SpeedViewDockWidget),
+    distribution_dialog_(new DistributionDialog(this)),
+    signal_parser_thread_(nullptr),
+    plotdata_thread_(nullptr),
+    replot_thread_(nullptr)
 {
     ui->setupUi(this);
 
@@ -54,24 +58,19 @@ PwmViewDockWidget::PwmViewDockWidget(QWidget *parent) :
     plot->axisRect()->insetLayout()->setInsetAlignment(0,Qt::AlignTop|Qt::AlignRight);  // 设置为让图例居右上
     plot->legend->setBrush(QColor(255, 255, 255, 150));   // 设置图例为灰色透明
     plot->legend->setSelectableParts(QCPLegend::spItems);    //设置legend只能选择图例
-    connect(plot, &QCustomPlot::selectionChangedByUser, this, &PwmViewDockWidget::slot_selectionChanged);
+    connect(plot, &QCustomPlot::selectionChangedByUser, this, &SpeedViewDockWidget::slot_selectionChanged);
 
     // 支持鼠标拖拽轴的范围、滚动缩放轴的范围，左键点选图层（每条曲线独占一个图层）
     plot->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectAxes |
-                                     QCP::iSelectLegend | QCP::iSelectPlottables);
-
-    plot->replot();
-
-    connect(ui->btnSave_2, SIGNAL(clicked(bool)), this, SLOT(slot_btnSave_clicked(bool)));
-    connect(ui->btnExcel_2, SIGNAL(clicked(bool)), this, SLOT(slot_btnExcel_clicked(bool)));
+                          QCP::iSelectLegend | QCP::iSelectPlottables);
 }
 
-PwmViewDockWidget::~PwmViewDockWidget()
+SpeedViewDockWidget::~SpeedViewDockWidget()
 {
     delete ui;
 }
 
-void PwmViewDockWidget::slot_selectionChanged()
+void SpeedViewDockWidget::slot_selectionChanged()
 {
     // make top and bottom axes be selected synchronously, and handle axis and tick labels as one selectable object:
     if (ui->plot->xAxis->selectedParts().testFlag(QCPAxis::spAxis) || ui->plot->xAxis->selectedParts().testFlag(QCPAxis::spTickLabels) ||
@@ -98,78 +97,134 @@ void PwmViewDockWidget::slot_selectionChanged()
         {
             item->setSelected(true);
             ui->plot->set_tracer_graph(graph);
-            //注意：这句需要Qcustomplot2.0系列版本
             graph->setSelection(QCPDataSelection(graph->data()->dataRange()));
-            //这句1.0系列版本即可
-            //graph->setSelected(true);
+        }
+        else
+        {
+            item->setSelected(false);
         }
     }
 }
 
-void PwmViewDockWidget::slot_paint(const unsigned long long msg_id, QList<CppCAN::CANSignal*>& sig_lst)
+void SpeedViewDockWidget::slot_paint(bool enabled, const unsigned long long msg_id, QList<CppCAN::CANSignal*>& sig_lst)
 {
-    QCustomPlot* const plot = ui->plot;
+    if (enabled)
+    {
+        QCustomPlot* const plot = ui->plot;
 
-    plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
-    QColor color(20+200/4.0*1,70*(1.6-1/4.0), 150, 250);
-    QPen pen(color.lighter(200));
-    // pen.setColor(Qt::red);
-    pen.setWidth(2);
-    plot->graph()->setLineStyle(QCPGraph::lsLine);
-    // plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 3));
-    plot->graph()->setPen(pen);
-    plot->graph()->setName(QString::fromStdString(sig_lst.at(0)->name()));//曲线名称
+        const QList<CppCAN::CANSignal> sig_lst1 { *sig_lst.at(0), *sig_lst.at(1) };
+        if (0 == plot->graphCount())
+        {
+            plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
+            QColor color(20+200/4.0*1,70*(1.6-1/4.0), 150, 250);
+            QPen pen(color.lighter(200));
+            // pen.setColor(Qt::red);
+            pen.setWidth(2);
+            plot->graph()->setLineStyle(QCPGraph::lsLine);
+            // plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 3));
+            plot->graph()->setPen(pen);
+            plot->graph()->setName(QString::fromStdString(sig_lst.at(0)->name()));//曲线名称
 
-    plot->graph()->rescaleAxes();
+            plot->graph()->rescaleAxes();
 
-    plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
-    QColor color1(20+200/4.0*2,70*(1.6-2/4.0), 150, 250);
-    QPen pen1(color1.lighter(200));
-    // pen1.setColor(Qt::blue);
-    pen1.setWidth(2);
-    plot->graph()->setLineStyle(QCPGraph::lsLine);
-    // plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 3));
-    plot->graph()->setPen(pen1);
-    plot->graph()->setName(QString::fromStdString(sig_lst.at(1)->name()));//曲线名称
+            plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
+            QColor color1(20+200/4.0*2,70*(1.6-2/4.0), 150, 250);
+            QPen pen1(color1.lighter(200));
+            // pen1.setColor(Qt::blue);
+            pen1.setWidth(2);
+            plot->graph()->setLineStyle(QCPGraph::lsLine);
+            // plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 3));
+            plot->graph()->setPen(pen1);
+            plot->graph()->setName(QString::fromStdString(sig_lst.at(1)->name()));//曲线名称
 
-    plot->graph()->rescaleAxes(true);
+            plot->graph()->rescaleAxes(true);
 
-    plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
-    QColor color2(20+200/4.0*3,70*(1.6-3/4.0), 150, 250);
-    QPen pen2(color2.lighter(200));
-    // pen2.setColor(Qt::green);
-    pen2.setWidth(2);
-    plot->graph()->setLineStyle(QCPGraph::lsLine);
-    // plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 3));
-    plot->graph()->setPen(pen2);
-    plot->graph()->setName(QString::fromStdString(sig_lst.at(2)->name()));//曲线名称
+            plot->replot();
 
-    plot->graph()->rescaleAxes(true);
+            signal_parser_thread_ = new SignalParserThread(msg_id, sig_lst1);
+            signal_parser_thread_->start();
 
-    plot->replot();
+            plotdata_thread_ = new PlotDataThread(plot, signal_parser_thread_);
+            plotdata_thread_->start();
 
-    const QList<CppCAN::CANSignal> sig_lst1 { *sig_lst.at(0), *sig_lst.at(1), *sig_lst.at(2) };
-    SignalParserThread* const signal_parser_thread = new SignalParserThread(msg_id, sig_lst1);
-    signal_parser_thread->start();
-    signal_parser_thread->beginThread();
+            replot_thread_ = new ReplotThread(plot);
+            replot_thread_->start();
+        }
 
-    PlotDataThread* const plotdata_thread = new PlotDataThread(plot, signal_parser_thread);
-    plotdata_thread->start();
-    plotdata_thread->beginThread();
+        signal_parser_thread_->beginThread();
+        plotdata_thread_->beginThread();
+        replot_thread_->beginThread();
 
-    ReplotThread* const replot_thread = new ReplotThread(plot);
-    replot_thread->start();
-    replot_thread->beginThread();
+        connect(replot_thread_, &ReplotThread::sig_frmChanged, this, [=] (const QString& msg) {
+            ui->labFps->setText(msg);
+        });
+    }
+    else
+    {
+        disconnect(replot_thread_, &ReplotThread::sig_frmChanged, nullptr, nullptr);
 
-    connect(replot_thread, &ReplotThread::sig_frmChanged, this, [=] (const QString& msg) {
-        ui->labFps_2->setText(msg);
-    });
+        signal_parser_thread_->pauseThread();
+        plotdata_thread_->pauseThread();
+        replot_thread_->pauseThread();
+    }
 }
 
-bool PwmViewDockWidget::slot_btnSave_clicked(bool checked)
+void SpeedViewDockWidget::slot_actDisPic_triggered()
 {
-    Q_UNUSED(checked);
+    // 创建一个直方图（bar chart）
+    QCustomPlot* distribuition_plot = distribution_dialog_->myplot_;
+    distribuition_plot->clearPlottables();
+    distribuition_plot->replot();
+    QCPBars* errorBars = new QCPBars(distribuition_plot->xAxis, distribuition_plot->yAxis);
 
+    // 计算误差数据
+    QVector<double> errorData;
+    QVector<QCPGraphData>* const ref_speed_lst = ui->plot->graph(0)->data()->coreData();
+    QVector<QCPGraphData>* const rel_speed_lst = ui->plot->graph(1)->data()->coreData();
+    for (int i = 0; i < ref_speed_lst->size(); ++i)
+    {
+        double actualSpeed = (*ref_speed_lst)[i].value;
+        double estimatedSpeed = (*rel_speed_lst)[i].value;
+        double error = actualSpeed - estimatedSpeed;
+        errorData.append(error);
+    }
+
+    // 准备数据
+    QVector<double> errorTicks;
+    QVector<double> errorFrequency;
+    int numberOfBins = 10; // 可以根据需要调整直方图的分组数量
+
+    double minError = *std::min_element(errorData.constBegin(), errorData.constEnd());
+    double maxError = *std::max_element(errorData.constBegin(), errorData.constEnd());
+    double binWidth = (maxError - minError) / numberOfBins;
+
+    errorTicks.resize(numberOfBins);
+    errorFrequency.resize(numberOfBins);
+
+    for (int i = 0; i < numberOfBins; ++i)
+    {
+        errorTicks[i] = minError + (i + 0.5) * binWidth; // 计算每个分组的中心值
+        errorFrequency[i] = 0;
+    }
+
+    for (double error : errorData)
+    {
+        int binIndex = std::floor((error - minError) / binWidth);
+        if (binIndex >= 0 && binIndex < numberOfBins)
+        {
+            errorFrequency[binIndex]++;
+        }
+    }
+
+    errorBars->setData(errorTicks, errorFrequency);
+    distribuition_plot->rescaleAxes();
+    distribuition_plot->replot();
+
+    distribution_dialog_->show();
+}
+
+bool SpeedViewDockWidget::slot_actSavePic_triggered()
+{
     QString filename = QFileDialog::getSaveFileName();
     QCustomPlot* const plot = ui->plot;
 
@@ -201,13 +256,11 @@ bool PwmViewDockWidget::slot_btnSave_clicked(bool checked)
          //否则追加后缀名为.png保存文件
          QMessageBox::information(this,"success","保存成功,已默认保存为png文件");
          return plot->savePng(filename.append(".png"), plot->width(), plot->height());
-    }
+     }
 }
 
-void PwmViewDockWidget::slot_btnExcel_clicked(bool checked)
+void SpeedViewDockWidget::slot_actSaveExcel_triggered()
 {
-    Q_UNUSED(checked);
-
     if (QXlsx::Document("test.xlsx").load())
         return;
 
@@ -249,3 +302,4 @@ void PwmViewDockWidget::slot_btnExcel_clicked(bool checked)
 
     doc.saveAs("test.xlsx");
 }
+

@@ -36,7 +36,7 @@ private slots:
     void slot_btnReadDBC_clicked();
 
 signals:
-    void sig_paint(const unsigned long long msg_id, QList<CppCAN::CANSignal*>& sig_lst);
+    void sig_paint(bool enabled, const unsigned long long msg_id, QList<CppCAN::CANSignal*>& sig_lst);
 
 private:
     Ui::DBCViewDockWidget * const ui;
@@ -44,6 +44,8 @@ private:
     QStandardItemModel* const message_model_;
     QStandardItemModel* const signal_model_;
     QItemSelectionModel* const item_selection_model_;
+
+    bool paint_enabled_;
 
     CppCAN::CANDatabase db_;
     CppCAN::CANFrame* msg_;

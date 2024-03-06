@@ -250,11 +250,11 @@ bool DeviceManager::openDevice()
     {
         qDebug() << "打开设备失败!";
         /* 启动消息接收线程 */
-        // RecMsgThread * const rec_msg_thread = RecMsgThread::getInstance();
-        // connect(this, &DeviceManager::sig_channelHandle, rec_msg_thread, &RecMsgThread::slot_channelHandle);
-        // emit sig_channelHandle(channel_handle_);
-        // rec_msg_thread->start();
-        // rec_msg_thread->beginThread();
+        RecMsgThread * const rec_msg_thread = RecMsgThread::getInstance();
+        connect(this, &DeviceManager::sig_channelHandle, rec_msg_thread, &RecMsgThread::slot_channelHandle);
+        emit sig_channelHandle(channel_handle_);
+        rec_msg_thread->start();
+        rec_msg_thread->beginThread();
         return false;
     }
     device_opened_ = DeviceState::Opened;

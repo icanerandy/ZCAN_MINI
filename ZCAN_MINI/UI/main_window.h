@@ -14,7 +14,6 @@
 #include "canview_dockwidget.h"
 #include "dbcview_dockwidget.h"
 #include "speedview_dockwidget.h"
-#include "pwmview_dockwidget.h"
 #include "senddata_dialog.h"
 
 namespace Ui {
@@ -51,17 +50,21 @@ private:
 
 private:
     Ui::MainWindow * const ui;
-    CanViewDockWidget * const canviewDock;
+    CanViewDockWidget * const can_viewDock;
     DBCViewDockWidget * const speed_dbcviewDock;
-    SpeedViewDockWidget * const speedviewDock;
-    DBCViewDockWidget * const pwm_dbcviewDock;
-    PwmViewDockWidget * const pwmviewDock;
+    SpeedViewDockWidget * const speed_plotviewDock;
     DeviceManagerDialog * const deviceManagerDlg;
     SendDataDialog * const senddataDlg;
 
-    QMenu * const menuSendData;
-    QAction * const actDeviceManage;
-    QAction * const actSendData;
+    QAction* const actDeviceManage;
+
+    QMenu* const menuDataAnalys;
+    QAction* const actDisPic;
+    QAction* const actSavePic;
+    QAction* const actSaveExcel;
+
+    QMenu* const menuSendData;
+    QAction* const actSendData;
 
     RecMsgThread *recmsg_thread_;
 };

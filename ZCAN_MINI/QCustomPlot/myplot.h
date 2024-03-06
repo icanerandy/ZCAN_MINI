@@ -9,6 +9,9 @@ class MyPlot : public QCustomPlot
 public:
     MyPlot(QWidget* widget);
 
+private slots:
+    void slot_plotZoomed(const QCPRange &newRange);
+
 protected:
     void mousePressEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
@@ -24,8 +27,10 @@ private:
     QCPItemTracer* const tracer_;
     QCPItemText* const tracer_x_label_;
     QCPItemText* const tracer_y_label_;
-    bool tracer_enable_;
+
     QCPGraph* tracer_graph_;
+    double last_trace_x_;
+    double last_trace_y_;
 };
 
 #endif // MYPLOT_H

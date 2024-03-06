@@ -39,17 +39,19 @@ public:
 
 public slots:
     void slot_selectionChanged();
-    void slot_paint(const unsigned long long msg_id, QList<CppCAN::CANSignal*>& sig_lst);
-    bool slot_btnSave_clicked(bool checked);
-    void slot_btnErrorDistribution_clicked(bool checked);
-
-private slots:
-    void slot_btnExcel_clicked(bool checked);
+    void slot_paint(bool enabled, const unsigned long long msg_id, QList<CppCAN::CANSignal*>& sig_lst);
+    void slot_actDisPic_triggered();
+    bool slot_actSavePic_triggered();
+    void slot_actSaveExcel_triggered();
 
 private:
     Ui::SpeedViewDockWidget* const ui;
     PlotDataThread* plot_thread_;
     DistributionDialog* distribution_dialog_;
+
+    SignalParserThread* signal_parser_thread_;
+    PlotDataThread* plotdata_thread_;
+    ReplotThread* replot_thread_;
 };
 
 #endif // PLOT_DOCKWIDGET_H

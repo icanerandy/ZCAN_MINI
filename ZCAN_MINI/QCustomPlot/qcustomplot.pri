@@ -17,4 +17,4 @@ HEADERS += \
 
 SOURCES += \
     $$PWD/myplot.cpp \
-    $$PWD/qcustomplot.cc
+    $$PWD/qcustomplot.cpp

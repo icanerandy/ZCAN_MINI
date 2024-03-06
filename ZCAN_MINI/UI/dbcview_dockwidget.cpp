@@ -7,6 +7,7 @@ DBCViewDockWidget::DBCViewDockWidget(QWidget *parent) :
     message_model_(new QStandardItemModel()),
     signal_model_(new QStandardItemModel()),
     item_selection_model_(new QItemSelectionModel(message_model_)),
+    paint_enabled_(true),
     msg_(nullptr)
 {
     ui->setupUi(this);
@@ -36,6 +37,9 @@ DBCViewDockWidget::DBCViewDockWidget(QWidget *parent) :
     // 表格宽度自动根据UI进行计算，不可手动调整宽度
     //ui->sigView->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
+    ui->msgView->horizontalHeader()->setVisible(false);
+    ui->sigView->verticalHeader()->setVisible(false);
+
     QStringList str_list;
     str_list << QStringLiteral("名字") << QStringLiteral("ID(Hex)") << QStringLiteral("DLC") << QStringLiteral("注释");
     message_model_->setVerticalHeaderLabels(str_list);
@@ -48,7 +52,12 @@ DBCViewDockWidget::DBCViewDockWidget(QWidget *parent) :
     connect(ui->btnReadDBC, &QPushButton::clicked, this, &DBCViewDockWidget::slot_btnReadDBC_clicked);
 
     connect(ui->btnPaint, &QPushButton::clicked, this, [=] {
-        emit sig_paint(msg_->can_id(), sig_lst_);
+        emit sig_paint(paint_enabled_, msg_->can_id(), sig_lst_);
+        paint_enabled_ = !paint_enabled_;
+        if (paint_enabled_)
+            ui->btnPaint->setText(QStringLiteral("开始绘图"));
+        else
+            ui->btnPaint->setText(QStringLiteral("停止绘图"));
     });
 }
 

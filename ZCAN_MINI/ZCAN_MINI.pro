@@ -19,7 +19,7 @@ TEMPLATE = app
 DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
-    main.cc
+    main.cpp
 
 INCLUDEPATH += $$PWD/CanParser
 include ($$PWD/CanParser/CanParser.pri)
