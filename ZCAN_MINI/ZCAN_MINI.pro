@@ -23,9 +23,6 @@ RC_ICONS = ./icon/analys.ico
 SOURCES += \
     main.cpp
 
-INCLUDEPATH += $$PWD/CanParser
-include ($$PWD/CanParser/CanParser.pri)
-
 INCLUDEPATH += $$PWD/VectorDBC
 include ($$PWD/VectorDBC/VectorDBC.pri)
 
