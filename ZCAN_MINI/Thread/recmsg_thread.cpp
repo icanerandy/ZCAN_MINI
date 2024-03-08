@@ -2,14 +2,6 @@
 
 RecMsgThread::RecMsgThread()
 {
-    // 线程接收到新的消息后，数据模型进行相应的更新
-    CanFrameTableModel* const canFrameTableModel = CanFrameTableModel::GetInstance();
-
-    connect(this, static_cast<void (RecMsgThread::*)(const ZCAN_Receive_Data*, const uint)>(&RecMsgThread::sig_newMsg),
-            canFrameTableModel, static_cast<void (CanFrameTableModel::*)(const ZCAN_Receive_Data*, const uint)>(&CanFrameTableModel::slot_newMsg));
-
-    connect(this, static_cast<void (RecMsgThread::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&RecMsgThread::sig_newMsg),
-            canFrameTableModel, static_cast<void (CanFrameTableModel::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&CanFrameTableModel::slot_newMsg));
 }
 
 RecMsgThread * RecMsgThread::getInstance()
@@ -82,7 +74,6 @@ void RecMsgThread::run()
                 emit sig_newMsg(canfd_data, 1);
             }
 
-            //避免无数据时变成While(1),会占用大量的CPU
             msleep(15);
         }
     }

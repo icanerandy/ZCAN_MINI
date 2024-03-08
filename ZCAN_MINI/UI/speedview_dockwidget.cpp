@@ -5,9 +5,9 @@ SpeedViewDockWidget::SpeedViewDockWidget(QWidget *parent) :
     QDockWidget(parent),
     ui(new Ui::SpeedViewDockWidget),
     distribution_dialog_(new DistributionDialog(this)),
-    signal_parser_thread_(nullptr),
-    plotdata_thread_(nullptr),
-    replot_thread_(nullptr)
+    signal_parser_(nullptr),
+    plotdata_(nullptr),
+    replot_(nullptr)
 {
     ui->setupUi(this);
 
@@ -70,6 +70,40 @@ SpeedViewDockWidget::~SpeedViewDockWidget()
     delete ui;
 }
 
+void SpeedViewDockWidget::addGraphs(const uint32_t msg_id, QList<Vector::DBC::Signal*>& sig_lst)
+{
+    QCustomPlot* const plot = ui->plot;
+
+    if (0 == plot->graphCount())
+    {
+        plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
+        QColor color(20+200/4.0*1,70*(1.6-1/4.0), 150, 250);
+        QPen pen(color.lighter(200));
+        // pen.setColor(Qt::red);
+        pen.setWidth(2);
+        plot->graph()->setLineStyle(QCPGraph::lsLine);
+        // plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 3));
+        plot->graph()->setPen(pen);
+        plot->graph()->setName(QString::fromStdString(sig_lst.at(0)->name));//曲线名称
+
+        plot->graph()->rescaleAxes();
+
+        plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
+        QColor color1(20+200/4.0*2,70*(1.6-2/4.0), 150, 250);
+        QPen pen1(color1.lighter(200));
+        // pen1.setColor(Qt::blue);
+        pen1.setWidth(2);
+        plot->graph()->setLineStyle(QCPGraph::lsLine);
+        // plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 3));
+        plot->graph()->setPen(pen1);
+        plot->graph()->setName(QString::fromStdString(sig_lst.at(1)->name));//曲线名称
+
+        plot->graph()->rescaleAxes(true);
+
+        plot->replot();
+    }
+}
+
 void SpeedViewDockWidget::slot_selectionChanged()
 {
     // make top and bottom axes be selected synchronously, and handle axis and tick labels as one selectable object:
@@ -106,66 +140,85 @@ void SpeedViewDockWidget::slot_selectionChanged()
     }
 }
 
-void SpeedViewDockWidget::slot_paint(bool enabled, const unsigned long long msg_id, QList<CppCAN::CANSignal*>& sig_lst)
+void SpeedViewDockWidget::slot_paint(bool enabled, const uint32_t msg_id, QList<Vector::DBC::Signal*>& sig_lst)
 {
     if (enabled)
     {
         QCustomPlot* const plot = ui->plot;
 
-        const QList<CppCAN::CANSignal> sig_lst1 { *sig_lst.at(0), *sig_lst.at(1) };
-        if (0 == plot->graphCount())
-        {
-            plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
-            QColor color(20+200/4.0*1,70*(1.6-1/4.0), 150, 250);
-            QPen pen(color.lighter(200));
-            // pen.setColor(Qt::red);
-            pen.setWidth(2);
-            plot->graph()->setLineStyle(QCPGraph::lsLine);
-            // plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 3));
-            plot->graph()->setPen(pen);
-            plot->graph()->setName(QString::fromStdString(sig_lst.at(0)->name()));//曲线名称
+        addGraphs(msg_id, sig_lst);
 
-            plot->graph()->rescaleAxes();
+        signal_parser_ = new SignalParser(msg_id, sig_lst);
+        signal_parser_thread_ = new QThread;
+        signal_parser_->moveToThread(signal_parser_thread_);
+        signal_parser_thread_->start();
+        RecMsgThread* const rec_msg_thread = RecMsgThread::getInstance();
+        connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_Receive_Data*, const uint)>(&RecMsgThread::sig_newMsg),
+                signal_parser_, static_cast<void (SignalParser::*)(const ZCAN_Receive_Data*, const uint)>(&SignalParser::slot_newMsg));
+        connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&RecMsgThread::sig_newMsg),
+                signal_parser_, static_cast<void (SignalParser::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&SignalParser::slot_newMsg));
 
-            plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
-            QColor color1(20+200/4.0*2,70*(1.6-2/4.0), 150, 250);
-            QPen pen1(color1.lighter(200));
-            // pen1.setColor(Qt::blue);
-            pen1.setWidth(2);
-            plot->graph()->setLineStyle(QCPGraph::lsLine);
-            // plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 3));
-            plot->graph()->setPen(pen1);
-            plot->graph()->setName(QString::fromStdString(sig_lst.at(1)->name()));//曲线名称
+        plotdata_ = new PlotData(plot);
+        plotdata_thread_ = new QThread;
+        plotdata_->moveToThread(plotdata_thread_);
+        plotdata_thread_->start();
+        qRegisterMetaType<QList<double>>("QList<double>");
+        connect(signal_parser_, static_cast<void (SignalParser::*)(const QList<double>)>(&SignalParser::sig_speed),
+                plotdata_, static_cast<void (PlotData::*)(const QList<double>)>(&PlotData::slot_realTimeData));
+        connect(signal_parser_, static_cast<void (SignalParser::*)(const QList<double>)>(&SignalParser::sig_pwm),
+                plotdata_, static_cast<void (PlotData::*)(const QList<double>)>(&PlotData::slot_realTimeData));
 
-            plot->graph()->rescaleAxes(true);
+        replot_ = new Replot(plot);
+        replot_thread_ = new QThread;
+        replot_->moveToThread(replot_thread_);
+        replot_thread_->start();
 
-            plot->replot();
-
-            signal_parser_thread_ = new SignalParserThread(msg_id, sig_lst1);
-            signal_parser_thread_->start();
-
-            plotdata_thread_ = new PlotDataThread(plot, signal_parser_thread_);
-            plotdata_thread_->start();
-
-            replot_thread_ = new ReplotThread(plot);
-            replot_thread_->start();
-        }
-
-        signal_parser_thread_->beginThread();
-        plotdata_thread_->beginThread();
-        replot_thread_->beginThread();
-
-        connect(replot_thread_, &ReplotThread::sig_frmChanged, this, [=] (const QString& msg) {
+        connect(replot_, &Replot::sig_frmChanged, this, [=] (const QString& msg) {
             ui->labFps->setText(msg);
         });
     }
     else
     {
-        disconnect(replot_thread_, &ReplotThread::sig_frmChanged, nullptr, nullptr);
+        RecMsgThread* const rec_msg_thread = RecMsgThread::getInstance();
+        disconnect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_Receive_Data*, const uint)>(&RecMsgThread::sig_newMsg),
+                signal_parser_, static_cast<void (SignalParser::*)(const ZCAN_Receive_Data*, const uint)>(&SignalParser::slot_newMsg));
+        disconnect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&RecMsgThread::sig_newMsg),
+                signal_parser_, static_cast<void (SignalParser::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&SignalParser::slot_newMsg));
 
-        signal_parser_thread_->pauseThread();
-        plotdata_thread_->pauseThread();
-        replot_thread_->pauseThread();
+
+        disconnect(signal_parser_, static_cast<void (SignalParser::*)(const QList<double>)>(&SignalParser::sig_speed),
+                plotdata_, static_cast<void (PlotData::*)(const QList<double>)>(&PlotData::slot_realTimeData));
+        disconnect(signal_parser_, static_cast<void (SignalParser::*)(const QList<double>)>(&SignalParser::sig_pwm),
+                plotdata_, static_cast<void (PlotData::*)(const QList<double>)>(&PlotData::slot_realTimeData));
+
+        disconnect(replot_, &Replot::sig_frmChanged, nullptr, nullptr);
+
+        signal_parser_thread_->quit();
+        signal_parser_thread_->wait();
+        signal_parser_thread_->deleteLater();
+        if (signal_parser_thread_)
+            signal_parser_thread_ = nullptr;
+        signal_parser_->deleteLater();
+        if (signal_parser_)
+            signal_parser_ = nullptr;
+
+        plotdata_thread_->quit();
+        plotdata_thread_->wait();
+        plotdata_thread_->deleteLater();
+        if (plotdata_thread_)
+            plotdata_thread_ = nullptr;
+        plotdata_->deleteLater();
+        if (plotdata_)
+            plotdata_ = nullptr;
+
+        replot_thread_->quit();
+        replot_thread_->wait();
+        replot_thread_->deleteLater();
+        if (replot_thread_)
+            replot_thread_ = nullptr;
+        replot_->deleteLater();
+        if (replot_)
+            replot_ = nullptr;
     }
 }
 

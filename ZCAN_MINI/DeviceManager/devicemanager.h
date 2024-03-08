@@ -195,6 +195,7 @@ private:
 
     CanState can_start_;/* CAN是否已经启动 */
 
+    QThread* canframe_table_thread_;
     SendMsgThread *sendmsg_thread_;
 };
 

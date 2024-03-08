@@ -253,6 +253,16 @@ bool DeviceManager::openDevice()
         RecMsgThread * const rec_msg_thread = RecMsgThread::getInstance();
         connect(this, &DeviceManager::sig_channelHandle, rec_msg_thread, &RecMsgThread::slot_channelHandle);
         emit sig_channelHandle(channel_handle_);
+
+        CanFrameTableModel* const canframe_table_model = CanFrameTableModel::GetInstance();
+        connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_Receive_Data*, const uint)>(&RecMsgThread::sig_newMsg),
+                canframe_table_model, static_cast<void (CanFrameTableModel::*)(const ZCAN_Receive_Data*, const uint)>(&CanFrameTableModel::slot_newMsg));
+        connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&RecMsgThread::sig_newMsg),
+                canframe_table_model, static_cast<void (CanFrameTableModel::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&CanFrameTableModel::slot_newMsg));
+        canframe_table_thread_ = new QThread;
+        canframe_table_model->moveToThread(canframe_table_thread_);
+        canframe_table_thread_->start();
+
         rec_msg_thread->start();
         rec_msg_thread->beginThread();
         return false;
@@ -377,6 +387,16 @@ bool DeviceManager::startCan()
     RecMsgThread * const rec_msg_thread = RecMsgThread::getInstance();
     connect(this, &DeviceManager::sig_channelHandle, rec_msg_thread, &RecMsgThread::slot_channelHandle);
     emit sig_channelHandle(channel_handle_);
+
+    CanFrameTableModel* const canframe_table_model = CanFrameTableModel::GetInstance();
+    connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_Receive_Data*, const uint)>(&RecMsgThread::sig_newMsg),
+            canframe_table_model, static_cast<void (CanFrameTableModel::*)(const ZCAN_Receive_Data*, const uint)>(&CanFrameTableModel::slot_newMsg));
+    connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&RecMsgThread::sig_newMsg),
+            canframe_table_model, static_cast<void (CanFrameTableModel::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&CanFrameTableModel::slot_newMsg));
+    canframe_table_thread_ = new QThread;
+    canframe_table_model->moveToThread(canframe_table_thread_);
+    canframe_table_thread_->start();
+
     rec_msg_thread->start();
     rec_msg_thread->beginThread();
 
@@ -504,10 +524,19 @@ void DeviceManager::stopSendMsg()
 bool DeviceManager::stopCan()
 {
     RecMsgThread * const rec_msg_thread = RecMsgThread::getInstance();
+    CanFrameTableModel* const canframe_table_model = CanFrameTableModel::GetInstance();
     if (rec_msg_thread->isRunning())
     {
+        disconnect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_Receive_Data*, const uint)>(&RecMsgThread::sig_newMsg),
+                   canframe_table_model, static_cast<void (CanFrameTableModel::*)(const ZCAN_Receive_Data*, const uint)>(&CanFrameTableModel::slot_newMsg));
+        disconnect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&RecMsgThread::sig_newMsg),
+                   canframe_table_model, static_cast<void (CanFrameTableModel::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&CanFrameTableModel::slot_newMsg));
+
         rec_msg_thread->stopThread();
         rec_msg_thread->wait();
+
+        canframe_table_thread_->quit();
+        canframe_table_thread_->wait();
     }
 
     if (STATUS_OK != ZCAN_ResetCAN(channel_handle_))

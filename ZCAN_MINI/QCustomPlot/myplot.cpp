@@ -53,6 +53,11 @@ MyPlot::MyPlot(QWidget* widget) :
             this, static_cast<void (MyPlot::*)(const QCPRange &)>(&MyPlot::slot_plotZoomed));
     connect(yAxis, static_cast<void (QCPAxis::*)(const QCPRange &)>(&QCPAxis::rangeChanged),
             this, static_cast<void (MyPlot::*)(const QCPRange &)>(&MyPlot::slot_plotZoomed));
+
+    addLayer("overlay", layer("main"), QCustomPlot::limAbove);
+    text_label_->setLayer("overlay");
+    tracer_x_label_->setLayer("overlay");
+    tracer_y_label_->setLayer("overlay");
 }
 
 void MyPlot::slot_plotZoomed(const QCPRange &newRange)
@@ -78,7 +83,7 @@ void MyPlot::slot_plotZoomed(const QCPRange &newRange)
         tracer_x_label_->setVisible(true);
         tracer_y_label_->setVisible(true);
 
-        replot(QCustomPlot::rpQueuedReplot);
+        layer("overlay")->replot();
     }
     else
     {
@@ -156,6 +161,7 @@ void MyPlot::mouseMoveEvent(QMouseEvent *event)
 
         tracer_->setGraph(tracer_graph_);//设置游标吸附在traceGraph这条曲线上
         tracer_->setGraphKey(x);//设置游标的X值（这就是游标随动的关键代码）
+
         double traceX = tracer_->position->key();
         double traceY = tracer_->position->value();
 
@@ -171,7 +177,6 @@ void MyPlot::mouseMoveEvent(QMouseEvent *event)
         tracer_y_label_->setPositionAlignment(Qt::AlignLeft); // 标签对齐方式
         tracer_y_label_->setText(QString("y = ") + QString::number(traceY));
 
-
         // 计算游标X值对应的所有曲线的Y值
         for(int i = 0; i < graphCount(); i++)
         {
@@ -185,7 +190,7 @@ void MyPlot::mouseMoveEvent(QMouseEvent *event)
         tracer_y_label_->setVisible(true);
 
         if (last_trace_x_ != traceX || last_trace_y_ != traceY)
-            replot(QCustomPlot::rpQueuedReplot);
+            layer("overlay")->replot();
         last_trace_x_ = traceX;
         last_trace_y_ = traceY;
     }

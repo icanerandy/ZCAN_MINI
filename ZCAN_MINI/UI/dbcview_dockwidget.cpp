@@ -7,8 +7,7 @@ DBCViewDockWidget::DBCViewDockWidget(QWidget *parent) :
     message_model_(new QStandardItemModel()),
     signal_model_(new QStandardItemModel()),
     item_selection_model_(new QItemSelectionModel(message_model_)),
-    paint_enabled_(true),
-    msg_(nullptr)
+    paint_enabled_(true)
 {
     ui->setupUi(this);
 
@@ -52,7 +51,7 @@ DBCViewDockWidget::DBCViewDockWidget(QWidget *parent) :
     connect(ui->btnReadDBC, &QPushButton::clicked, this, &DBCViewDockWidget::slot_btnReadDBC_clicked);
 
     connect(ui->btnPaint, &QPushButton::clicked, this, [=] {
-        emit sig_paint(paint_enabled_, msg_->can_id(), sig_lst_);
+        emit sig_paint(paint_enabled_, msg_.id, sig_lst_);
         paint_enabled_ = !paint_enabled_;
         if (paint_enabled_)
             ui->btnPaint->setText(QStringLiteral("开始绘图"));
@@ -73,31 +72,15 @@ void DBCViewDockWidget::slot_btnReadDBC_clicked()
     if (filename.isEmpty())
         return;
 
-    db_ = CppCAN::CANDatabase::fromFile(filename.toStdString());
-
-    QStandardItem* item = nullptr;
-    for(const auto& frame : db_) {
-        item = new QStandardItem(QString::fromStdString(frame.second.name()));
-        message_model_->setItem(0, 0, item);
-
-        item = new QStandardItem(QString::number(frame.second.can_id(), 16));
-        message_model_->setItem(1, 0, item);
-
-        item = new QStandardItem(QString::number(frame.second.dlc(), 10));
-        message_model_->setItem(2, 0, item);
-
-        item = new QStandardItem(QString::fromStdString(frame.second.comment()));
-        message_model_->setItem(3, 0, item);
-    }
-
-    showSignals();
-
     std::ifstream ifs(filename.toStdString());
     if (!ifs.is_open())
     {
         qDebug() << "List_Message_Signals <database.dbc>";
         return;
     }
+
+    network_.messages.clear();
+    network_.newSymbols.clear();
     ifs >> network_;
     if (!network_.successfullyParsed)
     {
@@ -106,14 +89,23 @@ void DBCViewDockWidget::slot_btnReadDBC_clicked()
     }
 
     /* loop over messages */
+    QStandardItem* item = nullptr;
     for (const auto& message : network_.messages)
     {
-        qDebug() << QString("%1 %2").arg("Message").arg(QString::fromStdString(message.second.name));
+        item = new QStandardItem(QString::fromStdString(message.second.name));
+        message_model_->setItem(0, 0, item);
 
-        /* loop over signals of this message */
-        for (const auto& signal : message.second._signals)
-            qDebug() << QString("%1%2").arg(" Signal ").arg(QString::fromStdString(signal.second.name));
+        item = new QStandardItem(QString::number(message.second.id, 16));
+        message_model_->setItem(1, 0, item);
+
+        item = new QStandardItem(QString::number(message.second.size, 10));
+        message_model_->setItem(2, 0, item);
+
+        item = new QStandardItem(QString::fromStdString(message.second.comment));
+        message_model_->setItem(3, 0, item);
     }
+
+    showSignals();
 }
 
 void DBCViewDockWidget::showSignals()
@@ -126,53 +118,54 @@ void DBCViewDockWidget::showSignals()
              << QStringLiteral("最大值") << QStringLiteral("注释");
     signal_model_->setHorizontalHeaderLabels(str_list);
 
-    QStandardItem *item = message_model_->item(0);
-    QString msg_name = item->text();
-    msg_ = &db_.at(msg_name.toStdString());
+    QStandardItem* item = message_model_->item(1);
+    uint32_t can_id = item->text().toUInt(nullptr, 16);
+    msg_ = network_.messages.at(can_id);
 
     item = nullptr;
     size_t i = 0;
     sig_lst_.clear();
-    for(auto& sig : *msg_) {
+    for(auto& sig : msg_._signals)
+    {
         sig_lst_.push_back(&sig.second);
 
-        item = new QStandardItem(QString::fromStdString(sig.second.name()));
+        item = new QStandardItem(QString::fromStdString(sig.second.name));
         item->setEditable(false);
         signal_model_->setItem(i, 0, item);
 
-        item = new QStandardItem(QString::number(sig.second.length(), 16));
+        item = new QStandardItem(QString::number(sig.second.bitSize, 16));
         item->setEditable(false);
         signal_model_->setItem(i, 1, item);
 
-        item = new QStandardItem(QString::number(sig.second.start_bit(), 10));
+        item = new QStandardItem(QString::number(sig.second.startBit, 10));
         item->setEditable(false);
         signal_model_->setItem(i, 2, item);
 
-        item = new QStandardItem(QString::number(sig.second.scale(), 'f', 2));
+        item = new QStandardItem(QString::number(sig.second.factor, 'f', 2));
         item->setEditable(false);
         signal_model_->setItem(i, 3, item);
 
-        item = new QStandardItem(QString::number(sig.second.offset(), 'f', 2));
+        item = new QStandardItem(QString::number(sig.second.offset, 'f', 2));
         item->setEditable(false);
         signal_model_->setItem(i, 4, item);
 
-        item = new QStandardItem(QString(sig.second.signedness()==CppCAN::CANSignal::Signed?"Signed":"Unsigned"));
+        item = new QStandardItem(QString(sig.second.valueType==Vector::DBC::ValueType::Unsigned?"Unsigned":"Signed"));
         item->setEditable(false);
         signal_model_->setItem(i, 5, item);
 
-        item = new QStandardItem(QString(sig.second.endianness()==CppCAN::CANSignal::BigEndian?"BigEndian":"LittleEndian"));
+        item = new QStandardItem(QString(sig.second.byteOrder==Vector::DBC::ByteOrder::Motorola?"Motorola":"Intel"));
         item->setEditable(false);
         signal_model_->setItem(i, 6, item);
 
-        item = new QStandardItem(QString::number(sig.second.range().min, 10));
+        item = new QStandardItem(QString::number(sig.second.minimum));
         item->setEditable(false);
         signal_model_->setItem(i, 7, item);
 
-        item = new QStandardItem(QString::number(sig.second.range().max, 10));
+        item = new QStandardItem(QString::number(sig.second.maximum));
         item->setEditable(false);
         signal_model_->setItem(i, 8, item);
 
-        item = new QStandardItem(QString::fromStdString(sig.second.comment()));
+        item = new QStandardItem(QString::fromStdString(sig.second.comment));
         item->setEditable(false);
         signal_model_->setItem(i, 9, item);
 

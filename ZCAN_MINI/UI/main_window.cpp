@@ -19,6 +19,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    setWindowIcon(QIcon(":/icon/analys.ico"));
+
     // 添加菜单和action
     ui->menubar->addAction(actDeviceManage);
 

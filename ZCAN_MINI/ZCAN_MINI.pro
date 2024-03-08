@@ -18,6 +18,8 @@ TEMPLATE = app
 
 DEFINES += QT_DEPRECATED_WARNINGS
 
+RC_ICONS = ./icon/analys.ico
+
 SOURCES += \
     main.cpp
 
@@ -47,3 +49,6 @@ include ($$PWD/QCustomPlot/Qcustomplot.pri)
 
 INCLUDEPATH += $$PWD/QXlsx
 include ($$PWD/QXlsx/QXlsx.pri)
+
+RESOURCES += \
+    icon.qrc

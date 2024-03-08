@@ -13,8 +13,12 @@ msvc {
 
 HEADERS += \
     $$PWD/myplot.h \
-    $$PWD/qcustomplot.h
+    $$PWD/plotdata.h \
+    $$PWD/qcustomplot.h \
+    $$PWD/replot.h
 
 SOURCES += \
     $$PWD/myplot.cpp \
-    $$PWD/qcustomplot.cpp
+    $$PWD/plotdata.cpp \
+    $$PWD/qcustomplot.cpp \
+    $$PWD/replot.cpp

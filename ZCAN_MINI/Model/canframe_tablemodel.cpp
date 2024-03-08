@@ -181,11 +181,10 @@ void CanFrameTableModel::slot_newMsg(const ZCAN_ReceiveFD_Data* canfd_data, cons
             removeRows(0, 1);
 
         const ZCAN_ReceiveFD_Data& canfd = canfd_data[i];
-        //const canid_t& id = canfd.frame.can_id;
 
         beginInsertRows(QModelIndex(), can_frame_list.size(), can_frame_list.size());
         can_frame_list.append(QVariant::fromValue(canfd));
-        //emit dataChanged(QModelIndex(), QModelIndex());
+        emit dataChanged(QModelIndex(), QModelIndex());
         endInsertRows();
     }
 }

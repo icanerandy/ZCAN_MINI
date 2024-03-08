@@ -29,6 +29,9 @@ public:
 private:
     Ui::CanViewDockWidget * const ui;
     CanViewOptionDialog * const option_dialog;
+
+    QTimer timer_;
+    bool scroll_enabled_;
 };
 
 #endif // CANVIEW_DOCKWIDGET_H
