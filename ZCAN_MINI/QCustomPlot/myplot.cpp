@@ -54,7 +54,7 @@ MyPlot::MyPlot(QWidget* widget) :
     connect(yAxis, static_cast<void (QCPAxis::*)(const QCPRange &)>(&QCPAxis::rangeChanged),
             this, static_cast<void (MyPlot::*)(const QCPRange &)>(&MyPlot::slot_plotZoomed));
 
-    addLayer("overlay", layer("main"), QCustomPlot::limAbove);
+    // addLayer("overlay", layer("main"), QCustomPlot::limAbove);
     text_label_->setLayer("overlay");
     tracer_x_label_->setLayer("overlay");
     tracer_y_label_->setLayer("overlay");

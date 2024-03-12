@@ -95,7 +95,7 @@ public:
 
 private:
     explicit DeviceManager(QObject *parent = nullptr);  // 禁止外部构造
-    //explicit ~DeviceManager();   // 禁止外部析构
+    ~DeviceManager();   // 禁止外部析构
 
 public:
     explicit DeviceManager(const DeviceManager &deviceManager) = delete;  // 禁止外部拷贝构造
@@ -196,7 +196,7 @@ private:
     CanState can_start_;/* CAN是否已经启动 */
 
     QThread* canframe_table_thread_;
-    SendMsgThread *sendmsg_thread_;
+    SendMsgThread* sendmsg_thread_;
 };
 
 #endif // DEVICE_MANAGER_H

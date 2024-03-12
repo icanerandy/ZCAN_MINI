@@ -4,6 +4,12 @@ RecMsgThread::RecMsgThread()
 {
 }
 
+RecMsgThread::~RecMsgThread()
+{
+    stopThread();
+    wait();
+}
+
 RecMsgThread * RecMsgThread::getInstance()
 {
     static RecMsgThread recmsg_thread;

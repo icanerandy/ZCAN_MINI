@@ -1,6 +1,6 @@
 ﻿#include "signalparser.h"
 
-SignalParser::SignalParser(const uint32_t msg_id, QList<Vector::DBC::Signal*>& sig_lst)
+SignalParser::SignalParser(const uint32_t msg_id, QList<Vector::DBC::Signal> sig_lst)
     : msg_id_(msg_id),
       sig_lst_(sig_lst)
 {
@@ -24,8 +24,8 @@ void SignalParser::slot_newMsg(const ZCAN_Receive_Data* can_data, const uint len
         vals.push_back(can_data[i].timestamp);
         for (auto sig : sig_lst_)
         {
-            raw_value = sig->decode(raw_data);
-            physical_value = sig->rawToPhysicalValue(raw_value);
+            raw_value = sig.decode(raw_data);
+            physical_value = sig.rawToPhysicalValue(raw_value);
             vals.push_back(physical_value);
         }
         emit sig_speed(vals);
@@ -51,8 +51,8 @@ void SignalParser::slot_newMsg(const ZCAN_ReceiveFD_Data* canfd_data, const uint
         vals.push_back(canfd_data[i].timestamp);
         for (auto sig : sig_lst_)
         {
-            raw_value = sig->decode(raw_data);
-            physical_value = sig->rawToPhysicalValue(raw_value);
+            raw_value = sig.decode(raw_data);
+            physical_value = sig.rawToPhysicalValue(raw_value);
             vals.push_back(physical_value);
         }
         emit sig_speed(vals);

@@ -124,6 +124,12 @@ DeviceManager::DeviceManager(QObject *parent) : QObject(parent),
     support_get_send_mode_ = false;
 }
 
+DeviceManager::~DeviceManager()
+{
+    RecMsgThread* rec_msg_thread = RecMsgThread::getInstance();
+    rec_msg_thread->stopThread();
+}
+
 DeviceManager::DeviceTypeIndex DeviceManager::device_type_index() const
 {
     return device_type_index_;

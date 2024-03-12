@@ -10,17 +10,19 @@
 #include <QByteArray>
 #include "qcustomplot.h"
 #include "recmsg_thread.h"
-#include "CANDatabase.h"
 #include "signalparser.h"
 
-class PlotData : public QObject
+class LinePlot : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit PlotData(QCustomPlot* const plot);
+    explicit LinePlot(QCustomPlot* const plot);
 
-public slots:
+Q_SIGNALS:
+    void sig_absDeviation(double key, double abs_deviation);
+
+public Q_SLOTS:
     void slot_realTimeData(const QList<double> vals);
 
 private:

@@ -1,4 +1,4 @@
-#include "sendmsg_thread.h"
+﻿#include "sendmsg_thread.h"
 
 
 SendMsgThread::SendMsgThread(CHANNEL_HANDLE channel_handle, const QVariant &can_data, uint send_count_once, uint send_count)
@@ -8,6 +8,12 @@ SendMsgThread::SendMsgThread(CHANNEL_HANDLE channel_handle, const QVariant &can_
       send_count_(send_count)
 {
 
+}
+
+SendMsgThread::~SendMsgThread()
+{
+    stopThread();
+    wait();
 }
 
 void SendMsgThread::beginThread()

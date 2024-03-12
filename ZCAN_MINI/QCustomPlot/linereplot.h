@@ -9,12 +9,12 @@
 #include <chrono>
 #include <qcustomplot.h>
 
-class Replot : public QObject
+class LineReplot : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit Replot(QCustomPlot* const plot);
+    explicit LineReplot(QCustomPlot* const plot);
 
 signals:
     void sig_frmChanged(const QString& msg);

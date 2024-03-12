@@ -12,8 +12,6 @@
 #include <QStandardItem>
 #include <QItemSelectionModel>
 #include <QFileDialog>
-#include "CANDatabase.h"
-
 #include <fstream>
 #include "Vector/DBC.h"
 
@@ -36,7 +34,7 @@ private slots:
     void slot_btnReadDBC_clicked();
 
 signals:
-    void sig_paint(bool enabled, const uint32_t msg_id, QList<Vector::DBC::Signal*>& sig_lst);
+    void sig_paint(bool enabled, const uint32_t msg_id, QList<Vector::DBC::Signal>& sig_lst);
 
 private:
     Ui::DBCViewDockWidget * const ui;
@@ -49,7 +47,7 @@ private:
 
     Vector::DBC::Network network_;
     Vector::DBC::Message msg_;
-    QList<Vector::DBC::Signal*> sig_lst_;
+    QList<Vector::DBC::Signal> sig_lst_;
 };
 
 #endif // DBCPARSER_DOCKWIDGET_H

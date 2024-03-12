@@ -6,15 +6,28 @@ SpeedViewDockWidget::SpeedViewDockWidget(QWidget *parent) :
     ui(new Ui::SpeedViewDockWidget),
     distribution_dialog_(new DistributionDialog(this)),
     signal_parser_(nullptr),
-    plotdata_(nullptr),
-    replot_(nullptr)
+    line_plot_(nullptr),
+    line_replot_(nullptr)
 {
     ui->setupUi(this);
 
-    QCustomPlot* const plot = ui->plot;
+    initPlot(ui->plot);
+    initPlot(ui->plot_2);
+}
+
+SpeedViewDockWidget::~SpeedViewDockWidget()
+{
+    if (signal_parser_)
+        destroyThread();
+
+    delete ui;
+}
+
+void SpeedViewDockWidget::initPlot(QCustomPlot* const plot)
+{
     plot->setOpenGl(true);
-    qDebug() << "OpenGl开启状态: " << plot->openGl();
-    plot->setNoAntialiasingOnDrag(true);
+    // qDebug() << "plot OpenGl开启状态: " << plot->openGl();
+    // plot->setNoAntialiasingOnDrag(true);
 
     // 使用框选
     plot->selectionRect()->setPen(QPen(Qt::black,1,Qt::DashLine));//设置选框的样式：虚线
@@ -25,23 +38,21 @@ SpeedViewDockWidget::SpeedViewDockWidget(QWidget *parent) :
     QSharedPointer<QCPAxisTickerDateTime> date_tick(new QCPAxisTickerDateTime);
     date_tick->setDateTimeSpec(Qt::LocalTime);
     // date_tick->setDateTimeSpec(Qt::UTC);
+
     date_tick->setDateTimeFormat("hh:mm:ss.zzz");
     plot->xAxis->setTicker(date_tick);
     plot->xAxis->ticker()->setTickOrigin(0);//设置刻度原点
     plot->xAxis->ticker()->setTickCount(20);
     plot->xAxis->ticker()->setTickStepStrategy(QCPAxisTicker::tssReadability);//可读性优于设置
-
     plot->xAxis->setTickLabelRotation(35);
 
     // 边框右侧和上侧均显示刻度线，但不显示刻度值
     plot->xAxis->setVisible(true);
     plot->xAxis2->setVisible(true);
     plot->xAxis2->setTickLabels(false);
-
     plot->yAxis->setVisible(true);
     plot->yAxis2->setVisible(true);
     plot->yAxis2->setTickLabels(false);
-
     plot->yAxis->setRangeUpper(10000);
     plot->yAxis->setRangeLower(-10000);
 
@@ -65,43 +76,138 @@ SpeedViewDockWidget::SpeedViewDockWidget(QWidget *parent) :
                           QCP::iSelectLegend | QCP::iSelectPlottables);
 }
 
-SpeedViewDockWidget::~SpeedViewDockWidget()
+void SpeedViewDockWidget::addGraphs(QCustomPlot* const plot, const uint32_t msg_id, QList<Vector::DBC::Signal>& sig_lst)
 {
-    delete ui;
-}
-
-void SpeedViewDockWidget::addGraphs(const uint32_t msg_id, QList<Vector::DBC::Signal*>& sig_lst)
-{
-    QCustomPlot* const plot = ui->plot;
-
     if (0 == plot->graphCount())
     {
         plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
-        QColor color(20+200/4.0*1,70*(1.6-1/4.0), 150, 250);
-        QPen pen(color.lighter(200));
-        // pen.setColor(Qt::red);
-        pen.setWidth(2);
+        QColor color(Qt::blue);
+        QPen pen(color.lighter(75));
+        pen.setWidth(1);
         plot->graph()->setLineStyle(QCPGraph::lsLine);
         // plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 3));
         plot->graph()->setPen(pen);
-        plot->graph()->setName(QString::fromStdString(sig_lst.at(0)->name));//曲线名称
+        plot->graph()->setName(QString::fromStdString(sig_lst.at(0).name));//曲线名称
 
         plot->graph()->rescaleAxes();
 
         plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
-        QColor color1(20+200/4.0*2,70*(1.6-2/4.0), 150, 250);
-        QPen pen1(color1.lighter(200));
-        // pen1.setColor(Qt::blue);
-        pen1.setWidth(2);
+        QColor color1(Qt::red);
+        QPen pen1(color1.lighter(75));
+        pen1.setWidth(1);
         plot->graph()->setLineStyle(QCPGraph::lsLine);
         // plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 3));
         plot->graph()->setPen(pen1);
-        plot->graph()->setName(QString::fromStdString(sig_lst.at(1)->name));//曲线名称
+        plot->graph()->setName(QString::fromStdString(sig_lst.at(1).name));//曲线名称
 
         plot->graph()->rescaleAxes(true);
 
         plot->replot();
     }
+}
+
+void SpeedViewDockWidget::initThread(const uint32_t msg_id, QList<Vector::DBC::Signal>& sig_lst)
+{
+    signal_parser_ = new SignalParser(msg_id, sig_lst);
+    signal_parser_thread_ = new QThread;
+    signal_parser_->moveToThread(signal_parser_thread_);
+    signal_parser_thread_->start();
+    RecMsgThread* const rec_msg_thread = RecMsgThread::getInstance();
+    connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_Receive_Data*, const uint)>(&RecMsgThread::sig_newMsg),
+            signal_parser_, static_cast<void (SignalParser::*)(const ZCAN_Receive_Data*, const uint)>(&SignalParser::slot_newMsg));
+    connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&RecMsgThread::sig_newMsg),
+            signal_parser_, static_cast<void (SignalParser::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&SignalParser::slot_newMsg));
+
+    line_plot_ = new LinePlot(ui->plot);
+    line_plot_thread_ = new QThread;
+    line_plot_->moveToThread(line_plot_thread_);
+    line_plot_thread_->start();
+    qRegisterMetaType<QList<double>>("QList<double>");
+    connect(signal_parser_, static_cast<void (SignalParser::*)(const QList<double>)>(&SignalParser::sig_speed),
+            line_plot_, static_cast<void (LinePlot::*)(const QList<double>)>(&LinePlot::slot_realTimeData));
+
+    line_replot_ = new LineReplot(ui->plot);
+    line_replot_thread_ = new QThread;
+    line_replot_->moveToThread(line_replot_thread_);
+    line_replot_thread_->start();
+
+    deviation_plot_ = new DeviationPlot(ui->plot_2);
+    deviation_plot_thread_ = new QThread;
+    deviation_plot_->moveToThread(deviation_plot_thread_);
+    deviation_plot_thread_->start();
+    connect(line_plot_, static_cast<void (LinePlot::*)(double, double)>(&LinePlot::sig_absDeviation),
+            deviation_plot_, static_cast<void (DeviationPlot::*)(double, double)>(&DeviationPlot::slot_absDeviation));
+
+    deviation_replot_ = new DeviationReplot(ui->plot_2);
+    deviation_replot_thread_ = new QThread;
+    deviation_replot_->moveToThread(deviation_replot_thread_);
+    deviation_replot_thread_->start();
+
+    connect(line_replot_, &LineReplot::sig_frmChanged, this, [=] (const QString& msg) {
+        ui->labFps->setText(msg);
+    });
+}
+
+void SpeedViewDockWidget::destroyThread()
+{
+    RecMsgThread* const rec_msg_thread = RecMsgThread::getInstance();
+    disconnect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_Receive_Data*, const uint)>(&RecMsgThread::sig_newMsg),
+               signal_parser_, static_cast<void (SignalParser::*)(const ZCAN_Receive_Data*, const uint)>(&SignalParser::slot_newMsg));
+    disconnect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&RecMsgThread::sig_newMsg),
+               signal_parser_, static_cast<void (SignalParser::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&SignalParser::slot_newMsg));
+
+    disconnect(signal_parser_, static_cast<void (SignalParser::*)(const QList<double>)>(&SignalParser::sig_speed),
+               line_plot_, static_cast<void (LinePlot::*)(const QList<double>)>(&LinePlot::slot_realTimeData));
+
+    disconnect(line_plot_, static_cast<void (LinePlot::*)(double, double)>(&LinePlot::sig_absDeviation),
+               deviation_plot_, static_cast<void (DeviationPlot::*)(double, double)>(&DeviationPlot::slot_absDeviation));
+
+    disconnect(line_replot_, &LineReplot::sig_frmChanged, nullptr, nullptr);
+
+    signal_parser_thread_->quit();
+    signal_parser_thread_->wait();
+    signal_parser_thread_->deleteLater();
+    if (signal_parser_thread_)
+        signal_parser_thread_ = nullptr;
+    signal_parser_->deleteLater();
+    if (signal_parser_)
+        signal_parser_ = nullptr;
+
+    line_plot_thread_->quit();
+    line_plot_thread_->wait();
+    line_plot_thread_->deleteLater();
+    if (line_plot_thread_)
+        line_plot_thread_ = nullptr;
+    line_plot_->deleteLater();
+    if (line_plot_)
+        line_plot_ = nullptr;
+
+    line_replot_thread_->quit();
+    line_replot_thread_->wait();
+    line_replot_thread_->deleteLater();
+    if (line_replot_thread_)
+        line_replot_thread_ = nullptr;
+    line_replot_->deleteLater();
+    if (line_replot_)
+        line_replot_ = nullptr;
+
+    deviation_plot_thread_->quit();
+    deviation_plot_thread_->wait();
+    deviation_plot_thread_->deleteLater();
+    if (deviation_plot_thread_)
+        deviation_plot_thread_ = nullptr;
+    deviation_plot_->deleteLater();
+    if (deviation_plot_)
+        deviation_plot_ = nullptr;
+
+    deviation_replot_thread_->quit();
+    deviation_replot_thread_->wait();
+    deviation_replot_thread_->deleteLater();
+    if (deviation_replot_thread_)
+        deviation_replot_thread_ = nullptr;
+    deviation_replot_->deleteLater();
+    if (deviation_replot_)
+        deviation_replot_ = nullptr;
 }
 
 void SpeedViewDockWidget::slot_selectionChanged()
@@ -132,93 +238,43 @@ void SpeedViewDockWidget::slot_selectionChanged()
             item->setSelected(true);
             ui->plot->set_tracer_graph(graph);
             graph->setSelection(QCPDataSelection(graph->data()->dataRange()));
+
+            // 设置选中的图形的颜色
+            // graph->setPen(QPen(Qt::red, graph->pen().width())); // 保持原始宽度，改变颜色
         }
         else
         {
             item->setSelected(false);
+
+            // 可以在这里设置非选中状态下的默认颜色，如果需要
+            // if (0 == i)
+            //     graph->setPen(QPen(Qt::green, graph->pen().width())); // 恢复默认颜色
+            // else if (1 == i)
+            //     graph->setPen(QPen(Qt::blue, graph->pen().width())); // 恢复默认颜色
         }
     }
 }
 
-void SpeedViewDockWidget::slot_paint(bool enabled, const uint32_t msg_id, QList<Vector::DBC::Signal*>& sig_lst)
+void SpeedViewDockWidget::slot_paint(bool enabled, const uint32_t msg_id, QList<Vector::DBC::Signal>& sig_lst)
 {
     if (enabled)
     {
-        QCustomPlot* const plot = ui->plot;
+        addGraphs(ui->plot, msg_id, sig_lst);
+        addGraphs(ui->plot_2, msg_id, sig_lst);
 
-        addGraphs(msg_id, sig_lst);
+        connect(ui->plot->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot_2->xAxis, SLOT(setRange(QCPRange)));
 
-        signal_parser_ = new SignalParser(msg_id, sig_lst);
-        signal_parser_thread_ = new QThread;
-        signal_parser_->moveToThread(signal_parser_thread_);
-        signal_parser_thread_->start();
-        RecMsgThread* const rec_msg_thread = RecMsgThread::getInstance();
-        connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_Receive_Data*, const uint)>(&RecMsgThread::sig_newMsg),
-                signal_parser_, static_cast<void (SignalParser::*)(const ZCAN_Receive_Data*, const uint)>(&SignalParser::slot_newMsg));
-        connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&RecMsgThread::sig_newMsg),
-                signal_parser_, static_cast<void (SignalParser::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&SignalParser::slot_newMsg));
+        connect(ui->plot_2->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot->xAxis, SLOT(setRange(QCPRange)));
 
-        plotdata_ = new PlotData(plot);
-        plotdata_thread_ = new QThread;
-        plotdata_->moveToThread(plotdata_thread_);
-        plotdata_thread_->start();
-        qRegisterMetaType<QList<double>>("QList<double>");
-        connect(signal_parser_, static_cast<void (SignalParser::*)(const QList<double>)>(&SignalParser::sig_speed),
-                plotdata_, static_cast<void (PlotData::*)(const QList<double>)>(&PlotData::slot_realTimeData));
-        connect(signal_parser_, static_cast<void (SignalParser::*)(const QList<double>)>(&SignalParser::sig_pwm),
-                plotdata_, static_cast<void (PlotData::*)(const QList<double>)>(&PlotData::slot_realTimeData));
+        ui->plot_2->graph(0)->setChannelFillGraph(ui->plot_2->graph(1));
+        ui->plot_2->graph(0)->setBrush(QColor(0, 0, 255, 20));
+        ui->plot_2->legend->setVisible(false);
 
-        replot_ = new Replot(plot);
-        replot_thread_ = new QThread;
-        replot_->moveToThread(replot_thread_);
-        replot_thread_->start();
-
-        connect(replot_, &Replot::sig_frmChanged, this, [=] (const QString& msg) {
-            ui->labFps->setText(msg);
-        });
+        initThread(msg_id, sig_lst);
     }
     else
     {
-        RecMsgThread* const rec_msg_thread = RecMsgThread::getInstance();
-        disconnect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_Receive_Data*, const uint)>(&RecMsgThread::sig_newMsg),
-                signal_parser_, static_cast<void (SignalParser::*)(const ZCAN_Receive_Data*, const uint)>(&SignalParser::slot_newMsg));
-        disconnect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&RecMsgThread::sig_newMsg),
-                signal_parser_, static_cast<void (SignalParser::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&SignalParser::slot_newMsg));
-
-
-        disconnect(signal_parser_, static_cast<void (SignalParser::*)(const QList<double>)>(&SignalParser::sig_speed),
-                plotdata_, static_cast<void (PlotData::*)(const QList<double>)>(&PlotData::slot_realTimeData));
-        disconnect(signal_parser_, static_cast<void (SignalParser::*)(const QList<double>)>(&SignalParser::sig_pwm),
-                plotdata_, static_cast<void (PlotData::*)(const QList<double>)>(&PlotData::slot_realTimeData));
-
-        disconnect(replot_, &Replot::sig_frmChanged, nullptr, nullptr);
-
-        signal_parser_thread_->quit();
-        signal_parser_thread_->wait();
-        signal_parser_thread_->deleteLater();
-        if (signal_parser_thread_)
-            signal_parser_thread_ = nullptr;
-        signal_parser_->deleteLater();
-        if (signal_parser_)
-            signal_parser_ = nullptr;
-
-        plotdata_thread_->quit();
-        plotdata_thread_->wait();
-        plotdata_thread_->deleteLater();
-        if (plotdata_thread_)
-            plotdata_thread_ = nullptr;
-        plotdata_->deleteLater();
-        if (plotdata_)
-            plotdata_ = nullptr;
-
-        replot_thread_->quit();
-        replot_thread_->wait();
-        replot_thread_->deleteLater();
-        if (replot_thread_)
-            replot_thread_ = nullptr;
-        replot_->deleteLater();
-        if (replot_)
-            replot_ = nullptr;
+        destroyThread();
     }
 }
 

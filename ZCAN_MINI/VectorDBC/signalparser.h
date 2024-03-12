@@ -15,11 +15,10 @@ class SignalParser : public QObject
     Q_OBJECT
 
 public:
-    explicit SignalParser(const uint32_t msg_id, QList<Vector::DBC::Signal*>& sig_lst);
+    explicit SignalParser(const uint32_t msg_id, QList<Vector::DBC::Signal> sig_lst);
 
 signals:
     void sig_speed(const QList<double> vals);
-    void sig_pwm(const QList<double> vals);
 
 public slots:
     void slot_newMsg(const ZCAN_Receive_Data* can_data, const uint len);
@@ -27,7 +26,7 @@ public slots:
 
 private:
     const uint32_t msg_id_;
-    const QList<Vector::DBC::Signal*> sig_lst_;
+    const QList<Vector::DBC::Signal> sig_lst_;
 };
 
 #endif // SIGNALPARSER_H

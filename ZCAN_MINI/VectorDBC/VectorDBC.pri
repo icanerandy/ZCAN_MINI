@@ -7,3 +7,9 @@ mingw {
 msvc {
     LIBS += -L$$PWD/lib -lVector_DBC
 }
+
+HEADERS += \
+    $$PWD/signalparser.h
+
+SOURCES += \
+    $$PWD/signalparser.cpp

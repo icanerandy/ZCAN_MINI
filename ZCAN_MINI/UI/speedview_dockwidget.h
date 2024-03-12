@@ -12,8 +12,10 @@
 #include "zlgcan.h"
 #include "Vector/DBC.h"
 #include "qcustomplot.h"
-#include "plotdata.h"
-#include "replot.h"
+#include "lineplot.h"
+#include "linereplot.h"
+#include "deviationplot.h"
+#include "deviationreplot.h"
 #include "distribution_dialog.h"
 
 #include "xlsxdocument.h"
@@ -38,27 +40,33 @@ public:
     ~SpeedViewDockWidget();
 
 private:
-    void addGraphs(const uint32_t msg_id, QList<Vector::DBC::Signal*>& sig_lst);
+    void initPlot(QCustomPlot* const plot);
+    void addGraphs(QCustomPlot* const plot, const uint32_t msg_id, QList<Vector::DBC::Signal>& sig_lst);
+    void initThread(const uint32_t msg_id, QList<Vector::DBC::Signal>& sig_lst);
+    void destroyThread();
 
 public slots:
     void slot_selectionChanged();
-    void slot_paint(bool enabled, const uint32_t msg_id, QList<Vector::DBC::Signal*>& sig_lst);
+    void slot_paint(bool enabled, const uint32_t msg_id, QList<Vector::DBC::Signal>& sig_lst);
     void slot_actDisPic_triggered();
     bool slot_actSavePic_triggered();
     void slot_actSaveExcel_triggered();
 
 private:
     Ui::SpeedViewDockWidget* const ui;
-    PlotData* plot_thread_;
     DistributionDialog* distribution_dialog_;
 
     SignalParser* signal_parser_;
-    PlotData* plotdata_;
-    Replot* replot_;
+    LinePlot* line_plot_;
+    LineReplot* line_replot_;
+    DeviationPlot* deviation_plot_;
+    DeviationReplot* deviation_replot_;
 
     QThread* signal_parser_thread_;
-    QThread* plotdata_thread_;
-    QThread* replot_thread_;
+    QThread* line_plot_thread_;
+    QThread* line_replot_thread_;
+    QThread* deviation_plot_thread_;
+    QThread* deviation_replot_thread_;
 };
 
 #endif // PLOT_DOCKWIDGET_H

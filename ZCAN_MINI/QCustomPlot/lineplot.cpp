@@ -1,13 +1,16 @@
-﻿#include "plotdata.h"
+﻿#include "lineplot.h"
 
-PlotData::PlotData(QCustomPlot* const plot)
+LinePlot::LinePlot(QCustomPlot* const plot)
     : plot_(plot)
 {
 
 }
 
-void PlotData::slot_realTimeData(const QList<double> vals)
+void LinePlot::slot_realTimeData(const QList<double> vals)
 {
+    if (!plot_)
+        return;
+
     static int count = 0;
 
     // 假设的时间戳，以微秒为单位
@@ -15,6 +18,8 @@ void PlotData::slot_realTimeData(const QList<double> vals)
     // double key = static_cast<double>(timestamp_us) / 1000000.0;
 
     double key = QDateTime::currentMSecsSinceEpoch() / 1000.0;
+    // emit sig_absDeviation(key, vals.at(1) - vals.at(2));
+    emit sig_absDeviation( key, static_cast<double>(qrand() % 10) - static_cast<double>(qrand() % 10) );
 
     QVector<QCPGraphData>* data = nullptr;
     for (int i = 0; i < plot_->graphCount(); ++i)

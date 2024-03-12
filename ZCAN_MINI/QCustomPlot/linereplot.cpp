@@ -1,13 +1,13 @@
-﻿#include "replot.h"
+﻿#include "linereplot.h"
 
-Replot::Replot(QCustomPlot* const plot) :
+LineReplot::LineReplot(QCustomPlot* const plot) :
     plot_(plot)
 {
     connect(&timer_, SIGNAL(timeout()), this, SLOT(replotData()));
     timer_.start(0);
 }
 
-void Replot::replotData()
+void LineReplot::replotData()
 {
     double key = 0;
     if (plot_->graphCount() > 0 && plot_->graph(0)->dataCount() > 0)

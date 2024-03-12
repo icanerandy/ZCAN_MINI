@@ -12,13 +12,17 @@ msvc {
 }
 
 HEADERS += \
+    $$PWD/deviationplot.h \
+    $$PWD/deviationreplot.h \
+    $$PWD/lineplot.h \
+    $$PWD/linereplot.h \
     $$PWD/myplot.h \
-    $$PWD/plotdata.h \
-    $$PWD/qcustomplot.h \
-    $$PWD/replot.h
+    $$PWD/qcustomplot.h
 
 SOURCES += \
+    $$PWD/deviationplot.cpp \
+    $$PWD/deviationreplot.cpp \
+    $$PWD/lineplot.cpp \
+    $$PWD/linereplot.cpp \
     $$PWD/myplot.cpp \
-    $$PWD/plotdata.cpp \
-    $$PWD/qcustomplot.cpp \
-    $$PWD/replot.cpp
+    $$PWD/qcustomplot.cpp
