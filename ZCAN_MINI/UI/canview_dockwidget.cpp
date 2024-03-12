@@ -39,15 +39,15 @@ void CanViewDockWidget::bindSignals()
     qRegisterMetaType<QVector<int>>("QVector<int>");
     connect(option_dialog, &CanViewOptionDialog::sig_visibleCol_changed, canframe_tablemodel, &CanFrameTableModel::slot_visibleCol_changed);
 
-    connect(&timer_, &QTimer::timeout, this, [=] {
-        if (scroll_enabled_)
-        {
-            scroll_enabled_ = false;
-            ui->tableView->scrollToBottom();
-        }
-    });
-    timer_.start(30);
-    connect(canframe_tablemodel, &CanFrameTableModel::dataChanged, this, [=] {
-        scroll_enabled_ = true;
-    });
+    // connect(&timer_, &QTimer::timeout, this, [=] {
+    //     if (scroll_enabled_)
+    //     {
+    //         scroll_enabled_ = false;
+    //         ui->tableView->scrollToBottom();
+    //     }
+    // });
+    // timer_.start(30);
+    // connect(canframe_tablemodel, &CanFrameTableModel::dataChanged, this, [=] {
+    //     scroll_enabled_ = true;
+    // });
 }

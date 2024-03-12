@@ -17,6 +17,7 @@ public:
     explicit LineReplot(QCustomPlot* const plot);
 
 signals:
+    void sig_replot();
     void sig_frmChanged(const QString& msg);
 
 private slots:

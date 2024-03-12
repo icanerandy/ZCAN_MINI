@@ -11,7 +11,10 @@ class DeviationReplot : public QObject
 public:
     explicit DeviationReplot(QCustomPlot* plot);
 
-private slots:
+Q_SIGNALS:
+    void sig_replot();
+
+private Q_SLOTS:
     void replotData(); // 定时重绘
 
 private:

@@ -41,7 +41,7 @@ public:
 
 private:
     void initPlot(QCustomPlot* const plot);
-    void addGraphs(QCustomPlot* const plot, const uint32_t msg_id, QList<Vector::DBC::Signal>& sig_lst);
+    void addGraphs(QCustomPlot* const plot, QList<Vector::DBC::Signal>& sig_lst);
     void initThread(const uint32_t msg_id, QList<Vector::DBC::Signal>& sig_lst);
     void destroyThread();
 

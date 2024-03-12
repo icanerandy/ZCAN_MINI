@@ -11,8 +11,15 @@ SpeedViewDockWidget::SpeedViewDockWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->plot->setOpenGl(true);
+    qDebug() << "plot OpenGl开启状态: " << ui->plot->openGl();
+
     initPlot(ui->plot);
     initPlot(ui->plot_2);
+
+    ui->plot_2->legend->setVisible(false);
+    connect(ui->plot->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot_2->xAxis, SLOT(setRange(QCPRange)));
+    connect(ui->plot_2->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot->xAxis, SLOT(setRange(QCPRange)));
 }
 
 SpeedViewDockWidget::~SpeedViewDockWidget()
@@ -25,8 +32,6 @@ SpeedViewDockWidget::~SpeedViewDockWidget()
 
 void SpeedViewDockWidget::initPlot(QCustomPlot* const plot)
 {
-    plot->setOpenGl(true);
-    // qDebug() << "plot OpenGl开启状态: " << plot->openGl();
     // plot->setNoAntialiasingOnDrag(true);
 
     // 使用框选
@@ -76,14 +81,14 @@ void SpeedViewDockWidget::initPlot(QCustomPlot* const plot)
                           QCP::iSelectLegend | QCP::iSelectPlottables);
 }
 
-void SpeedViewDockWidget::addGraphs(QCustomPlot* const plot, const uint32_t msg_id, QList<Vector::DBC::Signal>& sig_lst)
+void SpeedViewDockWidget::addGraphs(QCustomPlot* const plot, QList<Vector::DBC::Signal>& sig_lst)
 {
     if (0 == plot->graphCount())
     {
         plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
-        QColor color(Qt::blue);
-        QPen pen(color.lighter(75));
-        pen.setWidth(1);
+        QColor color("#A52A2A");    // 浅褐色
+        QPen pen(color.lighter());
+        pen.setWidthF(1.5);
         plot->graph()->setLineStyle(QCPGraph::lsLine);
         // plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 3));
         plot->graph()->setPen(pen);
@@ -92,9 +97,9 @@ void SpeedViewDockWidget::addGraphs(QCustomPlot* const plot, const uint32_t msg_
         plot->graph()->rescaleAxes();
 
         plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
-        QColor color1(Qt::red);
-        QPen pen1(color1.lighter(75));
-        pen1.setWidth(1);
+        QColor color1("#87CEEB");   // 天蓝色
+        QPen pen1(color1.darker(120));
+        pen1.setWidthF(1.5);
         plot->graph()->setLineStyle(QCPGraph::lsLine);
         // plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 3));
         plot->graph()->setPen(pen1);
@@ -129,18 +134,23 @@ void SpeedViewDockWidget::initThread(const uint32_t msg_id, QList<Vector::DBC::S
     line_replot_ = new LineReplot(ui->plot);
     line_replot_thread_ = new QThread;
     line_replot_->moveToThread(line_replot_thread_);
+    connect(line_replot_, static_cast<void (LineReplot::*)(void)>(&LineReplot::sig_replot),
+            this, [=] { ui->plot->replot(QCustomPlot::rpQueuedReplot); });
     line_replot_thread_->start();
 
     deviation_plot_ = new DeviationPlot(ui->plot_2);
     deviation_plot_thread_ = new QThread;
     deviation_plot_->moveToThread(deviation_plot_thread_);
     deviation_plot_thread_->start();
+
     connect(line_plot_, static_cast<void (LinePlot::*)(double, double)>(&LinePlot::sig_absDeviation),
             deviation_plot_, static_cast<void (DeviationPlot::*)(double, double)>(&DeviationPlot::slot_absDeviation));
 
     deviation_replot_ = new DeviationReplot(ui->plot_2);
     deviation_replot_thread_ = new QThread;
     deviation_replot_->moveToThread(deviation_replot_thread_);
+    connect(deviation_replot_, static_cast<void (DeviationReplot::*)(void)>(&DeviationReplot::sig_replot),
+            this, [=] { ui->plot_2->replot(QCustomPlot::rpQueuedReplot); });
     deviation_replot_thread_->start();
 
     connect(line_replot_, &LineReplot::sig_frmChanged, this, [=] (const QString& msg) {
@@ -259,16 +269,11 @@ void SpeedViewDockWidget::slot_paint(bool enabled, const uint32_t msg_id, QList<
 {
     if (enabled)
     {
-        addGraphs(ui->plot, msg_id, sig_lst);
-        addGraphs(ui->plot_2, msg_id, sig_lst);
-
-        connect(ui->plot->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot_2->xAxis, SLOT(setRange(QCPRange)));
-
-        connect(ui->plot_2->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot->xAxis, SLOT(setRange(QCPRange)));
+        addGraphs(ui->plot, sig_lst);
+        addGraphs(ui->plot_2, sig_lst);
 
         ui->plot_2->graph(0)->setChannelFillGraph(ui->plot_2->graph(1));
         ui->plot_2->graph(0)->setBrush(QColor(0, 0, 255, 20));
-        ui->plot_2->legend->setVisible(false);
 
         initThread(msg_id, sig_lst);
     }

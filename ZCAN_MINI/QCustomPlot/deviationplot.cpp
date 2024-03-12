@@ -15,14 +15,14 @@ void DeviationPlot::slot_absDeviation(double key, double abs_deviation)
 {
     static int count = 0;
 
-    QVector<QCPGraphData>* data = nullptr;
+    // QVector<QCPGraphData>* data = nullptr;
 
-    data = plot_->graph(0)->data()->coreData();
-    data->push_back(QCPGraphData( key, abs_deviation ));
-    data = plot_->graph(1)->data()->coreData();
-    data->push_back(QCPGraphData( key, 0 ));
+    // data = plot_->graph(0)->data()->coreData();
+    // data->push_back(QCPGraphData( key, abs_deviation ));
+    // data = plot_->graph(1)->data()->coreData();
+    // data->push_back(QCPGraphData( key, 0 ));
 
-    // bars_->addData(key, abs_deviation);
+    bars_->addData(key, abs_deviation);
 
     if (count == 0)
     {
