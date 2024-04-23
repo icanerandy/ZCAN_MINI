@@ -265,9 +265,10 @@ bool DeviceManager::openDevice()
                 canframe_table_model, static_cast<void (CanFrameTableModel::*)(const ZCAN_Receive_Data*, const uint)>(&CanFrameTableModel::slot_newMsg));
         connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&RecMsgThread::sig_newMsg),
                 canframe_table_model, static_cast<void (CanFrameTableModel::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&CanFrameTableModel::slot_newMsg));
-        canframe_table_thread_ = new QThread;
-        canframe_table_model->moveToThread(canframe_table_thread_);
-        canframe_table_thread_->start();
+        // 此处如果将其移入子线程执行，则会出现数据竞争问题，十分严重！！！
+        // canframe_table_thread_ = new QThread;
+        // canframe_table_model->moveToThread(canframe_table_thread_);
+        // canframe_table_thread_->start();
 
         rec_msg_thread->start();
         rec_msg_thread->beginThread();

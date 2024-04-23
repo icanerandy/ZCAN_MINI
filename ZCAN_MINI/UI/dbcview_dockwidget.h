@@ -27,27 +27,23 @@ public:
     explicit DBCViewDockWidget(QWidget *parent = 0);
     ~DBCViewDockWidget();
 
-private:
-    void showSignals();
-
 private slots:
+    void slot_currentChanged(const QModelIndex &current, const QModelIndex &previous);
+    void slot_itemCheckStatChanged(QStandardItem* item);
     void slot_btnReadDBC_clicked();
 
 signals:
-    void sig_paint(bool enabled, const uint32_t msg_id, QList<Vector::DBC::Signal>& sig_lst);
+    void sig_sigChecked(QList<QPair<uint32_t, Vector::DBC::Signal>> sig_lst);
 
 private:
     Ui::DBCViewDockWidget * const ui;
 
-    QStandardItemModel* const message_model_;
-    QStandardItemModel* const signal_model_;
+    QStandardItemModel* const tree_model_;
     QItemSelectionModel* const item_selection_model_;
-
-    bool paint_enabled_;
+    QStandardItemModel* const table_model_;
 
     Vector::DBC::Network network_;
-    Vector::DBC::Message msg_;
-    QList<Vector::DBC::Signal> sig_lst_;
+    QList<QPair<uint32_t, Vector::DBC::Signal>> sig_lst_;
 };
 
 #endif // DBCPARSER_DOCKWIDGET_H

@@ -7,6 +7,8 @@
 
 #include <QDockWidget>
 #include <QTimer>
+#include <QItemSelectionModel>
+#include "qtmaterialraisedbutton.h"
 #include "canframe_tablemodel.h"
 #include "recmsg_thread.h"
 #include "canviewoption_dialog.h"

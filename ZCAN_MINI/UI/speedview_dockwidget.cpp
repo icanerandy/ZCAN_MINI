@@ -7,19 +7,165 @@ SpeedViewDockWidget::SpeedViewDockWidget(QWidget *parent) :
     distribution_dialog_(new DistributionDialog(this)),
     signal_parser_(nullptr),
     line_plot_(nullptr),
-    line_replot_(nullptr)
+    line_replot_(nullptr),
+    deviation_plot_(nullptr),
+    deviation_replot_(nullptr),
+    default_deviation_value_(100)
 {
     ui->setupUi(this);
+    int max_height = 35;
 
-    ui->plot->setOpenGl(true);
-    qDebug() << "plot OpenGl开启状态: " << ui->plot->openGl();
+    QColor color("#607D8B");
+    ui->btnPaint->setBackgroundColor(color);
+    ui->btnPaint->setFixedHeight(max_height);
+    ui->btnClear->setBackgroundColor(color);
+    ui->btnClear->setFixedHeight(max_height);
+    ui->btnDis->setBackgroundColor(color);
+    ui->btnDis->setFixedHeight(max_height);
+    ui->btnDeviation->setBackgroundColor(color);
+    ui->btnDeviation->setFixedHeight(max_height);
+    ui->btnSavePic->setBackgroundColor(color);
+    ui->btnSavePic->setFixedHeight(max_height);
+    ui->btnSaveExcel->setBackgroundColor(color);
+    ui->btnSaveExcel->setFixedHeight(max_height);
+    ui->btnWidth->setBackgroundColor(color);
+    ui->btnWidth->setFixedHeight(max_height);
+    ui->btnOpenGL->setBackgroundColor(color);
+    ui->btnOpenGL->setFixedHeight(max_height);
+    ui->btnDisEnable->setBackgroundColor(color);
+    ui->btnDisEnable->setFixedHeight(max_height);
+
+    ui->spinDeviation->setMaximumHeight(max_height);
+    ui->spinWidth->setMaximumHeight(max_height);
+
+    ui->btnPaint->setCheckable(true);
+    ui->btnPaint->setChecked(false);
+    ui->btnPaint->setEnabled(false);
+
+    connect(ui->btnPaint, &QPushButton::clicked, this, [this] {
+        static bool paint_enable = true;
+        if (paint_enable)
+        {
+            ui->btnPaint->setChecked(true);
+            ui->btnPaint->setText(QStringLiteral("停止绘图"));
+        }
+        else
+        {
+            ui->btnPaint->setChecked(false);
+            if (sig_lst_.size() != 2)
+                ui->btnPaint->setEnabled(false);
+            ui->btnPaint->setText(QStringLiteral("开始绘图"));
+        }
+        slot_btnPaint_clicked(paint_enable);
+        paint_enable = !paint_enable;
+    });
+
+    connect(ui->btnDis, &QPushButton::clicked, this, [this] {
+        //slot_btnShowDis(ui->dis_plot);
+    });
+
+    connect(ui->btnClear, &QPushButton::clicked, this, &SpeedViewDockWidget::slot_clearData);
+
+    connect(ui->btnDeviation, &QPushButton::clicked, this, [this] {
+        double value = ui->spinDeviation->value();
+        slot_disSigVal_changed(value);
+    });
+
+    connect(ui->btnSavePic, &QPushButton::clicked, this, &SpeedViewDockWidget::slot_btnSavePic_clicked);
+
+    connect(ui->btnSaveExcel, &QPushButton::clicked, this, &SpeedViewDockWidget::slot_btnSaveExcel_clicked);
+
+    connect(ui->btnOpenGL, &QtMaterialRaisedButton::clicked, this, [=] {
+        static bool state = true;
+        if (state)
+            ui->btnOpenGL->setText(QStringLiteral("关闭显卡加速"));
+        else
+            ui->btnOpenGL->setText(QStringLiteral("开启显卡加速"));
+
+        ui->plot->setOpenGl(state);
+        state = !state;
+    });
+
+    connect(ui->btnAntialiase, &QtMaterialRaisedButton::clicked, this, [=] {
+        static bool is_antialiase = true;
+        if (is_antialiase)
+            ui->btnAntialiase->setText(QStringLiteral("关闭抗锯齿"));
+        else
+            ui->btnAntialiase->setText(QStringLiteral("开启抗锯齿"));
+
+        ui->plot->graph(0)->setAntialiased(is_antialiase);
+        ui->plot->graph(1)->setAntialiased(is_antialiase);
+        is_antialiase = !is_antialiase;
+    });
+
+    connect(ui->btnDisEnable, &QtMaterialRaisedButton::clicked, this, [=] {
+        static bool is_showing = true;
+        if (is_showing)
+        {
+            ui->btnDisEnable->setText(QStringLiteral("显示误差图"));
+            if (deviation_replot_)
+                deviation_replot_->pause();
+        }
+        else
+        {
+            ui->btnDisEnable->setText(QStringLiteral("隐藏误差图"));
+            if (deviation_replot_)
+                deviation_replot_->start();
+        }
+
+        ui->plot_2->setVisible(!is_showing);
+        ui->plot_2->replot(QCustomPlot::rpQueuedReplot);
+        is_showing = !is_showing;
+    });
+
+    connect(ui->btnWidth, &QtMaterialRaisedButton::clicked, this, [=] {
+        if (ui->plot->graphCount() == 0)
+            return;
+
+        double width = ui->spinWidth->value();
+
+        QColor color("#A52A2A");    // 浅褐色
+        QPen pen(color.lighter());
+        pen.setWidthF(width);
+        ui->plot->graph(0)->setPen(pen);
+
+        QColor color1("#87CEEB");   // 天蓝色
+        pen.setColor(color1.darker(120));
+        ui->plot->graph(1)->setPen(pen);
+        ui->plot->replot(QCustomPlot::rpQueuedReplot);
+    });
+
+    ui->plot->setNoAntialiasingOnDrag(true);
+    ui->plot_2->setNoAntialiasingOnDrag(true);
 
     initPlot(ui->plot);
     initPlot(ui->plot_2);
 
+    QCPBars* bars = new QCPBars(ui->plot_2->xAxis, ui->plot_2->yAxis);
+    bars->setWidthType(QCPBars::wtAbsolute);
+    bars->setPen(QPen("#CC8F2D"));
+    bars->setBrush(QBrush("#CC8F2D"));
+
+    QCPBars* bars_exception = new QCPBars(ui->plot_2->xAxis, ui->plot_2->yAxis);
+    bars_exception->setWidthType(QCPBars::wtAbsolute);
+    bars_exception->setPen(QPen("#EB4530"));
+    bars_exception->setBrush(QBrush("#EB4530"));
+    bars_exception->setLayer("overlay");
+
+    // bars->setAntialiased(true);    // 设置柱状图抗锯齿
+
     ui->plot_2->legend->setVisible(false);
+
     connect(ui->plot->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot_2->xAxis, SLOT(setRange(QCPRange)));
     connect(ui->plot_2->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot->xAxis, SLOT(setRange(QCPRange)));
+    connect(ui->plot_2->xAxis, static_cast<void (QCPAxis::*)(const QCPRange &)>(&QCPAxis::rangeChanged),
+            this, [=]() {
+                double currentScale = ui->plot_2->xAxis->range().size();
+                double barWidth = qMax(currentScale / 1000, 10e-3);; // 更新barWidth基于当前缩放比例
+                bars->setWidth(barWidth);
+                bars_exception->setWidth(barWidth);
+                ui->plot_2->replot(QCustomPlot::rpQueuedReplot);
+    });
 }
 
 SpeedViewDockWidget::~SpeedViewDockWidget()
@@ -32,8 +178,6 @@ SpeedViewDockWidget::~SpeedViewDockWidget()
 
 void SpeedViewDockWidget::initPlot(QCustomPlot* const plot)
 {
-    // plot->setNoAntialiasingOnDrag(true);
-
     // 使用框选
     plot->selectionRect()->setPen(QPen(Qt::black,1,Qt::DashLine));//设置选框的样式：虚线
     plot->selectionRect()->setBrush(QBrush(QColor(0,0,100,50)));//设置选框的样式：半透明浅蓝
@@ -44,12 +188,21 @@ void SpeedViewDockWidget::initPlot(QCustomPlot* const plot)
     date_tick->setDateTimeSpec(Qt::LocalTime);
     // date_tick->setDateTimeSpec(Qt::UTC);
 
-    date_tick->setDateTimeFormat("hh:mm:ss.zzz");
+    date_tick->setDateTimeFormat("mm:ss.zzz");
     plot->xAxis->setTicker(date_tick);
+    QFont font;
+    font.setPixelSize(10);
+    font.setFamily("微软雅黑");
+    plot->xAxis->setTickLabelFont(font);
+    plot->yAxis->setTickLabelFont(font);
     plot->xAxis->ticker()->setTickOrigin(0);//设置刻度原点
-    plot->xAxis->ticker()->setTickCount(20);
+    plot->xAxis->ticker()->setTickCount(10);
     plot->xAxis->ticker()->setTickStepStrategy(QCPAxisTicker::tssReadability);//可读性优于设置
-    plot->xAxis->setTickLabelRotation(35);
+
+    plot->xAxis->setLabel("时间 mm:ss.zzz");
+    plot->yAxis->setLabel("km/h");
+    plot->xAxis->setLabelFont(font);
+    plot->yAxis->setLabelFont(font);
 
     // 边框右侧和上侧均显示刻度线，但不显示刻度值
     plot->xAxis->setVisible(true);
@@ -58,16 +211,46 @@ void SpeedViewDockWidget::initPlot(QCustomPlot* const plot)
     plot->yAxis->setVisible(true);
     plot->yAxis2->setVisible(true);
     plot->yAxis2->setTickLabels(false);
-    plot->yAxis->setRangeUpper(10000);
-    plot->yAxis->setRangeLower(-10000);
+    plot->yAxis->setRangeUpper(1000);
+    plot->yAxis->setRangeLower(-1000);
 
-    // plot->axisRect()->setRangeZoomFactor(1, 2.2);
+    // 设置坐标轴及其标签选中颜色
+    plot->xAxis->setSelectedTickLabelFont(font);
+    plot->xAxis->setSelectedTickLabelColor(QColor(0, 0, 255, 255));
+    plot->yAxis->setSelectedTickLabelFont(font);
+    plot->yAxis->setSelectedTickLabelColor(QColor(0, 0, 255, 255));
+
     plot->axisRect()->setBackground(QBrush(QColor(255, 255, 255, 255))); // 设置背景颜色
 
     // 使上下两个X轴的范围总是相等，使左右两个Y轴的范围总是相等
     qRegisterMetaType<QCPRange>("QCPRange");
     connect(plot->xAxis, SIGNAL(rangeChanged(QCPRange)), plot->xAxis2, SLOT(setRange(QCPRange)));
     connect(plot->yAxis, SIGNAL(rangeChanged(QCPRange)), plot->yAxis2, SLOT(setRange(QCPRange)));
+
+    // 坐标轴刻度缩放
+    connect(ui->plot->xAxis, static_cast<void (QCPAxis::*)(const QCPRange &)>(&QCPAxis::rangeChanged),
+            [this, date_tick](const QCPRange &range) {
+        double rangeSize = range.size(); // 获得当前x轴的范围大小
+
+        if (rangeSize > 86400) { // 大于一天
+            date_tick->setDateTimeFormat("yyyy-MM-dd");
+            ui->plot->xAxis->setLabel("时间 yyyy-MM-dd");
+        } else if (rangeSize > 3600) { // 大于一小时
+            date_tick->setDateTimeFormat("MM-dd HH:mm");
+            ui->plot->xAxis->setLabel("时间 MM-dd HH:mm");
+        } else if (rangeSize > 60) { // 大于一分钟
+            date_tick->setDateTimeFormat("HH:mm:ss");
+            ui->plot->xAxis->setLabel("时间 HH:mm:ss");
+        } else { // 一分钟以内
+            date_tick->setDateTimeFormat("mm:ss.zzz");
+            ui->plot->xAxis->setLabel("时间 mm:ss.zzz");
+        }
+
+        if (ui->plot->graphCount() == 0)
+            return;
+        ui->plot->replot(QCustomPlot::rpQueuedReplot); // 重新绘制以应用新的格式
+    });
+
 
     // 设置图例
     plot->legend->setVisible(true); // 设置图例可见
@@ -81,29 +264,33 @@ void SpeedViewDockWidget::initPlot(QCustomPlot* const plot)
                           QCP::iSelectLegend | QCP::iSelectPlottables);
 }
 
-void SpeedViewDockWidget::addGraphs(QCustomPlot* const plot, QList<Vector::DBC::Signal>& sig_lst)
+void SpeedViewDockWidget::addGraphs(QCustomPlot* const plot)
 {
     if (0 == plot->graphCount())
     {
         plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
         QColor color("#A52A2A");    // 浅褐色
         QPen pen(color.lighter());
-        pen.setWidthF(1.5);
+        pen.setWidthF(1);   // 宽度超过1性能急剧下降
         plot->graph()->setLineStyle(QCPGraph::lsLine);
         // plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 3));
         plot->graph()->setPen(pen);
-        plot->graph()->setName(QString::fromStdString(sig_lst.at(0).name));//曲线名称
+        plot->graph()->setName(QString::fromStdString(sig_lst_.at(0).second.name));//曲线名称
+
+        plot->graph()->setAntialiased(false);   // 设置曲线无抗锯齿
 
         plot->graph()->rescaleAxes();
 
         plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
         QColor color1("#87CEEB");   // 天蓝色
         QPen pen1(color1.darker(120));
-        pen1.setWidthF(1.5);
+        pen1.setWidthF(1);   // 宽度超过1性能急剧下降
         plot->graph()->setLineStyle(QCPGraph::lsLine);
         // plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 3));
         plot->graph()->setPen(pen1);
-        plot->graph()->setName(QString::fromStdString(sig_lst.at(1).name));//曲线名称
+        plot->graph()->setName(QString::fromStdString(sig_lst_.at(1).second.name));//曲线名称
+
+        plot->graph()->setAntialiased(false);   // 设置曲线抗锯齿
 
         plot->graph()->rescaleAxes(true);
 
@@ -111,9 +298,9 @@ void SpeedViewDockWidget::addGraphs(QCustomPlot* const plot, QList<Vector::DBC::
     }
 }
 
-void SpeedViewDockWidget::initThread(const uint32_t msg_id, QList<Vector::DBC::Signal>& sig_lst)
+void SpeedViewDockWidget::initThread()
 {
-    signal_parser_ = new SignalParser(msg_id, sig_lst);
+    signal_parser_ = new SignalParser(sig_lst_);
     signal_parser_thread_ = new QThread;
     signal_parser_->moveToThread(signal_parser_thread_);
     signal_parser_thread_->start();
@@ -169,9 +356,6 @@ void SpeedViewDockWidget::destroyThread()
     disconnect(signal_parser_, static_cast<void (SignalParser::*)(const QList<double>)>(&SignalParser::sig_speed),
                line_plot_, static_cast<void (LinePlot::*)(const QList<double>)>(&LinePlot::slot_realTimeData));
 
-    disconnect(line_plot_, static_cast<void (LinePlot::*)(double, double)>(&LinePlot::sig_absDeviation),
-               deviation_plot_, static_cast<void (DeviationPlot::*)(double, double)>(&DeviationPlot::slot_absDeviation));
-
     disconnect(line_replot_, &LineReplot::sig_frmChanged, nullptr, nullptr);
 
     signal_parser_thread_->quit();
@@ -198,8 +382,6 @@ void SpeedViewDockWidget::destroyThread()
     if (line_replot_thread_)
         line_replot_thread_ = nullptr;
     line_replot_->deleteLater();
-    if (line_replot_)
-        line_replot_ = nullptr;
 
     deviation_plot_thread_->quit();
     deviation_plot_thread_->wait();
@@ -220,21 +402,69 @@ void SpeedViewDockWidget::destroyThread()
         deviation_replot_ = nullptr;
 }
 
+void SpeedViewDockWidget::slot_paint_enable(QList<QPair<uint32_t, Vector::DBC::Signal>> sig_lst)
+{
+    qDebug() << "判断是否为深拷贝";
+    sig_lst_ = sig_lst;
+
+    if (ui->btnPaint->isChecked())  // 正在绘制图像时不改变check状态
+        return;
+
+    if (!ui->btnPaint->isEnabled() && sig_lst_.size() == 2)
+        ui->btnPaint->setEnabled(true);
+    else
+        ui->btnPaint->setEnabled(false);
+}
+
 void SpeedViewDockWidget::slot_selectionChanged()
 {
-    // make top and bottom axes be selected synchronously, and handle axis and tick labels as one selectable object:
-    if (ui->plot->xAxis->selectedParts().testFlag(QCPAxis::spAxis) || ui->plot->xAxis->selectedParts().testFlag(QCPAxis::spTickLabels) ||
-        ui->plot->xAxis2->selectedParts().testFlag(QCPAxis::spAxis) || ui->plot->xAxis2->selectedParts().testFlag(QCPAxis::spTickLabels))
+    ui->plot->xAxis2->setSelectableParts(QCPAxis::spNone);
+    ui->plot_2->xAxis2->setSelectableParts(QCPAxis::spNone);
+    ui->plot->yAxis2->setSelectableParts(QCPAxis::spNone);
+    ui->plot_2->yAxis2->setSelectableParts(QCPAxis::spNone);
+
+    if ((!ui->plot->xAxis->selectedParts().testFlag(QCPAxis::spAxis) || !ui->plot->xAxis->selectedParts().testFlag(QCPAxis::spTickLabels)) &&
+         ui->plot_2->xAxis->selectedParts().testFlag(QCPAxis::spAxis) && ui->plot_2->xAxis->selectedParts().testFlag(QCPAxis::spTickLabels))
     {
-        ui->plot->xAxis2->setSelectedParts(QCPAxis::spAxis|QCPAxis::spTickLabels);
-        ui->plot->xAxis->setSelectedParts(QCPAxis::spAxis|QCPAxis::spTickLabels);
+        ui->plot->xAxis->setSelectedParts(QCPAxis::spNone);
+        ui->plot_2->xAxis->setSelectedParts(QCPAxis::spNone);
     }
-    // make left and right axes be selected synchronously, and handle axis and tick labels as one selectable object:
-    if (ui->plot->yAxis->selectedParts().testFlag(QCPAxis::spAxis) || ui->plot->yAxis->selectedParts().testFlag(QCPAxis::spTickLabels) ||
-        ui->plot->yAxis2->selectedParts().testFlag(QCPAxis::spAxis) || ui->plot->yAxis2->selectedParts().testFlag(QCPAxis::spTickLabels))
+    else if (ui->plot->xAxis->selectedParts().testFlag(QCPAxis::spAxis) && ui->plot->xAxis->selectedParts().testFlag(QCPAxis::spTickLabels) &&
+            (!ui->plot_2->xAxis->selectedParts().testFlag(QCPAxis::spAxis) || !ui->plot_2->xAxis->selectedParts().testFlag(QCPAxis::spTickLabels)))
     {
-        ui->plot->yAxis2->setSelectedParts(QCPAxis::spAxis|QCPAxis::spTickLabels);
+        ui->plot->xAxis->setSelectedParts(QCPAxis::spNone);
+        ui->plot_2->xAxis->setSelectedParts(QCPAxis::spNone);
+    }
+    else if (ui->plot->xAxis->selectedParts().testFlag(QCPAxis::spAxis) || ui->plot->xAxis->selectedParts().testFlag(QCPAxis::spTickLabels) ||
+        ui->plot_2->xAxis->selectedParts().testFlag(QCPAxis::spAxis) || ui->plot_2->xAxis->selectedParts().testFlag(QCPAxis::spTickLabels))
+    {
+        ui->plot->xAxis->setSelectedParts(QCPAxis::spAxis|QCPAxis::spTickLabels);
+        ui->plot_2->xAxis->setSelectedParts(QCPAxis::spAxis|QCPAxis::spTickLabels);
+    }
+
+    static bool last_axis_y1_stat = false;
+    if (!last_axis_y1_stat &&
+        (ui->plot->yAxis->selectedParts().testFlag(QCPAxis::spAxis) || ui->plot->yAxis->selectedParts().testFlag(QCPAxis::spTickLabels)))
+    {
         ui->plot->yAxis->setSelectedParts(QCPAxis::spAxis|QCPAxis::spTickLabels);
+        last_axis_y1_stat = true;
+    }
+    else
+    {
+        ui->plot->yAxis->setSelectedParts(QCPAxis::spNone);
+        last_axis_y1_stat = false;
+    }
+    static bool last_axis_y2_stat = false;
+    if (!last_axis_y2_stat &&
+        (ui->plot_2->yAxis->selectedParts().testFlag(QCPAxis::spAxis) || ui->plot_2->yAxis->selectedParts().testFlag(QCPAxis::spTickLabels)))
+    {
+        ui->plot_2->yAxis->setSelectedParts(QCPAxis::spAxis|QCPAxis::spTickLabels);
+        last_axis_y2_stat = true;
+    }
+    else
+    {
+        ui->plot_2->yAxis->setSelectedParts(QCPAxis::spNone);
+        last_axis_y2_stat = false;
     }
 
     // 将图形的选择与相应图例项的选择同步
@@ -248,34 +478,30 @@ void SpeedViewDockWidget::slot_selectionChanged()
             item->setSelected(true);
             ui->plot->set_tracer_graph(graph);
             graph->setSelection(QCPDataSelection(graph->data()->dataRange()));
-
-            // 设置选中的图形的颜色
-            // graph->setPen(QPen(Qt::red, graph->pen().width())); // 保持原始宽度，改变颜色
         }
         else
         {
             item->setSelected(false);
-
-            // 可以在这里设置非选中状态下的默认颜色，如果需要
-            // if (0 == i)
-            //     graph->setPen(QPen(Qt::green, graph->pen().width())); // 恢复默认颜色
-            // else if (1 == i)
-            //     graph->setPen(QPen(Qt::blue, graph->pen().width())); // 恢复默认颜色
         }
     }
 }
 
-void SpeedViewDockWidget::slot_paint(bool enabled, const uint32_t msg_id, QList<Vector::DBC::Signal>& sig_lst)
+void SpeedViewDockWidget::slot_btnPaint_clicked(bool paint_enable)
 {
-    if (enabled)
+    if (sig_lst_.size() != 2)
+        return;
+
+    static bool is_first_paint = true;
+
+    if (paint_enable)
     {
-        addGraphs(ui->plot, sig_lst);
-        addGraphs(ui->plot_2, sig_lst);
+        if (is_first_paint)
+        {
+            is_first_paint = false;
+            addGraphs(ui->plot);
+        }
 
-        ui->plot_2->graph(0)->setChannelFillGraph(ui->plot_2->graph(1));
-        ui->plot_2->graph(0)->setBrush(QColor(0, 0, 255, 20));
-
-        initThread(msg_id, sig_lst);
+        initThread();
     }
     else
     {
@@ -283,10 +509,59 @@ void SpeedViewDockWidget::slot_paint(bool enabled, const uint32_t msg_id, QList<
     }
 }
 
-void SpeedViewDockWidget::slot_actDisPic_triggered()
+/**
+ * @brief SpeedViewDockWidget::slot_clearData 清除数据而已，不会清除图例等
+ */
+void SpeedViewDockWidget::slot_clearData()
+{
+    for (int i = 0; i < ui->plot->graphCount(); ++i)
+    {
+        ui->plot->graph(i)->data()->clear();
+    }
+
+    static_cast<QCPBars*>(ui->plot_2->plottable(0))->data()->clear();
+    static_cast<QCPBars*>(ui->plot_2->plottable(1))->data()->clear();
+
+    ui->plot->replot(QCustomPlot::rpQueuedReplot);
+    ui->plot_2->replot(QCustomPlot::rpQueuedReplot);
+}
+
+// 是否需要放在 deviation_plot_ 中修改？没必要，因为暂停绘图后使用它的函数仍然是在主线程中进行的
+// 已经移出了 thread
+void SpeedViewDockWidget::slot_disSigVal_changed(double value)
+{
+    default_deviation_value_ = value;
+
+    if (deviation_plot_)
+        deviation_plot_->set_default_deviation_value_(value);
+
+    QCPBars* bars_exception = static_cast<QCPBars*>(ui->plot_2->plottable(1));
+    deviation_replot_->pause();
+    bars_exception->data()->clear();
+
+    QCPBars* bars_normal = static_cast<QCPBars*>(ui->plot_2->plottable(0));
+    QCPBarsDataContainer* normalData = bars_normal->data().data();
+
+    // 遍历正常偏差条形图的所有数据
+    for (auto it = normalData->begin(); it != normalData->end(); ++it)
+    {
+        double key = it->key;
+        double abs_deviation = it->value;
+
+        if (qAbs(abs_deviation) >= default_deviation_value_)
+        {
+            bars_exception->addData(key, abs_deviation);
+        }
+    }
+
+    deviation_replot_->start();
+    ui->plot_2->replot(QCustomPlot::rpQueuedReplot);
+}
+
+void SpeedViewDockWidget::slot_btnShowDis(QCustomPlot* const plot)
 {
     // 创建一个直方图（bar chart）
-    QCustomPlot* distribuition_plot = distribution_dialog_->myplot_;
+    QCustomPlot* distribuition_plot = plot;
     distribuition_plot->clearPlottables();
     distribuition_plot->replot();
     QCPBars* errorBars = new QCPBars(distribuition_plot->xAxis, distribuition_plot->yAxis);
@@ -332,18 +607,17 @@ void SpeedViewDockWidget::slot_actDisPic_triggered()
 
     errorBars->setData(errorTicks, errorFrequency);
     distribuition_plot->rescaleAxes();
-    distribuition_plot->replot();
-
-    distribution_dialog_->show();
+    distribuition_plot->replot(QCustomPlot::rpQueuedReplot);
+    distribuition_plot->show();
 }
 
-bool SpeedViewDockWidget::slot_actSavePic_triggered()
+bool SpeedViewDockWidget::slot_btnSavePic_clicked()
 {
     QString filename = QFileDialog::getSaveFileName();
     QCustomPlot* const plot = ui->plot;
 
     if( filename == "" ){
-        QMessageBox::information(this,"fail","保存失败");
+        QMessageBox::information(this,"fail","图片文件保存失败");
          return false;
      }
      if( filename.endsWith(".png") ){
@@ -373,12 +647,18 @@ bool SpeedViewDockWidget::slot_actSavePic_triggered()
      }
 }
 
-void SpeedViewDockWidget::slot_actSaveExcel_triggered()
+void SpeedViewDockWidget::slot_btnSaveExcel_clicked()
 {
-    if (QXlsx::Document("test.xlsx").load())
+    QCustomPlot* const plot = ui->plot;
+
+    if (ui->plot->graphCount() < 2)
         return;
 
-    QCustomPlot* const plot = ui->plot;
+    QString filename = QFileDialog::getSaveFileName();
+    if( filename == "" && !QXlsx::Document(filename).load()){
+        QMessageBox::information(this,"fail","excel文件保存失败");
+        return;
+    }
 
     QVector<QCPGraphData>* const ref_speed_lst = plot->graph(0)->data()->coreData();
     QVector<QCPGraphData>* const rel_speed_lst = plot->graph(1)->data()->coreData();
@@ -396,8 +676,8 @@ void SpeedViewDockWidget::slot_actSaveExcel_triggered()
         doc.write(i+1, 2, ref_speed_lst->at(i).value);
         doc.write(i+1, 3, rel_speed_lst->at(i).value);
 
-        const double difference = doc.cellAt(i+1, 2)->value().toDouble() - doc.cellAt(i+1, 3)->value().toDouble();
-        if (qAbs(difference) > 8)
+        const double deviation = doc.cellAt(i+1, 2)->value().toDouble() - doc.cellAt(i+1, 3)->value().toDouble();
+        if (qAbs(deviation) >= default_deviation_value_)
         {
             QXlsx::Format format;
             format.setFontColor(QColor(Qt::black));
@@ -414,6 +694,7 @@ void SpeedViewDockWidget::slot_actSaveExcel_triggered()
         }
     }
 
-    doc.saveAs("test.xlsx");
+    doc.saveAs(filename);
+    QMessageBox::information(this,"success","保存成功,已默认保存为xlsx文件");
 }
 

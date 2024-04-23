@@ -18,56 +18,56 @@
     <widget class="QWidget" name="widget" native="true">
      <layout class="QGridLayout" name="gridLayout">
       <item row="2" column="0">
-       <widget class="QCheckBox" name="chkDirection">
+       <widget class="QtMaterialCheckBox" name="chkDirection">
         <property name="text">
          <string>方向</string>
         </property>
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="QCheckBox" name="chkFrameType">
+       <widget class="QtMaterialCheckBox" name="chkFrameType">
         <property name="text">
          <string>帧类型</string>
         </property>
        </widget>
       </item>
       <item row="2" column="2">
-       <widget class="QCheckBox" name="chkFormat">
+       <widget class="QtMaterialCheckBox" name="chkFormat">
         <property name="text">
          <string>帧格式</string>
         </property>
        </widget>
       </item>
       <item row="2" column="3">
-       <widget class="QCheckBox" name="chkCanType">
+       <widget class="QtMaterialCheckBox" name="chkCanType">
         <property name="text">
          <string>CAN类型</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QCheckBox" name="chkId">
+       <widget class="QtMaterialCheckBox" name="chkId">
         <property name="text">
          <string>帧ID</string>
         </property>
        </widget>
       </item>
       <item row="1" column="2">
-       <widget class="QCheckBox" name="chkData">
+       <widget class="QtMaterialCheckBox" name="chkData">
         <property name="text">
          <string>数据</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QCheckBox" name="chkLength">
+       <widget class="QtMaterialCheckBox" name="chkLength">
         <property name="text">
          <string>长度</string>
         </property>
        </widget>
       </item>
       <item row="1" column="3">
-       <widget class="QCheckBox" name="chkStamp">
+       <widget class="QtMaterialCheckBox" name="chkStamp">
         <property name="text">
          <string>时间标识</string>
         </property>
@@ -113,7 +113,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="QPushButton" name="btnOk">
+       <widget class="QtMaterialFlatButton" name="btnOk">
         <property name="text">
          <string>确定</string>
         </property>
@@ -137,6 +137,18 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QtMaterialCheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>qtmaterialcheckbox.h</header>
+  </customwidget>
+  <customwidget>
+   <class>QtMaterialFlatButton</class>
+   <extends>QPushButton</extends>
+   <header>qtmaterialflatbutton.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

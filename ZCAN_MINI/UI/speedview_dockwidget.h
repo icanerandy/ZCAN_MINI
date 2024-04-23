@@ -41,20 +41,25 @@ public:
 
 private:
     void initPlot(QCustomPlot* const plot);
-    void addGraphs(QCustomPlot* const plot, QList<Vector::DBC::Signal>& sig_lst);
-    void initThread(const uint32_t msg_id, QList<Vector::DBC::Signal>& sig_lst);
+    void addGraphs(QCustomPlot* const plot);
+    void initThread();
     void destroyThread();
 
 public slots:
+    void slot_paint_enable(QList<QPair<uint32_t, Vector::DBC::Signal>> sig_lst);
     void slot_selectionChanged();
-    void slot_paint(bool enabled, const uint32_t msg_id, QList<Vector::DBC::Signal>& sig_lst);
-    void slot_actDisPic_triggered();
-    bool slot_actSavePic_triggered();
-    void slot_actSaveExcel_triggered();
+    void slot_btnPaint_clicked(bool paint_enable);
+    void slot_clearData();
+    void slot_disSigVal_changed(double value);
+    void slot_btnShowDis(QCustomPlot* const plot);
+    bool slot_btnSavePic_clicked();
+    void slot_btnSaveExcel_clicked();
 
 private:
     Ui::SpeedViewDockWidget* const ui;
     DistributionDialog* distribution_dialog_;
+
+    QList< QPair<uint32_t, Vector::DBC::Signal> > sig_lst_;
 
     SignalParser* signal_parser_;
     LinePlot* line_plot_;
@@ -67,6 +72,8 @@ private:
     QThread* line_replot_thread_;
     QThread* deviation_plot_thread_;
     QThread* deviation_replot_thread_;
+
+    double default_deviation_value_;
 };
 
 #endif // PLOT_DOCKWIDGET_H

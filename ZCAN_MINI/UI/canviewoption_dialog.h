@@ -21,7 +21,7 @@ public:
     ~CanViewOptionDialog();
 
 signals:
-    void sig_visibleCol_changed(const QList<uint> visible_columns);
+    void sig_visibleCol_changed(QList<uint> visible_columns);
 
 private:
     Ui::CanViewOptionDialog * const ui;

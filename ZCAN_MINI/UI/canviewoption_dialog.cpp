@@ -1,4 +1,4 @@
-#include "canviewoption_dialog.h"
+﻿#include "canviewoption_dialog.h"
 #include "ui_canviewoption_dialog.h"
 
 CanViewOptionDialog::CanViewOptionDialog(QWidget *parent) :
@@ -6,6 +6,22 @@ CanViewOptionDialog::CanViewOptionDialog(QWidget *parent) :
     ui(new Ui::CanViewOptionDialog)
 {
     ui->setupUi(this);
+
+    QPalette palette = ui->btnOk->palette();
+    palette.setColor(QPalette::WindowText, Qt::green);
+    ui->btnOk->setPalette(palette);
+
+    QColor color("#449CC8");
+    ui->chkCanType->setCheckedColor(color);
+    ui->chkData->setCheckedColor(color);
+    ui->chkDirection->setCheckedColor(color);
+    ui->chkFormat->setCheckedColor(color);
+    ui->chkFrameType->setCheckedColor(color);
+    ui->chkId->setCheckedColor(color);
+    ui->chkLength->setCheckedColor(color);
+    ui->chkStamp->setCheckedColor(color);
+
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     ui->chkId->setChecked(true);
     ui->chkLength->setChecked(true);
@@ -18,6 +34,7 @@ CanViewOptionDialog::CanViewOptionDialog(QWidget *parent) :
 
     connect(ui->btnOk, &QPushButton::clicked, this, [=] {
         QList<uint> visible_columns; // 存储可见列的索引
+        visible_columns.append(static_cast<uint>(CanFrameTableModel::VisibleColumns::Index));   // 序号是必须的
         if (ui->chkStamp->isChecked())
             visible_columns.append(static_cast<uint>(CanFrameTableModel::VisibleColumns::TimeStamp));
         if (ui->chkId->isChecked())

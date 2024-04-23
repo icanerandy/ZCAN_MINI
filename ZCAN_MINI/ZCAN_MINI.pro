@@ -13,21 +13,20 @@ msvc {
     QMAKE_CXXFLAGS += /utf-8
 }
 
+CONFIG += console c++14
+
 TARGET = ZCAN_MINI
 TEMPLATE = app
 
 DEFINES += QT_DEPRECATED_WARNINGS
 
-RC_ICONS = ./icon/analys.ico
+RC_ICONS = ./resources/icons/analys.ico
 
 SOURCES += \
     main.cpp
 
-INCLUDEPATH += $$PWD/VectorDBC
-include ($$PWD/VectorDBC/VectorDBC.pri)
-
-INCLUDEPATH += $$PWD/zlgcan_x86
-include ($$PWD/zlgcan_x86/zlgcan_x86.pri)
+INCLUDEPATH += $$PWD/ThirdLib
+include ($$PWD/ThirdLib/ThirdLib.pri)
 
 INCLUDEPATH += $$PWD/DeviceManager
 include ($$PWD/DeviceManager/DeviceManager.pri)
@@ -41,11 +40,7 @@ include ($$PWD/Ui/Ui.pri)
 INCLUDEPATH += $$PWD/Thread
 include ($$PWD/Thread/Thread.pri)
 
-INCLUDEPATH += $$PWD/QCustomPlot
-include ($$PWD/QCustomPlot/Qcustomplot.pri)
-
-INCLUDEPATH += $$PWD/QXlsx
-include ($$PWD/QXlsx/QXlsx.pri)
-
 RESOURCES += \
-    icon.qrc
+    resources.qrc
+
+DISTFILES +=

@@ -7,14 +7,20 @@
 
 #include <QMainWindow>
 #include <QAction>
+#include <QVBoxLayout>
+#include <QGridLayout>
+#include "qtmaterialtabs_internal.h"
+#include "qtmaterialtabs.h"
 #include <devicemanager_dialog.h>
 #include "zlgcan.h"
 #include "devicemanager.h"
 #include <recmsg_thread.h>
+#include "info_dockwidget.h"
 #include "canview_dockwidget.h"
 #include "dbcview_dockwidget.h"
 #include "speedview_dockwidget.h"
 #include "senddata_dialog.h"
+#include "spdlog_common.h"
 
 namespace Ui {
 class MainWindow;
@@ -50,21 +56,27 @@ private:
 
 private:
     Ui::MainWindow * const ui;
+    QVBoxLayout* layout;
+    QtMaterialTabs* tabs;
+    QtMaterialTab* can_tab;
+    QtMaterialTab* dbc_tab;
+    QtMaterialTab* speed_tab;
+    QWidget* can_widget;
+    QWidget* dbc_widget;
+    QWidget* speed_widget;
+    InfoDockWidget * const info_viewDock;
     CanViewDockWidget * const can_viewDock;
-    DBCViewDockWidget * const speed_dbcviewDock;
+    DBCViewDockWidget * const dbc_viewDock;
     SpeedViewDockWidget * const speed_plotviewDock;
     DeviceManagerDialog * const deviceManagerDlg;
     SendDataDialog * const senddataDlg;
 
     QAction* const actDeviceManage;
 
-    QMenu* const menuDataAnalys;
-    QAction* const actDisPic;
-    QAction* const actSavePic;
-    QAction* const actSaveExcel;
-
     QMenu* const menuSendData;
     QAction* const actSendData;
+
+    std::shared_ptr<spdlog::logger> logger_;
 
     RecMsgThread *recmsg_thread_;
 };

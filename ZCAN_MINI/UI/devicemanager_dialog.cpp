@@ -1,4 +1,4 @@
-#include "devicemanager_dialog.h"
+﻿#include "devicemanager_dialog.h"
 #include "ui_devicemanager_dialog.h"
 
 DeviceManagerDialog::DeviceManagerDialog(QWidget *parent) :
@@ -21,6 +21,15 @@ DeviceManagerDialog::DeviceManagerDialog(QWidget *parent) :
                 << QStringLiteral("ZCAN_CANFDNET_TCP") << QStringLiteral("ZCAN_CANFDNET_UDP") << QStringLiteral("ZCAN_CANFDNET_400U_TCP")
                 << QStringLiteral("ZCAN_CANFDNET_400U_UDP");
     ui->comboDeviceType->addItems(string_list);
+
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+    // 按钮样式
+    QColor color("#607D8B");
+    ui->btnOpenDevice->setBackgroundColor(color);
+    ui->btnStartDevice->setBackgroundColor(color);
+    ui->btnStopDevice->setBackgroundColor(color);
+    ui->btnCloseDevice->setBackgroundColor(color);
+    ui->btnDeviceInfo->setBackgroundColor(color);
 
     bindSignals();
 }

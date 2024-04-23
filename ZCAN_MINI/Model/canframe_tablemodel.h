@@ -9,6 +9,9 @@
 #include <QList>
 #include <QDateTime>
 #include <QDebug>
+#include <QThread>
+#include <QFont>
+#include <QTimer>
 #include "zlgcan.h"
 
 
@@ -18,6 +21,7 @@ class CanFrameTableModel : public QAbstractTableModel
 
 public:
     enum struct VisibleColumns {
+        Index,
         TimeStamp,
         Id,
         FrameType,
@@ -42,20 +46,35 @@ public:
     //Qt::ItemFlags flags(const QModelIndex &index) const override;
 
 public:
-    void ClearData();
+    void clearData();
 
 signals:
     void rowsInserted();
+    void updateView();
 
 public slots:
     void slot_newMsg(const ZCAN_Receive_Data* can_data, const uint len);
     void slot_newMsg(const ZCAN_ReceiveFD_Data* canfd_data, const uint len);
-    void slot_visibleCol_changed(const QList<uint> visible_columns);
+    void slot_visibleCol_changed(QList<uint> visible_columns);
+    void slot_check_id(bool chk_id_enable, uint32_t chk_id);
+    void slot_paused_clicked(bool is_paused);
+
+public:
+    bool chk_id_enable_;
+    uint32_t chk_id_;
+    uint32_t page_num_; // 页码
+    uint32_t total_page_num_;    // 总页数
+    uint32_t max_num_per_page_;    // 每页最大显示数量
 
 private:
-    QStringList header_list;
-    QList<uint> visible_columns; // 存储可见列的索引
-    QList<QVariant> can_frame_list;
+    bool is_paused_;
+    bool reset_flag_;
+    uint paused_row_count_;
+
+private:
+    QStringList header_list_;
+    QList<uint> visible_columns_; // 存储可见列的索引
+    QList<QVariant> can_frame_list_;
 };
 
 #endif // CANFRAMETABLEMODEL_H

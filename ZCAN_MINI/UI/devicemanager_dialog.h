@@ -13,6 +13,7 @@
 #include <QStringList>
 #include <QTreeWidget>
 #include <QMessageBox>
+#include "qtmaterialdialog.h"
 #include "devicemanager.h"
 #include "initcan_dialog.h"
 
