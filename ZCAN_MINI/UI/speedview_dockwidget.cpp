@@ -32,6 +32,8 @@ SpeedViewDockWidget::SpeedViewDockWidget(QWidget *parent) :
     ui->btnWidth->setFixedHeight(max_height);
     ui->btnOpenGL->setBackgroundColor(color);
     ui->btnOpenGL->setFixedHeight(max_height);
+    ui->btnOpenGL_2->setBackgroundColor(color);
+    ui->btnOpenGL_2->setFixedHeight(max_height);
     ui->btnDisEnable->setBackgroundColor(color);
     ui->btnDisEnable->setFixedHeight(max_height);
 
@@ -61,7 +63,7 @@ SpeedViewDockWidget::SpeedViewDockWidget(QWidget *parent) :
     });
 
     connect(ui->btnDis, &QPushButton::clicked, this, [this] {
-        //slot_btnShowDis(ui->dis_plot);
+        slot_btnShowDis(distribution_dialog_->myplot_);
     });
 
     connect(ui->btnClear, &QPushButton::clicked, this, &SpeedViewDockWidget::slot_clearData);
@@ -86,12 +88,15 @@ SpeedViewDockWidget::SpeedViewDockWidget(QWidget *parent) :
         state = !state;
     });
 
-    connect(ui->btnAntialiase, &QtMaterialRaisedButton::clicked, this, [=] {
+    connect(ui->btnOpenGL_2, &QtMaterialRaisedButton::clicked, this, [=] {
+        if (ui->plot->graphCount() == 0)
+            return;
+
         static bool is_antialiase = true;
         if (is_antialiase)
-            ui->btnAntialiase->setText(QStringLiteral("关闭抗锯齿"));
+            ui->btnOpenGL_2->setText(QStringLiteral("关闭抗锯齿"));
         else
-            ui->btnAntialiase->setText(QStringLiteral("开启抗锯齿"));
+            ui->btnOpenGL_2->setText(QStringLiteral("开启抗锯齿"));
 
         ui->plot->graph(0)->setAntialiased(is_antialiase);
         ui->plot->graph(1)->setAntialiased(is_antialiase);
@@ -158,13 +163,34 @@ SpeedViewDockWidget::SpeedViewDockWidget(QWidget *parent) :
 
     connect(ui->plot->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot_2->xAxis, SLOT(setRange(QCPRange)));
     connect(ui->plot_2->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot->xAxis, SLOT(setRange(QCPRange)));
+    // connect(ui->plot_2->xAxis, static_cast<void (QCPAxis::*)(const QCPRange &)>(&QCPAxis::rangeChanged),
+    //         this, [=]() {
+    //             double currentScale = ui->plot_2->xAxis->range().size();
+    //             double barWidth = qMax(currentScale / 1000, 10e-3);; // 更新barWidth基于当前缩放比例
+    //             bars->setWidth(barWidth);
+    //             bars_exception->setWidth(barWidth);
+    //             ui->plot_2->replot(QCustomPlot::rpQueuedReplot);
+    // });
     connect(ui->plot_2->xAxis, static_cast<void (QCPAxis::*)(const QCPRange &)>(&QCPAxis::rangeChanged),
-            this, [=]() {
-                double currentScale = ui->plot_2->xAxis->range().size();
-                double barWidth = qMax(currentScale / 1000, 10e-3);; // 更新barWidth基于当前缩放比例
-                bars->setWidth(barWidth);
-                bars_exception->setWidth(barWidth);
-                ui->plot_2->replot(QCustomPlot::rpQueuedReplot);
+            this, [=](const QCPRange &newRange) {
+            // 获取新的x轴范围大小
+        // 获取新的x轴范围大小（单位：秒）
+        double rangeSize = newRange.size();
+
+        // 将范围大小转换为毫秒
+        double rangeSizeInMilliseconds = rangeSize * 1000;
+
+        // 计算理想的柱宽，这里我们假设在当前范围内至少显示100个柱子
+        double barWidth = rangeSizeInMilliseconds / 100;
+
+        // 保证柱子的最小宽度，避免柱子过于细小不可见
+        barWidth = qMax(barWidth, 1.0);
+
+        // 为bars和bars_exception设置新的宽度
+        bars->setWidth(barWidth);
+        bars_exception->setWidth(barWidth);
+
+        ui->plot_2->replot(QCustomPlot::rpQueuedReplot);
     });
 }
 
@@ -294,7 +320,7 @@ void SpeedViewDockWidget::addGraphs(QCustomPlot* const plot)
 
         plot->graph()->rescaleAxes(true);
 
-        plot->replot();
+        plot->replot(QCustomPlot::rpQueuedReplot);
     }
 }
 
@@ -336,11 +362,13 @@ void SpeedViewDockWidget::initThread()
     deviation_replot_ = new DeviationReplot(ui->plot_2);
     deviation_replot_thread_ = new QThread;
     deviation_replot_->moveToThread(deviation_replot_thread_);
-    connect(deviation_replot_, static_cast<void (DeviationReplot::*)(void)>(&DeviationReplot::sig_replot),
-            this, [=] { ui->plot_2->replot(QCustomPlot::rpQueuedReplot); });
+    // 让其自动重绘，偏差图无需自动重绘，可以提高约一倍的性能
+    // connect(deviation_replot_, static_cast<void (DeviationReplot::*)(void)>(&DeviationReplot::sig_replot),
+    //         this, [=] { ui->plot_2->replot(QCustomPlot::rpQueuedReplot); });
     deviation_replot_thread_->start();
 
     connect(line_replot_, &LineReplot::sig_frmChanged, this, [=] (const QString& msg) {
+
         ui->labFps->setText(msg);
     });
 }
@@ -514,6 +542,12 @@ void SpeedViewDockWidget::slot_btnPaint_clicked(bool paint_enable)
  */
 void SpeedViewDockWidget::slot_clearData()
 {
+    if (ui->plot->graphCount() == 0)
+    {
+        QMessageBox::information(this,"fail","当前无数据可清除");
+        return;
+    }
+
     for (int i = 0; i < ui->plot->graphCount(); ++i)
     {
         ui->plot->graph(i)->data()->clear();
@@ -567,9 +601,20 @@ void SpeedViewDockWidget::slot_btnShowDis(QCustomPlot* const plot)
     QCPBars* errorBars = new QCPBars(distribuition_plot->xAxis, distribuition_plot->yAxis);
 
     // 计算误差数据
+    if (ui->plot->graphCount() == 0)
+    {
+        QMessageBox::information(this,"fail","当前无数据可进行分析");
+        return;
+    }
+
     QVector<double> errorData;
     QVector<QCPGraphData>* const ref_speed_lst = ui->plot->graph(0)->data()->coreData();
     QVector<QCPGraphData>* const rel_speed_lst = ui->plot->graph(1)->data()->coreData();
+    if (ref_speed_lst->size() == 0)
+    {
+        QMessageBox::information(this,"fail","当前无数据可进行分析");
+        return;
+    }
     for (int i = 0; i < ref_speed_lst->size(); ++i)
     {
         double actualSpeed = (*ref_speed_lst)[i].value;
@@ -608,16 +653,16 @@ void SpeedViewDockWidget::slot_btnShowDis(QCustomPlot* const plot)
     errorBars->setData(errorTicks, errorFrequency);
     distribuition_plot->rescaleAxes();
     distribuition_plot->replot(QCustomPlot::rpQueuedReplot);
-    distribuition_plot->show();
+    distribution_dialog_->show();
 }
 
 bool SpeedViewDockWidget::slot_btnSavePic_clicked()
 {
-    QString filename = QFileDialog::getSaveFileName();
+    QString filename = QFileDialog::getSaveFileName(this, tr("Save Picture"), "", tr("Images (*.png *.jpg *.bmp *.pdf)"));
     QCustomPlot* const plot = ui->plot;
 
     if( filename == "" ){
-        QMessageBox::information(this,"fail","图片文件保存失败");
+         QMessageBox::information(this,"fail","图片文件保存失败: 未选择保存文件");
          return false;
      }
      if( filename.endsWith(".png") ){
@@ -652,11 +697,14 @@ void SpeedViewDockWidget::slot_btnSaveExcel_clicked()
     QCustomPlot* const plot = ui->plot;
 
     if (ui->plot->graphCount() < 2)
+    {
+        QMessageBox::information(this,"fail","excel文件保存失败: 没有数据");
         return;
+    }
 
-    QString filename = QFileDialog::getSaveFileName();
+    QString filename = QFileDialog::getSaveFileName(this, tr("Save Excel"), "", tr("(*.xlsx)"));
     if( filename == "" && !QXlsx::Document(filename).load()){
-        QMessageBox::information(this,"fail","excel文件保存失败");
+        QMessageBox::information(this,"fail","excel文件保存失败: 未选择保存文件");
         return;
     }
 

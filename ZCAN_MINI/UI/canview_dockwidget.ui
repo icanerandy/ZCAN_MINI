@@ -6,19 +6,49 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>868</width>
-    <height>530</height>
+    <width>1000</width>
+    <height>600</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1000</width>
+    <height>526</height>
+   </size>
+  </property>
+  <property name="font">
+   <font>
+    <family>Microsoft YaHei UI</family>
+    <pointsize>9</pointsize>
+   </font>
   </property>
   <property name="windowTitle">
    <string>CAN报文列表</string>
   </property>
   <widget class="QWidget" name="dockWidgetContents">
+   <property name="minimumSize">
+    <size>
+     <width>0</width>
+     <height>500</height>
+    </size>
+   </property>
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QtMaterialRaisedButton" name="btnClear">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>清除</string>
         </property>
@@ -26,6 +56,12 @@
       </item>
       <item>
        <widget class="QtMaterialRaisedButton" name="btnPause">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>暂停</string>
         </property>
@@ -39,6 +75,12 @@
       </item>
       <item>
        <widget class="QtMaterialRaisedButton" name="btnOpt">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>设置</string>
         </property>
@@ -59,6 +101,12 @@
       </item>
       <item>
        <widget class="QLabel" name="label">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>id:0x</string>
         </property>
@@ -72,6 +120,12 @@
           <height>16777215</height>
          </size>
         </property>
+        <property name="font">
+         <font>
+          <family>黑体</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
        </widget>
       </item>
       <item>
@@ -84,12 +138,25 @@
      </layout>
     </item>
     <item row="1" column="0">
-     <widget class="QTableView" name="tableView"/>
+     <widget class="QTableView" name="tableView">
+      <property name="font">
+       <font>
+        <family>黑体</family>
+        <pointsize>9</pointsize>
+       </font>
+      </property>
+     </widget>
     </item>
     <item row="2" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
        <widget class="QtMaterialRaisedButton" name="btnFirstPage">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>首页</string>
         </property>
@@ -97,6 +164,12 @@
       </item>
       <item>
        <widget class="QtMaterialRaisedButton" name="btnPreviousPage">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>前一页</string>
         </property>
@@ -104,6 +177,18 @@
       </item>
       <item>
        <widget class="QLabel" name="labCurrentPage_2">
+        <property name="maximumSize">
+         <size>
+          <width>100000</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="font">
+         <font>
+          <family>黑体</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>当前页: </string>
         </property>
@@ -111,6 +196,12 @@
       </item>
       <item>
        <widget class="QLabel" name="labCurrentPage">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>1</string>
         </property>
@@ -118,6 +209,12 @@
       </item>
       <item>
        <widget class="QtMaterialRaisedButton" name="btnNextPage">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>下一页</string>
         </property>
@@ -125,6 +222,12 @@
       </item>
       <item>
        <widget class="QtMaterialRaisedButton" name="btnLastPage">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>尾页</string>
         </property>
@@ -145,6 +248,12 @@
       </item>
       <item>
        <widget class="QLabel" name="labTotalPage">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>共10页</string>
         </property>
@@ -152,6 +261,12 @@
       </item>
       <item>
        <widget class="QLabel" name="labJump">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>跳转到第</string>
         </property>
@@ -159,6 +274,12 @@
       </item>
       <item>
        <widget class="QSpinBox" name="spinBox">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="minimum">
          <number>1</number>
         </property>
@@ -169,6 +290,12 @@
       </item>
       <item>
        <widget class="QLabel" name="labPage">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>页</string>
         </property>
@@ -176,6 +303,12 @@
       </item>
       <item>
        <widget class="QtMaterialRaisedButton" name="btnJumpPage">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>确定</string>
         </property>

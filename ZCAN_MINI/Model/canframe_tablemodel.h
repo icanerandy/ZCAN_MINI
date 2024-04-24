@@ -12,6 +12,7 @@
 #include <QThread>
 #include <QFont>
 #include <QTimer>
+#include <QMutex>
 #include "zlgcan.h"
 
 
@@ -65,6 +66,9 @@ public:
     uint32_t page_num_; // 页码
     uint32_t total_page_num_;    // 总页数
     uint32_t max_num_per_page_;    // 每页最大显示数量
+    mutable QMutex mutex;
+    bool is_add_data;
+    mutable bool is_show_data;
 
 private:
     bool is_paused_;

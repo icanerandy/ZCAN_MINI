@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>296</width>
-    <height>350</height>
+    <width>306</width>
+    <height>361</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,8 +23,8 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>0</y>
-        <width>262</width>
+        <y>-148</y>
+        <width>270</width>
         <height>450</height>
        </rect>
       </property>
@@ -39,6 +39,11 @@
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
           <widget class="QLabel" name="labProtocol">
+           <property name="font">
+            <font>
+             <family>微软雅黑</family>
+            </font>
+           </property>
            <property name="text">
             <string>协议</string>
            </property>
@@ -53,6 +58,11 @@
         <layout class="QHBoxLayout" name="horizontalLayout_3">
          <item>
           <widget class="QLabel" name="labCanfdStandard">
+           <property name="font">
+            <font>
+             <family>微软雅黑</family>
+            </font>
+           </property>
            <property name="text">
             <string>CANFD标准</string>
            </property>
@@ -67,6 +77,11 @@
         <layout class="QHBoxLayout" name="horizontalLayout_4">
          <item>
           <widget class="QLabel" name="labCanfdSpeedUp">
+           <property name="font">
+            <font>
+             <family>微软雅黑</family>
+            </font>
+           </property>
            <property name="text">
             <string>CANFD加速</string>
            </property>
@@ -81,6 +96,11 @@
         <layout class="QHBoxLayout" name="horizontalLayout_5">
          <item>
           <widget class="QLabel" name="labAbit">
+           <property name="font">
+            <font>
+             <family>微软雅黑</family>
+            </font>
+           </property>
            <property name="text">
             <string>仲裁域波特率</string>
            </property>
@@ -95,13 +115,24 @@
         <layout class="QHBoxLayout" name="horizontalLayout_6">
          <item>
           <widget class="QLabel" name="labDbit">
+           <property name="font">
+            <font>
+             <family>黑体</family>
+            </font>
+           </property>
            <property name="text">
             <string>数据率波特率</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comboDbit"/>
+          <widget class="QComboBox" name="comboDbit">
+           <property name="font">
+            <font>
+             <family>黑体</family>
+            </font>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -109,13 +140,24 @@
         <layout class="QHBoxLayout" name="horizontalLayout_7">
          <item>
           <widget class="QLabel" name="labWorkMode">
+           <property name="font">
+            <font>
+             <family>黑体</family>
+            </font>
+           </property>
            <property name="text">
             <string>工作模式</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comboWorkMode"/>
+          <widget class="QComboBox" name="comboWorkMode">
+           <property name="font">
+            <font>
+             <family>黑体</family>
+            </font>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -123,13 +165,24 @@
         <layout class="QHBoxLayout" name="horizontalLayout_8">
          <item>
           <widget class="QLabel" name="labResistance">
+           <property name="font">
+            <font>
+             <family>黑体</family>
+            </font>
+           </property>
            <property name="text">
             <string>终端电阻</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comboResistance"/>
+          <widget class="QComboBox" name="comboResistance">
+           <property name="font">
+            <font>
+             <family>黑体</family>
+            </font>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -137,13 +190,24 @@
         <layout class="QHBoxLayout" name="horizontalLayout_9">
          <item>
           <widget class="QLabel" name="label_8">
+           <property name="font">
+            <font>
+             <family>黑体</family>
+            </font>
+           </property>
            <property name="text">
             <string>上报总线利用率</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comboBox_8"/>
+          <widget class="QComboBox" name="comboBox_8">
+           <property name="font">
+            <font>
+             <family>黑体</family>
+            </font>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -151,13 +215,24 @@
         <layout class="QHBoxLayout" name="horizontalLayout_10">
          <item>
           <widget class="QLabel" name="label_9">
+           <property name="font">
+            <font>
+             <family>黑体</family>
+            </font>
+           </property>
            <property name="text">
             <string>总线利用周期(ms)</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comboBox_9"/>
+          <widget class="QComboBox" name="comboBox_9">
+           <property name="font">
+            <font>
+             <family>黑体</family>
+            </font>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -165,13 +240,24 @@
         <layout class="QHBoxLayout" name="horizontalLayout_11">
          <item>
           <widget class="QLabel" name="label_10">
+           <property name="font">
+            <font>
+             <family>黑体</family>
+            </font>
+           </property>
            <property name="text">
             <string>发送重试</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="comboBox_10"/>
+          <widget class="QComboBox" name="comboBox_10">
+           <property name="font">
+            <font>
+             <family>黑体</family>
+            </font>
+           </property>
+          </widget>
          </item>
         </layout>
        </item>
@@ -196,6 +282,11 @@
      </item>
      <item>
       <widget class="QPushButton" name="btnOk">
+       <property name="font">
+        <font>
+         <family>黑体</family>
+        </font>
+       </property>
        <property name="text">
         <string>确认</string>
        </property>
@@ -216,6 +307,11 @@
      </item>
      <item>
       <widget class="QPushButton" name="btnCancel">
+       <property name="font">
+        <font>
+         <family>黑体</family>
+        </font>
+       </property>
        <property name="text">
         <string>取消</string>
        </property>

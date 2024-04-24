@@ -146,7 +146,7 @@ void MyPlot::realTimeMouseMove()
 
         if (last_trace_x_ != traceX || last_trace_y_ != traceY)
         {
-            layer("overlay")->replot(); // bug?
+            layer("overlay2")->replot(); // bug?
             // this->replot(QCustomPlot::rpQueuedReplot);
         }
         last_trace_x_ = traceX;

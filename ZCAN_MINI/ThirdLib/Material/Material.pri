@@ -1,6 +1,8 @@
-HEADERS += $$PWD/components/*
+# HEADERS += $$PWD/components/*
+@HEADERS = $$files($$PWD/components/*)@
 
-SOURCES += $$PWD/components/*
+# SOURCES += $$PWD/components/*
+@SOURCES = $$files($$PWD/components/*)@
 
 INCLUDEPATH += $$PWD/components/
 

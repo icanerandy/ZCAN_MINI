@@ -255,23 +255,23 @@ bool DeviceManager::openDevice()
     if (INVALID_DEVICE_HANDLE == device_handle_)
     {
         qDebug() << "打开设备失败!";
-        /* 启动消息接收线程 */
-        RecMsgThread * const rec_msg_thread = RecMsgThread::getInstance();
-        connect(this, &DeviceManager::sig_channelHandle, rec_msg_thread, &RecMsgThread::slot_channelHandle);
-        emit sig_channelHandle(channel_handle_);
+        // /* 启动消息接收线程 */
+        // RecMsgThread * const rec_msg_thread = RecMsgThread::getInstance();
+        // connect(this, &DeviceManager::sig_channelHandle, rec_msg_thread, &RecMsgThread::slot_channelHandle);
+        // emit sig_channelHandle(channel_handle_);
 
-        CanFrameTableModel* const canframe_table_model = CanFrameTableModel::GetInstance();
-        connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_Receive_Data*, const uint)>(&RecMsgThread::sig_newMsg),
-                canframe_table_model, static_cast<void (CanFrameTableModel::*)(const ZCAN_Receive_Data*, const uint)>(&CanFrameTableModel::slot_newMsg));
-        connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&RecMsgThread::sig_newMsg),
-                canframe_table_model, static_cast<void (CanFrameTableModel::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&CanFrameTableModel::slot_newMsg));
-        // 此处如果将其移入子线程执行，则会出现数据竞争问题，十分严重！！！
-        // canframe_table_thread_ = new QThread;
-        // canframe_table_model->moveToThread(canframe_table_thread_);
-        // canframe_table_thread_->start();
+        // CanFrameTableModel* const canframe_table_model = CanFrameTableModel::GetInstance();
+        // connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_Receive_Data*, const uint)>(&RecMsgThread::sig_newMsg),
+        //         canframe_table_model, static_cast<void (CanFrameTableModel::*)(const ZCAN_Receive_Data*, const uint)>(&CanFrameTableModel::slot_newMsg));
+        // connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&RecMsgThread::sig_newMsg),
+        //         canframe_table_model, static_cast<void (CanFrameTableModel::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&CanFrameTableModel::slot_newMsg));
+        // // 此处如果将其移入子线程执行，则会出现数据竞争问题，十分严重！！！
+        // // canframe_table_thread_ = new QThread;
+        // // canframe_table_model->moveToThread(canframe_table_thread_);
+        // // canframe_table_thread_->start();
 
-        rec_msg_thread->start();
-        rec_msg_thread->beginThread();
+        // rec_msg_thread->start();
+        // rec_msg_thread->beginThread();
         return false;
     }
     device_opened_ = DeviceState::Opened;
@@ -400,9 +400,6 @@ bool DeviceManager::startCan()
             canframe_table_model, static_cast<void (CanFrameTableModel::*)(const ZCAN_Receive_Data*, const uint)>(&CanFrameTableModel::slot_newMsg));
     connect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&RecMsgThread::sig_newMsg),
             canframe_table_model, static_cast<void (CanFrameTableModel::*)(const ZCAN_ReceiveFD_Data*, const uint)>(&CanFrameTableModel::slot_newMsg));
-    canframe_table_thread_ = new QThread;
-    canframe_table_model->moveToThread(canframe_table_thread_);
-    canframe_table_thread_->start();
 
     rec_msg_thread->start();
     rec_msg_thread->beginThread();
@@ -541,9 +538,6 @@ bool DeviceManager::stopCan()
 
         rec_msg_thread->stopThread();
         rec_msg_thread->wait();
-
-        canframe_table_thread_->quit();
-        canframe_table_thread_->wait();
     }
 
     if (STATUS_OK != ZCAN_ResetCAN(channel_handle_))

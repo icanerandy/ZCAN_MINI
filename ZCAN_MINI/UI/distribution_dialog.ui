@@ -15,7 +15,13 @@
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
-    <widget class="QWidget" name="widget" native="true"/>
+    <widget class="QWidget" name="widget" native="true">
+     <property name="font">
+      <font>
+       <family>黑体</family>
+      </font>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

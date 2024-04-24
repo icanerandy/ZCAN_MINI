@@ -4,7 +4,7 @@ LineReplot::LineReplot(QCustomPlot* const plot) :
     plot_(plot)
 {
     connect(&timer_, SIGNAL(timeout()), this, SLOT(replotData()));
-    timer_.start(10);
+    timer_.start(0);
 }
 
 void LineReplot::replotData()

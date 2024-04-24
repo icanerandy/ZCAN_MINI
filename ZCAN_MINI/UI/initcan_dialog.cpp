@@ -1,4 +1,4 @@
-#include "initcan_dialog.h"
+﻿#include "initcan_dialog.h"
 #include "ui_initcan_dialog.h"
 
 InitCanDialog::InitCanDialog(QWidget *parent) :
@@ -111,6 +111,10 @@ void InitCanDialog::bindSignals()
             return;
 
         this->hide();
+    });
+
+    connect(ui->btnCancel, &QPushButton::clicked, this, [=] {
+       this->hide();
     });
 }
 

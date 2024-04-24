@@ -97,6 +97,7 @@ void DeviceManagerDialog::bindSignals()
     connect(ui->btnCloseDevice, &QPushButton::clicked, this, [=] {
         device_manager->closeDevice();
 
+        ui->btnStartDevice->setEnabled(true);
         enableCtrl(false);
     });
 

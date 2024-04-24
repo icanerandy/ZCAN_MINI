@@ -6,15 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1004</width>
-    <height>603</height>
+    <width>1000</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>579</width>
-    <height>538</height>
+    <width>1000</width>
+    <height>565</height>
    </size>
+  </property>
+  <property name="font">
+   <font>
+    <family>Microsoft YaHei UI</family>
+    <pointsize>9</pointsize>
+   </font>
   </property>
   <property name="windowTitle">
    <string>Speed实时数据分析</string>
@@ -34,12 +40,24 @@
              <height>16777215</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <family>黑体</family>
+             <pointsize>9</pointsize>
+            </font>
+           </property>
            <property name="title">
             <string>图像</string>
            </property>
            <layout class="QGridLayout" name="gridLayout">
             <item row="2" column="1">
              <widget class="QtMaterialRaisedButton" name="btnDisEnable">
+              <property name="font">
+               <font>
+                <family>黑体</family>
+                <pointsize>9</pointsize>
+               </font>
+              </property>
               <property name="text">
                <string>隐藏误差图</string>
               </property>
@@ -47,6 +65,12 @@
             </item>
             <item row="0" column="4">
              <widget class="QtMaterialRaisedButton" name="btnClear">
+              <property name="font">
+               <font>
+                <family>黑体</family>
+                <pointsize>9</pointsize>
+               </font>
+              </property>
               <property name="text">
                <string>清除数据</string>
               </property>
@@ -78,17 +102,29 @@
               </property>
              </spacer>
             </item>
-            <item row="0" column="1">
-             <widget class="QtMaterialRaisedButton" name="btnPaint">
+            <item row="2" column="4">
+             <widget class="QtMaterialRaisedButton" name="btnDis">
+              <property name="font">
+               <font>
+                <family>黑体</family>
+                <pointsize>9</pointsize>
+               </font>
+              </property>
               <property name="text">
-               <string>开始绘图</string>
+               <string>误差分布</string>
               </property>
              </widget>
             </item>
-            <item row="2" column="4">
-             <widget class="QtMaterialRaisedButton" name="btnDis">
+            <item row="0" column="1">
+             <widget class="QtMaterialRaisedButton" name="btnPaint">
+              <property name="font">
+               <font>
+                <family>黑体</family>
+                <pointsize>9</pointsize>
+               </font>
+              </property>
               <property name="text">
-               <string>误差分布</string>
+               <string>开始绘图</string>
               </property>
              </widget>
             </item>
@@ -103,10 +139,32 @@
              <height>16777215</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <family>黑体</family>
+             <pointsize>9</pointsize>
+            </font>
+           </property>
            <property name="title">
             <string>偏差值设定</string>
            </property>
            <layout class="QGridLayout" name="gridLayout_4">
+            <item row="0" column="0">
+             <widget class="QDoubleSpinBox" name="spinDeviation">
+              <property name="font">
+               <font>
+                <family>黑体</family>
+                <pointsize>8</pointsize>
+               </font>
+              </property>
+              <property name="minimum">
+               <double>0.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>10000.000000000000000</double>
+              </property>
+             </widget>
+            </item>
             <item row="0" column="1">
              <spacer name="horizontalSpacer_4">
               <property name="orientation">
@@ -120,18 +178,14 @@
               </property>
              </spacer>
             </item>
-            <item row="0" column="0">
-             <widget class="QDoubleSpinBox" name="spinDeviation">
-              <property name="minimum">
-               <double>0.000000000000000</double>
-              </property>
-              <property name="maximum">
-               <double>10000.000000000000000</double>
-              </property>
-             </widget>
-            </item>
             <item row="0" column="2">
              <widget class="QtMaterialRaisedButton" name="btnDeviation">
+              <property name="font">
+               <font>
+                <family>黑体</family>
+                <pointsize>9</pointsize>
+               </font>
+              </property>
               <property name="text">
                <string>确定</string>
               </property>
@@ -147,6 +201,12 @@
              <width>10000</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>黑体</family>
+             <pointsize>9</pointsize>
+            </font>
            </property>
            <property name="title">
             <string>线条粗细</string>
@@ -167,6 +227,12 @@
             </item>
             <item row="0" column="0">
              <widget class="QDoubleSpinBox" name="spinWidth">
+              <property name="font">
+               <font>
+                <family>黑体</family>
+                <pointsize>8</pointsize>
+               </font>
+              </property>
               <property name="minimum">
                <double>1.000000000000000</double>
               </property>
@@ -177,6 +243,12 @@
             </item>
             <item row="0" column="2">
              <widget class="QtMaterialRaisedButton" name="btnWidth">
+              <property name="font">
+               <font>
+                <family>黑体</family>
+                <pointsize>9</pointsize>
+               </font>
+              </property>
               <property name="text">
                <string>确定</string>
               </property>
@@ -192,6 +264,12 @@
              <width>10000</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>黑体</family>
+             <pointsize>9</pointsize>
+            </font>
            </property>
            <property name="title">
             <string>杂项</string>
@@ -212,13 +290,26 @@
             </item>
             <item row="2" column="0">
              <widget class="QtMaterialRaisedButton" name="btnOpenGL">
+              <property name="font">
+               <font>
+                <family>黑体</family>
+                <pointsize>9</pointsize>
+                <bold>false</bold>
+               </font>
+              </property>
               <property name="text">
                <string>开启显卡加速</string>
               </property>
              </widget>
             </item>
             <item row="2" column="2">
-             <widget class="QtMaterialRaisedButton" name="btnAntialiase">
+             <widget class="QtMaterialRaisedButton" name="btnOpenGL_2">
+              <property name="font">
+               <font>
+                <family>黑体</family>
+                <pointsize>9</pointsize>
+               </font>
+              </property>
               <property name="text">
                <string>开启抗锯齿</string>
               </property>
@@ -234,6 +325,12 @@
              <width>10000</width>
              <height>16777215</height>
             </size>
+           </property>
+           <property name="font">
+            <font>
+             <family>黑体</family>
+             <pointsize>9</pointsize>
+            </font>
            </property>
            <property name="title">
             <string>数据保存</string>
@@ -254,6 +351,12 @@
             </item>
             <item row="0" column="0">
              <widget class="QtMaterialRaisedButton" name="btnSavePic">
+              <property name="font">
+               <font>
+                <family>黑体</family>
+                <pointsize>9</pointsize>
+               </font>
+              </property>
               <property name="text">
                <string>保存为图片</string>
               </property>
@@ -261,6 +364,12 @@
             </item>
             <item row="0" column="2">
              <widget class="QtMaterialRaisedButton" name="btnSaveExcel">
+              <property name="font">
+               <font>
+                <family>黑体</family>
+                <pointsize>9</pointsize>
+               </font>
+              </property>
               <property name="text">
                <string>保存为excel</string>
               </property>
@@ -299,6 +408,12 @@
              <height>30</height>
             </size>
            </property>
+           <property name="font">
+            <font>
+             <family>黑体</family>
+             <pointsize>9</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string>FPS: 0, Total Data points: 0</string>
            </property>
@@ -308,15 +423,35 @@
        </item>
        <item row="0" column="1">
         <widget class="QGroupBox" name="groupBox_3">
+         <property name="font">
+          <font>
+           <family>黑体</family>
+           <pointsize>9</pointsize>
+          </font>
+         </property>
          <property name="title">
           <string>实时图像</string>
          </property>
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
-           <widget class="MyPlot" name="plot" native="true"/>
+           <widget class="MyPlot" name="plot" native="true">
+            <property name="font">
+             <font>
+              <family>黑体</family>
+              <pointsize>9</pointsize>
+             </font>
+            </property>
+           </widget>
           </item>
           <item>
-           <widget class="MyPlot" name="plot_2" native="true"/>
+           <widget class="MyPlot" name="plot_2" native="true">
+            <property name="font">
+             <font>
+              <family>黑体</family>
+              <pointsize>9</pointsize>
+             </font>
+            </property>
+           </widget>
           </item>
          </layout>
         </widget>

@@ -22,6 +22,11 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QGroupBox" name="groupBox_2">
+     <property name="font">
+      <font>
+       <family>黑体</family>
+      </font>
+     </property>
      <property name="title">
       <string>设备选择</string>
      </property>
@@ -30,13 +35,24 @@
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="QLabel" name="label">
+          <property name="font">
+           <font>
+            <family>黑体</family>
+           </font>
+          </property>
           <property name="text">
            <string>类型</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboDeviceType"/>
+         <widget class="QComboBox" name="comboDeviceType">
+          <property name="font">
+           <font>
+            <family>黑体</family>
+           </font>
+          </property>
+         </widget>
         </item>
         <item>
          <spacer name="horizontalSpacer_2">
@@ -53,13 +69,24 @@
         </item>
         <item>
          <widget class="QLabel" name="label_2">
+          <property name="font">
+           <font>
+            <family>黑体</family>
+           </font>
+          </property>
           <property name="text">
            <string>索引</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboDeviceIndex"/>
+         <widget class="QComboBox" name="comboDeviceIndex">
+          <property name="font">
+           <font>
+            <family>黑体</family>
+           </font>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -80,13 +107,24 @@
         </item>
         <item>
          <widget class="QLabel" name="labChannel">
+          <property name="font">
+           <font>
+            <family>黑体</family>
+           </font>
+          </property>
           <property name="text">
            <string>通道</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QComboBox" name="comboChannelIndex"/>
+         <widget class="QComboBox" name="comboChannelIndex">
+          <property name="font">
+           <font>
+            <family>黑体</family>
+           </font>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -95,12 +133,22 @@
    </item>
    <item>
     <widget class="QGroupBox" name="groupBox">
+     <property name="font">
+      <font>
+       <family>黑体</family>
+      </font>
+     </property>
      <property name="title">
       <string>设备操作</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="2" column="0">
        <widget class="QtMaterialRaisedButton" name="btnCloseDevice">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+         </font>
+        </property>
         <property name="text">
          <string>关闭</string>
         </property>
@@ -108,6 +156,11 @@
       </item>
       <item row="2" column="1">
        <widget class="QtMaterialRaisedButton" name="btnDeviceInfo">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+         </font>
+        </property>
         <property name="text">
          <string>设备信息</string>
         </property>
@@ -115,6 +168,11 @@
       </item>
       <item row="1" column="0">
        <widget class="QtMaterialRaisedButton" name="btnStartDevice">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+         </font>
+        </property>
         <property name="text">
          <string>启动</string>
         </property>
@@ -122,6 +180,11 @@
       </item>
       <item row="1" column="1">
        <widget class="QtMaterialRaisedButton" name="btnStopDevice">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+         </font>
+        </property>
         <property name="text">
          <string>停止</string>
         </property>
@@ -129,6 +192,11 @@
       </item>
       <item row="0" column="0">
        <widget class="QtMaterialRaisedButton" name="btnOpenDevice">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+         </font>
+        </property>
         <property name="text">
          <string>打开设备</string>
         </property>

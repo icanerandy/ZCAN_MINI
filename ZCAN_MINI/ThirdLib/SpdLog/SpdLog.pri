@@ -1,4 +1,7 @@
 INCLUDEPATH += $$PWD/include
 
-HEADERS += $$PWD/include/spdlog/*.h \
+
+@HEADERS = $$files($$PWD/include/spdlog/*.h)@
+
+HEADERS += \
     $$PWD/include/spdlog_common.h

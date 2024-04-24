@@ -19,6 +19,11 @@
      <layout class="QGridLayout" name="gridLayout">
       <item row="2" column="0">
        <widget class="QtMaterialCheckBox" name="chkDirection">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+         </font>
+        </property>
         <property name="text">
          <string>方向</string>
         </property>
@@ -26,6 +31,11 @@
       </item>
       <item row="2" column="1">
        <widget class="QtMaterialCheckBox" name="chkFrameType">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+         </font>
+        </property>
         <property name="text">
          <string>帧类型</string>
         </property>
@@ -33,6 +43,11 @@
       </item>
       <item row="2" column="2">
        <widget class="QtMaterialCheckBox" name="chkFormat">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+         </font>
+        </property>
         <property name="text">
          <string>帧格式</string>
         </property>
@@ -40,6 +55,11 @@
       </item>
       <item row="2" column="3">
        <widget class="QtMaterialCheckBox" name="chkCanType">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+         </font>
+        </property>
         <property name="text">
          <string>CAN类型</string>
         </property>
@@ -47,6 +67,11 @@
       </item>
       <item row="1" column="0">
        <widget class="QtMaterialCheckBox" name="chkId">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+         </font>
+        </property>
         <property name="text">
          <string>帧ID</string>
         </property>
@@ -54,6 +79,11 @@
       </item>
       <item row="1" column="2">
        <widget class="QtMaterialCheckBox" name="chkData">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+         </font>
+        </property>
         <property name="text">
          <string>数据</string>
         </property>
@@ -61,6 +91,11 @@
       </item>
       <item row="1" column="1">
        <widget class="QtMaterialCheckBox" name="chkLength">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+         </font>
+        </property>
         <property name="text">
          <string>长度</string>
         </property>
@@ -68,6 +103,11 @@
       </item>
       <item row="1" column="3">
        <widget class="QtMaterialCheckBox" name="chkStamp">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+         </font>
+        </property>
         <property name="text">
          <string>时间标识</string>
         </property>
@@ -75,6 +115,11 @@
       </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+         </font>
+        </property>
         <property name="text">
          <string>列表显示项:</string>
         </property>
@@ -114,6 +159,11 @@
       </item>
       <item>
        <widget class="QtMaterialFlatButton" name="btnOk">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+         </font>
+        </property>
         <property name="text">
          <string>确定</string>
         </property>

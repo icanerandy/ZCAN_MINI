@@ -81,6 +81,8 @@ QVariant CanFrameTableModel::data(const QModelIndex &index, int role) const
         QVariant tmp = can_frame_list_.at(row);
         if (tmp.canConvert<ZCAN_Receive_Data>())
         {
+            if (is_add_data)
+                qDebug() << "data() is_add_data = " << is_add_data;
             ZCAN_Receive_Data can = qvariant_cast<ZCAN_Receive_Data>(tmp);
             can_frame frame = can.frame;
             int visible_column = visible_columns_.at(index.column());
@@ -219,6 +221,9 @@ void CanFrameTableModel::slot_newMsg(const ZCAN_Receive_Data* can_data, const ui
 {
     for (uint i = 0; i < len; ++i)
     {
+        if (is_show_data)
+            qDebug() << "newMsg() is_show_data = " << is_show_data;
+
         const ZCAN_Receive_Data& can = can_data[i];
         can_frame_list_.append(QVariant::fromValue(can));
 

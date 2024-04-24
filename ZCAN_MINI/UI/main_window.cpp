@@ -56,14 +56,16 @@ MainWindow::MainWindow(QWidget *parent) :
     layout->addWidget(speed_plotviewDock);
     speed_plotviewDock->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 
-    tabs->setCurrentTab(0);
-    info_viewDock->setVisible(true);
-    can_viewDock->setVisible(false);
+    tabs->setCurrentTab(1);
+    info_viewDock->setVisible(false);
+    can_viewDock->setVisible(true);
     dbc_viewDock->setVisible(false);
     speed_plotviewDock->setVisible(false);
 
     tabs->setBackgroundColor(QColor("#1C3A48"));
     tabs->setInkColor(QColor("#57C7FF"));
+
+    setStatusBar(nullptr);
 
     // 信号绑定
     bindSignals();

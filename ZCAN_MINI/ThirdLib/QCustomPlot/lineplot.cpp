@@ -14,21 +14,21 @@ void LinePlot::slot_realTimeData(const QList<double> vals)
     static int count = 0;
 
     // 假设的时间戳，以微秒为单位
-    // uint64_t timestamp_us = vals.at(0);
-    // double key = static_cast<double>(timestamp_us) / 1000000.0;
+    uint64_t timestamp_us = vals.at(0);
+    double key = static_cast<double>(timestamp_us) / 1000000.0;
 
-    double key = static_cast<double>(QDateTime::currentMSecsSinceEpoch()) / 1000;
-    int x = qrand() % 100;
-    int y = qrand() % 100;
-    emit sig_absDeviation(key, x - y);
+    // double key = static_cast<double>(QDateTime::currentMSecsSinceEpoch()) / 1000;
+    // int x = qrand() % 100;
+    // int y = qrand() % 100;
+    // emit sig_absDeviation(key, x - y);
 
-    // emit sig_absDeviation(key, vals.at(1) - vals.at(3));
+    emit sig_absDeviation(key, vals.at(1) - vals.at(3));
 
     QVector<QCPGraphData>* data = nullptr;
     for (int i = 0; i < plot_->graphCount(); ++i)
     {
         data = plot_->graph(i)->data()->coreData();
-        data->push_back(QCPGraphData( key, /*vals.at(2*i)*/ i==0?x:y ));
+        data->push_back(QCPGraphData( key, vals.at(2*i+1) /*i==0?x:y*/ ));
 
         if (count == 0)
         {
