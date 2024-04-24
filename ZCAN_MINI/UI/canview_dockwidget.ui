@@ -24,8 +24,9 @@
   </property>
   <property name="font">
    <font>
-    <family>Microsoft YaHei UI</family>
+    <family>黑体</family>
     <pointsize>9</pointsize>
+    <italic>false</italic>
    </font>
   </property>
   <property name="windowTitle">
@@ -38,6 +39,13 @@
      <height>500</height>
     </size>
    </property>
+   <property name="font">
+    <font>
+     <family>黑体</family>
+     <pointsize>9</pointsize>
+     <italic>false</italic>
+    </font>
+   </property>
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout">
@@ -47,6 +55,7 @@
          <font>
           <family>黑体</family>
           <pointsize>9</pointsize>
+          <italic>false</italic>
          </font>
         </property>
         <property name="text">
@@ -60,6 +69,7 @@
          <font>
           <family>黑体</family>
           <pointsize>9</pointsize>
+          <italic>false</italic>
          </font>
         </property>
         <property name="text">
@@ -79,6 +89,7 @@
          <font>
           <family>黑体</family>
           <pointsize>9</pointsize>
+          <italic>false</italic>
          </font>
         </property>
         <property name="text">
@@ -105,6 +116,7 @@
          <font>
           <family>黑体</family>
           <pointsize>9</pointsize>
+          <italic>false</italic>
          </font>
         </property>
         <property name="text">
@@ -124,6 +136,7 @@
          <font>
           <family>黑体</family>
           <pointsize>9</pointsize>
+          <italic>false</italic>
          </font>
         </property>
        </widget>
@@ -143,6 +156,7 @@
        <font>
         <family>黑体</family>
         <pointsize>9</pointsize>
+        <italic>false</italic>
        </font>
       </property>
      </widget>
@@ -155,6 +169,7 @@
          <font>
           <family>黑体</family>
           <pointsize>9</pointsize>
+          <italic>false</italic>
          </font>
         </property>
         <property name="text">
@@ -168,6 +183,7 @@
          <font>
           <family>黑体</family>
           <pointsize>9</pointsize>
+          <italic>false</italic>
          </font>
         </property>
         <property name="text">
@@ -187,6 +203,7 @@
          <font>
           <family>黑体</family>
           <pointsize>9</pointsize>
+          <italic>false</italic>
          </font>
         </property>
         <property name="text">
@@ -200,6 +217,7 @@
          <font>
           <family>黑体</family>
           <pointsize>9</pointsize>
+          <italic>false</italic>
          </font>
         </property>
         <property name="text">
@@ -213,6 +231,7 @@
          <font>
           <family>黑体</family>
           <pointsize>9</pointsize>
+          <italic>false</italic>
          </font>
         </property>
         <property name="text">
@@ -226,6 +245,7 @@
          <font>
           <family>黑体</family>
           <pointsize>9</pointsize>
+          <italic>false</italic>
          </font>
         </property>
         <property name="text">
@@ -252,6 +272,7 @@
          <font>
           <family>黑体</family>
           <pointsize>9</pointsize>
+          <italic>false</italic>
          </font>
         </property>
         <property name="text">
@@ -265,6 +286,7 @@
          <font>
           <family>黑体</family>
           <pointsize>9</pointsize>
+          <italic>false</italic>
          </font>
         </property>
         <property name="text">
@@ -278,6 +300,7 @@
          <font>
           <family>黑体</family>
           <pointsize>9</pointsize>
+          <italic>false</italic>
          </font>
         </property>
         <property name="minimum">
@@ -294,6 +317,7 @@
          <font>
           <family>黑体</family>
           <pointsize>9</pointsize>
+          <italic>false</italic>
          </font>
         </property>
         <property name="text">
@@ -307,6 +331,7 @@
          <font>
           <family>黑体</family>
           <pointsize>9</pointsize>
+          <italic>false</italic>
          </font>
         </property>
         <property name="text">

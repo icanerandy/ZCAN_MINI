@@ -19,6 +19,7 @@
      <property name="font">
       <font>
        <family>黑体</family>
+       <pointsize>9</pointsize>
       </font>
      </property>
      <property name="title">
@@ -32,6 +33,7 @@
           <property name="font">
            <font>
             <family>黑体</family>
+            <pointsize>9</pointsize>
            </font>
           </property>
           <property name="text">
@@ -56,6 +58,7 @@
           <property name="font">
            <font>
             <family>黑体</family>
+            <pointsize>9</pointsize>
            </font>
           </property>
          </widget>
@@ -82,6 +85,7 @@
           <property name="font">
            <font>
             <family>黑体</family>
+            <pointsize>9</pointsize>
            </font>
           </property>
           <property name="text">
@@ -94,6 +98,7 @@
           <property name="font">
            <font>
             <family>黑体</family>
+            <pointsize>9</pointsize>
            </font>
           </property>
           <property name="maximum">
@@ -108,6 +113,7 @@
         <property name="font">
          <font>
           <family>黑体</family>
+          <pointsize>9</pointsize>
          </font>
         </property>
         <property name="text">
@@ -122,6 +128,7 @@
           <property name="font">
            <font>
             <family>黑体</family>
+            <pointsize>9</pointsize>
            </font>
           </property>
           <property name="text">
@@ -134,6 +141,7 @@
           <property name="font">
            <font>
             <family>黑体</family>
+            <pointsize>9</pointsize>
            </font>
           </property>
          </widget>
@@ -147,6 +155,7 @@
           <property name="font">
            <font>
             <family>黑体</family>
+            <pointsize>9</pointsize>
            </font>
           </property>
           <property name="text">
@@ -159,6 +168,7 @@
           <property name="font">
            <font>
             <family>黑体</family>
+            <pointsize>9</pointsize>
            </font>
           </property>
          </widget>
@@ -169,6 +179,12 @@
        <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
          <widget class="QLabel" name="label">
+          <property name="font">
+           <font>
+            <family>黑体</family>
+            <pointsize>9</pointsize>
+           </font>
+          </property>
           <property name="text">
            <string>帧类型:</string>
           </property>
@@ -179,6 +195,7 @@
           <property name="font">
            <font>
             <family>黑体</family>
+            <pointsize>9</pointsize>
            </font>
           </property>
          </widget>
@@ -188,6 +205,7 @@
           <property name="font">
            <font>
             <family>黑体</family>
+            <pointsize>9</pointsize>
            </font>
           </property>
          </widget>
@@ -201,6 +219,7 @@
           <property name="font">
            <font>
             <family>黑体</family>
+            <pointsize>9</pointsize>
            </font>
           </property>
           <property name="text">
@@ -225,6 +244,7 @@
           <property name="font">
            <font>
             <family>黑体</family>
+            <pointsize>9</pointsize>
            </font>
           </property>
          </widget>
@@ -236,6 +256,7 @@
         <property name="font">
          <font>
           <family>黑体</family>
+          <pointsize>9</pointsize>
          </font>
         </property>
         <property name="text">
@@ -250,6 +271,7 @@
           <property name="font">
            <font>
             <family>黑体</family>
+            <pointsize>9</pointsize>
            </font>
           </property>
           <property name="text">
@@ -262,6 +284,7 @@
           <property name="font">
            <font>
             <family>黑体</family>
+            <pointsize>9</pointsize>
            </font>
           </property>
           <property name="maximum">
@@ -278,6 +301,7 @@
           <property name="font">
            <font>
             <family>黑体</family>
+            <pointsize>9</pointsize>
            </font>
           </property>
           <property name="text">
@@ -296,6 +320,7 @@
           <property name="font">
            <font>
             <family>黑体</family>
+            <pointsize>9</pointsize>
            </font>
           </property>
           <property name="text">
@@ -312,6 +337,7 @@
           <property name="font">
            <font>
             <family>黑体</family>
+            <pointsize>9</pointsize>
            </font>
           </property>
           <property name="text">
@@ -324,6 +350,7 @@
           <property name="font">
            <font>
             <family>黑体</family>
+            <pointsize>9</pointsize>
            </font>
           </property>
           <property name="maximum">
@@ -340,6 +367,7 @@
           <property name="font">
            <font>
             <family>黑体</family>
+            <pointsize>9</pointsize>
            </font>
           </property>
           <property name="text">
@@ -352,6 +380,7 @@
           <property name="font">
            <font>
             <family>黑体</family>
+            <pointsize>9</pointsize>
            </font>
           </property>
          </widget>
@@ -379,6 +408,7 @@
      <property name="font">
       <font>
        <family>黑体</family>
+       <pointsize>9</pointsize>
       </font>
      </property>
      <property name="title">
@@ -390,6 +420,7 @@
         <property name="font">
          <font>
           <family>黑体</family>
+          <pointsize>9</pointsize>
          </font>
         </property>
        </widget>
@@ -414,6 +445,7 @@
           <property name="font">
            <font>
             <family>黑体</family>
+            <pointsize>9</pointsize>
            </font>
           </property>
           <property name="text">

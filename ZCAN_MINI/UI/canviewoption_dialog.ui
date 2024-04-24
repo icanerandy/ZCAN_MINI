@@ -16,12 +16,18 @@
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <widget class="QWidget" name="widget" native="true">
+     <property name="font">
+      <font>
+       <pointsize>9</pointsize>
+      </font>
+     </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="2" column="0">
        <widget class="QtMaterialCheckBox" name="chkDirection">
         <property name="font">
          <font>
           <family>黑体</family>
+          <pointsize>9</pointsize>
          </font>
         </property>
         <property name="text">
@@ -34,6 +40,7 @@
         <property name="font">
          <font>
           <family>黑体</family>
+          <pointsize>9</pointsize>
          </font>
         </property>
         <property name="text">
@@ -46,6 +53,7 @@
         <property name="font">
          <font>
           <family>黑体</family>
+          <pointsize>9</pointsize>
          </font>
         </property>
         <property name="text">
@@ -58,6 +66,7 @@
         <property name="font">
          <font>
           <family>黑体</family>
+          <pointsize>9</pointsize>
          </font>
         </property>
         <property name="text">
@@ -70,6 +79,7 @@
         <property name="font">
          <font>
           <family>黑体</family>
+          <pointsize>9</pointsize>
          </font>
         </property>
         <property name="text">
@@ -82,6 +92,7 @@
         <property name="font">
          <font>
           <family>黑体</family>
+          <pointsize>9</pointsize>
          </font>
         </property>
         <property name="text">
@@ -94,6 +105,7 @@
         <property name="font">
          <font>
           <family>黑体</family>
+          <pointsize>9</pointsize>
          </font>
         </property>
         <property name="text">
@@ -106,6 +118,7 @@
         <property name="font">
          <font>
           <family>黑体</family>
+          <pointsize>9</pointsize>
          </font>
         </property>
         <property name="text">
@@ -118,6 +131,7 @@
         <property name="font">
          <font>
           <family>黑体</family>
+          <pointsize>9</pointsize>
          </font>
         </property>
         <property name="text">

@@ -11,7 +11,7 @@ QTableView {
 }
 
 QHeaderView::section {
-    font-family: "微软雅黑";
+    font-family: "黑体";
     font-size: 9pt bold;
     background-color: #607D8B;
     padding: 4px;

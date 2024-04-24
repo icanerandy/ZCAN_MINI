@@ -568,6 +568,11 @@ void SpeedViewDockWidget::slot_disSigVal_changed(double value)
 
     if (deviation_plot_)
         deviation_plot_->set_default_deviation_value_(value);
+    else
+    {
+        QMessageBox::information(this,"fail","当前无数据!");
+        return;
+    }
 
     QCPBars* bars_exception = static_cast<QCPBars*>(ui->plot_2->plottable(1));
     deviation_replot_->pause();
