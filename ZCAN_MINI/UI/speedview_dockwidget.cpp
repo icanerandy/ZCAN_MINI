@@ -13,6 +13,73 @@ SpeedViewDockWidget::SpeedViewDockWidget(QWidget *parent) :
     default_deviation_value_(100)
 {
     ui->setupUi(this);
+
+    initUI();
+
+    ui->plot->setNoAntialiasingOnDrag(true);
+    ui->plot_2->setNoAntialiasingOnDrag(true);
+
+    initPlot(ui->plot);
+    initPlot(ui->plot_2);
+
+    QCPBars* bars = new QCPBars(ui->plot_2->xAxis, ui->plot_2->yAxis);
+    bars->setWidthType(QCPBars::wtAbsolute);
+    bars->setPen(QPen("#CC8F2D"));
+    bars->setBrush(QBrush("#CC8F2D"));
+
+    QCPBars* bars_exception = new QCPBars(ui->plot_2->xAxis, ui->plot_2->yAxis);
+    bars_exception->setWidthType(QCPBars::wtAbsolute);
+    bars_exception->setPen(QPen("#EB4530"));
+    bars_exception->setBrush(QBrush("#EB4530"));
+    bars_exception->setLayer("overlay");
+
+    // bars->setAntialiased(true);    // 设置柱状图抗锯齿
+
+    ui->plot_2->legend->setVisible(false);
+
+    connect(ui->plot->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot_2->xAxis, SLOT(setRange(QCPRange)));
+    connect(ui->plot_2->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot->xAxis, SLOT(setRange(QCPRange)));
+    // connect(ui->plot_2->xAxis, static_cast<void (QCPAxis::*)(const QCPRange &)>(&QCPAxis::rangeChanged),
+    //         this, [=]() {
+    //             double currentScale = ui->plot_2->xAxis->range().size();
+    //             double barWidth = qMax(currentScale / 1000, 10e-3);; // 更新barWidth基于当前缩放比例
+    //             bars->setWidth(barWidth);
+    //             bars_exception->setWidth(barWidth);
+    //             ui->plot_2->replot(QCustomPlot::rpQueuedReplot);
+    // });
+    connect(ui->plot_2->xAxis, static_cast<void (QCPAxis::*)(const QCPRange &)>(&QCPAxis::rangeChanged),
+            this, [=](const QCPRange &newRange) {
+            // 获取新的x轴范围大小
+        // 获取新的x轴范围大小（单位：秒）
+        double rangeSize = newRange.size();
+
+        // 将范围大小转换为毫秒
+        double rangeSizeInMilliseconds = rangeSize * 1000;
+
+        // 计算理想的柱宽，这里我们假设在当前范围内至少显示100个柱子
+        double barWidth = rangeSizeInMilliseconds / 100;
+
+        // 保证柱子的最小宽度，避免柱子过于细小不可见
+        barWidth = qMax(barWidth, 1.0);
+
+        // 为bars和bars_exception设置新的宽度
+        bars->setWidth(barWidth);
+        bars_exception->setWidth(barWidth);
+
+        ui->plot_2->replot(QCustomPlot::rpQueuedReplot);
+    });
+}
+
+SpeedViewDockWidget::~SpeedViewDockWidget()
+{
+    if (signal_parser_)
+        destroyThread();
+
+    delete ui;
+}
+
+void SpeedViewDockWidget::initUI()
+{
     int max_height = 35;
 
     // QWidget* titleBarWidget = new QWidget();
@@ -142,67 +209,6 @@ SpeedViewDockWidget::SpeedViewDockWidget(QWidget *parent) :
         ui->plot->graph(1)->setPen(pen);
         ui->plot->replot(QCustomPlot::rpQueuedReplot);
     });
-
-    ui->plot->setNoAntialiasingOnDrag(true);
-    ui->plot_2->setNoAntialiasingOnDrag(true);
-
-    initPlot(ui->plot);
-    initPlot(ui->plot_2);
-
-    QCPBars* bars = new QCPBars(ui->plot_2->xAxis, ui->plot_2->yAxis);
-    bars->setWidthType(QCPBars::wtAbsolute);
-    bars->setPen(QPen("#CC8F2D"));
-    bars->setBrush(QBrush("#CC8F2D"));
-
-    QCPBars* bars_exception = new QCPBars(ui->plot_2->xAxis, ui->plot_2->yAxis);
-    bars_exception->setWidthType(QCPBars::wtAbsolute);
-    bars_exception->setPen(QPen("#EB4530"));
-    bars_exception->setBrush(QBrush("#EB4530"));
-    bars_exception->setLayer("overlay");
-
-    // bars->setAntialiased(true);    // 设置柱状图抗锯齿
-
-    ui->plot_2->legend->setVisible(false);
-
-    connect(ui->plot->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot_2->xAxis, SLOT(setRange(QCPRange)));
-    connect(ui->plot_2->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot->xAxis, SLOT(setRange(QCPRange)));
-    // connect(ui->plot_2->xAxis, static_cast<void (QCPAxis::*)(const QCPRange &)>(&QCPAxis::rangeChanged),
-    //         this, [=]() {
-    //             double currentScale = ui->plot_2->xAxis->range().size();
-    //             double barWidth = qMax(currentScale / 1000, 10e-3);; // 更新barWidth基于当前缩放比例
-    //             bars->setWidth(barWidth);
-    //             bars_exception->setWidth(barWidth);
-    //             ui->plot_2->replot(QCustomPlot::rpQueuedReplot);
-    // });
-    connect(ui->plot_2->xAxis, static_cast<void (QCPAxis::*)(const QCPRange &)>(&QCPAxis::rangeChanged),
-            this, [=](const QCPRange &newRange) {
-            // 获取新的x轴范围大小
-        // 获取新的x轴范围大小（单位：秒）
-        double rangeSize = newRange.size();
-
-        // 将范围大小转换为毫秒
-        double rangeSizeInMilliseconds = rangeSize * 1000;
-
-        // 计算理想的柱宽，这里我们假设在当前范围内至少显示100个柱子
-        double barWidth = rangeSizeInMilliseconds / 100;
-
-        // 保证柱子的最小宽度，避免柱子过于细小不可见
-        barWidth = qMax(barWidth, 1.0);
-
-        // 为bars和bars_exception设置新的宽度
-        bars->setWidth(barWidth);
-        bars_exception->setWidth(barWidth);
-
-        ui->plot_2->replot(QCustomPlot::rpQueuedReplot);
-    });
-}
-
-SpeedViewDockWidget::~SpeedViewDockWidget()
-{
-    if (signal_parser_)
-        destroyThread();
-
-    delete ui;
 }
 
 void SpeedViewDockWidget::initPlot(QCustomPlot* const plot)
@@ -220,8 +226,8 @@ void SpeedViewDockWidget::initPlot(QCustomPlot* const plot)
     date_tick->setDateTimeFormat("mm:ss.zzz");
     plot->xAxis->setTicker(date_tick);
     QFont font;
-    font.setPixelSize(10);
-    font.setFamily("微软雅黑");
+    font.setPixelSize(12);
+    font.setFamily("黑体");
     plot->xAxis->setTickLabelFont(font);
     plot->yAxis->setTickLabelFont(font);
     plot->xAxis->ticker()->setTickOrigin(0);//设置刻度原点
