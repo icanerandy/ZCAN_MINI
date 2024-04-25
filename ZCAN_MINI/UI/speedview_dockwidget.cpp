@@ -310,8 +310,6 @@ void SpeedViewDockWidget::addGraphs(QCustomPlot* const plot)
         plot->graph()->setLineStyle(QCPGraph::lsLine);
         // plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 3));
         plot->graph()->setPen(pen);
-        plot->graph()->setName(QString::fromStdString(sig_lst_.at(0).second.name));//曲线名称
-
         plot->graph()->setAntialiased(false);   // 设置曲线无抗锯齿
 
         plot->graph()->rescaleAxes();
@@ -324,7 +322,6 @@ void SpeedViewDockWidget::addGraphs(QCustomPlot* const plot)
         // plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 3));
         plot->graph()->setPen(pen1);
         plot->graph()->setName(QString::fromStdString(sig_lst_.at(1).second.name));//曲线名称
-
         plot->graph()->setAntialiased(false);   // 设置曲线抗锯齿
 
         plot->graph()->rescaleAxes(true);
@@ -335,6 +332,9 @@ void SpeedViewDockWidget::addGraphs(QCustomPlot* const plot)
 
 void SpeedViewDockWidget::initThread()
 {
+    ui->plot->graph(0)->setName(QString::fromStdString(sig_lst_.at(0).second.name));//曲线名称
+    ui->plot->graph(1)->setName(QString::fromStdString(sig_lst_.at(1).second.name));//曲线名称
+
     signal_parser_ = new SignalParser(sig_lst_);
     signal_parser_thread_ = new QThread;
     signal_parser_->moveToThread(signal_parser_thread_);
