@@ -417,13 +417,7 @@ void DeviceManager::sendMsg()
 
     if (ProtocolType::Can == protocol_type_)
     {
-//        ZCAN_AUTO_TRANSMIT_OBJ autoObj;
-//        memset(&autoObj, 0, sizeof(autoObj));
-//        autoObj.enable = send_enable_;
-//        autoObj.interval = auto_send_period_;
-//        autoObj.index = auto_send_index_;
-
-        ZCAN_Transmit_Data can_data/* = autoObj.obj*/;
+        ZCAN_Transmit_Data can_data;
 
         frm_delay_flag_ = true;
 
@@ -440,38 +434,12 @@ void DeviceManager::sendMsg()
             can_data.frame.__res1 = static_cast<BYTE>(((frm_delay_time)>>8) & 0xff);
         }
 
-//        char path[50] = {0};
-//        snprintf(path, sizeof("%d/auto_send"), "%d/auto_send", channel_index_);
-//        int nRet = ZCAN_SetValue(device_handle_, path, (const char*)&autoObj);
-
-//        if (send_enable())
-//        {
-//            char path[50] = {0};
-//            char value[50] = {0};
-//            snprintf(path, sizeof("%d/apply_auto_send"), "%d/apply_auto_send", channel_index_);
-//            int nRet = ZCAN_SetValue(device_handle_, path, "0");
-//        }
-//        else
-//        {
-//            char path[50] = {0};
-//            char value[50] = {0};
-//            snprintf(path, sizeof("%d/clear_auto_send"), "%d/apply_auto_send", channel_index_);
-//            int nRet = ZCAN_SetValue(device_handle_, path, "0");
-//        }
-
-//        ZCAN_Transmit(channel_handle_, &can_data, 1);
         sendmsg_thread_ = new SendMsgThread(channel_handle_, QVariant::fromValue(can_data), send_count_once_, send_count_);
         sendmsg_thread_->start();
         sendmsg_thread_->beginThread();
     }
     else//canfd
     {
-//        ZCANFD_AUTO_TRANSMIT_OBJ autoObj;
-//        memset(&autoObj, 0, sizeof(autoObj));
-//        autoObj.enable = send_enable_;
-//        autoObj.interval = auto_send_period_;
-//        autoObj.index = auto_send_index_;
-
         ZCAN_TransmitFD_Data canfd_data/* = autoObj.obj*/;
 
         frm_delay_flag_ = true;
@@ -489,25 +457,6 @@ void DeviceManager::sendMsg()
             canfd_data.frame.__res0 = static_cast<BYTE>(frm_delay_time & 0xff);
             canfd_data.frame.__res1 = static_cast<BYTE>(((frm_delay_time)>>8) & 0xff);
         }
-
-//        char path[50] = {0};
-//        snprintf(path, sizeof("%d/auto_send_canfd"), "%d/auto_send_canfd", channel_index_);
-//        int nRet = ZCAN_SetValue(device_handle_, path, (const char*)&autoObj);
-
-//        if (send_enable())
-//        {
-//            char path[50] = {0};
-//            char value[50] = {0};
-//            snprintf(path, sizeof("%d/apply_auto_send"), "%d/apply_auto_send", channel_index_);
-//            int nRet = ZCAN_SetValue(device_handle_, path, "0");
-//        }
-//        else
-//        {
-//            char path[50] = {0};
-//            char value[50] = {0};
-//            snprintf(path, sizeof("%d/clear_auto_send"), "%d/apply_auto_send", channel_index_);
-//            int nRet = ZCAN_SetValue(device_handle_, path, "0");
-//        }
 
         sendmsg_thread_ = new SendMsgThread(channel_handle_, QVariant::fromValue(canfd_data), send_count_once_, send_count_);
         sendmsg_thread_->start();
