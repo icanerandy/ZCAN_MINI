@@ -8,17 +8,19 @@ CanViewDockWidget::CanViewDockWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->chkIdIndex->setCheckedColor("#449CC8");
+    // QWidget* titleBarWidget = new QWidget();
+    // setTitleBarWidget(titleBarWidget);
+
+    ui->chkIdIndex->setCheckedColor(QStringLiteral("#449CC8"));
 
     int max_height = 35;
     // editIdIndex
     ui->editIdIndex->setFixedHeight(25);
     ui->editIdIndex->setLabelColor(QColor(0, 0, 0, 0));
-    // ui->editIdIndex->setLabel("dafdsafdsa");
-    ui->editIdIndex->setInkColor(QColor("#7BA0B3"));
+    ui->editIdIndex->setInkColor(QColor(QStringLiteral("#7BA0B3")));
 
     // button
-    QColor color("#607D8B");
+    QColor color(QStringLiteral("#607D8B"));
     ui->btnClear->setBackgroundColor(color);
     ui->btnClear->setFixedHeight(max_height);
     ui->btnPause->setBackgroundColor(color);
@@ -42,6 +44,7 @@ CanViewDockWidget::CanViewDockWidget(QWidget *parent) :
     ui->tableView->setModel(canframe_tablemodel);
     ui->tableView->setSelectionMode(QAbstractItemView::NoSelection);
     ui->tableView->horizontalHeader()->setSectionResizeMode(QHeaderView::Interactive);  // 禁用resizeToContents()
+    ui->tableView->horizontalHeader()->setSectionResizeMode(8, QHeaderView::Stretch);   // 设置最后一列自适应宽度
     ui->tableView->setAlternatingRowColors(true);
     ui->tableView->verticalHeader()->setVisible(false);
 }
@@ -109,17 +112,4 @@ void CanViewDockWidget::bindSignals()
         canframe_tablemodel->page_num_ = ui->spinBox->value();
         ui->labCurrentPage->setText(QString::number(ui->spinBox->value()));
     });
-
-    // connect(&timer_, &QTimer::timeout, this, [=] {
-    //     if (scroll_enabled_)
-    //     {
-    //         scroll_enabled_ = false;
-    //         ui->tableView->scrollToBottom();
-    //     }
-    // });
-    // timer_.start(30);
-    // connect(canframe_tablemodel, &CanFrameTableModel::dataChanged, this, [=] {
-    //     ui->tableView->viewport()->update();
-    //     scroll_enabled_ = true;
-    // });
 }

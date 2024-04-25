@@ -2,6 +2,8 @@
 #define INFO_DOCKWIDGET_H
 
 #include <QDockWidget>
+#include <QTimer>
+#include <QDateTime>
 
 namespace Ui {
 class InfoDockWidget;
@@ -17,6 +19,8 @@ public:
 
 private:
     Ui::InfoDockWidget *ui;
+
+    QTimer timer;
 };
 
 #endif // INFO_DOCKWIDGET_H

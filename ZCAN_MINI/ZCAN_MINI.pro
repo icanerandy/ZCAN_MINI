@@ -37,8 +37,8 @@ include ($$PWD/Model/Model.pri)
 INCLUDEPATH += $$PWD/Ui
 include ($$PWD/Ui/Ui.pri)
 
-INCLUDEPATH += $$PWD/Thread
-include ($$PWD/Thread/Thread.pri)
+INCLUDEPATH += $$PWD/MsgProcess
+include ($$PWD/MsgProcess/MsgProcess.pri)
 
 RESOURCES += \
     resources.qrc

@@ -15,6 +15,9 @@ SpeedViewDockWidget::SpeedViewDockWidget(QWidget *parent) :
     ui->setupUi(this);
     int max_height = 35;
 
+    // QWidget* titleBarWidget = new QWidget();
+    // setTitleBarWidget(titleBarWidget);
+
     QColor color("#607D8B");
     ui->btnPaint->setBackgroundColor(color);
     ui->btnPaint->setFixedHeight(max_height);
