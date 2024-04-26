@@ -18,6 +18,7 @@ class LinePlot : public QObject
 
 public:
     explicit LinePlot(QCustomPlot* const plot);
+    void addDataWithResampling(QCPGraph* graph, QCPGraphData new_data);
 
 Q_SIGNALS:
     void sig_absDeviation(double key, double abs_deviation);
@@ -27,6 +28,7 @@ public Q_SLOTS:
 
 private:
     QCustomPlot* const plot_;
+    QVector<QCPGraphData> total_data;
 
     std::chrono::high_resolution_clock::time_point t1;
     std::chrono::high_resolution_clock::time_point t2;

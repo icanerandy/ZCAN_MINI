@@ -42,7 +42,7 @@ public:
 private:
     void initUI();
     void initPlot(QCustomPlot* const plot);
-    void addGraphs(QCustomPlot* const plot);
+    void addGraphs(QCustomPlot* const plot, int graph_count);
     void initThread();
     void destroyThread();
 

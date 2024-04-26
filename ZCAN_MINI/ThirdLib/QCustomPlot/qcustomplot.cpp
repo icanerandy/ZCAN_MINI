@@ -24880,6 +24880,7 @@ void QCPBars::draw(QCPPainter *painter)
     for (QCPBarsDataContainer::const_iterator it=begin; it!=end; ++it)
     {
       // check data validity if flag set:
+#define QCUSTOMPLOT_CHECK_DATA
 #ifdef QCUSTOMPLOT_CHECK_DATA
       if (QCP::isInvalidData(it->key, it->value))
         qDebug() << Q_FUNC_INFO << "Data point at" << it->key << "of drawn range invalid." << "Plottable name:" << name();

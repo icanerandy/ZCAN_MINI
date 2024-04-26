@@ -13,14 +13,19 @@ void DeviationPlot::set_default_deviation_value_(double value)
 
 void DeviationPlot::slot_absDeviation(double key, double abs_deviation)
 {
-    // QVector<QCPGraphData>* data = nullptr;
-
-    QCPBars* bars = static_cast<QCPBars*>(plot_->plottable(0));
-    bars->addData(key, abs_deviation);
+    QVector<QCPGraphData>* data = plot_->graph()->data()->coreData();;
+    data->push_back(QCPGraphData( key, abs_deviation ));
 
     if (qAbs(abs_deviation) >= default_deviation_value_)
     {
-        QCPBars* bars_exception = static_cast<QCPBars*>(plot_->plottable(1));
-        bars_exception->addData(key, abs_deviation);
+        QVector<QCPGraphData>* exception_data = plot_->graph(1)->data()->coreData();;
+        exception_data->push_back(QCPGraphData( key, abs_deviation ));
     }
+
+    // if (count == 0)
+    // {
+    //     plot_->xAxis->setRange(key, key + 10);
+    //     plot_->replot(QCustomPlot::rpQueuedReplot);
+    //     ++count;
+    // }
 }

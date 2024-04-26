@@ -36,7 +36,18 @@ BS_:
 BU_:
 
 
-BO_ 258 UpperComputerData: 24 Vector__XXX
+BO_ 258 UpperComputerData: 64 Vector__XXX
+ SG_ FL_PressureValue : 248|16@1+ (0.01,0) [0|655.35] "" Vector__XXX
+ SG_ RR_PressureValue : 256|16@1+ (0.01,0) [0|655.35] "" Vector__XXX
+ SG_ FR_PressureValue : 232|16@1+ (0.01,0) [0|655.35] "" Vector__XXX
+ SG_ RL_PressureValue : 216|16@1+ (0.01,0) [0|655.35] "" Vector__XXX
+ SG_ MsgSendTime : 200|16@1+ (1,0) [0|65535] "" Vector__XXX
+ SG_ J_SolenoidState : 196|4@1+ (1,0) [0|15] "" Vector__XXX
+ SG_ Q_SolenoidState : 192|4@1+ (1,0) [0|15] "" Vector__XXX
+ SG_ R_SolenoidState : 188|4@1+ (1,0) [0|15] "" Vector__XXX
+ SG_ P_SolenoidState : 184|4@1+ (1,0) [0|15] "" Vector__XXX
+ SG_ O_SolenoidState : 180|4@1+ (1,0) [0|15] "" Vector__XXX
+ SG_ H_SolenoidState : 176|4@1+ (1,0) [0|15] "" Vector__XXX
  SG_ J_solenoidPwmValue : 168|8@1+ (1,0) [0|255] "" Vector__XXX
  SG_ Q_solenoidPwmValue : 160|8@1+ (1,0) [0|255] "" Vector__XXX
  SG_ R_solenoidPwmValue : 152|8@1+ (1,0) [0|255] "" Vector__XXX

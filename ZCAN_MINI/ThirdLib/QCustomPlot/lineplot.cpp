@@ -6,6 +6,40 @@ LinePlot::LinePlot(QCustomPlot* const plot)
 
 }
 
+void LinePlot::addDataWithResampling(QCPGraph* graph, QCPGraphData new_data)
+{
+    uint max_total_points = 10000;
+
+    // 将新数据添加到当前数据
+    total_data.append(new_data);
+
+    QVector<QCPGraphData>* data_set = graph->data()->coreData();
+    data_set->append(new_data);
+
+    // 如果当前总数据点数超过最大允许值，则进行降采样
+    uint total_points = data_set->size();
+    if (total_points > max_total_points)
+    {
+        QVector<double> resampledX;
+        QVector<double> resampledY;
+
+        // 计算需要的降采样率
+        uint sampleRate = total_points / max_total_points;
+
+        // 降采样，每 sampleRate 个点取一个点
+        for (uint i = 0; i < total_points; i += sampleRate)
+        {
+            resampledX.push_back(data_set->at(i).key);
+            resampledY.push_back(data_set->at(i).value);
+        }
+
+        // 更新图表数据
+        graph->setData(resampledX, resampledY);
+    } else {
+        // 如果没有超过最大点数，直接更新数据
+    }
+}
+
 void LinePlot::slot_realTimeData(const QList<double> vals)
 {
     if (!plot_)
@@ -29,6 +63,7 @@ void LinePlot::slot_realTimeData(const QList<double> vals)
     {
         data = plot_->graph(i)->data()->coreData();
         data->push_back(QCPGraphData( key, vals.at(2*i+1) /*i==0?x:y*/ ));
+        // addDataWithResampling(plot_->graph(i), QCPGraphData( key, vals.at(2*i+1) /*i==0?x:y*/ ));
 
         if (count == 0)
         {

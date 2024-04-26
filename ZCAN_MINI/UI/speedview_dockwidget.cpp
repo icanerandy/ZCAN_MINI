@@ -22,52 +22,10 @@ SpeedViewDockWidget::SpeedViewDockWidget(QWidget *parent) :
     initPlot(ui->plot);
     initPlot(ui->plot_2);
 
-    QCPBars* bars = new QCPBars(ui->plot_2->xAxis, ui->plot_2->yAxis);
-    bars->setWidthType(QCPBars::wtAbsolute);
-    bars->setPen(QPen("#CC8F2D"));
-    bars->setBrush(QBrush("#CC8F2D"));
-
-    QCPBars* bars_exception = new QCPBars(ui->plot_2->xAxis, ui->plot_2->yAxis);
-    bars_exception->setWidthType(QCPBars::wtAbsolute);
-    bars_exception->setPen(QPen("#EB4530"));
-    bars_exception->setBrush(QBrush("#EB4530"));
-    bars_exception->setLayer("overlay");
-
-    // bars->setAntialiased(true);    // 设置柱状图抗锯齿
-
     ui->plot_2->legend->setVisible(false);
 
     connect(ui->plot->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot_2->xAxis, SLOT(setRange(QCPRange)));
     connect(ui->plot_2->xAxis, SIGNAL(rangeChanged(QCPRange)), ui->plot->xAxis, SLOT(setRange(QCPRange)));
-    // connect(ui->plot_2->xAxis, static_cast<void (QCPAxis::*)(const QCPRange &)>(&QCPAxis::rangeChanged),
-    //         this, [=]() {
-    //             double currentScale = ui->plot_2->xAxis->range().size();
-    //             double barWidth = qMax(currentScale / 1000, 10e-3);; // 更新barWidth基于当前缩放比例
-    //             bars->setWidth(barWidth);
-    //             bars_exception->setWidth(barWidth);
-    //             ui->plot_2->replot(QCustomPlot::rpQueuedReplot);
-    // });
-    connect(ui->plot_2->xAxis, static_cast<void (QCPAxis::*)(const QCPRange &)>(&QCPAxis::rangeChanged),
-            this, [=](const QCPRange &newRange) {
-            // 获取新的x轴范围大小
-        // 获取新的x轴范围大小（单位：秒）
-        double rangeSize = newRange.size();
-
-        // 将范围大小转换为毫秒
-        double rangeSizeInMilliseconds = rangeSize * 1000;
-
-        // 计算理想的柱宽，这里我们假设在当前范围内至少显示100个柱子
-        double barWidth = rangeSizeInMilliseconds / 100;
-
-        // 保证柱子的最小宽度，避免柱子过于细小不可见
-        barWidth = qMax(barWidth, 1.0);
-
-        // 为bars和bars_exception设置新的宽度
-        bars->setWidth(barWidth);
-        bars_exception->setWidth(barWidth);
-
-        ui->plot_2->replot(QCustomPlot::rpQueuedReplot);
-    });
 }
 
 SpeedViewDockWidget::~SpeedViewDockWidget()
@@ -225,6 +183,7 @@ void SpeedViewDockWidget::initPlot(QCustomPlot* const plot)
 
     date_tick->setDateTimeFormat("mm:ss.zzz");
     plot->xAxis->setTicker(date_tick);
+
     QFont font;
     font.setPixelSize(12);
     font.setFamily("黑体");
@@ -256,6 +215,9 @@ void SpeedViewDockWidget::initPlot(QCustomPlot* const plot)
     plot->yAxis->setSelectedTickLabelColor(QColor(0, 0, 255, 255));
 
     plot->axisRect()->setBackground(QBrush(QColor(255, 255, 255, 255))); // 设置背景颜色
+
+    plot->setNotAntialiasedElements(QCP::aeAll);
+    // plot->setNoAntialiasingOnDrag(true);
 
     // 使上下两个X轴的范围总是相等，使左右两个Y轴的范围总是相等
     qRegisterMetaType<QCPRange>("QCPRange");
@@ -299,34 +261,70 @@ void SpeedViewDockWidget::initPlot(QCustomPlot* const plot)
                           QCP::iSelectLegend | QCP::iSelectPlottables);
 }
 
-void SpeedViewDockWidget::addGraphs(QCustomPlot* const plot)
+void SpeedViewDockWidget::addGraphs(QCustomPlot* const plot, int graph_count)
 {
     if (0 == plot->graphCount())
     {
-        plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
-        QColor color("#A52A2A");    // 浅褐色
-        QPen pen(color.lighter());
-        pen.setWidthF(1);   // 宽度超过1性能急剧下降
-        plot->graph()->setLineStyle(QCPGraph::lsLine);
-        // plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 3));
-        plot->graph()->setPen(pen);
-        plot->graph()->setAntialiased(false);   // 设置曲线无抗锯齿
+        if (1 == graph_count)
+        {
+            plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
+            QColor color("#A52A2A");    // 浅褐色
+            QPen pen(color.lighter());
+            pen.setWidthF(1);   // 宽度超过1性能急剧下降
+            plot->graph()->setLineStyle(QCPGraph::lsImpulse);
+            plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 1));
+            plot->graph()->setPen(pen);
+            plot->graph()->setAntialiased(false);   // 设置曲线无抗锯齿
+            plot->graph()->setAdaptiveSampling(true);   // 自适应采样
+            qDebug() << "自适应采样开启状态： " << plot->graph()->adaptiveSampling();
 
-        plot->graph()->rescaleAxes();
+            plot->graph()->rescaleAxes();
 
-        plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
-        QColor color1("#87CEEB");   // 天蓝色
-        QPen pen1(color1.darker(120));
-        pen1.setWidthF(1);   // 宽度超过1性能急剧下降
-        plot->graph()->setLineStyle(QCPGraph::lsLine);
-        // plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 3));
-        plot->graph()->setPen(pen1);
-        plot->graph()->setName(QString::fromStdString(sig_lst_.at(1).second.name));//曲线名称
-        plot->graph()->setAntialiased(false);   // 设置曲线抗锯齿
+            plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
+            QColor color1("#87CEEB");   // 天蓝色
+            QPen pen1(color1.darker(120));
+            pen1.setWidthF(1);   // 宽度超过1性能急剧下降
+            plot->graph()->setLineStyle(QCPGraph::lsImpulse);
+            plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 1));
+            plot->graph()->setPen(pen1);
+            plot->graph()->setName(QString::fromStdString(sig_lst_.at(1).second.name));//曲线名称
+            plot->graph()->setAntialiased(false);   // 设置曲线抗锯齿
+            plot->graph()->setAdaptiveSampling(true);   // 自适应采样
 
-        plot->graph()->rescaleAxes(true);
+            plot->graph()->rescaleAxes(true);
 
-        plot->replot(QCustomPlot::rpQueuedReplot);
+            plot->replot(QCustomPlot::rpQueuedReplot);
+        }
+        else if (2 == graph_count)
+        {
+            plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
+            QColor color("#A52A2A");    // 浅褐色
+            QPen pen(color.lighter());
+            pen.setWidthF(1);   // 宽度超过1性能急剧下降
+            plot->graph()->setLineStyle(QCPGraph::lsLine);
+            plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 1));
+            plot->graph()->setPen(pen);
+            plot->graph()->setAntialiased(false);   // 设置曲线无抗锯齿
+            plot->graph()->setAdaptiveSampling(true);   // 自适应采样
+            qDebug() << "自适应采样开启状态： " << plot->graph()->adaptiveSampling();
+
+            plot->graph()->rescaleAxes();
+
+            plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
+            QColor color1("#87CEEB");   // 天蓝色
+            QPen pen1(color1.darker(120));
+            pen1.setWidthF(1);   // 宽度超过1性能急剧下降
+            plot->graph()->setLineStyle(QCPGraph::lsLine);
+            plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 1));
+            plot->graph()->setPen(pen1);
+            plot->graph()->setName(QString::fromStdString(sig_lst_.at(1).second.name));//曲线名称
+            plot->graph()->setAntialiased(false);   // 设置曲线抗锯齿
+            plot->graph()->setAdaptiveSampling(true);   // 自适应采样
+
+            plot->graph()->rescaleAxes(true);
+
+            plot->replot(QCustomPlot::rpQueuedReplot);
+        }
     }
 }
 
@@ -535,7 +533,8 @@ void SpeedViewDockWidget::slot_btnPaint_clicked(bool paint_enable)
         if (is_first_paint)
         {
             is_first_paint = false;
-            addGraphs(ui->plot);
+            addGraphs(ui->plot, 2);
+            addGraphs(ui->plot_2, 1);
         }
 
         initThread();
@@ -583,22 +582,20 @@ void SpeedViewDockWidget::slot_disSigVal_changed(double value)
         return;
     }
 
-    QCPBars* bars_exception = static_cast<QCPBars*>(ui->plot_2->plottable(1));
+    QVector<QCPGraphData>* normal_data = ui->plot_2->graph()->data()->coreData();
+    QVector<QCPGraphData>* exception_data = ui->plot_2->graph(1)->data()->coreData();
     deviation_replot_->pause();
-    bars_exception->data()->clear();
-
-    QCPBars* bars_normal = static_cast<QCPBars*>(ui->plot_2->plottable(0));
-    QCPBarsDataContainer* normalData = bars_normal->data().data();
+    exception_data->clear();
 
     // 遍历正常偏差条形图的所有数据
-    for (auto it = normalData->begin(); it != normalData->end(); ++it)
+    for (auto it = normal_data->begin(); it != normal_data->end(); ++it)
     {
         double key = it->key;
         double abs_deviation = it->value;
 
         if (qAbs(abs_deviation) >= default_deviation_value_)
         {
-            bars_exception->addData(key, abs_deviation);
+            exception_data->push_back(QCPGraphData( key, abs_deviation ));
         }
     }
 
