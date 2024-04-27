@@ -48,6 +48,8 @@ void SpeedViewDockWidget::initUI()
     ui->btnPaint->setFixedHeight(max_height);
     ui->btnClear->setBackgroundColor(color);
     ui->btnClear->setFixedHeight(max_height);
+    ui->btnRescale->setBackgroundColor(color);
+    ui->btnRescale->setFixedHeight(max_height);
     ui->btnDis->setBackgroundColor(color);
     ui->btnDis->setFixedHeight(max_height);
     ui->btnDeviation->setBackgroundColor(color);
@@ -95,6 +97,10 @@ void SpeedViewDockWidget::initUI()
     });
 
     connect(ui->btnClear, &QPushButton::clicked, this, &SpeedViewDockWidget::slot_clearData);
+
+    connect(ui->btnRescale, &QtMaterialRaisedButton::clicked, this, [=] {
+        ui->plot->rescaleAxes();
+    });
 
     connect(ui->btnDeviation, &QPushButton::clicked, this, [this] {
         double value = ui->spinDeviation->value();
@@ -265,66 +271,57 @@ void SpeedViewDockWidget::addGraphs(QCustomPlot* const plot, int graph_count)
 {
     if (0 == plot->graphCount())
     {
+        plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
+        plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 1));
+        plot->graph()->setAntialiased(false);   // 设置曲线无抗锯齿
+        plot->graph()->setAdaptiveSampling(true);   // 自适应采样
+        qDebug() << "graph(0)自适应采样开启状态： " << plot->graph()->adaptiveSampling();
+
+        plot->graph()->rescaleAxes();
+
+        plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
+        plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 1));
+        plot->graph()->setName(QString::fromStdString(sig_lst_.at(1).second.name));//曲线名称
+        plot->graph()->setAntialiased(false);   // 设置曲线抗锯齿
+        plot->graph()->setAdaptiveSampling(true);   // 自适应采样
+        qDebug() << "graph(1)自适应采样开启状态： " << plot->graph()->adaptiveSampling();
+
+        plot->graph()->rescaleAxes(true);
+
         if (1 == graph_count)
         {
-            plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
             QColor color("#A52A2A");    // 浅褐色
-            QPen pen(color.lighter());
+            QPen pen(color.lighter(120));
             pen.setWidthF(1);   // 宽度超过1性能急剧下降
-            plot->graph()->setLineStyle(QCPGraph::lsImpulse);
-            plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 1));
-            plot->graph()->setPen(pen);
-            plot->graph()->setAntialiased(false);   // 设置曲线无抗锯齿
-            plot->graph()->setAdaptiveSampling(true);   // 自适应采样
-            qDebug() << "自适应采样开启状态： " << plot->graph()->adaptiveSampling();
+            plot->graph(0)->setPen(pen);
 
-            plot->graph()->rescaleAxes();
-
-            plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
             QColor color1("#87CEEB");   // 天蓝色
             QPen pen1(color1.darker(120));
             pen1.setWidthF(1);   // 宽度超过1性能急剧下降
-            plot->graph()->setLineStyle(QCPGraph::lsImpulse);
-            plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 1));
-            plot->graph()->setPen(pen1);
-            plot->graph()->setName(QString::fromStdString(sig_lst_.at(1).second.name));//曲线名称
-            plot->graph()->setAntialiased(false);   // 设置曲线抗锯齿
-            plot->graph()->setAdaptiveSampling(true);   // 自适应采样
+            plot->graph(1)->setPen(pen1);
 
-            plot->graph()->rescaleAxes(true);
-
-            plot->replot(QCustomPlot::rpQueuedReplot);
+            plot->graph(0)->setLineStyle(QCPGraph::lsLine);
+            plot->graph(1)->setLineStyle(QCPGraph::lsLine);
         }
         else if (2 == graph_count)
         {
-            plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
-            QColor color("#A52A2A");    // 浅褐色
-            QPen pen(color.lighter());
-            pen.setWidthF(1);   // 宽度超过1性能急剧下降
-            plot->graph()->setLineStyle(QCPGraph::lsLine);
-            plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 1));
-            plot->graph()->setPen(pen);
-            plot->graph()->setAntialiased(false);   // 设置曲线无抗锯齿
-            plot->graph()->setAdaptiveSampling(true);   // 自适应采样
-            qDebug() << "自适应采样开启状态： " << plot->graph()->adaptiveSampling();
-
-            plot->graph()->rescaleAxes();
-
-            plot->addGraph();//向绘图区域QCustomPlot(从widget提升来的)添加一条曲线
             QColor color1("#87CEEB");   // 天蓝色
-            QPen pen1(color1.darker(120));
+            QPen pen(color1.darker(120));
+            pen.setWidthF(1);   // 宽度超过1性能急剧下降
+            plot->graph(0)->setPen(pen);
+
+            QColor color("#A52A2A");    // 浅褐色
+            QPen pen1(color.lighter(120));
             pen1.setWidthF(1);   // 宽度超过1性能急剧下降
-            plot->graph()->setLineStyle(QCPGraph::lsLine);
-            plot->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 1));
-            plot->graph()->setPen(pen1);
-            plot->graph()->setName(QString::fromStdString(sig_lst_.at(1).second.name));//曲线名称
-            plot->graph()->setAntialiased(false);   // 设置曲线抗锯齿
-            plot->graph()->setAdaptiveSampling(true);   // 自适应采样
+            plot->graph(1)->setPen(pen1);
 
-            plot->graph()->rescaleAxes(true);
+            plot->graph(0)->setLineStyle(QCPGraph::lsImpulse);
+            plot->graph(1)->setLineStyle(QCPGraph::lsImpulse);
 
-            plot->replot(QCustomPlot::rpQueuedReplot);
+            plot->graph(1)->setLayer("main");
         }
+
+        plot->replot(QCustomPlot::rpQueuedReplot);
     }
 }
 
@@ -439,7 +436,7 @@ void SpeedViewDockWidget::destroyThread()
 
 void SpeedViewDockWidget::slot_paint_enable(QList<QPair<uint32_t, Vector::DBC::Signal>> sig_lst)
 {
-    qDebug() << "判断是否为深拷贝";
+    // qDebug() << "判断是否为深拷贝";
     sig_lst_ = sig_lst;
 
     if (ui->btnPaint->isChecked())  // 正在绘制图像时不改变check状态
@@ -533,8 +530,8 @@ void SpeedViewDockWidget::slot_btnPaint_clicked(bool paint_enable)
         if (is_first_paint)
         {
             is_first_paint = false;
-            addGraphs(ui->plot, 2);
-            addGraphs(ui->plot_2, 1);
+            addGraphs(ui->plot, 1);
+            addGraphs(ui->plot_2, 2);
         }
 
         initThread();
@@ -582,7 +579,7 @@ void SpeedViewDockWidget::slot_disSigVal_changed(double value)
         return;
     }
 
-    QVector<QCPGraphData>* normal_data = ui->plot_2->graph()->data()->coreData();
+    QVector<QCPGraphData>* normal_data = ui->plot_2->graph(0)->data()->coreData();
     QVector<QCPGraphData>* exception_data = ui->plot_2->graph(1)->data()->coreData();
     deviation_replot_->pause();
     exception_data->clear();
@@ -590,6 +587,7 @@ void SpeedViewDockWidget::slot_disSigVal_changed(double value)
     // 遍历正常偏差条形图的所有数据
     for (auto it = normal_data->begin(); it != normal_data->end(); ++it)
     {
+
         double key = it->key;
         double abs_deviation = it->value;
 

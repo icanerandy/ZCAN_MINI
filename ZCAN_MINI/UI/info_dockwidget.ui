@@ -7,13 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>1000</width>
-    <height>600</height>
+    <height>700</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>1000</width>
-    <height>500</height>
+    <height>600</height>
    </size>
   </property>
   <property name="font">
@@ -27,7 +27,7 @@
   </property>
   <widget class="QWidget" name="dockWidgetContents">
    <layout class="QFormLayout" name="formLayout">
-    <item row="0" column="0">
+    <item row="1" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
        <widget class="QLabel" name="label">
@@ -54,7 +54,7 @@
       </item>
      </layout>
     </item>
-    <item row="2" column="0">
+    <item row="3" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
        <widget class="QLabel" name="label_2">
@@ -81,7 +81,7 @@
       </item>
      </layout>
     </item>
-    <item row="3" column="0">
+    <item row="4" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QLabel" name="label_3">
@@ -110,6 +110,25 @@
        </widget>
       </item>
      </layout>
+    </item>
+    <item row="0" column="0">
+     <widget class="QPlainTextEdit" name="plainTextEdit">
+      <property name="plainText">
+       <string>1.INFO视图
+左上角菜单栏“设备管理”可以选择相应设备并启动，“发送数据”可以填充指定数据并发送到相应设备。
+2.CAN视图
+在连接设备后会实时接收来自CAN总线的所有报文，并以表格的形式显示在CAN报文列表框中。
+3.DBC视图
+点击右侧“加载DBC文件”后可从文件系统中选择任意DBC文件并解析，解析后的消息和信号位于左侧界面，点击相应的消息或者信号其详细信息会展示在右侧列表框中。在此可以勾选两个需要做差值分析的信号。
+4.SPEED视图
+在DBC视图中勾选两个需要做差值分析的信号后，此处的“开始绘图”按钮即被使能，点击可开始实时绘制已勾选信号的图像。
+
+“重缩放图像”：将图像缩放到合适的范围。
+“隐藏误差图”：将误差图隐藏起来，便于直接观察信号图像。
+“偏差分布”：可将两信号的偏差分布情况统计出来。
+“偏差值设定”：</string>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
