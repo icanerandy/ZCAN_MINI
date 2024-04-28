@@ -24,7 +24,7 @@ DeviceManagerDialog::DeviceManagerDialog(QWidget *parent) :
 
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
     // 按钮样式
-    QColor color("#607D8B");
+    QColor color(QStringLiteral("#607D8B"));
     ui->btnOpenDevice->setBackgroundColor(color);
     ui->btnStartDevice->setBackgroundColor(color);
     ui->btnStopDevice->setBackgroundColor(color);

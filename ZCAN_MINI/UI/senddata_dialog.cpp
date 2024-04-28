@@ -1,4 +1,4 @@
-#include "senddata_dialog.h"
+﻿#include "senddata_dialog.h"
 #include "ui_senddata_dialog.h"
 
 SendDataDialog::SendDataDialog(QWidget *parent) :
@@ -15,6 +15,18 @@ SendDataDialog::SendDataDialog(QWidget *parent) :
     send_count_(1)
 {
     ui->setupUi(this);
+
+    int max_height = 35;
+    QColor color(QStringLiteral("#607D8B"));
+
+    ui->btnSend->setBackgroundColor(color);
+    ui->btnSend->setFixedHeight(max_height);
+    ui->btnAddToList->setBackgroundColor(color);
+    ui->btnAddToList->setFixedHeight(max_height);
+    ui->btnSendSeq->setBackgroundColor(color);
+    ui->btnSendSeq->setFixedHeight(max_height);
+
+    setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
     initDlg();
     bindSignals();
@@ -146,7 +158,118 @@ void SendDataDialog::bindSignals()
         ui->editData->setValidator(new QRegularExpressionValidator(regExp, this));
     });
 
-    connect(ui->btnSend, &QPushButton::clicked, this, &SendDataDialog::slot_btnSend_clicked);
+    ui->tableWidget->insertColumn(0);
+    ui->tableWidget->insertColumn(1);
+    ui->tableWidget->insertColumn(2);
+    ui->tableWidget->insertColumn(3);
+    ui->tableWidget->insertColumn(4);
+    ui->tableWidget->insertColumn(5);
+
+    QStringList headers;
+    headers << QStringLiteral("id") << QStringLiteral("帧格式") << QStringLiteral("协议类型") << QStringLiteral("帧类型") << QStringLiteral("数据长度") << QStringLiteral("数据");
+    ui->tableWidget->setHorizontalHeaderLabels(headers);
+    ui->tableWidget->horizontalHeader()->setSectionResizeMode(5, QHeaderView::Stretch);   // 设置最后一列自适应宽度
+
+    connect(ui->btnAddToList, &QtMaterialRaisedButton::clicked, this, [=] {
+        id_ = ui->editId->text().toUInt(nullptr, 16);
+        datas_ = ui->editData->text();
+        QStringList str_list = datas_.split(' ');
+        if (static_cast<uint>(str_list.size()) < data_length_)
+        {
+            for (uint i = 0; i < data_length_ - str_list.size(); ++i)
+                str_list.append("00");
+        }
+        datas_ = str_list.join(" ");
+
+        uint row = ui->tableWidget->rowCount();
+        ui->tableWidget->insertRow(row);
+
+        QTableWidgetItem* item = new QTableWidgetItem(QString::number(id_));
+        item->setData(Qt::UserRole, QVariant(id_));
+        ui->tableWidget->setItem(row, 0, item);
+
+        item = new QTableWidgetItem(frame_type_ == DeviceManager::FrameType::Can ? "标准帧" : "扩展帧");
+        if (DeviceManager::FrameType::Can == frame_type_)
+            item->setData(Qt::UserRole, QVariant(0));
+        else
+            item->setData(Qt::UserRole, QVariant(1));
+        ui->tableWidget->setItem(row, 1, item);
+
+        item = new QTableWidgetItem(protocol_type_ == DeviceManager::ProtocolType::Can ? "CAN" :
+                                        (protocol_type_ == DeviceManager::ProtocolType::CanFd ? "CANFD" : "CANFD加速"));
+        if (DeviceManager::ProtocolType::Can == protocol_type_)
+            item->setData(Qt::UserRole, QVariant(0));
+        else if (DeviceManager::ProtocolType::CanFd == protocol_type_)
+            item->setData(Qt::UserRole, QVariant(1));
+        else
+            item->setData(Qt::UserRole, QVariant(2));
+        ui->tableWidget->setItem(row, 2, item);
+
+        ui->tableWidget->setItem(row, 3, new QTableWidgetItem("数据帧"));
+
+        item = new QTableWidgetItem(QString::number(data_length_));
+        item->setData(Qt::UserRole, QVariant(data_length_));
+        ui->tableWidget->setItem(row, 4, item);
+
+        item = new QTableWidgetItem(datas_);
+        item->setData(Qt::UserRole, QVariant(datas_));
+        ui->tableWidget->setItem(row, 5, item);
+    });
+
+    connect(ui->btnSend, &QtMaterialRaisedButton::clicked, this, &SendDataDialog::slot_btnSend_clicked);
+
+    connect(ui->btnSendSeq, &QtMaterialRaisedButton::clicked, this, [=] {
+        DeviceManager * const device_manager = DeviceManager::getInstance();
+
+        if (DeviceManager::Enable::Enabled == device_manager->send_enable())
+        {
+            device_manager->set_send_enable(DeviceManager::Enable::Unenabled);
+            timer_.stop();
+            ui->btnSendSeq->setText("开始列表发送");
+        }
+        else
+        {
+            device_manager->set_send_enable(DeviceManager::Enable::Enabled);
+            timer_.start(ui->spinFrmInterval->value());
+            ui->btnSendSeq->setText("停止列表发送");
+        }
+    });
+
+    connect(&timer_, &QTimer::timeout, this, [=] {
+        DeviceManager * const device_manager = DeviceManager::getInstance();
+
+        static uint i = 0;
+        if (0 == ui->tableWidget->rowCount())
+            return;
+        if (i == ui->tableWidget->rowCount())
+            i = 0;
+
+        device_manager->set_id(ui->tableWidget->item(i, 0)->data(Qt::UserRole).toUInt(nullptr));
+
+        if (ui->tableWidget->item(i, 1)->data(Qt::UserRole) == 0)
+            device_manager->set_frame_type_index(DeviceManager::FrameType::Can);
+        else
+            device_manager->set_frame_type_index(DeviceManager::FrameType::CanFd);
+
+        if (ui->tableWidget->item(i, 2)->data(Qt::UserRole) == 0)
+            device_manager->set_protocol_index(DeviceManager::ProtocolType::Can);
+        else if (ui->tableWidget->item(i, 2)->data(Qt::UserRole) == 1)
+            device_manager->set_protocol_index(DeviceManager::ProtocolType::CanFd);
+        else
+            device_manager->set_protocol_index(DeviceManager::ProtocolType::CanFdBrs);
+
+        device_manager->set_data_length(ui->tableWidget->item(i, 4)->data(Qt::UserRole).toUInt(nullptr));
+        device_manager->set_data(ui->tableWidget->item(i, 5)->data(Qt::UserRole).toString());
+        device_manager->set_send_count_once(send_count_once_);
+        device_manager->set_frm_delay_time(frame_delay_time_);
+        device_manager->set_send_type_index(send_type_);
+        device_manager->set_send_count(send_count_);
+
+        device_manager->sendMsg();
+        device_manager->stopSendMsg();
+
+        ++i;
+    });
 }
 
 void SendDataDialog::slot_btnSend_clicked()

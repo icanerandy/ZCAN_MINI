@@ -117,7 +117,7 @@ public:
     void set_frame_type_index(DeviceManager::FrameType type);
     void set_send_count_once(uint value);
     void set_id(uint id);
-    void set_data(QString &data);
+    void set_data(QString data);
     void set_frm_delay_time(uint value);
     void set_data_length(uint value);
     void set_send_type_index(DeviceManager::SendType type);

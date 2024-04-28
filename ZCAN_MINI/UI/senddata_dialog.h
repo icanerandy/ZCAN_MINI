@@ -41,6 +41,8 @@ private:
     DeviceManager::SendType send_type_;
     uint send_count_;
     uint text_length_;
+
+    QTimer timer_;
 };
 
 #endif // SENDDATA_DIALOG_H

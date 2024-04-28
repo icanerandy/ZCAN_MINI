@@ -200,7 +200,7 @@ void DeviceManager::set_id(uint id)
     id_ = id;
 }
 
-void DeviceManager::set_data(QString &data)
+void DeviceManager::set_data(QString data)
 {
     datas_ = data;
 }

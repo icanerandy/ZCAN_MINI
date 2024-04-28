@@ -56,9 +56,9 @@ MainWindow::MainWindow(QWidget *parent) :
     layout->addWidget(speed_plotviewDock);
     speed_plotviewDock->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 
-    tabs->setCurrentTab(1);
-    info_viewDock->setVisible(false);
-    can_viewDock->setVisible(true);
+    tabs->setCurrentTab(0);
+    info_viewDock->setVisible(true);
+    can_viewDock->setVisible(false);
     dbc_viewDock->setVisible(false);
     speed_plotviewDock->setVisible(false);
 

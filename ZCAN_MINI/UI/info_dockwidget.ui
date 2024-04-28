@@ -6,113 +6,37 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
-    <height>700</height>
+    <width>1200</width>
+    <height>800</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1000</width>
-    <height>600</height>
+    <width>1200</width>
+    <height>700</height>
    </size>
   </property>
   <property name="font">
    <font>
     <family>黑体</family>
     <pointsize>9</pointsize>
+    <italic>false</italic>
+    <bold>false</bold>
    </font>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">font: 9pt &quot;黑体&quot;;</string>
   </property>
   <property name="windowTitle">
    <string>测试相关信息</string>
   </property>
   <widget class="QWidget" name="dockWidgetContents">
-   <layout class="QFormLayout" name="formLayout">
-    <item row="1" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout_2">
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="font">
-         <font>
-          <family>黑体</family>
-          <pointsize>9</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>测试人员: </string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QtMaterialTextField" name="lineEdit">
-        <property name="font">
-         <font>
-          <family>黑体</family>
-          <pointsize>9</pointsize>
-         </font>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="3" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout_3">
-      <item>
-       <widget class="QLabel" name="label_2">
-        <property name="font">
-         <font>
-          <family>黑体</family>
-          <pointsize>9</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>测设设备型号: </string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QtMaterialTextField" name="lineEdit_2">
-        <property name="font">
-         <font>
-          <family>黑体</family>
-          <pointsize>9</pointsize>
-         </font>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="4" column="0">
-     <layout class="QHBoxLayout" name="horizontalLayout">
-      <item>
-       <widget class="QLabel" name="label_3">
-        <property name="font">
-         <font>
-          <family>黑体</family>
-          <pointsize>9</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>时间: </string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QLabel" name="labTime">
-        <property name="font">
-         <font>
-          <family>黑体</family>
-          <pointsize>9</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>00:00.00</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
-    <item row="0" column="0">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0" colspan="3">
      <widget class="QPlainTextEdit" name="plainTextEdit">
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
       <property name="plainText">
        <string>1.INFO视图
 左上角菜单栏“设备管理”可以选择相应设备并启动，“发送数据”可以填充指定数据并发送到相应设备。
@@ -126,9 +50,105 @@
 “重缩放图像”：将图像缩放到合适的范围。
 “隐藏误差图”：将误差图隐藏起来，便于直接观察信号图像。
 “偏差分布”：可将两信号的偏差分布情况统计出来。
-“偏差值设定”：</string>
+“偏差值设定”：将偏差值较大的数据标记出来。</string>
       </property>
      </widget>
+    </item>
+    <item row="1" column="0">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+          <pointsize>9</pointsize>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>测试人员: </string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QtMaterialTextField" name="lineEdit">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+          <pointsize>9</pointsize>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="1" column="1">
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <widget class="QLabel" name="label_2">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+          <pointsize>9</pointsize>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>测设设备型号: </string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QtMaterialTextField" name="lineEdit_2">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+          <pointsize>9</pointsize>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="1" column="2">
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="label_3">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+          <pointsize>9</pointsize>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>时间: </string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="labTime">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+          <pointsize>9</pointsize>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>00:00.00</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>

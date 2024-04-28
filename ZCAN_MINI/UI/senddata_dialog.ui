@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>761</width>
+    <width>812</width>
     <height>523</height>
    </rect>
   </property>
@@ -26,6 +26,46 @@
       <string>帧发送</string>
      </property>
      <layout class="QGridLayout" name="gridLayout">
+      <item row="1" column="2">
+       <layout class="QHBoxLayout" name="horizontalLayout_11">
+        <item>
+         <widget class="QLabel" name="label_2">
+          <property name="font">
+           <font>
+            <family>黑体</family>
+            <pointsize>9</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>帧格式:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboFormat">
+          <property name="font">
+           <font>
+            <family>黑体</family>
+            <pointsize>9</pointsize>
+           </font>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="4" column="1">
+       <spacer name="horizontalSpacer_10">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
       <item row="0" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_15">
         <item>
@@ -63,25 +103,25 @@
           </property>
          </widget>
         </item>
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
        </layout>
       </item>
-      <item row="1" column="1">
-       <spacer name="horizontalSpacer">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item row="6" column="2">
-       <layout class="QHBoxLayout" name="horizontalLayout_9">
+      <item row="2" column="2" colspan="2">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QLabel" name="label_8">
+         <widget class="QLabel" name="label_6">
           <property name="font">
            <font>
             <family>黑体</family>
@@ -89,26 +129,32 @@
            </font>
           </property>
           <property name="text">
-           <string>发送次数:</string>
+           <string>数据:0x</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QSpinBox" name="spinSendCount">
+         <widget class="QtMaterialTextField" name="editData">
+          <property name="minimumSize">
+           <size>
+            <width>200</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="font">
            <font>
             <family>黑体</family>
             <pointsize>9</pointsize>
            </font>
           </property>
-          <property name="maximum">
-           <number>100000</number>
+          <property name="text">
+           <string/>
           </property>
          </widget>
         </item>
        </layout>
       </item>
-      <item row="7" column="0">
+      <item row="4" column="0">
        <widget class="QtMaterialCheckBox" name="chkInc">
         <property name="font">
          <font>
@@ -120,60 +166,6 @@
          <string>ID递增</string>
         </property>
        </widget>
-      </item>
-      <item row="1" column="2">
-       <layout class="QHBoxLayout" name="horizontalLayout_11">
-        <item>
-         <widget class="QLabel" name="label_2">
-          <property name="font">
-           <font>
-            <family>黑体</family>
-            <pointsize>9</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>帧格式:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QComboBox" name="comboFormat">
-          <property name="font">
-           <font>
-            <family>黑体</family>
-            <pointsize>9</pointsize>
-           </font>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="4" column="2">
-       <layout class="QHBoxLayout" name="horizontalLayout_12">
-        <item>
-         <widget class="QLabel" name="label_4">
-          <property name="font">
-           <font>
-            <family>黑体</family>
-            <pointsize>9</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>数据长度:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QComboBox" name="comboLength">
-          <property name="font">
-           <font>
-            <family>黑体</family>
-            <pointsize>9</pointsize>
-           </font>
-          </property>
-         </widget>
-        </item>
-       </layout>
       </item>
       <item row="1" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout">
@@ -210,12 +202,38 @@
           </property>
          </widget>
         </item>
+        <item>
+         <spacer name="horizontalSpacer_11">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
        </layout>
       </item>
-      <item row="0" column="2">
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item row="2" column="0">
+       <layout class="QHBoxLayout" name="horizontalLayout_12">
         <item>
-         <widget class="QLabel" name="label_10">
+         <widget class="QLabel" name="label_4">
           <property name="font">
            <font>
             <family>黑体</family>
@@ -223,24 +241,12 @@
            </font>
           </property>
           <property name="text">
-           <string>名称(可选):</string>
+           <string>数据长度:</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QtMaterialTextField" name="editName">
-          <property name="minimumSize">
-           <size>
-            <width>100</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>100</width>
-            <height>22</height>
-           </size>
-          </property>
+         <widget class="QComboBox" name="comboLength">
           <property name="font">
            <font>
             <family>黑体</family>
@@ -251,20 +257,7 @@
         </item>
        </layout>
       </item>
-      <item row="7" column="4">
-       <widget class="QtMaterialRaisedButton" name="btnSend">
-        <property name="font">
-         <font>
-          <family>黑体</family>
-          <pointsize>9</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>立即发送</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0">
+      <item row="3" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <item>
          <widget class="QLabel" name="label_7">
@@ -294,43 +287,20 @@
         </item>
        </layout>
       </item>
-      <item row="4" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QLabel" name="label_6">
-          <property name="font">
-           <font>
-            <family>黑体</family>
-            <pointsize>9</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>数据:0x</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QtMaterialTextField" name="editData">
-          <property name="minimumSize">
-           <size>
-            <width>200</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <family>黑体</family>
-            <pointsize>9</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-       </layout>
+      <item row="4" column="2">
+       <widget class="QtMaterialRaisedButton" name="btnAddToList">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>添加到列表</string>
+        </property>
+       </widget>
       </item>
-      <item row="6" column="4">
+      <item row="3" column="3">
        <layout class="QHBoxLayout" name="horizontalLayout_10">
         <item>
          <widget class="QLabel" name="label_9">
@@ -341,7 +311,7 @@
            </font>
           </property>
           <property name="text">
-           <string>每次间隔(ms):</string>
+           <string>帧延时(ms):</string>
           </property>
          </widget>
         </item>
@@ -360,7 +330,50 @@
         </item>
        </layout>
       </item>
-      <item row="0" column="4">
+      <item row="3" column="2">
+       <layout class="QHBoxLayout" name="horizontalLayout_9">
+        <item>
+         <widget class="QLabel" name="label_8">
+          <property name="font">
+           <font>
+            <family>黑体</family>
+            <pointsize>9</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>发送次数:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="spinSendCount">
+          <property name="font">
+           <font>
+            <family>黑体</family>
+            <pointsize>9</pointsize>
+           </font>
+          </property>
+          <property name="maximum">
+           <number>100000</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item row="4" column="3">
+       <widget class="QtMaterialRaisedButton" name="btnSend">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>立即发送</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
        <layout class="QHBoxLayout" name="horizontalLayout_13">
         <item>
          <widget class="QLabel" name="label_3">
@@ -387,19 +400,6 @@
         </item>
        </layout>
       </item>
-      <item row="1" column="3">
-       <spacer name="horizontalSpacer_2">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
      </layout>
     </widget>
    </item>
@@ -412,36 +412,16 @@
       </font>
      </property>
      <property name="title">
-      <string>列表发送</string>
+      <string>顺序循环发送</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="0" column="0">
-       <widget class="QTableView" name="tableView">
-        <property name="font">
-         <font>
-          <family>黑体</family>
-          <pointsize>9</pointsize>
-         </font>
-        </property>
-       </widget>
+      <item row="0" column="0" colspan="3">
+       <widget class="QTableWidget" name="tableWidget"/>
       </item>
       <item row="1" column="0">
-       <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <layout class="QHBoxLayout" name="horizontalLayout_23">
         <item>
-         <spacer name="horizontalSpacer_3">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QtMaterialRaisedButton" name="btnSendList">
+         <widget class="QLabel" name="label_19">
           <property name="font">
            <font>
             <family>黑体</family>
@@ -449,11 +429,50 @@
            </font>
           </property>
           <property name="text">
-           <string>列表发送</string>
+           <string>帧间间隔(ms):</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="spinFrmInterval">
+          <property name="font">
+           <font>
+            <family>黑体</family>
+            <pointsize>9</pointsize>
+           </font>
+          </property>
+          <property name="maximum">
+           <number>100000</number>
           </property>
          </widget>
         </item>
        </layout>
+      </item>
+      <item row="1" column="1">
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>389</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="1" column="2">
+       <widget class="QtMaterialRaisedButton" name="btnSendSeq">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>开始列表发送</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

@@ -51,7 +51,7 @@ void SendMsgThread::run()
             }
         }
 
-        if (!m_pause)
+        if (!m_stop)
         {
             while (send_count_--)
             {
@@ -77,7 +77,7 @@ void SendMsgThread::run()
             }
         }
 
-        if (!m_pause)
+        if (!m_stop)
         {
             while (send_count_--)
             {

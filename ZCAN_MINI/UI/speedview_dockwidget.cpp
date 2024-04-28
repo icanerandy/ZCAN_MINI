@@ -62,8 +62,8 @@ void SpeedViewDockWidget::initUI()
     ui->btnWidth->setFixedHeight(max_height);
     ui->btnOpenGL->setBackgroundColor(color);
     ui->btnOpenGL->setFixedHeight(max_height);
-    ui->btnOpenGL_2->setBackgroundColor(color);
-    ui->btnOpenGL_2->setFixedHeight(max_height);
+    ui->btnAntialiase->setBackgroundColor(color);
+    ui->btnAntialiase->setFixedHeight(max_height);
     ui->btnDisEnable->setBackgroundColor(color);
     ui->btnDisEnable->setFixedHeight(max_height);
 
@@ -99,7 +99,17 @@ void SpeedViewDockWidget::initUI()
     connect(ui->btnClear, &QPushButton::clicked, this, &SpeedViewDockWidget::slot_clearData);
 
     connect(ui->btnRescale, &QtMaterialRaisedButton::clicked, this, [=] {
+        if (ui->plot->graphCount() == 0)
+            QMessageBox::information(this,"fail","当前无图像可进行重缩放");
         ui->plot->rescaleAxes();
+    });
+
+    connect(ui->chkGraph1, &QCheckBox::toggled, this, [=] (bool checked) {
+        ui->plot->graph(0)->setVisible(checked);
+    });
+
+    connect(ui->chkGraph2, &QCheckBox::toggled, this, [=] (bool checked) {
+        ui->plot->graph(1)->setVisible(checked);
     });
 
     connect(ui->btnDeviation, &QPushButton::clicked, this, [this] {
@@ -122,15 +132,18 @@ void SpeedViewDockWidget::initUI()
         state = !state;
     });
 
-    connect(ui->btnOpenGL_2, &QtMaterialRaisedButton::clicked, this, [=] {
+    connect(ui->btnAntialiase, &QtMaterialRaisedButton::clicked, this, [=] {
         if (ui->plot->graphCount() == 0)
+        {
+            QMessageBox::information(this,"fail","当前无图像可进行抗锯齿处理");
             return;
+        }
 
         static bool is_antialiase = true;
         if (is_antialiase)
-            ui->btnOpenGL_2->setText(QStringLiteral("关闭抗锯齿"));
+            ui->btnAntialiase->setText(QStringLiteral("关闭抗锯齿"));
         else
-            ui->btnOpenGL_2->setText(QStringLiteral("开启抗锯齿"));
+            ui->btnAntialiase->setText(QStringLiteral("开启抗锯齿"));
 
         ui->plot->graph(0)->setAntialiased(is_antialiase);
         ui->plot->graph(1)->setAntialiased(is_antialiase);
@@ -671,34 +684,35 @@ bool SpeedViewDockWidget::slot_btnSavePic_clicked()
     QCustomPlot* const plot = ui->plot;
 
     if( filename == "" ){
-         QMessageBox::information(this,"fail","图片文件保存失败: 未选择保存文件");
-         return false;
-     }
-     if( filename.endsWith(".png") ){
-         QMessageBox::information(this,"success","成功保存为png文件");
-         return plot->savePng(filename, plot->width(), plot->height());
-
-     }
-     if( filename.endsWith(".jpg")||filename.endsWith(".jpeg") ){
-         QMessageBox::information(this,"success","成功保存为jpg文件");
-         return plot->saveJpg(filename, plot->width(), plot->height());
-
-     }
-     if( filename.endsWith(".bmp") ){
-         QMessageBox::information(this,"success","成功保存为bmp文件");
-         return plot->saveBmp(filename, plot->width(), plot->height());
-
-     }
-     if( filename.endsWith(".pdf") ){
-         QMessageBox::information(this,"success","成功保存为pdf文件");
-         return plot->savePdf(filename, plot->width(), plot->height());
-
-     }
-    else{
-         //否则追加后缀名为.png保存文件
-         QMessageBox::information(this,"success","保存成功,已默认保存为png文件");
-         return plot->savePng(filename.append(".png"), plot->width(), plot->height());
-     }
+        QMessageBox::information(this,"fail","图片文件保存失败: 未选择保存文件");
+        return false;
+    }
+    if( filename.endsWith(".png") )
+    {
+        QMessageBox::information(this,"success","成功保存为png文件");
+        return plot->savePng(filename, plot->width(), plot->height());
+    }
+    if( filename.endsWith(".jpg") || filename.endsWith(".jpeg") )
+    {
+        QMessageBox::information(this,"success","成功保存为jpg文件");
+        return plot->saveJpg(filename, plot->width(), plot->height());
+    }
+    if( filename.endsWith(".bmp") )
+    {
+        QMessageBox::information(this,"success","成功保存为bmp文件");
+        return plot->saveBmp(filename, plot->width(), plot->height());
+    }
+    if( filename.endsWith(".pdf") )
+    {
+        QMessageBox::information(this,"success","成功保存为pdf文件");
+        return plot->savePdf(filename, plot->width(), plot->height());
+    }
+    else
+    {
+    //否则追加后缀名为.png保存文件
+        QMessageBox::information(this,"success","保存成功,已默认保存为png文件");
+        return plot->savePng(filename.append(".png"), plot->width(), plot->height());
+    }
 }
 
 void SpeedViewDockWidget::slot_btnSaveExcel_clicked()
@@ -711,7 +725,7 @@ void SpeedViewDockWidget::slot_btnSaveExcel_clicked()
         return;
     }
 
-    QString filename = QFileDialog::getSaveFileName(this, tr("Save Excel"), "", tr("(*.xlsx)"));
+    QString filename = QFileDialog::getSaveFileName(this, tr("Save Excel"), "", tr("Excel (*.xlsx *.csv)"));
     if( filename == "" && !QXlsx::Document(filename).load()){
         QMessageBox::information(this,"fail","excel文件保存失败: 未选择保存文件");
         return;
@@ -752,6 +766,6 @@ void SpeedViewDockWidget::slot_btnSaveExcel_clicked()
     }
 
     doc.saveAs(filename);
-    QMessageBox::information(this,"success","保存成功,已默认保存为xlsx文件");
+    QMessageBox::information(this,"success","保存成功,已默认保存为excel文件");
 }
 
