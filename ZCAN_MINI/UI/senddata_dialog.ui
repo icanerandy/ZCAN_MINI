@@ -66,6 +66,33 @@
         </property>
        </spacer>
       </item>
+      <item row="0" column="2">
+       <layout class="QHBoxLayout" name="horizontalLayout_13">
+        <item>
+         <widget class="QLabel" name="label_3">
+          <property name="font">
+           <font>
+            <family>黑体</family>
+            <pointsize>9</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>发送方式:</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="comboSendType">
+          <property name="font">
+           <font>
+            <family>黑体</family>
+            <pointsize>9</pointsize>
+           </font>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
       <item row="0" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_15">
         <item>
@@ -287,19 +314,6 @@
         </item>
        </layout>
       </item>
-      <item row="4" column="2">
-       <widget class="QtMaterialRaisedButton" name="btnAddToList">
-        <property name="font">
-         <font>
-          <family>黑体</family>
-          <pointsize>9</pointsize>
-         </font>
-        </property>
-        <property name="text">
-         <string>添加到列表</string>
-        </property>
-       </widget>
-      </item>
       <item row="3" column="3">
        <layout class="QHBoxLayout" name="horizontalLayout_10">
         <item>
@@ -373,32 +387,18 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="2">
-       <layout class="QHBoxLayout" name="horizontalLayout_13">
-        <item>
-         <widget class="QLabel" name="label_3">
-          <property name="font">
-           <font>
-            <family>黑体</family>
-            <pointsize>9</pointsize>
-           </font>
-          </property>
-          <property name="text">
-           <string>发送方式:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QComboBox" name="comboSendType">
-          <property name="font">
-           <font>
-            <family>黑体</family>
-            <pointsize>9</pointsize>
-           </font>
-          </property>
-         </widget>
-        </item>
-       </layout>
+      <item row="4" column="2">
+       <widget class="QtMaterialRaisedButton" name="btnAddToList">
+        <property name="font">
+         <font>
+          <family>黑体</family>
+          <pointsize>9</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>添加到列表</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
@@ -470,7 +470,7 @@
          </font>
         </property>
         <property name="text">
-         <string>开始列表发送</string>
+         <string>开始顺序发送</string>
         </property>
        </widget>
       </item>

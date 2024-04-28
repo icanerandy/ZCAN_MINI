@@ -225,13 +225,18 @@ void SendDataDialog::bindSignals()
         {
             device_manager->set_send_enable(DeviceManager::Enable::Unenabled);
             timer_.stop();
-            ui->btnSendSeq->setText("开始列表发送");
+            ui->btnSendSeq->setText("开始顺序发送");
         }
         else
         {
+            if (0 == ui->tableWidget->rowCount())
+            {
+                QMessageBox::information(this,"fail","列表为空");
+                return;
+            }
             device_manager->set_send_enable(DeviceManager::Enable::Enabled);
             timer_.start(ui->spinFrmInterval->value());
-            ui->btnSendSeq->setText("停止列表发送");
+            ui->btnSendSeq->setText("停止顺序发送");
         }
     });
 

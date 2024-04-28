@@ -15,3 +15,5 @@ include ($$PWD/VectorDBC/VectorDBC.pri)
 
 INCLUDEPATH += $$PWD/Material
 include ($$PWD/Material/Material.pri)
+
+INCLUDEPATH += $$PWD/eigen-3.4.0/

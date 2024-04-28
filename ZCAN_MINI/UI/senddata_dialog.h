@@ -6,6 +6,7 @@
 #endif
 
 #include <QDialog>
+#include <QMessageBox>
 #include <QRegExpValidator>
 #include "devicemanager.h"
 

@@ -15,6 +15,10 @@ class DistributionDialog : public QDialog
 public:
     explicit DistributionDialog(QWidget *parent = nullptr);
     ~DistributionDialog();
+    void set_max_error(double val);
+    void set_mean_error(double val);
+    void set_correlation_coefficient(double val);
+    void set_RMSE(double val);
 
 public:
     Ui::DistributionDialog *ui;

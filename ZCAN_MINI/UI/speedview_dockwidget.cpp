@@ -14,13 +14,15 @@ SpeedViewDockWidget::SpeedViewDockWidget(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    initUI();
+    init_ui();
+
+    bind_signals();
 
     ui->plot->setNoAntialiasingOnDrag(true);
     ui->plot_2->setNoAntialiasingOnDrag(true);
 
-    initPlot(ui->plot);
-    initPlot(ui->plot_2);
+    init_plot(ui->plot);
+    init_plot(ui->plot_2);
 
     ui->plot_2->legend->setVisible(false);
 
@@ -31,12 +33,12 @@ SpeedViewDockWidget::SpeedViewDockWidget(QWidget *parent) :
 SpeedViewDockWidget::~SpeedViewDockWidget()
 {
     if (signal_parser_)
-        destroyThread();
+        destroy_thread();
 
     delete ui;
 }
 
-void SpeedViewDockWidget::initUI()
+void SpeedViewDockWidget::init_ui()
 {
     int max_height = 35;
 
@@ -73,7 +75,10 @@ void SpeedViewDockWidget::initUI()
     ui->btnPaint->setCheckable(true);
     ui->btnPaint->setChecked(false);
     ui->btnPaint->setEnabled(false);
+}
 
+void SpeedViewDockWidget::bind_signals()
+{
     connect(ui->btnPaint, &QPushButton::clicked, this, [this] {
         static bool paint_enable = true;
         if (paint_enable)
@@ -92,9 +97,7 @@ void SpeedViewDockWidget::initUI()
         paint_enable = !paint_enable;
     });
 
-    connect(ui->btnDis, &QPushButton::clicked, this, [this] {
-        slot_btnShowDis(distribution_dialog_->myplot_);
-    });
+    connect(ui->btnDis, &QPushButton::clicked, this, &SpeedViewDockWidget::slot_btnShowDis);
 
     connect(ui->btnClear, &QPushButton::clicked, this, &SpeedViewDockWidget::slot_clearData);
 
@@ -188,7 +191,7 @@ void SpeedViewDockWidget::initUI()
     });
 }
 
-void SpeedViewDockWidget::initPlot(QCustomPlot* const plot)
+void SpeedViewDockWidget::init_plot(QCustomPlot* const plot)
 {
     // 使用框选
     plot->selectionRect()->setPen(QPen(Qt::black,1,Qt::DashLine));//设置选框的样式：虚线
@@ -280,7 +283,7 @@ void SpeedViewDockWidget::initPlot(QCustomPlot* const plot)
                           QCP::iSelectLegend | QCP::iSelectPlottables);
 }
 
-void SpeedViewDockWidget::addGraphs(QCustomPlot* const plot, int graph_count)
+void SpeedViewDockWidget::add_graphs(QCustomPlot* const plot, int graph_count)
 {
     if (0 == plot->graphCount())
     {
@@ -338,7 +341,7 @@ void SpeedViewDockWidget::addGraphs(QCustomPlot* const plot, int graph_count)
     }
 }
 
-void SpeedViewDockWidget::initThread()
+void SpeedViewDockWidget::init_thread()
 {
     ui->plot->graph(0)->setName(QString::fromStdString(sig_lst_.at(0).second.name));//曲线名称
     ui->plot->graph(1)->setName(QString::fromStdString(sig_lst_.at(1).second.name));//曲线名称
@@ -390,7 +393,7 @@ void SpeedViewDockWidget::initThread()
     });
 }
 
-void SpeedViewDockWidget::destroyThread()
+void SpeedViewDockWidget::destroy_thread()
 {
     RecMsgThread* const rec_msg_thread = RecMsgThread::getInstance();
     disconnect(rec_msg_thread, static_cast<void (RecMsgThread::*)(const ZCAN_Receive_Data*, const uint)>(&RecMsgThread::sig_newMsg),
@@ -445,6 +448,78 @@ void SpeedViewDockWidget::destroyThread()
     deviation_replot_->deleteLater();
     if (deviation_replot_)
         deviation_replot_ = nullptr;
+}
+
+double SpeedViewDockWidget::cal_max_error(std::vector<double>& tmp_vec1, std::vector<double>& tmp_vec2)
+{
+    // 使用 Map 将 std::vector 映射为 Eigen::VectorXd
+    Eigen::Map<Eigen::VectorXd> vec1(tmp_vec1.data(), tmp_vec1.size());
+    Eigen::Map<Eigen::VectorXd> vec2(tmp_vec2.data(), tmp_vec2.size());
+
+    // 计算误差向量
+    Eigen::VectorXd error = vec1 - vec2;
+
+    // 计算最大绝对误差
+    double mean = error.array().abs().maxCoeff();
+
+    return mean;
+}
+
+double SpeedViewDockWidget::cal_mean_error(std::vector<double> &tmp_vec1, std::vector<double> &tmp_vec2)
+{
+    // 使用 Map 将 std::vector 映射为 Eigen::VectorXd
+    Eigen::Map<Eigen::VectorXd> vec1(tmp_vec1.data(), tmp_vec1.size());
+    Eigen::Map<Eigen::VectorXd> vec2(tmp_vec2.data(), tmp_vec2.size());
+
+    // 计算误差向量
+    Eigen::VectorXd error = vec1 - vec2;
+
+    // 计算平均绝对误差 (MAE)
+    double mean = error.array().abs().mean();
+
+    return mean;
+}
+
+double SpeedViewDockWidget::cal_correlation_coefficient(std::vector<double> &tmp_vec1, std::vector<double> &tmp_vec2)
+{
+    // 使用 Map 将 std::vector 映射为 Eigen::VectorXd
+    Eigen::Map<Eigen::VectorXd> vec1(tmp_vec1.data(), tmp_vec1.size());
+    Eigen::Map<Eigen::VectorXd> vec2(tmp_vec2.data(), tmp_vec2.size());
+
+    // 计算向量的均值
+    double mean1 = vec1.mean();
+    double mean2 = vec2.mean();
+
+    // 计算向量减去均值
+    Eigen::VectorXd vec1_centered = vec1.array() - mean1;
+    Eigen::VectorXd vec2_centered = vec2.array() - mean2;
+
+    // 计算协方差
+    double covariance = (vec1_centered.array() * vec2_centered.array()).sum() / (vec1.size() - 1);
+
+    // 计算标准差
+    double stddev1 = std::sqrt((vec1_centered.array().square()).sum() / (vec1.size() - 1));
+    double stddev2 = std::sqrt((vec2_centered.array().square()).sum() / (vec2.size() - 1));
+
+    // 计算相关系数
+    double correlation = covariance / (stddev1 * stddev2);
+
+    return correlation;
+}
+
+double SpeedViewDockWidget::cal_RMSE(std::vector<double> &tmp_vec1, std::vector<double> &tmp_vec2)
+{
+    // 使用 Map 将 std::vector 映射为 Eigen::VectorXd
+    Eigen::Map<Eigen::VectorXd> vec1(tmp_vec1.data(), tmp_vec1.size());
+    Eigen::Map<Eigen::VectorXd> vec2(tmp_vec2.data(), tmp_vec2.size());
+
+    // 计算误差向量
+    Eigen::VectorXd error = vec1 - vec2;
+
+    // 计算均方根误差 (RMSE)
+    double rmse = std::sqrt((error.array().square()).mean());
+
+    return rmse;
 }
 
 void SpeedViewDockWidget::slot_paint_enable(QList<QPair<uint32_t, Vector::DBC::Signal>> sig_lst)
@@ -543,15 +618,15 @@ void SpeedViewDockWidget::slot_btnPaint_clicked(bool paint_enable)
         if (is_first_paint)
         {
             is_first_paint = false;
-            addGraphs(ui->plot, 1);
-            addGraphs(ui->plot_2, 2);
+            add_graphs(ui->plot, 1);
+            add_graphs(ui->plot_2, 2);
         }
 
-        initThread();
+        init_thread();
     }
     else
     {
-        destroyThread();
+        destroy_thread();
     }
 }
 
@@ -614,20 +689,41 @@ void SpeedViewDockWidget::slot_disSigVal_changed(double value)
     ui->plot_2->replot(QCustomPlot::rpQueuedReplot);
 }
 
-void SpeedViewDockWidget::slot_btnShowDis(QCustomPlot* const plot)
+void SpeedViewDockWidget::slot_btnShowDis()
 {
-    // 创建一个直方图（bar chart）
-    QCustomPlot* distribuition_plot = plot;
-    distribuition_plot->clearPlottables();
-    distribuition_plot->replot();
-    QCPBars* errorBars = new QCPBars(distribuition_plot->xAxis, distribuition_plot->yAxis);
-
     // 计算误差数据
     if (ui->plot->graphCount() == 0)
     {
         QMessageBox::information(this,"fail","当前无数据可进行分析");
         return;
     }
+
+    QVector<QCPGraphData>* map1 = ui->plot->graph(0)->data()->coreData();
+    QVector<QCPGraphData>* map2 = ui->plot->graph(1)->data()->coreData();
+    std::vector<double> tmp_vec1;
+    std::vector<double> tmp_vec2;
+
+    for (int i = 0; i < map1->count(); ++i)
+        tmp_vec1.push_back(map1->at(i).value);
+    for (int i = 0; i < map2->count(); ++i)
+        tmp_vec2.push_back(map2->at(i).value);
+
+    double max_error = cal_max_error(tmp_vec1, tmp_vec2);
+    double mean_error = cal_mean_error(tmp_vec1, tmp_vec2);
+    double correlation_coefficient = cal_correlation_coefficient(tmp_vec1, tmp_vec2);
+    double RMSE = cal_RMSE(tmp_vec1, tmp_vec2);
+
+    distribution_dialog_->set_max_error(max_error);
+    distribution_dialog_->set_mean_error(mean_error);
+    distribution_dialog_->set_correlation_coefficient(correlation_coefficient);
+    distribution_dialog_->set_RMSE(RMSE);
+
+    // 创建一个直方图（bar chart）
+    QCustomPlot* const plot = distribution_dialog_->myplot_;
+    QCustomPlot* distribuition_plot = plot;
+    distribuition_plot->clearPlottables();
+    distribuition_plot->replot();
+    QCPBars* errorBars = new QCPBars(distribuition_plot->xAxis, distribuition_plot->yAxis);
 
     QVector<double> errorData;
     QVector<QCPGraphData>* const ref_speed_lst = ui->plot->graph(0)->data()->coreData();

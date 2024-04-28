@@ -15,3 +15,23 @@ DistributionDialog::~DistributionDialog()
 {
     delete ui;
 }
+
+void DistributionDialog::set_max_error(double val)
+{
+    ui->labMaxError->setText(QString::number(val));
+}
+
+void DistributionDialog::set_mean_error(double val)
+{
+    ui->labMean->setText(QString::number(val));
+}
+
+void DistributionDialog::set_correlation_coefficient(double val)
+{
+    ui->labCor->setText(QString::number(val));
+}
+
+void DistributionDialog::set_RMSE(double val)
+{
+    ui->labRMSE->setText(QString::number(val));
+}

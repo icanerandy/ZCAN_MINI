@@ -9,6 +9,10 @@
 #include <QMap>
 #include <QDockWidget>
 #include <QMouseEvent>
+#include <QDialog>
+#include <cmath>
+#include "Eigen/Core"
+#include "Eigen/Dense"
 #include "zlgcan.h"
 #include "Vector/DBC.h"
 #include "qcustomplot.h"
@@ -27,6 +31,7 @@
 
 #include <GL/freeglut.h>
 
+
 namespace Ui {
 class SpeedViewDockWidget;
 }
@@ -40,11 +45,16 @@ public:
     ~SpeedViewDockWidget();
 
 private:
-    void initUI();
-    void initPlot(QCustomPlot* const plot);
-    void addGraphs(QCustomPlot* const plot, int graph_count);
-    void initThread();
-    void destroyThread();
+    void init_ui();
+    void bind_signals();
+    void init_plot(QCustomPlot* const plot);
+    void add_graphs(QCustomPlot* const plot, int graph_count);
+    void init_thread();
+    void destroy_thread();
+    double cal_max_error(std::vector<double>& tmp_vec1, std::vector<double>& tmp_vec2);
+    double cal_mean_error(std::vector<double>& tmp_vec1, std::vector<double>& tmp_vec2);
+    double cal_correlation_coefficient(std::vector<double> &tmp_vec1, std::vector<double> &tmp_vec2);
+    double cal_RMSE(std::vector<double> &tmp_vec1, std::vector<double> &tmp_vec2);
 
 public slots:
     void slot_paint_enable(QList<QPair<uint32_t, Vector::DBC::Signal>> sig_lst);
@@ -52,7 +62,7 @@ public slots:
     void slot_btnPaint_clicked(bool paint_enable);
     void slot_clearData();
     void slot_disSigVal_changed(double value);
-    void slot_btnShowDis(QCustomPlot* const plot);
+    void slot_btnShowDis();
     bool slot_btnSavePic_clicked();
     void slot_btnSaveExcel_clicked();
 
