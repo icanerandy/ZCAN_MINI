@@ -18,110 +18,119 @@
   </property>
   <layout class="QGridLayout" name="gridLayout_4">
    <item row="0" column="0">
-    <widget class="QGroupBox" name="groupBox_2">
-     <property name="title">
-      <string>差异度</string>
+    <widget class="QSplitter" name="splitter">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
      </property>
-     <layout class="QGridLayout" name="gridLayout_2">
-      <item row="1" column="1">
-       <widget class="QLabel" name="labMean">
-        <property name="text">
-         <string>0</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_11">
-        <property name="whatsThis">
-         <string extracomment="平均绝对误差（Mean Absolute Error，MAE）：是预测值与真实值之间差异的绝对值的平均值。MAE 提供了一种评估预测模型误差的方法，与 RMSE 类似，值越小表示预测模型越准确。"/>
-        </property>
-        <property name="text">
-         <string>平均绝对误差：</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label">
-        <property name="whatsThis">
-         <string extracomment="最大误差（Max Error）：最大误差是两组数据之间的最大差值。在你的情况下，最大误差是实际车速和参考车速之间的最大差值。如果最大误差较大，说明两组数据在某些情况下有很大的偏差。"/>
-        </property>
-        <property name="text">
-         <string>最大误差：</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLabel" name="labMaxError">
-        <property name="text">
-         <string>0</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_9">
-        <property name="whatsThis">
-         <string extracomment="均方根误差（Root Mean Square Error，RMSE）：是预测值与真实值之间差异的平均值的平方根。RMSE 提供了一种评估预测模型准确性的方法，值越小表示预测模型越准确。"/>
-        </property>
-        <property name="text">
-         <string>均方根误差：</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QLabel" name="labRMSE">
-        <property name="text">
-         <string>0</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="0" column="1" rowspan="2">
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string>误差分布图</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="QWidget" name="widget" native="true">
-        <property name="font">
-         <font>
-          <family>黑体</family>
-          <pointsize>9</pointsize>
-          <italic>false</italic>
-          <bold>false</bold>
-         </font>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item row="1" column="0">
-    <widget class="QGroupBox" name="groupBox_3">
-     <property name="title">
-      <string>相似度</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="0" column="2">
-       <widget class="QLabel" name="labCor">
-        <property name="text">
-         <string>0</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_7">
-        <property name="whatsThis">
-         <string extracomment="相关系数（Correlation Coefficient）：衡量两个变量之间线性关系的强度和方向。相关系数的取值范围在 -1 到 1 之间，当相关系数接近 1 时，表示两个变量之间存在强正相关关系；当相关系数接近 -1 时，表示两个变量之间存在强负相关关系；当相关系数接近 0 时，表示两个变量之间不存在线性关系。"/>
-        </property>
-        <property name="text">
-         <string>相关系数：</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
+     <widget class="QWidget" name="">
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QGroupBox" name="groupBox_2">
+         <property name="title">
+          <string>差异度</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_2">
+          <item row="1" column="1">
+           <widget class="QLabel" name="labMean">
+            <property name="text">
+             <string>0</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="label_11">
+            <property name="whatsThis">
+             <string extracomment="平均绝对误差（Mean Absolute Error，MAE）：是预测值与真实值之间差异的绝对值的平均值。MAE 提供了一种评估预测模型误差的方法，与 RMSE 类似，值越小表示预测模型越准确。"/>
+            </property>
+            <property name="text">
+             <string>平均绝对误差：</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label">
+            <property name="whatsThis">
+             <string extracomment="最大误差（Max Error）：最大误差是两组数据之间的最大差值。在你的情况下，最大误差是实际车速和参考车速之间的最大差值。如果最大误差较大，说明两组数据在某些情况下有很大的偏差。"/>
+            </property>
+            <property name="text">
+             <string>最大误差：</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="labMaxError">
+            <property name="text">
+             <string>0</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="label_9">
+            <property name="whatsThis">
+             <string extracomment="误差的标准量度：RMSE 提供了预测误差的标准量度，越小表示预测模型与实际数据越吻合。 误差大小：RMSE 的大小直接反映出预测误差的程度。它是一个非常直观的误差度量，因为它是以相同的单位为实际值量度的。 偏差的敏感度：由于RMSE涉及平方项，因此更加敏感于较大的误差。这意味着大的偏差会对总的RMSE值产生较大的影响。"/>
+            </property>
+            <property name="text">
+             <string>均方根误差：</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLabel" name="labRMSE">
+            <property name="text">
+             <string>0</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_3">
+         <property name="title">
+          <string>相似度</string>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <item row="0" column="2">
+           <widget class="QLabel" name="labCor">
+            <property name="text">
+             <string>0</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QLabel" name="label_7">
+            <property name="whatsThis">
+             <string extracomment="相关系数（Correlation Coefficient）：衡量两个变量之间线性关系的强度和方向。相关系数的取值范围在 -1 到 1 之间，当相关系数接近 1 时，表示两个变量之间存在强正相关关系；当相关系数接近 -1 时，表示两个变量之间存在强负相关关系；当相关系数接近 0 时，表示两个变量之间不存在线性关系。"/>
+            </property>
+            <property name="text">
+             <string>相关系数：</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QGroupBox" name="groupBox">
+      <property name="title">
+       <string>误差分布图</string>
+      </property>
+      <layout class="QGridLayout" name="gridLayout" columnstretch="0">
+       <item row="0" column="0">
+        <widget class="QWidget" name="widget" native="true">
+         <property name="font">
+          <font>
+           <family>黑体</family>
+           <pointsize>9</pointsize>
+           <italic>false</italic>
+           <bold>false</bold>
+          </font>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
   </layout>

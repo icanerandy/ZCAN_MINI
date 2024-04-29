@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1200</width>
-    <height>800</height>
+    <width>1350</width>
+    <height>950</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -18,8 +18,8 @@
   </property>
   <property name="minimumSize">
    <size>
-    <width>1200</width>
-    <height>700</height>
+    <width>1350</width>
+    <height>850</height>
    </size>
   </property>
   <property name="font">
@@ -368,6 +368,11 @@
  </widget>
  <customwidgets>
   <customwidget>
+   <class>QtMaterialTextField</class>
+   <extends>QLineEdit</extends>
+   <header>qtmaterialtextfield.h</header>
+  </customwidget>
+  <customwidget>
    <class>QtMaterialRaisedButton</class>
    <extends>QPushButton</extends>
    <header>qtmaterialraisedbutton.h</header>
@@ -376,11 +381,6 @@
    <class>QtMaterialCheckBox</class>
    <extends>QCheckBox</extends>
    <header>qtmaterialcheckbox.h</header>
-  </customwidget>
-  <customwidget>
-   <class>QtMaterialTextField</class>
-   <extends>QLineEdit</extends>
-   <header>qtmaterialtextfield.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

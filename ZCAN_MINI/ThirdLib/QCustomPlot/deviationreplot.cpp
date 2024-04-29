@@ -4,13 +4,13 @@ DeviationReplot::DeviationReplot(QCustomPlot* plot)
     : plot_(plot)
 {
     connect(&timer_, SIGNAL(timeout()), this, SLOT(replotData()));
-    timer_.start(30);
+    timer_.start(1000);
 }
 
 void DeviationReplot::start()
 {
     connect(&timer_, SIGNAL(timeout()), this, SLOT(replotData()));
-    timer_.start(30);
+    timer_.start(1000);
 }
 
 void DeviationReplot::pause()

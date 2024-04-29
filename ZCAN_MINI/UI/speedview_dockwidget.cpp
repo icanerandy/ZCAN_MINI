@@ -105,14 +105,53 @@ void SpeedViewDockWidget::bind_signals()
         if (ui->plot->graphCount() == 0)
             QMessageBox::information(this,"fail","当前无图像可进行重缩放");
         ui->plot->rescaleAxes();
+        ui->plot->rescaleAxes(true);
     });
 
     connect(ui->chkGraph1, &QCheckBox::toggled, this, [=] (bool checked) {
+        if (ui->plot->graphCount() == 0)
+            return;
         ui->plot->graph(0)->setVisible(checked);
     });
 
     connect(ui->chkGraph2, &QCheckBox::toggled, this, [=] (bool checked) {
+        if (ui->plot->graphCount() == 0)
+            return;
         ui->plot->graph(1)->setVisible(checked);
+    });
+
+    connect(ui->chkScatter1, &QCheckBox::toggled, this, [=] (bool checked) {
+        if (ui->plot->graphCount() == 0)
+            return;
+        if (checked)
+        {
+            ui->plot->graph(0)->setLineStyle(QCPGraph::lsNone);
+            ui->plot->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 2));
+            ui->plot->replot(QCustomPlot::rpQueuedReplot);
+        }
+        else
+        {
+            ui->plot->graph(0)->setLineStyle(QCPGraph::lsLine);
+            ui->plot->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 1));
+            ui->plot->replot(QCustomPlot::rpQueuedReplot);
+        }
+    });
+
+    connect(ui->chkScatter2, &QCheckBox::toggled, this, [=] (bool checked) {
+        if (ui->plot->graphCount() == 0)
+            return;
+        if (checked)
+        {
+            ui->plot->graph(1)->setLineStyle(QCPGraph::lsNone);
+            ui->plot->graph(1)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 2));
+            ui->plot->replot(QCustomPlot::rpQueuedReplot);
+        }
+        else
+        {
+            ui->plot->graph(1)->setLineStyle(QCPGraph::lsLine);
+            ui->plot->graph(1)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCross, 1));
+            ui->plot->replot(QCustomPlot::rpQueuedReplot);
+        }
     });
 
     connect(ui->btnDeviation, &QPushButton::clicked, this, [this] {
@@ -382,9 +421,9 @@ void SpeedViewDockWidget::init_thread()
     deviation_replot_ = new DeviationReplot(ui->plot_2);
     deviation_replot_thread_ = new QThread;
     deviation_replot_->moveToThread(deviation_replot_thread_);
-    // 让其自动重绘，偏差图无需自动重绘，可以提高约一倍的性能
-    // connect(deviation_replot_, static_cast<void (DeviationReplot::*)(void)>(&DeviationReplot::sig_replot),
-    //         this, [=] { ui->plot_2->replot(QCustomPlot::rpQueuedReplot); });
+    // 让其自动重绘，偏差图如果无需自动重绘，可以提高约一倍的性能
+    connect(deviation_replot_, static_cast<void (DeviationReplot::*)(void)>(&DeviationReplot::sig_replot),
+            this, [=] { ui->plot_2->replot(QCustomPlot::rpQueuedReplot); });
     deviation_replot_thread_->start();
 
     connect(line_replot_, &LineReplot::sig_frmChanged, this, [=] (const QString& msg) {
@@ -620,6 +659,12 @@ void SpeedViewDockWidget::slot_btnPaint_clicked(bool paint_enable)
             is_first_paint = false;
             add_graphs(ui->plot, 1);
             add_graphs(ui->plot_2, 2);
+
+            ui->chkGraph1->setChecked(true);
+            ui->chkGraph2->setChecked(true);
+
+            ui->chkScatter1->setChecked(false);
+            ui->chkScatter2->setChecked(false);
         }
 
         init_thread();
@@ -661,7 +706,8 @@ void SpeedViewDockWidget::slot_disSigVal_changed(double value)
 
     if (deviation_plot_)
         deviation_plot_->set_default_deviation_value_(value);
-    else
+
+    if (ui->plot_2->graphCount() == 0)
     {
         QMessageBox::information(this,"fail","当前无数据!");
         return;
@@ -703,74 +749,68 @@ void SpeedViewDockWidget::slot_btnShowDis()
     std::vector<double> tmp_vec1;
     std::vector<double> tmp_vec2;
 
-    for (int i = 0; i < map1->count(); ++i)
-        tmp_vec1.push_back(map1->at(i).value);
-    for (int i = 0; i < map2->count(); ++i)
-        tmp_vec2.push_back(map2->at(i).value);
-
-    double max_error = cal_max_error(tmp_vec1, tmp_vec2);
-    double mean_error = cal_mean_error(tmp_vec1, tmp_vec2);
-    double correlation_coefficient = cal_correlation_coefficient(tmp_vec1, tmp_vec2);
-    double RMSE = cal_RMSE(tmp_vec1, tmp_vec2);
-
-    distribution_dialog_->set_max_error(max_error);
-    distribution_dialog_->set_mean_error(mean_error);
-    distribution_dialog_->set_correlation_coefficient(correlation_coefficient);
-    distribution_dialog_->set_RMSE(RMSE);
-
-    // 创建一个直方图（bar chart）
-    QCustomPlot* const plot = distribution_dialog_->myplot_;
-    QCustomPlot* distribuition_plot = plot;
-    distribuition_plot->clearPlottables();
-    distribuition_plot->replot();
-    QCPBars* errorBars = new QCPBars(distribuition_plot->xAxis, distribuition_plot->yAxis);
-
-    QVector<double> errorData;
-    QVector<QCPGraphData>* const ref_speed_lst = ui->plot->graph(0)->data()->coreData();
-    QVector<QCPGraphData>* const rel_speed_lst = ui->plot->graph(1)->data()->coreData();
-    if (ref_speed_lst->size() == 0)
+    if (map1->size() == 0)
     {
         QMessageBox::information(this,"fail","当前无数据可进行分析");
         return;
     }
-    for (int i = 0; i < ref_speed_lst->size(); ++i)
+
+    for (int i = 0; i < map1->count(); ++i)
+        tmp_vec1.push_back(qAbs(map1->at(i).value));
+    for (int i = 0; i < map2->count(); ++i)
+        tmp_vec2.push_back(qAbs(map2->at(i).value));
+
+    double max_error = cal_max_error(tmp_vec1, tmp_vec2);
+    double mean_error = cal_mean_error(tmp_vec1, tmp_vec2); // 平均绝对误差
+    double correlation_coefficient = cal_correlation_coefficient(tmp_vec1, tmp_vec2);
+    double RMSE = cal_RMSE(tmp_vec1, tmp_vec2);
+
+    distribution_dialog_->set_max_error(max_error);
+    distribution_dialog_->set_MAE(mean_error);
+    distribution_dialog_->set_correlation_coefficient(correlation_coefficient);
+    distribution_dialog_->set_RMSE(RMSE);
+
+    // 计算误差
+    std::vector<double> error_data;
+    for (size_t i = 0; i < tmp_vec1.size(); ++i)
+        error_data.push_back(qAbs(tmp_vec1.at(i) - tmp_vec2.at(i)));    // 取绝对值
+
+    // 准备直方图数据
+    QVector<double> ticks;
+    QVector<double> values;
+    int number_of_bins = 20; // 可以根据需要调整直方图的分组数量
+    double abs_max_error = *std::max_element(error_data.begin(), error_data.end());
+    double abs_min_error = *std::min_element(error_data.begin(), error_data.end());
+    double bin_width = (abs_max_error - abs_min_error) / number_of_bins;
+
+    ticks.resize(number_of_bins);
+    values.resize(number_of_bins);
+
+    for (int i = 0; i < number_of_bins; ++i)
+        ticks[i] = abs_min_error + (i + 0.5) * bin_width; // 中点
+
+    for (double error : error_data)
     {
-        double actualSpeed = (*ref_speed_lst)[i].value;
-        double estimatedSpeed = (*rel_speed_lst)[i].value;
-        double error = actualSpeed - estimatedSpeed;
-        errorData.append(error);
+        int bin_index = static_cast<int>((error - abs_min_error) / bin_width);
+        if (bin_index >= 0 && bin_index < number_of_bins)
+            values[bin_index]++;
     }
 
-    // 准备数据
-    QVector<double> errorTicks;
-    QVector<double> errorFrequency;
-    int numberOfBins = 10; // 可以根据需要调整直方图的分组数量
+    // 创建一个直方图（bar chart）
+    QCustomPlot* const plot = distribution_dialog_->myplot_;
+    plot->clearPlottables();
+    plot->replot();
+    QCPBars* histogram = new QCPBars(plot->xAxis, plot->yAxis);
 
-    double minError = *std::min_element(errorData.constBegin(), errorData.constEnd());
-    double maxError = *std::max_element(errorData.constBegin(), errorData.constEnd());
-    double binWidth = (maxError - minError) / numberOfBins;
+    histogram->setData(ticks, values);
+    histogram->setWidth(bin_width * 0.9); // 设置柱子的宽度
 
-    errorTicks.resize(numberOfBins);
-    errorFrequency.resize(numberOfBins);
+    // 设定样式
+    histogram->setPen(QPen(QColor(150, 202, 255))); // 边框颜色
+    histogram->setBrush(QColor(150, 202, 255, 150)); // 填充颜色
 
-    for (int i = 0; i < numberOfBins; ++i)
-    {
-        errorTicks[i] = minError + (i + 0.5) * binWidth; // 计算每个分组的中心值
-        errorFrequency[i] = 0;
-    }
-
-    for (double error : errorData)
-    {
-        int binIndex = std::floor((error - minError) / binWidth);
-        if (binIndex >= 0 && binIndex < numberOfBins)
-        {
-            errorFrequency[binIndex]++;
-        }
-    }
-
-    errorBars->setData(errorTicks, errorFrequency);
-    distribuition_plot->rescaleAxes();
-    distribuition_plot->replot(QCustomPlot::rpQueuedReplot);
+    plot->rescaleAxes();
+    plot->replot(QCustomPlot::rpQueuedReplot);
     distribution_dialog_->show();
 }
 
@@ -813,6 +853,59 @@ bool SpeedViewDockWidget::slot_btnSavePic_clicked()
 
 void SpeedViewDockWidget::slot_btnSaveExcel_clicked()
 {
+    // QCustomPlot* const plot = ui->plot;
+
+    // if (ui->plot->graphCount() < 2)
+    // {
+    //     QMessageBox::information(this,"fail","excel文件保存失败: 没有数据");
+    //     return;
+    // }
+
+    // QString filename = QFileDialog::getSaveFileName(this, tr("Save Excel"), "", tr("Excel (*.xlsx *.csv)"));
+    // if( filename == "" && !QXlsx::Document(filename).load())
+    // {
+    //     QMessageBox::information(this,"fail","excel文件保存失败: 未选择保存文件");
+    //     return;
+    // }
+
+    // QVector<QCPGraphData>* const ref_speed_lst = plot->graph(0)->data()->coreData();
+    // QVector<QCPGraphData>* const rel_speed_lst = plot->graph(1)->data()->coreData();
+
+    // QXlsx::Document doc;
+
+    // int row = 1;
+    // doc.addSheet(QStringLiteral("数据汇总"));
+    // doc.addSheet(QStringLiteral("误差分析"));
+    // doc.selectSheet(0);
+
+    // for (int i = 0; i < ref_speed_lst->length(); ++i)
+    // {
+    //     doc.write(i+1, 1, ref_speed_lst->at(i).key);
+    //     doc.write(i+1, 2, ref_speed_lst->at(i).value);
+    //     doc.write(i+1, 3, rel_speed_lst->at(i).value);
+
+    //     const double deviation = doc.cellAt(i+1, 2)->value().toDouble() - doc.cellAt(i+1, 3)->value().toDouble();
+    //     if (qAbs(deviation) >= default_deviation_value_)
+    //     {
+    //         QXlsx::Format format;
+    //         format.setFontColor(QColor(Qt::black));
+    //         format.setPatternBackgroundColor(Qt::red);
+    //         doc.setRowFormat(i+1, format);
+
+    //         doc.selectSheet(1);
+    //         doc.write(row, 1, ref_speed_lst->at(i).key);
+    //         doc.write(row, 2, ref_speed_lst->at(i).value);
+    //         doc.write(row, 3, rel_speed_lst->at(i).value);
+    //         ++row;
+
+    //         doc.selectSheet(0);
+    //     }
+    // }
+
+    // doc.saveAs(filename);
+    // QMessageBox::information(this,"success","保存成功,已默认保存为excel文件");
+
+
     QCustomPlot* const plot = ui->plot;
 
     if (ui->plot->graphCount() < 2)
@@ -821,47 +914,27 @@ void SpeedViewDockWidget::slot_btnSaveExcel_clicked()
         return;
     }
 
-    QString filename = QFileDialog::getSaveFileName(this, tr("Save Excel"), "", tr("Excel (*.xlsx *.csv)"));
-    if( filename == "" && !QXlsx::Document(filename).load()){
+    QString csv_file = QFileDialog::getSaveFileName(this, tr("Save Excel"), "", tr("Excel (*.csv)"));
+    if( csv_file == "")
+    {
         QMessageBox::information(this,"fail","excel文件保存失败: 未选择保存文件");
         return;
     }
 
+    QFile file(csv_file);
+
+    file.open( QIODevice::ReadWrite | QIODevice::Text );
+    QTextStream out(&file);
+
     QVector<QCPGraphData>* const ref_speed_lst = plot->graph(0)->data()->coreData();
     QVector<QCPGraphData>* const rel_speed_lst = plot->graph(1)->data()->coreData();
 
-    QXlsx::Document doc;
-
-    int row = 1;
-    doc.addSheet(QStringLiteral("数据汇总"));
-    doc.addSheet(QStringLiteral("误差分析"));
-    doc.selectSheet(0);
-
     for (int i = 0; i < ref_speed_lst->length(); ++i)
-    {
-        doc.write(i+1, 1, ref_speed_lst->at(i).key);
-        doc.write(i+1, 2, ref_speed_lst->at(i).value);
-        doc.write(i+1, 3, rel_speed_lst->at(i).value);
+        out << ref_speed_lst->at(i).key << tr(",") << ref_speed_lst->at(i).value << tr(",") << rel_speed_lst->at(i).value << "\n";
 
-        const double deviation = doc.cellAt(i+1, 2)->value().toDouble() - doc.cellAt(i+1, 3)->value().toDouble();
-        if (qAbs(deviation) >= default_deviation_value_)
-        {
-            QXlsx::Format format;
-            format.setFontColor(QColor(Qt::black));
-            format.setPatternBackgroundColor(Qt::red);
-            doc.setRowFormat(i+1, format);
+    //5.写完数据需要关闭文件
+    file.close();
 
-            doc.selectSheet(1);
-            doc.write(row, 1, ref_speed_lst->at(i).key);
-            doc.write(row, 2, ref_speed_lst->at(i).value);
-            doc.write(row, 3, rel_speed_lst->at(i).value);
-            ++row;
-
-            doc.selectSheet(0);
-        }
-    }
-
-    doc.saveAs(filename);
-    QMessageBox::information(this,"success","保存成功,已默认保存为excel文件");
+    QMessageBox::information(this,"success","保存成功,已默认保存为excel（.csv）文件");
 }
 

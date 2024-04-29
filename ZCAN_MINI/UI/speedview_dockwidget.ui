@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1200</width>
-    <height>800</height>
+    <width>1350</width>
+    <height>950</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1200</width>
-    <height>700</height>
+    <width>1350</width>
+    <height>850</height>
    </size>
   </property>
   <property name="font">
@@ -184,26 +184,6 @@
             <string>单独显示曲线</string>
            </property>
            <layout class="QGridLayout" name="gridLayout_7">
-            <item row="0" column="0">
-             <widget class="QCheckBox" name="chkGraph1">
-              <property name="text">
-               <string>曲线1</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="2">
-             <widget class="QCheckBox" name="chkGraph2">
-              <property name="text">
-               <string>曲线2</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
             <item row="0" column="1">
              <spacer name="horizontalSpacer_7">
               <property name="orientation">
@@ -219,6 +199,78 @@
             </item>
             <item row="0" column="3">
              <spacer name="horizontalSpacer_9">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="0" column="2">
+             <widget class="QCheckBox" name="chkGraph2">
+              <property name="text">
+               <string>曲线2</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QCheckBox" name="chkGraph1">
+              <property name="text">
+               <string>曲线1</string>
+              </property>
+              <property name="checked">
+               <bool>true</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QCheckBox" name="chkScatter1">
+              <property name="whatsThis">
+               <string extracomment="散点图可以用来查看数据点之间的相关性，判断实际值与估算值是否呈现线性或其他类型的相关性。"/>
+              </property>
+              <property name="text">
+               <string>散点1</string>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="QCheckBox" name="chkScatter2">
+              <property name="whatsThis">
+               <string extracomment="散点图可以用来查看数据点之间的相关性，判断实际值与估算值是否呈现线性或其他类型的相关性。"/>
+              </property>
+              <property name="text">
+               <string>散点2</string>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <spacer name="horizontalSpacer_10">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="1" column="3">
+             <spacer name="horizontalSpacer_11">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
               </property>

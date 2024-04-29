@@ -7,6 +7,9 @@ DistributionDialog::DistributionDialog(QWidget *parent)
 {
     ui->setupUi(this);
 
+    ui->splitter->setStretchFactor(0, 1);
+    ui->splitter->setStretchFactor(1, 4);
+
     myplot_ = new MyPlot(ui->widget);
     ui->gridLayout->addWidget(myplot_, 0, 0, 1, 1);
 }
@@ -21,7 +24,7 @@ void DistributionDialog::set_max_error(double val)
     ui->labMaxError->setText(QString::number(val));
 }
 
-void DistributionDialog::set_mean_error(double val)
+void DistributionDialog::set_MAE(double val)
 {
     ui->labMean->setText(QString::number(val));
 }
