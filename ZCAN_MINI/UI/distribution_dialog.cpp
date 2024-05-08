@@ -10,7 +10,7 @@ DistributionDialog::DistributionDialog(QWidget *parent)
     ui->splitter->setStretchFactor(0, 1);
     ui->splitter->setStretchFactor(1, 4);
 
-    myplot_ = new MyPlot(ui->widget);
+    myplot_ = new MyPlot(ui->widget1);
     ui->gridLayout->addWidget(myplot_, 0, 0, 1, 1);
 }
 

@@ -22,7 +22,7 @@
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
         <widget class="QGroupBox" name="groupBox_2">
@@ -118,7 +118,7 @@
       </property>
       <layout class="QGridLayout" name="gridLayout" columnstretch="0">
        <item row="0" column="0">
-        <widget class="QWidget" name="widget" native="true">
+        <widget class="QWidget" name="widget1" native="true">
          <property name="font">
           <font>
            <family>黑体</family>

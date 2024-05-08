@@ -40,8 +40,8 @@ include ($$PWD/Ui/Ui.pri)
 INCLUDEPATH += $$PWD/MsgProcess
 include ($$PWD/MsgProcess/MsgProcess.pri)
 
-INCLUDEPATH += $$PWD/DataProcess
-include ($$PWD/DataProcess/DataProcess.pri)
+INCLUDEPATH += $$PWD/ExcelProcess
+include ($$PWD/ExcelProcess/ExcelProcess.pri)
 
 RESOURCES += \
     resources.qrc
