@@ -93,6 +93,7 @@ bool MyExcel::slot_writeOneTable(QString filepath, int startRow, QVector< QVecto
         slot_setOneCell(sheet, ColumnType::ColumnA, 3, Qt::red, "时间");
         slot_setOneCell(sheet, ColumnType::ColumnB, 3, Qt::red, sig1_);
         slot_setOneCell(sheet, ColumnType::ColumnC, 3, Qt::red, sig2_);
+        slot_setOneCell(sheet, ColumnType::ColumnD, 3, Qt::red, "绝对偏差");
 
         // 数据转换
         QVariantList tdata;
