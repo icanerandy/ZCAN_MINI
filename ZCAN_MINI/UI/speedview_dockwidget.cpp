@@ -10,7 +10,10 @@ SpeedViewDockWidget::SpeedViewDockWidget(QWidget *parent) :
     line_replot_(nullptr),
     deviation_plot_(nullptr),
     deviation_replot_(nullptr),
-    default_deviation_value_(100)
+    default_deviation_value_(100),
+    default_sampling_point_nums_(1),
+    tester_("null"),
+    device_name_("null")
 {
     ui->setupUi(this);
 
@@ -68,6 +71,8 @@ void SpeedViewDockWidget::init_ui()
     ui->btnAntialiase->setFixedHeight(max_height);
     ui->btnDisEnable->setBackgroundColor(color);
     ui->btnDisEnable->setFixedHeight(max_height);
+    ui->btnSampling->setBackgroundColor(color);
+    ui->btnSampling->setFixedHeight(max_height);
 
     ui->spinDeviation->setMaximumHeight(max_height);
     ui->spinWidth->setMaximumHeight(max_height);
@@ -79,7 +84,7 @@ void SpeedViewDockWidget::init_ui()
 
 void SpeedViewDockWidget::bind_signals()
 {
-    connect(ui->btnPaint, &QPushButton::clicked, this, [this] {
+    connect(ui->btnPaint, &QtMaterialRaisedButton::clicked, this, [this] {
         static bool paint_enable = true;
         if (paint_enable)
         {
@@ -97,9 +102,9 @@ void SpeedViewDockWidget::bind_signals()
         paint_enable = !paint_enable;
     });
 
-    connect(ui->btnDis, &QPushButton::clicked, this, &SpeedViewDockWidget::slot_btnShowDis);
+    connect(ui->btnDis, &QtMaterialRaisedButton::clicked, this, &SpeedViewDockWidget::slot_btnShowDis);
 
-    connect(ui->btnClear, &QPushButton::clicked, this, &SpeedViewDockWidget::slot_clearData);
+    connect(ui->btnClear, &QtMaterialRaisedButton::clicked, this, &SpeedViewDockWidget::slot_clearData);
 
     connect(ui->btnRescale, &QtMaterialRaisedButton::clicked, this, [=] {
         if (ui->plot->graphCount() == 0)
@@ -154,14 +159,18 @@ void SpeedViewDockWidget::bind_signals()
         }
     });
 
-    connect(ui->btnDeviation, &QPushButton::clicked, this, [this] {
+    connect(ui->btnDeviation, &QtMaterialRaisedButton::clicked, this, [this] {
         double value = ui->spinDeviation->value();
         slot_disSigVal_changed(value);
     });
 
-    connect(ui->btnSavePic, &QPushButton::clicked, this, &SpeedViewDockWidget::slot_btnSavePic_clicked);
+    connect(ui->btnSampling, &QtMaterialRaisedButton::clicked, this, [=] {
+        default_sampling_point_nums_ = ui->spinSampling->value();
+    });
 
-    connect(ui->btnSaveExcel, &QPushButton::clicked, this, &SpeedViewDockWidget::slot_btnSaveExcel_clicked);
+    connect(ui->btnSavePic, &QtMaterialRaisedButton::clicked, this, &SpeedViewDockWidget::slot_btnSavePic_clicked);
+
+    connect(ui->btnSaveExcel, &QtMaterialRaisedButton::clicked, this, &SpeedViewDockWidget::slot_btnSaveExcel_clicked);
 
     connect(ui->btnOpenGL, &QtMaterialRaisedButton::clicked, this, [=] {
         static bool state = true;
@@ -853,88 +862,78 @@ bool SpeedViewDockWidget::slot_btnSavePic_clicked()
 
 void SpeedViewDockWidget::slot_btnSaveExcel_clicked()
 {
-    // QCustomPlot* const plot = ui->plot;
-
-    // if (ui->plot->graphCount() < 2)
-    // {
-    //     QMessageBox::information(this,"fail","excel文件保存失败: 没有数据");
-    //     return;
-    // }
-
-    // QString filename = QFileDialog::getSaveFileName(this, tr("Save Excel"), "", tr("Excel (*.xlsx *.csv)"));
-    // if( filename == "" && !QXlsx::Document(filename).load())
-    // {
-    //     QMessageBox::information(this,"fail","excel文件保存失败: 未选择保存文件");
-    //     return;
-    // }
-
-    // QVector<QCPGraphData>* const ref_speed_lst = plot->graph(0)->data()->coreData();
-    // QVector<QCPGraphData>* const rel_speed_lst = plot->graph(1)->data()->coreData();
-
-    // QXlsx::Document doc;
-
-    // int row = 1;
-    // doc.addSheet(QStringLiteral("数据汇总"));
-    // doc.addSheet(QStringLiteral("误差分析"));
-    // doc.selectSheet(0);
-
-    // for (int i = 0; i < ref_speed_lst->length(); ++i)
-    // {
-    //     doc.write(i+1, 1, ref_speed_lst->at(i).key);
-    //     doc.write(i+1, 2, ref_speed_lst->at(i).value);
-    //     doc.write(i+1, 3, rel_speed_lst->at(i).value);
-
-    //     const double deviation = doc.cellAt(i+1, 2)->value().toDouble() - doc.cellAt(i+1, 3)->value().toDouble();
-    //     if (qAbs(deviation) >= default_deviation_value_)
-    //     {
-    //         QXlsx::Format format;
-    //         format.setFontColor(QColor(Qt::black));
-    //         format.setPatternBackgroundColor(Qt::red);
-    //         doc.setRowFormat(i+1, format);
-
-    //         doc.selectSheet(1);
-    //         doc.write(row, 1, ref_speed_lst->at(i).key);
-    //         doc.write(row, 2, ref_speed_lst->at(i).value);
-    //         doc.write(row, 3, rel_speed_lst->at(i).value);
-    //         ++row;
-
-    //         doc.selectSheet(0);
-    //     }
-    // }
-
-    // doc.saveAs(filename);
-    // QMessageBox::information(this,"success","保存成功,已默认保存为excel文件");
-
-
     QCustomPlot* const plot = ui->plot;
 
-    if (ui->plot->graphCount() < 2)
+    if (plot->graphCount() < 2)
     {
         QMessageBox::information(this,"fail","excel文件保存失败: 没有数据");
         return;
     }
 
-    QString csv_file = QFileDialog::getSaveFileName(this, tr("Save Excel"), "", tr("Excel (*.csv)"));
+    QString csv_file = QFileDialog::getSaveFileName(this, tr("Save Excel"), "", tr("Excel (*.xlsx)"));
     if( csv_file == "")
     {
         QMessageBox::information(this,"fail","excel文件保存失败: 未选择保存文件");
         return;
     }
 
-    QFile file(csv_file);
+    QVector<QCPGraphData> ref_speed_lst = *plot->graph(0)->data()->coreData();
+    QVector<QCPGraphData> rel_speed_lst = *plot->graph(1)->data()->coreData();
 
-    file.open( QIODevice::ReadWrite | QIODevice::Text );
-    QTextStream out(&file);
+    QVector< QVector<QVariant> > table;
 
-    QVector<QCPGraphData>* const ref_speed_lst = plot->graph(0)->data()->coreData();
-    QVector<QCPGraphData>* const rel_speed_lst = plot->graph(1)->data()->coreData();
+    int points_num = ref_speed_lst.size();
 
-    for (int i = 0; i < ref_speed_lst->length(); ++i)
-        out << ref_speed_lst->at(i).key << tr(",") << ref_speed_lst->at(i).value << tr(",") << rel_speed_lst->at(i).value << "\n";
+    for (int i = 0; i < points_num; i+=default_sampling_point_nums_)
+    {
+        QVector<QVariant> aline;
 
-    //5.写完数据需要关闭文件
-    file.close();
+        double key = ref_speed_lst.at(i).key;
+        aline.append(QVariant(QDateTime::fromMSecsSinceEpoch(key * 1000.0).toString("hh:mm:ss.zzz")));
+        aline.append(QVariant(ref_speed_lst.at(i).value));
+        aline.append(QVariant(rel_speed_lst.at(i).value));
+        aline.append(QVariant(qAbs( ref_speed_lst.at(i).value - rel_speed_lst.at(i).value )));
 
-    QMessageBox::information(this,"success","保存成功,已默认保存为excel（.csv）文件");
+        table.append(aline);
+    }
+
+    QThread* thread = new QThread;
+    MyExcel* myexcel = new MyExcel();
+    myexcel->moveToThread(thread);
+
+    connect(myexcel, &MyExcel::finished, this, [=] (bool success) {
+        if (success)
+        {
+            QMessageBox::information(this, "提示", "数据保存成功");
+        }
+        else
+        {
+            QMessageBox::information(this, "提示", "数据保存失败");
+        }
+
+        thread->quit();
+        thread->wait();
+        thread->deleteLater();
+        myexcel->deleteLater();
+    });
+
+    myexcel->slot_info(QDateTime::currentDateTime().toString(), device_name_, tester_, QString::fromStdString(sig_lst_.at(0).second.name), QString::fromStdString(sig_lst_.at(1).second.name));
+    // 值传递对性能影响计算
+    qRegisterMetaType< QString >("QString");
+    qRegisterMetaType< QVector< QVector<QVariant> > >("QVector< QVector<QVariant> >");
+    connect(this, &SpeedViewDockWidget::signal_excelData, myexcel, &MyExcel::slot_writeOneTable);
+
+    thread->start();
+
+    emit signal_excelData(csv_file, 1, table);
 }
 
+void SpeedViewDockWidget::slot_testerChanged(QString tester)
+{
+    tester_ = tester;
+}
+
+void SpeedViewDockWidget::slot_deviceNameChanged(QString device_name)
+{
+    device_name_ = device_name;
+}

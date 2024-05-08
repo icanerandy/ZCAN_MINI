@@ -50,7 +50,8 @@
 “重缩放图像”：将图像缩放到合适的范围。
 “隐藏误差图”：将误差图隐藏起来，便于直接观察信号图像。
 “偏差分布”：可将两信号的偏差分布情况统计出来。
-“偏差值设定”：将偏差值较大的数据标记出来。</string>
+“偏差值设定”：将偏差值较大的数据标记出来。
+“采样点设置”：设置excel采样点间隔，避免生成过大excel文件。</string>
       </property>
      </widget>
     </item>
@@ -72,7 +73,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QtMaterialTextField" name="lineEdit">
+       <widget class="QtMaterialTextField" name="editTester">
         <property name="font">
          <font>
           <family>黑体</family>
@@ -103,7 +104,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QtMaterialTextField" name="lineEdit_2">
+       <widget class="QtMaterialTextField" name="editDeviceName">
         <property name="font">
          <font>
           <family>黑体</family>
@@ -129,7 +130,7 @@
          </font>
         </property>
         <property name="text">
-         <string>时间: </string>
+         <string>日期: </string>
         </property>
        </widget>
       </item>

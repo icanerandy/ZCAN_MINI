@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui printsupport
+QT       += core gui printsupport axcontainer
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -39,6 +39,9 @@ include ($$PWD/Ui/Ui.pri)
 
 INCLUDEPATH += $$PWD/MsgProcess
 include ($$PWD/MsgProcess/MsgProcess.pri)
+
+INCLUDEPATH += $$PWD/DataProcess
+include ($$PWD/DataProcess/DataProcess.pri)
 
 RESOURCES += \
     resources.qrc

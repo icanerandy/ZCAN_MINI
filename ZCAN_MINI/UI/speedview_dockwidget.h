@@ -6,9 +6,11 @@
 #endif
 
 #include <QObject>
+#include <QMetaType>
 #include <QMap>
 #include <QDockWidget>
 #include <QMouseEvent>
+#include <QtConcurrent/QtConcurrent>
 #include <QDialog>
 #include <cmath>
 #include "Eigen/Core"
@@ -21,13 +23,9 @@
 #include "deviationplot.h"
 #include "deviationreplot.h"
 #include "distribution_dialog.h"
+#include <QAxObject>
 
-#include "xlsxdocument.h"
-#include "xlsxchartsheet.h"
-#include "xlsxcellrange.h"
-#include "xlsxchart.h"
-#include "xlsxrichstring.h"
-#include "xlsxworkbook.h"
+#include "myexcel.h"
 
 #include <GL/freeglut.h>
 
@@ -56,6 +54,9 @@ private:
     double cal_correlation_coefficient(std::vector<double> &tmp_vec1, std::vector<double> &tmp_vec2);
     double cal_RMSE(std::vector<double> &tmp_vec1, std::vector<double> &tmp_vec2);
 
+signals:
+    void signal_excelData(QString filepath, int startRow, QVector<QVector<QVariant>> table);
+
 public slots:
     void slot_paint_enable(QList<QPair<uint32_t, Vector::DBC::Signal>> sig_lst);
     void slot_selectionChanged();
@@ -65,6 +66,8 @@ public slots:
     void slot_btnShowDis();
     bool slot_btnSavePic_clicked();
     void slot_btnSaveExcel_clicked();
+    void slot_testerChanged(QString tester);
+    void slot_deviceNameChanged(QString device_name);
 
 private:
     Ui::SpeedViewDockWidget* const ui;
@@ -85,6 +88,10 @@ private:
     QThread* deviation_replot_thread_;
 
     double default_deviation_value_;
+    uint default_sampling_point_nums_;
+
+    QString tester_;
+    QString device_name_;
 };
 
 #endif // PLOT_DOCKWIDGET_H

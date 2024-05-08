@@ -12,6 +12,14 @@ InfoDockWidget::InfoDockWidget(QWidget *parent)
         QDateTime date_time = QDateTime::currentDateTime();
         ui->labTime->setText(date_time.toString());
     });
+
+    connect(ui->editTester, &QtMaterialTextField::textChanged, nullptr, [=] () {
+        emit sig_testerChanged(ui->editTester->text());
+    });
+
+    connect(ui->editDeviceName, &QtMaterialTextField::textChanged, nullptr, [=] () {
+        emit sig_deviceNameChanged(ui->editDeviceName->text());
+    });
 }
 
 InfoDockWidget::~InfoDockWidget()

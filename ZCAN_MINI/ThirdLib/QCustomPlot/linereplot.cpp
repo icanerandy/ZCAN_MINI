@@ -34,7 +34,7 @@ void LineReplot::replotData()
     {
         emit sig_frmChanged(QString("FPS %1, Total Data points: %2")
                                 .arg(frame_count/(current_time-last_time), 0, 'f', 0)
-                                .arg(plot_->graph(0)->data()->size()+plot_->graph(1)->data()->size()));
+                                .arg(plot_->graph(0)->data()->size()));
         last_time = current_time;
         frame_count = 0;
     }

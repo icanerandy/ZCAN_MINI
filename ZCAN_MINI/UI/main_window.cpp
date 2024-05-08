@@ -95,4 +95,7 @@ void MainWindow::bindSignals()
     connect(actSendData, &QAction::triggered, this, [=] {
         senddataDlg->exec();
     });
+
+    connect(info_viewDock, &InfoDockWidget::sig_testerChanged, speed_plotviewDock, &SpeedViewDockWidget::slot_testerChanged);
+    connect(info_viewDock, &InfoDockWidget::sig_deviceNameChanged, speed_plotviewDock, &SpeedViewDockWidget::slot_deviceNameChanged);
 }
