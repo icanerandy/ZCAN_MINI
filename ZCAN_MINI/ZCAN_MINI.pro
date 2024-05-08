@@ -13,9 +13,9 @@ msvc {
     QMAKE_CXXFLAGS += /utf-8
 }
 
-CONFIG += console c++14
+CONFIG += c++14
 
-TARGET = ZCAN_MINI
+TARGET = SpeedAnalysis
 TEMPLATE = app
 
 DEFINES += QT_DEPRECATED_WARNINGS
