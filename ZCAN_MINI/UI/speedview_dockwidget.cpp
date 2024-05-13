@@ -166,6 +166,7 @@ void SpeedViewDockWidget::bind_signals()
 
     connect(ui->btnSampling, &QtMaterialRaisedButton::clicked, this, [=] {
         default_sampling_point_nums_ = ui->spinSampling->value();
+        QMessageBox::information(this,"success","设置采样点成功");
     });
 
     connect(ui->btnSavePic, &QtMaterialRaisedButton::clicked, this, &SpeedViewDockWidget::slot_btnSavePic_clicked);
@@ -354,12 +355,12 @@ void SpeedViewDockWidget::add_graphs(QCustomPlot* const plot, int graph_count)
 
         if (1 == graph_count)
         {
-            QColor color("#A52A2A");    // 浅褐色
+            QColor color("#87CEEB");    // 浅褐色
             QPen pen(color.lighter(120));
             pen.setWidthF(1);   // 宽度超过1性能急剧下降
             plot->graph(0)->setPen(pen);
 
-            QColor color1("#87CEEB");   // 天蓝色
+            QColor color1("#A52A2A");   // 天蓝色
             QPen pen1(color1.darker(120));
             pen1.setWidthF(1);   // 宽度超过1性能急剧下降
             plot->graph(1)->setPen(pen1);
@@ -381,8 +382,6 @@ void SpeedViewDockWidget::add_graphs(QCustomPlot* const plot, int graph_count)
 
             plot->graph(0)->setLineStyle(QCPGraph::lsImpulse);
             plot->graph(1)->setLineStyle(QCPGraph::lsImpulse);
-
-            plot->graph(1)->setLayer("main");
         }
 
         plot->replot(QCustomPlot::rpQueuedReplot);
@@ -730,7 +729,6 @@ void SpeedViewDockWidget::slot_disSigVal_changed(double value)
     // 遍历正常偏差条形图的所有数据
     for (auto it = normal_data->begin(); it != normal_data->end(); ++it)
     {
-
         double key = it->key;
         double abs_deviation = it->value;
 

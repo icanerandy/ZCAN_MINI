@@ -60,40 +60,38 @@ bool MyExcel::slot_writeOneTable(QString filepath, int startRow, QVector< QVecto
         startRow += 3;
 
         QAxObject* cellRange = nullptr;
-        slot_setOneCell(sheet, ColumnType::ColumnA, 1, Qt::red, "测试记录");
+        slot_setOneCell(sheet, ColumnType::ColumnA, 1, Qt::black, "测试记录");
         cellRange = sheet->querySubObject("Range(const QString&)", "A1:F1");
         cellRange->dynamicCall("Merge()");
         cellRange->setProperty("HorizontalAlignment", -4108); // xlCenter
         cellRange->setProperty("VerticalAlignment", -4108); // xlCenter
         delete cellRange;
 
-        slot_setOneCell(sheet, ColumnType::ColumnA, 2, Qt::red, "日期:"+date_);
+        slot_setOneCell(sheet, ColumnType::ColumnA, 2, Qt::black, "日期:"+date_);
         cellRange = sheet->querySubObject("Range(const QString&)", "A2:B2");
         cellRange->dynamicCall("Merge()");
         cellRange->setProperty("HorizontalAlignment", -4108); // xlCenter
         cellRange->setProperty("VerticalAlignment", -4108); // xlCenter
         delete cellRange;
 
-
-        slot_setOneCell(sheet, ColumnType::ColumnC, 2, Qt::red, "产品型号:"+device_name_);
+        slot_setOneCell(sheet, ColumnType::ColumnC, 2, Qt::black, "产品型号:"+device_name_);
         cellRange = sheet->querySubObject("Range(const QString&)", "C2:D2");
         cellRange->dynamicCall("Merge()");
         cellRange->setProperty("HorizontalAlignment", -4108); // xlCenter
         cellRange->setProperty("VerticalAlignment", -4108); // xlCenter
         delete cellRange;
 
-
-        slot_setOneCell(sheet, ColumnType::ColumnE, 2, Qt::red, "测试人:"+tester_);
+        slot_setOneCell(sheet, ColumnType::ColumnE, 2, Qt::black, "测试人:"+tester_);
         cellRange = sheet->querySubObject("Range(const QString&)", "E2:F2");
         cellRange->dynamicCall("Merge()");
         cellRange->setProperty("HorizontalAlignment", -4108); // xlCenter
         cellRange->setProperty("VerticalAlignment", -4108); // xlCenter
         delete cellRange;
 
-        slot_setOneCell(sheet, ColumnType::ColumnA, 3, Qt::red, "时间");
-        slot_setOneCell(sheet, ColumnType::ColumnB, 3, Qt::red, sig1_);
-        slot_setOneCell(sheet, ColumnType::ColumnC, 3, Qt::red, sig2_);
-        slot_setOneCell(sheet, ColumnType::ColumnD, 3, Qt::red, "绝对偏差");
+        slot_setOneCell(sheet, ColumnType::ColumnA, 3, Qt::black, "时间");
+        slot_setOneCell(sheet, ColumnType::ColumnB, 3, Qt::black, sig1_);
+        slot_setOneCell(sheet, ColumnType::ColumnC, 3, Qt::black, sig2_);
+        slot_setOneCell(sheet, ColumnType::ColumnD, 3, Qt::black, "绝对偏差");
 
         // 数据转换
         QVariantList tdata;
