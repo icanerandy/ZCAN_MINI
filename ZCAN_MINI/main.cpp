@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    QFile file("../../ZCAN_MINI/ZCAN_MINI/resources/style.qss");
+    QFile file(":/ress/style.qss");
     file.open(QIODevice::ReadOnly);
     if(file.isOpen())
     {

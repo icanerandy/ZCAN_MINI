@@ -20,7 +20,7 @@ TEMPLATE = app
 
 DEFINES += QT_DEPRECATED_WARNINGS
 
-RC_ICONS = ./resources/icons/analys.ico
+RC_ICONS = ./ress/icons/analys.ico
 
 SOURCES += \
     main.cpp
@@ -44,6 +44,6 @@ INCLUDEPATH += $$PWD/ExcelProcess
 include ($$PWD/ExcelProcess/ExcelProcess.pri)
 
 RESOURCES += \
-    resources.qrc
+    ress.qrc
 
 DISTFILES +=
