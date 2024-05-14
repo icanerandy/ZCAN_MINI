@@ -117,12 +117,14 @@ void SpeedViewDockWidget::bind_signals()
         if (ui->plot->graphCount() == 0)
             return;
         ui->plot->graph(0)->setVisible(checked);
+        ui->plot->replot(QCustomPlot::rpQueuedReplot);
     });
 
     connect(ui->chkGraph2, &QCheckBox::toggled, this, [=] (bool checked) {
         if (ui->plot->graphCount() == 0)
             return;
         ui->plot->graph(1)->setVisible(checked);
+        ui->plot->replot(QCustomPlot::rpQueuedReplot);
     });
 
     connect(ui->chkScatter1, &QCheckBox::toggled, this, [=] (bool checked) {
